@@ -58,6 +58,11 @@ nsig_t = 7.0
 nsig_f_adj = 3.0
 nsig_t_adj = 3.0
 
+[SSINS_OPTS]
+streak_sig = 20.0
+other_sig = 5.0
+tb_aggro = 0.5
+
 ############################################################################################################
 
 [WorkFlow]
@@ -75,6 +80,7 @@ actions = ["FIX_DATAFILE", # TODO: REMOVE THIS FOR SITE
            "REDCAL_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "XRFI",
            "XRFI_DAY_THRESHOLD",
+           "SSINS",
            "RFI_INSPECT_NOTEBOOK",
            "DATA_DOWNSELECT", # TODO: THIS DOES NOTHING CURRENTLY
           ]
@@ -210,7 +216,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
         "${ANT_METRICS_OPTS:good_extension}"
-        ]
+      ]
 
 [REDCAL_INSPECT_NOTEBOOK_MAYBE_GOOD]
 prereqs = "REDCAL_MAYBE_GOOD"
@@ -224,7 +230,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
         "${ANT_METRICS_OPTS:maybe_extension}"
-        ]
+      ]
 
 [XRFI]
 mem = 96000
@@ -233,7 +239,8 @@ args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
         "${XRFI_OPTS:sig_init}",
         "${XRFI_OPTS:sig_adj}",
-        "{obsid_list}"]
+        "{obsid_list}"
+       ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in
 # must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
 # chunk_size must be >= 9 (with centered==True).
@@ -257,8 +264,20 @@ chunk_size = "all"
 stride_length = "all"
 time_centered = false
 
+[SSINS]
+prereqs = "FIX_DATAFILE"
+args = ["${SSINS_OPTS:streak_sig}",
+        "${SSINS_OPTS:other_sig}",
+        "${SSINS_OPTS:tb_aggro}",
+        "{obsid_list}"
+       ]
+stride_length = 10
+chunk_size = 10
+time_centered = false
+collect_stragglers = true
+
 [RFI_INSPECT_NOTEBOOK]
-prereqs = "XRFI_DAY_THRESHOLD"
+prereqs = ["XRFI_DAY_THRESHOLD", "SSINS"]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
