@@ -1,5 +1,9 @@
 [Options]
 makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 16000 # TODO: Check if this is the right number for site
+base_cpu = 1
+timeout = "24h"
 # FOR NRAO:
 path_to_do_scripts = "/users/jsdillon/Libraries/hera_pipelines/pipelines/h4c/rtp/v1/stage_1_task_scripts"
 conda_env = "python3"
@@ -7,10 +11,20 @@ conda_env = "python3"
 # path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h4c/rtp/v1/stage_1_task_scripts"
 # conda_env = "RTP"
 # mandc_report = true
-source_script = "~/.bashrc"
-base_mem = 16000 # TODO: Check if this is the right number for site
-base_cpu = 1
-timeout = "24h"
+# batch_system = "slurm"
+# default_queue = "hera,bigmem"
+
+[LIBRARIAN_OPTS]
+# These trigger which sets of files get added to the librarian
+librarian_raw_data = false
+libarian_autos = false
+libarian_ant_metrics = false
+libarian_notebooks = false
+libarian_redcal_known_good = false
+libarian_redcal_maybe_good = false
+librarian_xrfi = false
+librarian_SSINS = false
+librarian_downselected_data = false
 
 [NOTEBOOK_OPTS]
 # FOR NRAO:
@@ -84,6 +98,8 @@ actions = ["FIX_DATAFILE", # TODO: REMOVE THIS FOR SITE
            "RFI_INSPECT_NOTEBOOK",
            "DATA_DOWNSELECT", # TODO: THIS DOES NOTHING CURRENTLY
           ]
+
+
 
 [FIX_DATAFILE]
 args = ["{basename}"]
