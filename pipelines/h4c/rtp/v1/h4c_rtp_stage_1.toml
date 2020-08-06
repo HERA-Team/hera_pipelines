@@ -1,10 +1,10 @@
 [Options]
 makeflow_type = "analysis"
 # FOR NRAO:
-path_to_do_scripts = "/users/jsdillon/Libraries/hera_opm/pipelines/h4c/rtp/v1/stage_1_task_scripts"
+path_to_do_scripts = "/users/jsdillon/Libraries/hera_pipelines/pipelines/h4c/rtp/v1/stage_1_task_scripts"
 conda_env = "python3"
 # FOR SITE:
-# path_to_do_scripts = "/home/obs/src/hera_opm/pipelines/h4c/rtp/v1/stage_1_task_scripts"
+# path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h4c/rtp/v1/stage_1_task_scripts"
 # conda_env = "RTP"
 # mandc_report = true
 source_script = "~/.bashrc"
