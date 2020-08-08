@@ -37,6 +37,7 @@ rm -rf ${prefix}.SSINS
 echo mkdir ${prefix}.SSINS
 mkdir ${prefix}.SSINS
 for sf in ${prefix}.SSINS.*; do
-    echo mv ${sf} ${prefix}.SSINS/${sf}
-    mv ${sf} ${prefix}.SSINS/${sf}
+    bn=$(basename ${sf})
+    echo mv ${sf} ${prefix}.SSINS/${bn}
+    mv ${sf} ${prefix}.SSINS/${bn}
 done
