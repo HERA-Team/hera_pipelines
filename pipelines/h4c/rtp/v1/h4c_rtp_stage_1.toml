@@ -119,6 +119,7 @@ actions = ["GLOBAL_SETUP",
 [GLOBAL_SETUP]
 chunk_size = 1
 stride_length = "all"
+args = []
 
 [FIX_DATAFILE]
 prereqs = "SETUP"
