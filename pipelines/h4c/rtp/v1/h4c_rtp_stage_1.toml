@@ -148,7 +148,7 @@ args = ["{basename}",
 prereqs = "FIX_DATAFILE"
 args = ["{basename}"]
 
-[LIBRARIAN_RAW_DATA]
+[LIBRARIAN_AUTOS]
 prereqs = "EXTRACT_AUTOS"
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
