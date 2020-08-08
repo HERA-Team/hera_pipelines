@@ -1,0 +1,69 @@
+[DELAY_OPTS]
+label = "sum"
+spw0 = 0
+spw1 = 250
+tol = 1e-9
+standoff = 200
+cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
+calibration = "smooth_abs.calfits"
+
+# we may want to consider another flagging round after delay filtering.
+
+[XTALK_OPTS]
+label = "sum"
+frmax0 = 0.024 # max_frate = frmax0 * bl_len + frmax1
+frmax1 = -0.229
+tol = 1e-9
+cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
+
+# Reconstitute the xtalk waterfalls.
+
+[XTALK_RECONSTITUTE_OPTS]
+label = "sum"
+
+[FILTER_CLEANUP_OPTS]
+clear_xtalk_cache = False
+clear_delay_cache = False
+clear_delay = False
+
+
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["DELAY",
+           "XTALK",
+           "XTALK_RECONSTITUTE",
+	         "FILTER_CLEANUP",
+           "MAKE_NOTEBOOK"]
+
+[DELAY]
+prereqs = "CAL_SMOOTH"
+chunk_size = "all"
+mem = 64000
+args = ["{basename}", "${DELAY_OPTS:calibration}", "${DELAY_OPTS:label}",
+        "${DELAY_OPTS:spw0}", "${DELAY_OPTS:spw1}", "${DELAY_OPTS:tol}",
+        "${DELAY_OPTS:standoff}", "${DELAY_OPTS:cache_dir}"]
+
+[XTALK]
+prereqs = "DELAY"
+time_prereqs = "DELAY"
+n_time_neighbors = "all"
+mem = 64000
+args = ["{basename}", "${XTALK_OPTS:label}", "${XTALK_OPTS:tol}",
+        "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:cache_dir}"]
+
+[XTALK_RECONSTITUTE]
+prereqs = "XTALK"
+time_prereqs = "XTALK"
+n_time_neighbors = "all"
+mem = 64000
+args = ["{basename}", "${XTALK_RECONSTITUTE_OPTS:label}"]
+
+[FILTER_CLEANUP]
+prereqs = "XTALK_RECONSTITUTE"
+time_prereqs = "XTALK_RECONSTITUTE"
+n_time_neighbors = "all"
+mem = 64000
+args = ["{basename}", "${FILTER_CLEANUP_OPTS:clear_xtalk_cache}", "${FILTER_CLEANUP_OPTS:clear_delay_cache}", "${XTALK_OPTS:cache_dir}", "${DELAY_OPTS:cache_dir}",
+       		      "${FILTER_CLEANUP_OPTS:clear_delay}", "${XTALK_OPTS:label}", "${DELAY_OPTS:label}"]
