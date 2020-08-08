@@ -122,7 +122,7 @@ stride_length = "all"
 args = []
 
 [FIX_DATAFILE]
-prereqs = "SETUP"
+prereqs = "GLOBAL_SETUP"
 prereq_chunk_size = "all"
 args = ["{basename}"]
 
