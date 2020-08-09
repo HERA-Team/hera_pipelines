@@ -26,7 +26,18 @@ echo filenames are "${fns[@]}"
 # Get the first filename in the list (should work if only one file)
 first_file="${fns%" "*}"
 # Set the prefix based on the first filename
-prefix="${first_file%.*}"
+prefix="${first_file%.uvh5}"
 
 echo Run_HERA_SSINS.py -f "${fns[@]}" -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro -c
 Run_HERA_SSINS.py -f "${fns[@]}" -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro -c
+
+# Move all outputs to folder
+echo rm -rf ${prefix}.SSINS
+rm -rf ${prefix}.SSINS
+echo mkdir ${prefix}.SSINS
+mkdir ${prefix}.SSINS
+for sf in ${prefix}.SSINS.*; do
+    bn=$(basename ${sf})
+    echo mv ${sf} ${prefix}.SSINS/${bn}
+    mv ${sf} ${prefix}.SSINS/${bn}
+done
