@@ -40,14 +40,17 @@ cd $workdir
 # if passed as an argument rather than entered interactively.
 # Get sum files
 json_string='{"name-matches": "zen.'"$jd"'.%.sum.uvh5"}'
+echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
 # Also grab diff files
 json_string='{"name-matches": "zen.'"$jd"'.%.diff.uvh5"}'
+echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
 # Now make a makeflow
 input_files=`ls -d1 $stagedir/$jd/zen.*.sum.uvh5 | tr '\n' ' '`
+echo build_makeflow_from_config.py -c $config_file $input_files
 build_makeflow_from_config.py -c $config_file $input_files
 
 mf_file=`realpath *.mf`
