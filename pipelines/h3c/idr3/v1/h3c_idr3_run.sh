@@ -38,7 +38,7 @@ declare -a jdArray=(
 )
 
 makeflow_dir=`dirname $toml_path`
-run_script_dir=` dirname "$0"`
+run_script_dir=`dirname "$0"`
 
 for jd in ${jdArray[@]}; do
     # make folder for raw data and makeflow scripts
