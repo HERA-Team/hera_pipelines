@@ -39,6 +39,7 @@ declare -a jdArray=(
 
 makeflow_dir=`dirname $toml_path`
 run_script_dir=`dirname "$0"`
+run_script_dir=`realpath "${run_script_dir}"`
 
 for jd in ${jdArray[@]}; do
     # make folder for raw data and makeflow scripts
@@ -50,8 +51,8 @@ for jd in ${jdArray[@]}; do
     cd $jd
 
     # call child script
-    echo ../${run_script_dir}/make_h3c_idr3_makeflow.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
-    ../${run_script_dir}/make_h3c_idr3_makeflow.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
+    echo ${run_script_dir}/make_h3c_idr3_makeflow.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
+    ${run_script_dir}/make_h3c_idr3_makeflow.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
     # wait for the workflow to finish one way or the other
     while [[ ! -f "succeeded.out" && ! -f "failed.out" ]]; do
         sleep 60;
