@@ -8,24 +8,26 @@ source ${src_dir}/_common.sh
 # Parameters are set in the configuration file, here we define their positions,
 # which must be consistent with the config.
 # 1 - file name
-# 2 - output label
-# 3 - Level to subtract cross-talk too.
-# 4 - First xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1.
-# 5 - Second xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1
-# 6 - Cache Directory.
+# 2 - data extension
+# 3 - output label
+# 4 - Level to subtract cross-talk too.
+# 5 - First xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1.
+# 6 - Second xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1
+# 7 - Cache Directory.
 
 fn="${1}"
-label="${2}"
-tol="${3}"
-frc0="${4}"
-frc1="${5}"
-cache_dir="${6}"
+data_ext="${2}"
+label="${3}"
+tol="${4}"
+frc0="${5}"
+frc1="${6}"
+cache_dir="${7}"
 # get julian day from file name
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 # generate output file name
-fn=zen.${jd}.${label}.foreground_filtered.uvh5
-fn_out=zen.${jd}.${label}.xtalk_filtered_waterfall.uvh5
+fn=zen.${jd}.${label}.foreground_filtered.${data_ext}
+fn_out=zen.${jd}.${label}.xtalk_filtered_waterfall.${data_ext}
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
