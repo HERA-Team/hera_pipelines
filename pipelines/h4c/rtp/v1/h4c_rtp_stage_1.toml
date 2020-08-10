@@ -72,7 +72,7 @@ tb_aggro = 0.5
 ############################################################################################################
 
 [WorkFlow]
-actions = ["GLOBAL_SETUP",
+actions = ["SETUP",
            "LIBRARIAN_RAW_DATA",
            "LIBRARIAN_MAKE_SESSION",
            "ADD_RTP_PROCESS_RECORD",
@@ -107,14 +107,10 @@ actions = ["GLOBAL_SETUP",
 
 ########## PRELIMINARIES (RAW DATA, AUTOS, LIBRARIAN, ETC.) ##########
 
-[GLOBAL_SETUP]
-chunk_size = 1
-stride_length = "all"
+[SETUP]
 args = []
 
 [LIBRARIAN_RAW_DATA]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
        ]
@@ -133,8 +129,6 @@ args = ["{basename}",
         "${WorkFlow:actions}"]
 
 [EXTRACT_AUTOS]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 args = ["{basename}"]
 
 [LIBRARIAN_AUTOS]
@@ -148,9 +142,7 @@ args = ["{basename}",
 ########## ANT METRICS AND ASSOCIATED DATA INSPECT NOTEBOOKS ##########
 
 [ANT_METRICS_KNOWN_GOOD]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
-chunk_size = 10
+chunk_size = 10 # TODO: update this once we're using single integration files
 stride_length = 10
 time_centered = false
 collect_stragglers = true
@@ -171,8 +163,6 @@ args = ["{basename}",
        ]
 
 [ANT_METRICS_MAYBE_GOOD]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 chunk_size = 10
 stride_length = 10
 time_centered = false
@@ -194,8 +184,6 @@ args = ["{basename}",
        ]
 
 [ANT_METRICS_ALL_ANTS]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 chunk_size = 10
 stride_length = 10
 time_centered = false
@@ -334,8 +322,6 @@ args = ["{basename}",
 
 [XRFI]
 mem = 96000
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
         "${XRFI_OPTS:sig_init}",
@@ -384,8 +370,6 @@ stride_length = "all"
 time_centered = false
 
 [SSINS]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 args = ["${SSINS_OPTS:streak_sig}",
         "${SSINS_OPTS:other_sig}",
         "${SSINS_OPTS:tb_aggro}",
@@ -419,8 +403,6 @@ args = ["{basename}",
 ########## DATA DOWNSELECTION ##########
 
 [DATA_DOWNSELECT]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 args = ["{basename}"]
 
 [LIBRARIAN_DATA_DOWNSELECT]

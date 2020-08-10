@@ -70,7 +70,7 @@ tb_aggro = 0.5
 ############################################################################################################
 
 [WorkFlow]
-actions = ["GLOBAL_SETUP",
+actions = ["SETUP",
            "FIX_DATAFILE",
            "LIBRARIAN_RAW_DATA",
            "LIBRARIAN_MAKE_SESSION",
@@ -105,14 +105,10 @@ actions = ["GLOBAL_SETUP",
 
 ########## PRELIMINARIES (RAW DATA, AUTOS, LIBRARIAN, ETC.) ##########
 
-[GLOBAL_SETUP]
-chunk_size = 1
-stride_length = "all"
+[SETUP]
 args = []
 
 [FIX_DATAFILE]
-prereqs = "GLOBAL_SETUP"
-prereq_chunk_size = "all"
 args = ["{basename}"]
 
 [LIBRARIAN_RAW_DATA]
