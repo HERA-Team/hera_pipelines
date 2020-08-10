@@ -4,7 +4,6 @@ source_script = "~/.bashrc"
 base_mem = 12000 # TODO: Check if this is the right number for site
 base_cpu = 1
 timeout = "24h"
-# FOR SITE:
 path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h4c/rtp/v1/stage_1_task_scripts"
 conda_env = "RTP"
 mandc_report = true
@@ -24,7 +23,7 @@ librarian_downselected_data = false
 librarian_notebooks = true
 
 [NOTEBOOK_OPTS]
-nb_template_dir = '/home/obs/src/hera_notebook_templates'
+nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
 nb_out_dir = '/home/obs/src/H4C_Notebooks'
 git_push = true
 
