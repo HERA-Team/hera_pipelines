@@ -1,9 +1,9 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/jsdillon/Libraries/hera_pipelines/pipelines/h3c/idr3/v1/stage_1_task_scripts"
-path_to_observer_bad_ants = "/users/jsdillon/Libraries/hera_pipelines/pipelines/h3c/idr3/v1/observer_bad_ants"
-path_to_analysis_bad_ants = "/users/jsdillon/Libraries/hera_pipelines/pipelines/h3c/idr3/v1/analysis_bad_ants"
-conda_env = "python3"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H3C/IDR3_1/h3c_idr3_software/hera_pipelines/pipelines/h3c/idr3/v1/stage_1_task_scripts"
+path_to_observer_bad_ants = "/lustre/aoc/projects/hera/H3C/IDR3_1/h3c_idr3_software/hera_pipelines/pipelines/h3c/idr3/v1/observer_bad_ants"
+path_to_analysis_bad_ants = "/lustre/aoc/projects/hera/H3C/IDR3_1/h3c_idr3_software/hera_pipelines/pipelines/h3c/idr3/v1/analysis_bad_ants"
+conda_env = "h3c_idr3"
 source_script = "~/.bashrc"
 base_mem = 16000
 base_cpu = 1

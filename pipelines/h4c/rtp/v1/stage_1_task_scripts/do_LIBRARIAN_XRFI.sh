@@ -25,7 +25,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
         if [ -d "${xrfi_folder}" ]; then
             echo librarian upload local-rtp ${xrfi_folder} ${jd}/${xrfi_folder%.xrfi}.stage_1_xrfi
             librarian upload local-rtp ${xrfi_folder} ${jd}/${xrfi_folder%.xrfi}.stage_1_xrfi
-        elif[ -d "${xrfi_stage_1_folder}" ]; then # if it has already been renamed
+        elif [ -d "${xrfi_stage_1_folder}" ]; then # if it has already been renamed
             echo librarian upload local-rtp ${xrfi_stage_1_folder} ${jd}/${xrfi_stage_1_folder}
             librarian upload local-rtp ${xrfi_stage_1_folder} ${jd}/${xrfi_stage_1_folder}
         fi

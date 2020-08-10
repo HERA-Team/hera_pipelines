@@ -25,7 +25,7 @@ data_files="${@:6}"
 
 # get exants from bad ants folder
 jd=$(get_jd ${fn1})
-jd_int=`echo $jd | awk '{${fn1}=int(${fn1})}1'`
+jd_int=${jd%.*}
 
 # make filename
 bad_ants_fn=`echo "${path_to_analysis_bad_ants}/${jd_int}.txt"`
