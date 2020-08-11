@@ -33,7 +33,7 @@ if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
 
-if [ "${calibration}" -ne "none" ]
+if [ "${calibration}" != "none" ]
 then
   calfile=${fn%.uvh5}.${calibration}
 else
