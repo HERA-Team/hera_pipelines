@@ -13,7 +13,7 @@ pbs_mail_user = "jsdillon+nrao@berkeley.edu"
 [NOTEBOOK_OPTS]
 nb_template_dir = '/lustre/aoc/projects/hera/H3C/IDR3_1/h3c_idr3_software/hera_notebook_templates/notebooks'
 nb_output_repo = '/lustre/aoc/projects/hera/H3C/IDR3_1/h3c_idr3_software/H3C_plots/H3C_IDR3'
-git_push = true
+git_push = false
 
 [ANT_METRICS_OPTS]
 crossCut = 5.0
