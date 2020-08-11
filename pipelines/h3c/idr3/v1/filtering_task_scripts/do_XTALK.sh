@@ -33,7 +33,7 @@ if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
 # list of all foreground filtered files.
-data_files=`echo zen.${int_jd}.*.${label}.foreground_filtered.uvh5`
+data_files=`echo zen.${int_jd}.*.${label}.foreground_filtered.${data_ext}`
 
 
 echo xtalk_dayenu_filter_run_baseline_parallelized.py ${fn} --tol ${tol} \
