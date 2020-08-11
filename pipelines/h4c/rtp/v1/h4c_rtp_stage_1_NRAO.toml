@@ -55,6 +55,7 @@ kt_size = 8
 kf_size = 8
 sig_init = 5.0
 sig_adj = 2.0
+Nwf_per_load = 1000
 
 [XRFI_DAY_THRESHOLD_OPTS]
 nsig_f = 7.0
@@ -327,7 +328,6 @@ args = ["{basename}",
 ########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
 
 [XRFI]
-mem = 96000
 prereqs = "FIX_DATAFILE"
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
