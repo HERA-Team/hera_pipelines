@@ -8,35 +8,45 @@ source ${src_dir}/_common.sh
 # Parameters are set in the configuration file, here we define their positions,
 # which must be consistent with the config.
 # 1 - filename
-# 2 - calibration file
-# 3 - extra label for the output file.
-# 4 - spw0 lower channel to process.
-# 5 - spw1 upper channel to process.
-# 6 - tol level to subtract foregrounds too
-# 7 - standoff delay standoff in ns for filtering window.
-# 8 - cache_dir, directory to store cache files in.
+# 3 - calibration file
+# 4 - extra label for the output file.
+# 5 - spw0 lower channel to process.
+# 6 - spw1 upper channel to process.
+# 7 - tol level to subtract foregrounds too
+# 8 - standoff delay standoff in ns for filtering window.
+# 9 - cache_dir, directory to store cache files in.
 fn="${1}"
-calibration="${2}"
-label="${3}"
-spw0="${4}"
-spw1="${5}"
-tol="${6}"
-standoff="${7}"
-cache_dir="${8}"
+data_ext="${2}"
+calibration="${3}"
+label="${4}"
+spw0="${5}"
+spw1="${6}"
+tol="${7}"
+standoff="${8}"
+cache_dir="${9}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
-fn_out=zen.${jd}.${label}.foreground_filtered.uvh5
+fn_out=zen.${jd}.${label}.foreground_filtered.${data_ext}
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
-calfile=${fn%.uvh5}.${calibration}
 
-echo dayenu_delay_filter_run.py ${fn} --calfile ${calfile} \
+if [ "${calibration}" -ne "none" ]
+then
+  calfile=${fn%.uvh5}.${calibration}
+else
+  calfile="none"
+fi
+
+fn_in=${fn%.uvh5}.${data_ext}
+
+
+echo dayenu_delay_filter_run.py ${fn_in} --calfile ${calfile} \
   --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} \
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} #--write_cache --read_cache
 
-dayenu_delay_filter_run.py ${fn} --calfile ${calfile} \
+dayenu_delay_filter_run.py ${fn_in} --calfile ${calfile} \
     --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} #--write_cache --read_cache
