@@ -1,3 +1,15 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/filtering_task_scripts/"
+path_to_observer_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/observer_bad_ants"
+path_to_analysis_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/analysis_bad_ants"
+conda_env = "hera3"
+source_script = "~/.bashrc"
+base_mem = 16000
+base_cpu = 1
+timeout = "24h"
+pbs_mail_user = "aaronew+nrao@berkeley.edu"
+
 [GLOBAL_OPTS]
 data_ext = 'smooth_abs_vis.uvh5'
 
@@ -29,9 +41,9 @@ cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 label = "sum"
 
 [FILTER_CLEANUP_OPTS]
-clear_xtalk_cache = False
-clear_delay_cache = False
-clear_delay = False
+clear_xtalk_cache = false
+clear_delay_cache = false
+clear_delay = false
 
 
 
@@ -41,35 +53,35 @@ clear_delay = False
 actions = ["DELAY",
            "XTALK",
            "XTALK_RECONSTITUTE",
-	         "FILTER_CLEANUP"]
+	   "FILTER_CLEANUP"]
 
 [DELAY]
-prereqs = "CAL_SMOOTH"
-chunk_size = "all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_OPTS:calibration}", "${DELAY_OPTS:label}",
         "${DELAY_OPTS:spw0}", "${DELAY_OPTS:spw1}", "${DELAY_OPTS:tol}",
         "${DELAY_OPTS:standoff}", "${DELAY_OPTS:cache_dir}"]
+chunk_size = 1
+stride_length = 1
+time_centered = false
 
 [XTALK]
 prereqs = "DELAY"
-time_prereqs = "DELAY"
-n_time_neighbors = "all"
+prereq_chunk_size="all"
+chunk_size = 1
+stride_length = 1
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:cache_dir}"]
 
 [XTALK_RECONSTITUTE]
 prereqs = "XTALK"
-time_prereqs = "XTALK"
-n_time_neighbors = "all"
+prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_RECONSTITUTE_OPTS:label}"]
 
 [FILTER_CLEANUP]
 prereqs = "XTALK_RECONSTITUTE"
-time_prereqs = "XTALK_RECONSTITUTE"
-n_time_neighbors = "all"
+prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${FILTER_CLEANUP_OPTS:clear_xtalk_cache}", "${FILTER_CLEANUP_OPTS:clear_delay_cache}", "${XTALK_OPTS:cache_dir}", "${DELAY_OPTS:cache_dir}",
        		      "${FILTER_CLEANUP_OPTS:clear_delay}", "${XTALK_OPTS:label}", "${DELAY_OPTS:label}"]
