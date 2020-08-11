@@ -18,7 +18,7 @@ git_push = true
 [ANT_METRICS_OPTS]
 crossCut = 5.0
 deadCut = 5.0
-Nbls_per_load = 100
+Nbls_per_load = 1000
 # Antennas considered "good" and thus likely candidates for LST-binning
 good_extension = ".known_good.ant_metrics.hdf5"
 # Good antennas as well as ntennas that might be ready to promote to "good" status, pending a commissioning meeting.
