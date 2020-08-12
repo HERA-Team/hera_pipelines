@@ -371,6 +371,7 @@ stride_length = "all"
 time_centered = false
 
 [SSINS]
+mem = 36000
 args = ["${SSINS_OPTS:streak_sig}",
         "${SSINS_OPTS:other_sig}",
         "${SSINS_OPTS:tb_aggro}",

@@ -250,6 +250,7 @@ stride_length = "all"
 time_centered = false
 
 [SSINS]
+mem = 32000
 prereqs = "FIX_DATAFILE"
 args = ["${SSINS_OPTS:streak_sig}",
         "${SSINS_OPTS:other_sig}",
