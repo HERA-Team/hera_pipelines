@@ -39,12 +39,12 @@ cd $workdir
 # The JSON search string doesn't need to be wrapped in single-quotes
 # if passed as an argument rather than entered interactively.
 # Get sum files
-json_string='{"name-matches": "zen.'"$jd"'.%.sum.uvh5"}'
+json_string='{"name-matches": "zen.'"$jd"'._____.sum.uvh5"}'
 echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
 # Also grab diff files
-json_string='{"name-matches": "zen.'"$jd"'.%.diff.uvh5"}'
+json_string='{"name-matches": "zen.'"$jd"'._____.diff.uvh5"}'
 echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
