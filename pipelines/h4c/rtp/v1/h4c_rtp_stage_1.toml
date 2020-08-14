@@ -24,7 +24,7 @@ librarian_notebooks = true
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
-nb_out_dir = '/home/obs/src/H4C_Notebooks'
+nb_output_repo = '/home/obs/src/H4C_Notebooks'
 git_push = true
 
 [ANT_METRICS_OPTS]
