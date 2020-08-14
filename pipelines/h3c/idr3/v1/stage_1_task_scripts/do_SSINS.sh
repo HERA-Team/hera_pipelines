@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 set -e
 
 # This script runs SSINS on raw data

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#! /usr/bin/env python3.7
 # -*- coding: utf-8 -*-
 # Copyright 2020 the HERA Project
 # Licensed under the MIT License

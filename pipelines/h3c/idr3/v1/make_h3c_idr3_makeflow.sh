@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 # This is make_idr3_makeflow.sh
 # Stage raw data files for a given day at NRAO, then
 # build a makeflow for that day.

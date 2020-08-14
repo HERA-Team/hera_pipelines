@@ -1,8 +1,9 @@
+#! /bin/bash
 set -e
 
 # This script generates a notebook for inspecting the results of data-only RFI identification
 
-src_dir="$(dirname $0)"
+src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
 # Parameters are set in the configuration file. Here we define their positions,

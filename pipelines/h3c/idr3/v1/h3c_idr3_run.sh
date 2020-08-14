@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 # This is h3c_idr3_run.sh
 # For each day in the list of JDs, make a working directory,
 # invoke make_h3c_idr3_makeflow.sh (assumed to be in the same directory
