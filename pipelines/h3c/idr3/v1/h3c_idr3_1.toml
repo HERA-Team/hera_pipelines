@@ -276,7 +276,7 @@ args = ["{basename}",
         ]
 
 [CLEAN_FILES]
-prereqs = ["DATA_INSPECT_NOTEBOOK_ALL_ANTS",
+prereqs = [#"DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "REDCAL_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "RFI_INSPECT_NOTEBOOK"
