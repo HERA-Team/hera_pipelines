@@ -38,7 +38,7 @@ fi
 # list of all foreground filtered files.
 data_files=`echo zen.${int_jd}.*.${label}.${data_ext}
 
-echo dayenu_delay_filter_runbaseline_parallelized.py ${fn_in} \
+echo dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} \
   --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} \
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --factorize_flags --time_thresh=${time_thresh} \
   --trim_edges --datafilelist ${data_files}
