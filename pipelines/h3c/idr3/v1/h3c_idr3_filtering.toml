@@ -37,7 +37,7 @@ cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 
 # Reconstitute the xtalk waterfalls.
 
-[XTALK_RECONSTITUTE_OPTS]
+[RECONSTITUTE_OPTS]
 label = "sum"
 
 [FILTER_CLEANUP_OPTS]
@@ -52,7 +52,7 @@ clear_delay = false
 [WorkFlow]
 actions = ["DELAY",
            "XTALK",
-           "XTALK_RECONSTITUTE",
+           "RECONSTITUTE",
 	   "FILTER_CLEANUP"]
 
 [DELAY]
@@ -73,14 +73,14 @@ mem = 128000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:cache_dir}"]
 
-[XTALK_RECONSTITUTE]
+[RECONSTITUTE]
 prereqs = "XTALK"
 prereq_chunk_size="all"
 mem = 64000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_RECONSTITUTE_OPTS:label}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${RECONSTITUTE_OPTS:label}"]
 
 [FILTER_CLEANUP]
-prereqs = "XTALK_RECONSTITUTE"
+prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${FILTER_CLEANUP_OPTS:clear_xtalk_cache}", "${FILTER_CLEANUP_OPTS:clear_delay_cache}", "${XTALK_OPTS:cache_dir}", "${DELAY_OPTS:cache_dir}",
