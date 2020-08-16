@@ -19,13 +19,14 @@ source ${src_dir}/_common.sh
 # 10 - cache_dir, directory to store cache files in.
 fn="${1}"
 data_ext="${2}"
-label="${3}"
-spw0="${4}"
-spw1="${5}"
-tol="${6}"
-time_thresh="${7}"
-standoff="${8}"
-cache_dir="${9}"
+calibration="${3}"
+label="${4}"
+spw0="${5}"
+spw1="${6}"
+tol="${7}"
+time_thresh="${8}"
+standoff="${9}"
+cache_dir="${10}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
@@ -35,15 +36,22 @@ if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
 
+if [ "${calibration}" != "none" ]
+then
+  calfiles=`echo zen.${int_jd}.*.sum.smooth_abs.calfits`
+else
+  calfiles="none"
+fi
+
 # list of all foreground filtered files.
 data_files=`echo zen.${int_jd}.*.${label}.${data_ext}
 
 echo dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} \
   --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} \
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --factorize_flags --time_thresh=${time_thresh} \
-  --trim_edges --datafilelist ${data_files}
+  --trim_edges --datafilelist ${data_files} --calfile_list ${calfiles}
 
 dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} \
     --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --factorize_flags --time_thresh=${time_thresh} \
-    --trim_edges --datafilelist ${data_files}
+    --trim_edges --datafilelist ${data_files} --calfile_list ${calfiles}

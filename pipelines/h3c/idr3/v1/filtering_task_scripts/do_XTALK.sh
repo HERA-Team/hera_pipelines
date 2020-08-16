@@ -8,15 +8,14 @@ source ${src_dir}/_common.sh
 # Parameters are set in the configuration file, here we define their positions,
 # which must be consistent with the config.
 # 1 - filename
-# 3 - calibration file
-# 4 - label for files.
+# 2 - extension for files to read and write.
+# 3 - label for files to read and write..
 # 5 - tol level to subtract foregrounds too
 # 6 - First xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1.
 # 7 - Second xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1
 # 8 - cache_dir, directory to store cache files in.
 fn="${1}"
 data_ext="${2}"
-calibration="${3}"
 label="${4}"
 tol="${5}"
 frc0="${6}"
