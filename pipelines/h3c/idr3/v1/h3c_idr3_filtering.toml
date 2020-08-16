@@ -69,7 +69,7 @@ prereqs = "DELAY"
 prereq_chunk_size="all"
 chunk_size = 1
 stride_length = 1
-mem = 64000
+mem = 128000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:cache_dir}"]
 
