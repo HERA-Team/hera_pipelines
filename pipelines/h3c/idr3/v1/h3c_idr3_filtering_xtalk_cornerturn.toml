@@ -25,7 +25,7 @@ calibration = "none"
 
 # we may want to consider another flagging round after delay filtering.
 
-[XTALK_OPTS]
+[XTALK_BASELINE_PARALLELIZED_OPTS]
 label = "sum"
 # frmax0 = 0.024 # max_frate = frmax0 * bl_len + frmax1
 # frmax1 = -0.229
@@ -51,9 +51,9 @@ clear_delay = false
 
 [WorkFlow]
 actions = ["DELAY",
-           "XTALK",
+           "XTALK_BASELINE_PARALLELIZED",
            "RECONSTITUTE",
-	   "FILTER_CLEANUP"]
+	         "FILTER_CLEANUP"]
 
 [DELAY]
 mem = 64000
@@ -64,17 +64,17 @@ chunk_size = 1
 stride_length = 1
 time_centered = false
 
-[XTALK]
+[XTALK_BASELINE_PARALLELIZED]
 prereqs = "DELAY"
 prereq_chunk_size="all"
 chunk_size = 1
 stride_length = 1
 mem = 128000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_OPTS:label}", "${XTALK_OPTS:tol}",
-        "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:cache_dir}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_BASELINE_PARALLELIZED_OPTS:label}", "${XTALK_BASELINE_PARALLELIZED_OPTS:tol}",
+        "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax0}", "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax1}", "${XTALK_BASELINE_PARALLELIZED_OPTS:cache_dir}"]
 
 [RECONSTITUTE]
-prereqs = "XTALK"
+prereqs = "XTALK_BASELINE_PARALLELIZED"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${RECONSTITUTE_OPTS:label}"]
@@ -83,5 +83,5 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${RECONSTITUTE_OPTS:label}"]
 prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem = 64000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${FILTER_CLEANUP_OPTS:clear_xtalk_cache}", "${FILTER_CLEANUP_OPTS:clear_delay_cache}", "${XTALK_OPTS:cache_dir}", "${DELAY_OPTS:cache_dir}",
-       		      "${FILTER_CLEANUP_OPTS:clear_delay}", "${XTALK_OPTS:label}", "${DELAY_OPTS:label}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${FILTER_CLEANUP_OPTS:clear_xtalk_cache}", "${FILTER_CLEANUP_OPTS:clear_delay_cache}", "${XTALK_BASELINE_PARALLELIZED_OPTS:cache_dir}", "${DELAY_OPTS:cache_dir}",
+       		      "${FILTER_CLEANUP_OPTS:clear_delay}", "${XTALK_BASELINE_PARALLELIZED_OPTS:label}", "${DELAY_OPTS:label}"]
