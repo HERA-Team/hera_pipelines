@@ -27,7 +27,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             ".maybe_good.redcal_meta.hdf5"
         )
         for ext in ${exts[@]}; do
-            fn_out=`echo ${fn%.uvh5}.${ext}`
+            fn_out=`echo ${fn%.uvh5}${ext}`
             echo librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
             librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
         done
