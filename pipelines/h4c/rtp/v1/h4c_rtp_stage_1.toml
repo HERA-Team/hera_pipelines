@@ -36,10 +36,10 @@ Nbls_per_load = 1000
 good_statuses = "digital_ok,calibration_maintenance,calibration_triage,calibration_ok"
 good_extension = ".known_good.ant_metrics.hdf5"
 # Good antennas as well as ntennas that might be ready to promote to "good" status, pending a commissioning meeting.
-maybe_statuses = "digital_ok,digital_maintenance,calibration_maintenance,calibration_triage,calibration_ok,RF_ok"
+maybe_statuses = "RF_ok,digital_maintenance,digital_ok,calibration_maintenance,calibration_triage,calibration_ok"
 maybe_extension = ".maybe_good.ant_metrics.hdf5"
 # All antennas that are on and worth running ant_metrics and the data_inspect notebook on.
-all_statuses = "digital_ok,digital_maintenance,calibration_maintenance,calibration_triage,calibration_ok,dish_maintenance,dish_ok,RF_maintenance,RF_ok"
+all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital_maintenance,calibration_maintenance,calibration_triage,calibration_ok"
 all_extension = ".all_ants.ant_metrics.hdf5"
 
 [REDCAL_OPTS]
