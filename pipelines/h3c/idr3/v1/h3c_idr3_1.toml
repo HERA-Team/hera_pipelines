@@ -33,8 +33,8 @@ nInt_to_load = 10
 flag_nchan_low = 0
 flag_nchan_high = 0
 oc_maxiter = 5000
-min_bl_cut = 15
-max_bl_cut = 100
+min_bl_cut = 1 # 15
+max_bl_cut = 10000 # 100
 
 [XRFI_OPTS]
 kt_size = 8
@@ -58,6 +58,7 @@ tb_aggro = 0.5
 
 [WorkFlow]
 actions = ["FIX_DATAFILE", 
+           "EXTRACT_AUTOS",
            "ANT_METRICS_KNOWN_GOOD",
            "ANT_METRICS_MAYBE_GOOD",
            "ANT_METRICS_ALL_ANTS",
@@ -76,6 +77,9 @@ actions = ["FIX_DATAFILE",
           ]
 
 [FIX_DATAFILE]
+args = ["{basename}"]
+
+[EXTRACT_AUTOS]
 args = ["{basename}"]
 
 [ANT_METRICS_KNOWN_GOOD]
