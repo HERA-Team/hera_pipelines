@@ -49,8 +49,8 @@ nInt_to_load = 10
 flag_nchan_low = 0
 flag_nchan_high = 0
 oc_maxiter = 5000
-min_bl_cut = 15
-max_bl_cut = 100
+min_bl_cut = 1.0 # TODO: restore this to 15.0 when we have more antennas
+max_bl_cut = 10000.0 # TODO: restore this to 100.0 when we have more antennas
 
 [XRFI_OPTS]
 kt_size = 8
