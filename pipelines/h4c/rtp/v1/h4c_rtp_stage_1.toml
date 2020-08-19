@@ -51,6 +51,7 @@ flag_nchan_high = 0
 oc_maxiter = 5000
 min_bl_cut = 1.0 # TODO: restore this to 15.0 when we have more antennas
 max_bl_cut = 10000.0 # TODO: restore this to 100.0 when we have more antennas
+max_dims = 4 # TODO: knock this down to 2 when we have enough good antennas to calibrate with
 
 [XRFI_OPTS]
 kt_size = 8
@@ -261,6 +262,7 @@ args = ["{basename}",
         "${REDCAL_OPTS:min_bl_cut}",
         "${REDCAL_OPTS:max_bl_cut}",
         "${ANT_METRICS_OPTS:good_extension}",
+        "${REDCAL_OPTS:max_dims}",
        ]
 
 [LIBRARIAN_REDCAL_KNOWN_GOOD]
@@ -282,6 +284,7 @@ args = ["{basename}",
         "${REDCAL_OPTS:min_bl_cut}",
         "${REDCAL_OPTS:max_bl_cut}",
         "${ANT_METRICS_OPTS:maybe_extension}",
+        "${REDCAL_OPTS:max_dims}",
        ]
 
 [LIBRARIAN_REDCAL_MAYBE_GOOD]
