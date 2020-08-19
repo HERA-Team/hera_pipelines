@@ -19,6 +19,7 @@ source ${src_dir}/_common.sh
 # 8 - min_bl_cut: cut redundant groups with average baseline lengths shorter than this length in meters
 # 9 - max_bl_cut: cut redundant groups with average baseline lengths longer than this length in meters
 # 10 - ant_metrics_extension: file extension to replace .uvh5 with to get known good ant_metrics files
+# 11 - max_dims: maximum allowed tip/tilt phase degeneracies of redcal. 2 is classically redundant.
 fn="${1}"
 ant_z_thresh="${2}"
 solar_horizon="${3}"
@@ -29,18 +30,21 @@ nInt_to_load="${7}"
 min_bl_cut="${8}"
 max_bl_cut="${9}"
 ant_metrics_extension="${10}"
+max_dims="${11}"
 
 # get ant_metrics file, removing extension and appending ant_metrics_extension
 metrics_f=`echo ${fn%.uvh5}${ant_metrics_extension}`
 
 # run redcal
 echo redcal_run.py ${fn} --ant_z_thresh ${ant_z_thresh} --solar_horizon ${solar_horizon} --oc_maxiter ${oc_maxiter} \
-    --firstcal_ext .known_good.first.calfits --omnical_ext .known_good.omni.calfits \
-    --omnivis_ext .known_good.omni_vis.uvh5 --meta_ext .known_good.redcal_meta.hdf5 \
+    --firstcal_ext .maybe_good.first.calfits --omnical_ext .maybe_good.omni.calfits \
+    --omnivis_ext .maybe_good.omni_vis.uvh5 --meta_ext .maybe_good.redcal_meta.hdf5 \
     --flag_nchan_low ${flag_nchan_low} --flag_nchan_high ${flag_nchan_high} --nInt_to_load ${nInt_to_load} \
-    --min_bl_cut ${min_bl_cut} --max_bl_cut ${max_bl_cut} --ant_metrics_file ${metrics_f} --clobber --verbose
+    --min_bl_cut ${min_bl_cut} --max_bl_cut ${max_bl_cut} --ant_metrics_file ${metrics_f} 
+    --max_dims ${maxx_dims} --clobber --verbose
 redcal_run.py ${fn} --ant_z_thresh ${ant_z_thresh} --solar_horizon ${solar_horizon} --oc_maxiter ${oc_maxiter} \
-    --firstcal_ext .known_good.first.calfits --omnical_ext .known_good.omni.calfits \
-    --omnivis_ext .known_good.omni_vis.uvh5 --meta_ext .known_good.redcal_meta.hdf5 \
+    --firstcal_ext .maybe_good.first.calfits --omnical_ext .maybe_good.omni.calfits \
+    --omnivis_ext .maybe_good.omni_vis.uvh5 --meta_ext .maybe_good.redcal_meta.hdf5 \
     --flag_nchan_low ${flag_nchan_low} --flag_nchan_high ${flag_nchan_high} --nInt_to_load ${nInt_to_load} \
-    --min_bl_cut ${min_bl_cut} --max_bl_cut ${max_bl_cut} --ant_metrics_file ${metrics_f} --clobber --verbose
+    --min_bl_cut ${min_bl_cut} --max_bl_cut ${max_bl_cut} --ant_metrics_file ${metrics_f} 
+    --max_dims ${maxx_dims} --clobber --verbose
