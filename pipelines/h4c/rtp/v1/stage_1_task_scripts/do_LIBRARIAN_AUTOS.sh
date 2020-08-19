@@ -24,5 +24,11 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
         echo librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
         librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
+
+        # get diff autocorrelations file
+        diff_autos_file=`echo ${fn%.sum.uvh5}.diff.autos.uvh5`
+
+        echo librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
+        librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
     fi
 fi
