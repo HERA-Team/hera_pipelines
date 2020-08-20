@@ -10,7 +10,11 @@ source ${src_dir}/_common.sh
 # Parameters are set in the configuration file, here we define their positions,
 # which must be consistent with the config.
 # 1 - filename
+# 2 - binary switch as to whether to do this step
 fn="${1}"
+fix_datafile="${2}"
 
-echo python ${src_dir}/fix_datafile.py ${fn} ${fn}
-python ${src_dir}/fix_datafile.py ${fn} ${fn}
+if [ "${fix_datafile}" == "True" ]; then
+    echo python ${src_dir}/fix_datafile.py ${fn} ${fn}
+    python ${src_dir}/fix_datafile.py ${fn} ${fn}
+fi
