@@ -27,7 +27,7 @@ maybe_extension = ".maybe_good.ant_metrics.hdf5"
 all_extension = ".all_ants.ant_metrics.hdf5"
 
 [REDCAL_OPTS]
-ant_z_thresh = 4
+ant_z_thresh = 5
 solar_horizon = 0.0
 nInt_to_load = 10
 flag_nchan_low = 0
