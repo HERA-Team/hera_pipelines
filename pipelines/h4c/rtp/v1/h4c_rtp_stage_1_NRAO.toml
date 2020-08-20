@@ -26,7 +26,7 @@ librarian_notebooks = false
 # FOR NRAO:
 nb_template_dir = '/users/jsdillon/Libraries/hera_notebook_templates/notebooks'
 nb_output_repo = '/users/jsdillon/Libraries/H4C_Notebooks'
-git_push = false
+git_push = true
 
 [ANT_METRICS_OPTS]
 crossCut = 5.0
