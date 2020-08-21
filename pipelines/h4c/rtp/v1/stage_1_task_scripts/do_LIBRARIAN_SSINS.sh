@@ -22,7 +22,11 @@ if [ "${upload_to_librarian}" == "True" ]; then
         # get SSINS folder
         SSINS_folder=`echo ${fn%.uvh5}.SSINS`
 
-        echo librarian upload local-rtp ${SSINS_folder} ${jd}/${SSINS_folder}
-        librarian upload local-rtp ${SSINS_folder} ${jd}/${SSINS_folder}
+        if [ -d "${SSINS_folder}" ]; then
+            echo librarian upload local-rtp ${SSINS_folder} ${jd}/${SSINS_folder}
+            librarian upload local-rtp ${SSINS_folder} ${jd}/${SSINS_folder}
+        else
+            echo ${SSINS_folder} does not exist, possibly due to chunking. Skipping this Librarian step.
+        fi
     fi
 fi
