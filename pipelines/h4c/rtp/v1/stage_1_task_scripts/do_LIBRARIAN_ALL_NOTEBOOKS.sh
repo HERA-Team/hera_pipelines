@@ -20,6 +20,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_notebooks}" == "True" ]; then
         # get the integer portion of the JD
         jd=$(get_int_jd ${fn})
+        decimal_jd=$(get_jd ${fn})
 
         declare -a nb_names=(
             "data_inspect_known_good"
@@ -33,8 +34,8 @@ if [ "${upload_to_librarian}" == "True" ]; then
         for nb_name in ${nb_names[@]}; do
             nb_outfile=${nb_output_repo}/${nb_name}/${nb_name}_${jd}.ipynb
             nb_basename=$(basename "${nb_outfile}")
-            echo librarian upload local-rtp ${nb_outfile} ${jd}/${nb_basename} --null-obsid
-            librarian upload local-rtp ${nb_outfile} ${jd}/${nb_basename} --null-obsid
+            echo librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
+            librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
         done
     fi
 fi

@@ -18,11 +18,13 @@ if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_xrfi}" == "True" ]; then
         # get the integer portion of the JD
         jd=$(get_int_jd ${fn})
+        decimal_jd=$(get_jd ${fn})
 
         # upload all thresholded flags files
         for ff in *_stage_1_threshold_flags.h5; do
-            echo librarian upload local-rtp ${ff} ${jd}/${ff} --null-obsid
-            librarian upload local-rtp ${ff} ${jd}/${ff} --null-obsid
+            lib_ff=`echo zen.${decimal_jd}${ff#zen.${jd}}`
+            echo librarian upload local-rtp ${ff} ${jd}/${lib_ff}
+            librarian upload local-rtp ${ff} ${jd}/${lib_ff}
         done
     fi
 fi
