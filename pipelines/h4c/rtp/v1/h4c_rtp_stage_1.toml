@@ -252,6 +252,7 @@ args = ["{basename}",
 
 [REDCAL_KNOWN_GOOD]
 prereqs = "ANT_METRICS_KNOWN_GOOD"
+mem = 24000
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
         "${REDCAL_OPTS:solar_horizon}",
@@ -274,6 +275,7 @@ args = ["{basename}",
 
 [REDCAL_MAYBE_GOOD]
 prereqs = "ANT_METRICS_MAYBE_GOOD"
+mem = 24000
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
         "${REDCAL_OPTS:solar_horizon}",
