@@ -15,6 +15,7 @@ source ${src_dir}/_common.sh
 # 3 - nsig_f_adj
 # 4 - nsig_t_adj
 # 5+ - filenames
+jd=$(get_int_jd ${5})
 data_files="${@:5}"
 
 echo xrfi_day_threshold_run.py ${data_files} --skip_making_flagged_abs_calfits --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --clobber
@@ -28,7 +29,7 @@ if [ $? == 0 ]; then
         echo mv ${df%.sum.uvh5}.xrfi  ${df%.sum.uvh5}.stage_1_xrfi
         mv ${df%.sum.uvh5}.xrfi ${df%.sum.uvh5}.stage_1_xrfi
     done
-    for ff in *_threshold_flags.h5; do
+    for ff in zen.${jd}*_threshold_flags.h5; do
         echo mv -f ${ff} ${ff%_threshold_flags.h5}_stage_1_threshold_flags.h5
         mv -f ${ff} ${ff%_threshold_flags.h5}_stage_1_threshold_flags.h5
     done

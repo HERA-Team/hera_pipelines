@@ -21,7 +21,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
         decimal_jd=$(get_jd ${fn})
 
         # upload all thresholded flags files
-        for ff in *_stage_1_threshold_flags.h5; do
+        for ff in zen.${jd}*_stage_1_threshold_flags.h5; do
             lib_ff=`echo zen.${decimal_jd}${ff#zen.${jd}}`
             echo librarian upload local-rtp ${ff} ${jd}/${lib_ff}
             librarian upload local-rtp ${ff} ${jd}/${lib_ff}
