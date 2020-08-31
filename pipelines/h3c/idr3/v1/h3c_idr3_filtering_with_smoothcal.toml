@@ -57,14 +57,14 @@ actions = ["CAL_SMOOTH_SIMPLE",
            "DELAY",
            "XTALK_BASELINE_PARALLELIZED",
            "RECONSTITUTE",
-	   "FILTER_CLEANUP"]
+	         "FILTER_CLEANUP"]
 
 [CAL_SMOOTH_SIMPLE]
 mem = 64000
 args = ["{basename}", "${CAL_SMOOTH_SIMPLE_OPTS:freq_scale}", "${CAL_SMOOTH_SIMPLE_OPTS:time_threshold}",
         "${CAL_SMOOTH_SIMPLE_OPTS:freq_threshold}", "${CAL_SMOOTH_SIMPLE_OPTS:ant_threshold}",
         "${CAL_SMOOTH_SIMPLE_OPTS:flag_ext}",
-        "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}", 
+        "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}",
 	"${GLOBAL_OPTS:label}",
 	"${CAL_SMOOTH_SIMPLE_OPTS:lst_blacklists}"]
 chunk_size=1
@@ -73,10 +73,12 @@ stride_length=1
 [APPLY_CAL_REDUNDANT_AVERAGE]
 prereq = "CAL_SMOOTH_SIMPLE"
 prereq_chunk_size = "all"
-mem=64000
+mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
         "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:vis_units}",
         "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}"]
+chunk_size = 1
+stride_length = 1
 
 [DELAY]
 prereqs="APPLY_CAL_REDUNDANT_AVERAGE"

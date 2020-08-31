@@ -21,11 +21,11 @@ source ${src_dir}/_common.sh
 # 10 - output label for cal files.
 
 
-fn = "${1}"
-label = "${2}"
-output_ext = "${3}"
-vis_units = "${4}"
-nbl_per_load = "${5}"
+fn="${1}"
+label="${2}"
+output_ext="${3}"
+vis_units="${4}"
+nbl_per_load="${5}"
 
 
 jd=$(get_jd $fn)
