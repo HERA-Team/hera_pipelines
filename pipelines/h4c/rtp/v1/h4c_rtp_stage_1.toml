@@ -358,6 +358,7 @@ args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
         "${XRFI_DAY_THRESHOLD_OPTS:nsig_t_adj}",
         "{obsid_list}"
        ]
+prereq_chunk_size = "all"
 chunk_size = "all"
 stride_length = "all"
 time_centered = false
