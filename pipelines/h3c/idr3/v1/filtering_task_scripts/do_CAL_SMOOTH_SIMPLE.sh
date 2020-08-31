@@ -41,7 +41,7 @@ this_calfile=`echo ${fn%.*}.abs.calfits`
 # get the list of external cal files.
 if [ "${flag_ext}" != "none" ]
 then
-  flag_files=`echo zen.${jd}.xrfi/*${flag_ext}.h5`
+  flag_files=`echo zen.${int_jd}.*.xrfi/*${flag_ext}.h5`
 else
   flag_files="none"
 fi
