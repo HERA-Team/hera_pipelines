@@ -32,7 +32,7 @@ alpha="${8}"
 freq_threshold="${9}"
 time_threshold="${10}"
 ant_threshold="${11}"
-lst_blacklists="${12}"
+lst_blacklists="${@:12}"
 
 # get list of all calfiles for a day
 jd=$(get_jd $fn)

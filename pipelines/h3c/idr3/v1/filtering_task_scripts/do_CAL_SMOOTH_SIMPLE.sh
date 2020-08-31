@@ -28,7 +28,7 @@ flag_ext="${6}"
 spw_range0="${7}"
 spw_range1="${8}"
 label="${9}"
-lst_blacklists="${10}"
+lst_blacklists="${@:10}"
 
 # get list of all calfiles for a day
 jd=$(get_jd $fn)
