@@ -24,11 +24,11 @@ freq_scale="${2}"
 time_threshold="${3}"
 freq_threshold="${4}"
 ant_threshold="${5}"
-lst_blacklists="${6}"
-flag_ext="${7}"
-spw_range0="${8}"
-spw_range1="${9}"
-label="${10}"
+flag_ext="${6}"
+spw_range0="${7}"
+spw_range1="${8}"
+label="${9}"
+lst_blacklists="${10}"
 
 # get list of all calfiles for a day
 jd=$(get_jd $fn)
