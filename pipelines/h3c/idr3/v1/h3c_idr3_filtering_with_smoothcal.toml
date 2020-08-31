@@ -27,7 +27,7 @@ flag_ext="og_flags1"
 
 [APPLY_CAL_REDUNDANT_AVERAGE_OPTS]
 vis_units = "Jy"
-nbl_per_load = "none"
+nbl_per_load = 0
 
 [DELAY_OPTS]
 tol = 1e-9
