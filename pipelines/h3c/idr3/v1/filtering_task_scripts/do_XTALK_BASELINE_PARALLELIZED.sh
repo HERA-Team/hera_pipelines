@@ -26,14 +26,16 @@ cache_dir="${7}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 # generate output file name
-fn=zen.${jd}.${label}.foreground_filtered.${data_ext}
-fn_out=zen.${jd}.${label}.xtalk_filtered_waterfall.${data_ext}
+fn=${fn%.uvh5}.${label}.foreground_filtered.${data_ext}
+fn_out=${fn%.uvh5}.${label}.xtalk_filtered_waterfall.${data_ext}
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
 # list of all foreground filtered files.
-data_files=`echo zen.${int_jd}.*.${label}.foreground_filtered.${data_ext}`
+# this will be broken by diff files.
+# had to hard code sum annoyingly.
+data_files=`echo zen.${int_jd}.*.sum.${label}.foreground_filtered.${data_ext}`
 
 
 echo xtalk_dayenu_filter_run_baseline_parallelized.py ${fn} --tol ${tol} \

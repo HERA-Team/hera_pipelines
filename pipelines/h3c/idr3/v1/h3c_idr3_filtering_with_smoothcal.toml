@@ -39,7 +39,6 @@ calibration = "none"
 # we may want to consider another flagging round after delay filtering.
 
 [XTALK_BASELINE_PARALLELIZED_OPTS]
-label = "sum"
 # frmax0 = 0.024 # max_frate = frmax0 * bl_len + frmax1
 # frmax1 = -0.229
 # dividing this by two for low band.
@@ -48,10 +47,6 @@ frmax1 = -0.115
 tol = 1e-9
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 
-# Reconstitute the xtalk waterfalls.
-
-[RECONSTITUTE_OPTS]
-label = "sum"
 
 [FILTER_CLEANUP_OPTS]
 clear_xtalk_cache = false
@@ -100,18 +95,18 @@ prereq_chunk_size="all"
 chunk_size = 1
 stride_length = 1
 mem = 64000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${XTALK_BASELINE_PARALLELIZED_OPTS:label}", "${XTALK_BASELINE_PARALLELIZED_OPTS:tol}",
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_BASELINE_PARALLELIZED_OPTS:tol}",
         "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax0}", "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax1}", "${XTALK_BASELINE_PARALLELIZED_OPTS:cache_dir}"]
 
 [RECONSTITUTE]
 prereqs = "XTALK_BASELINE_PARALLELIZED"
 prereq_chunk_size="all"
 mem = 64000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${RECONSTITUTE_OPTS:label}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [FILTER_CLEANUP]
 prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${FILTER_CLEANUP_OPTS:clear_xtalk_cache}", "${FILTER_CLEANUP_OPTS:clear_delay_cache}", "${XTALK_BASELINE_PARALLELIZED_OPTS:cache_dir}", "${DELAY_OPTS:cache_dir}",
-       		      "${FILTER_CLEANUP_OPTS:clear_delay}", "${XTALK_BASELINE_PARALLELIZED_OPTS:label}", "${DELAY_OPTS:label}"]
+       		      "${FILTER_CLEANUP_OPTS:clear_delay}", "${XTALK_BASELINE_PARALLELIZED_OPTS:label}", "${GLOBAL_OPTS:label}"]
