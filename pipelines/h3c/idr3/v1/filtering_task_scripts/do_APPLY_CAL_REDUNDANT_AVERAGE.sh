@@ -40,3 +40,4 @@ echo apply_cal.py --vis_units ${vis_units} \
 apply_cal.py  --vis_units ${vis_units} \
 --nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}\
 apply_cal.py  --vis_units ${vis_units} \
+${fn} ${outfile}
