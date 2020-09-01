@@ -34,9 +34,9 @@ calfile=${fn%.uvh5}.${label}.smooth_abs.calfits
 outfile=${fn%.uvh5}.${label}.${output_ext}
 
 echo apply_cal.py  --vis_units ${vis_units} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile}\
 ${fn} ${outfile}
 
 apply_cal.py  --vis_units ${vis_units} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}\
 ${fn} ${outfile}
