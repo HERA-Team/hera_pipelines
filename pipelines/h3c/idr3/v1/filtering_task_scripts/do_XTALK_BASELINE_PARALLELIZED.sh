@@ -26,7 +26,7 @@ cache_dir="${7}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 # generate output file name
-fn=${fn%.uvh5}.${label}.foreground_filtered.${data_ext}
+fn_in=${fn%.uvh5}.${label}.foreground_filtered.${data_ext}
 fn_out=${fn%.uvh5}.${label}.xtalk_filtered_waterfall.${data_ext}
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
@@ -38,11 +38,11 @@ fi
 data_files=`echo zen.${int_jd}.*.sum.${label}.foreground_filtered.${data_ext}`
 
 
-echo xtalk_dayenu_filter_run_baseline_parallelized.py ${fn} --tol ${tol} \
+echo dayenu_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
  --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_out} \
  --clobber --datafilelist ${data_files}
 
 
- xtalk_dayenu_filter_run_baseline_parallelized.py ${fn} --tol ${tol} \
+ dayenu_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_out} \
   --clobber --datafilelist ${data_files}

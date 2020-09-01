@@ -51,8 +51,10 @@ echo smooth_cal_timeavg_run.py ${calfiles} --infile_replace .abs. --outfile_repl
                   --freq_threshold ${freq_threshold} --factorize_flags \
                   --time_threshold ${time_threshold} --ant_threshold ${ant_threshold} --verbose \
                   --flag_file_list ${flag_files} --spw_range ${spw_range0} ${spw_range1}
-smooth_cal_timeavg_run.py ${calfiles} --infile_replace .abs. --outfile_replace .smooth_abs.${label}. --clobber \
+
+smooth_cal_timeavg_run.py ${calfiles} --infile_replace .abs. --outfile_replace .${label}.smooth_abs. --clobber \
                   --pick_refant --run_if_first ${this_calfile} --lst_blacklists ${lst_blacklists} --freq_scale ${freq_scale} \
                   --freq_threshold ${freq_threshold} --factorize_flags \
                   --time_threshold ${time_threshold} --ant_threshold ${ant_threshold} --verbose \
                   --flag_file_list ${flag_files} --spw_range ${spw_range0} ${spw_range1}
+

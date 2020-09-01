@@ -24,8 +24,7 @@ source ${src_dir}/_common.sh
 fn="${1}"
 label="${2}"
 output_ext="${3}"
-vis_units="${4}"
-nbl_per_load="${5}"
+nbl_per_load="${4}"
 
 
 jd=$(get_jd $fn)
@@ -33,10 +32,8 @@ jd=$(get_jd $fn)
 calfile=${fn%.uvh5}.${label}.smooth_abs.calfits
 outfile=${fn%.uvh5}.${label}.${output_ext}
 
-echo apply_cal.py  --vis_units ${vis_units} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile}\
-${fn} ${outfile}
+echo apply_cal.py  ${fn} ${outfile} \
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile}
 
-apply_cal.py  --vis_units ${vis_units} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}\
-${fn} ${outfile}
+apply_cal.py ${fn} ${outfile} \
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}
