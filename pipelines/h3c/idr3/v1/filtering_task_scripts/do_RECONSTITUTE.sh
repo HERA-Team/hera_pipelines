@@ -20,7 +20,7 @@ templatefile=${fn%.uvh5}.${data_ext}
 jd=$(get_jd $templatefile)
 int_jd=${jd:0:7}
 # generate output file name
-outfilename=zen.${jd}.${label}.xtalk_filtered.${data_ext}
+outfilename=${fn%.uvh5}.${label}.xtalk_filtered.${data_ext}
 
 fragment_list=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall.${data_ext}`
 
