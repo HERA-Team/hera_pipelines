@@ -16,7 +16,7 @@ fn="${1}"
 data_ext="${2}"
 label="${3}"
 
-templatefile=${fn%.uvh5}.${data_ext}
+templatefile=${fn%.uvh5}.${label}.${data_ext}
 jd=$(get_jd $templatefile)
 int_jd=${jd:0:7}
 # generate output file name

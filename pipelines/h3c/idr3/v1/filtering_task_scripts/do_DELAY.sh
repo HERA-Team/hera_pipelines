@@ -40,7 +40,7 @@ else
   calfile="none"
 fi
 
-fn_in=${fn%.uvh5}.${data_ext}
+fn_in=${fn%.uvh5}.${label}.${data_ext}
 
 
 echo dayenu_delay_filter_run.py ${fn_in} --calfile ${calfile} \
