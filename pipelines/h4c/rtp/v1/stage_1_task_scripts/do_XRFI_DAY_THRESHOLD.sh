@@ -15,7 +15,7 @@ source ${src_dir}/_common.sh
 # 3 - nsig_f_adj
 # 4 - nsig_t_adj
 # 5+ - filenames
-jd=$(get_int_jd ${5})
+jd=$(get_int_jd `basename ${5}`)
 data_files="${@:5}"
 
 echo xrfi_day_threshold_run.py ${data_files} --skip_making_flagged_abs_calfits --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --clobber
