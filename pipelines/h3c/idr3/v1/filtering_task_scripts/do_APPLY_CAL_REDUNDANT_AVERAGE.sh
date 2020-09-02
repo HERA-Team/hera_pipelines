@@ -12,20 +12,15 @@ source ${src_dir}/_common.sh
 ### cal smoothing parameters - see hera_cal.smooth_cal for details
 # 2 - identifying label for pipeline settings.
 # 3 - output data extension.
-# 4 - visibility units.
-# 5 - number of baselines to process simultaneously
-# 6 - lst_blacklists
-# 7 - string for xrfi flag files to use. Provide none if no external flag files are to be used.
-# 8 - spw range lower bound
-# 9 - spw rnage upper bound
-# 10 - output label for cal files.
-
+# 4 - baselines to load at once.
+# 5 - polarizations to output. 
+# POLARIZATION SELECTION HAS NOT YET BEEN IMPLEMENTED IN HERA-CAL
 
 fn="${1}"
 label="${2}"
 output_ext="${3}"
 nbl_per_load="${4}"
-
+pols="${@:4}"
 
 jd=$(get_jd $fn)
 

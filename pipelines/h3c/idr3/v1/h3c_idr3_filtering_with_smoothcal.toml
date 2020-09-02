@@ -16,6 +16,7 @@ spw0 = 0
 spw1 = 324
 label = "low-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
+pols = "ee nn"
 
 [CAL_SMOOTH_SIMPLE_OPTS]
 freq_scale = 10.0
@@ -70,11 +71,11 @@ chunk_size=1
 stride_length=1
 
 [APPLY_CAL_REDUNDANT_AVERAGE]
-prereq = "CAL_SMOOTH_SIMPLE"
+prereqs = "CAL_SMOOTH_SIMPLE"
 prereq_chunk_size = "all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
-        "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}"]
+        "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}"]
 chunk_size = 1
 stride_length = 1
 
