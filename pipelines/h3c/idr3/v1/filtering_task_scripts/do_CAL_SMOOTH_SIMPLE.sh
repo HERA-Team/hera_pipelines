@@ -13,11 +13,12 @@ source ${src_dir}/_common.sh
 # 3 - time_threshold
 # 4 - freq_threshold
 # 5 - ant_threshold
-# 6 - lst_blacklists
-# 7 - string for xrfi flag files to use. Provide none if no external flag files are to be used.
-# 8 - spw range lower bound
-# 9 - spw rnage upper bound
-# 10 - output label for cal files.
+# 6 - string for xrfi flag files to use. Provide none if no external flag files are to be used.
+# 7 - spw range lower bound
+# 8 - spw rnage upper bound
+# 9 - output label for cal files.
+# 10 - flagging yaml
+# 11 - lst_blacklists
 
 fn="${1}"
 freq_scale="${2}"
@@ -28,6 +29,7 @@ flag_ext="${6}"
 spw_range0="${7}"
 spw_range1="${8}"
 label="${9}"
+yaml_dir="${10}"
 lst_blacklists="${@:10}"
 
 # get list of all calfiles for a day
@@ -37,6 +39,9 @@ calfiles=`echo zen.${int_jd}.*.abs.calfits`
 
 # make the name of this calfits file for --run_if_first option
 this_calfile=`echo ${fn%.*}.abs.calfits`
+
+# get yaml file
+flag_yaml=${yaml_dir}/${jd}.yaml
 
 # get the list of external cal files.
 if [ "${flag_ext}" != "none" ]
@@ -50,11 +55,12 @@ echo smooth_cal_timeavg_run.py ${calfiles} --infile_replace .abs. --outfile_repl
                   --pick_refant --run_if_first ${this_calfile} --lst_blacklists ${lst_blacklists} --freq_scale ${freq_scale} \
                   --freq_threshold ${freq_threshold} --factorize_flags \
                   --time_threshold ${time_threshold} --ant_threshold ${ant_threshold} --verbose \
-                  --flag_file_list ${flag_files} --spw_range ${spw_range0} ${spw_range1}
+                  --flag_file_list ${flag_files} --spw_range ${spw_range0} ${spw_range1} \
+                  --a_priori_flag_yaml ${flag_yaml}
 
 smooth_cal_timeavg_run.py ${calfiles} --infile_replace .abs. --outfile_replace .${label}.smooth_abs. --clobber \
                   --pick_refant --run_if_first ${this_calfile} --lst_blacklists ${lst_blacklists} --freq_scale ${freq_scale} \
                   --freq_threshold ${freq_threshold} --factorize_flags \
                   --time_threshold ${time_threshold} --ant_threshold ${ant_threshold} --verbose \
-                  --flag_file_list ${flag_files} --spw_range ${spw_range0} ${spw_range1}
-
+                  --flag_file_list ${flag_files} --spw_range ${spw_range0} ${spw_range1} \
+                  --a_priori_flag_yaml ${flag_yaml}
