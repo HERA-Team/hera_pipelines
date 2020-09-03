@@ -21,6 +21,8 @@ jd=$(get_jd ${7})
 flag_yaml=${6}/${jd}.yaml
 data_files="${@:7}"
 
+echo ${data_files}
+
 ocal_files=${data_files/.uvh5/.omni.calfits}
 acal_files=${data_files/.uvh5/.abs.calfits}
 ovis_files=${data_files/.uvh5/.omni_vis.uvh5}
