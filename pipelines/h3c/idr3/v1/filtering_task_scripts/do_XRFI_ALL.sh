@@ -28,9 +28,9 @@ echo ${jd}
 echo ${jd_int}
 echo ${data_files}
 
-ocal_files=${data_files/.uvh5/.omni.calfits}
-acal_files=${data_files/.uvh5/.abs.calfits}
-ovis_files=${data_files/.uvh5/.omni_vis.uvh5}
+ocal_files=${data_files//.uvh5/.omni.calfits}
+acal_files=${data_files//.uvh5/.abs.calfits}
+ovis_files=${data_files//.uvh5/.omni_vis.uvh5}
 
 echo xrfi_run.py --data_files ${data_files} --ocalfits_files ${ocal_files} \
                  --acalfits_files ${acal_files} --model_files ${ovis_files} \
