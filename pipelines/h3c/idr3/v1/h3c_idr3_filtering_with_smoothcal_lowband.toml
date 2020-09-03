@@ -17,6 +17,7 @@ spw1 = 324
 label = "low-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
+yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/flagging_yamls"
 
 [CAL_SMOOTH_SIMPLE_OPTS]
 freq_scale = 10.0
@@ -65,7 +66,7 @@ args = ["{basename}", "${CAL_SMOOTH_SIMPLE_OPTS:freq_scale}", "${CAL_SMOOTH_SIMP
         "${CAL_SMOOTH_SIMPLE_OPTS:freq_threshold}", "${CAL_SMOOTH_SIMPLE_OPTS:ant_threshold}",
         "${CAL_SMOOTH_SIMPLE_OPTS:flag_ext}",
         "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}",
-	"${GLOBAL_OPTS:label}",
+	"${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:yaml_dir}",
 	"${CAL_SMOOTH_SIMPLE_OPTS:lst_blacklists}"]
 chunk_size=1
 stride_length=1
