@@ -41,6 +41,7 @@ args = ["${XRFI_ALL_OPTS:kt_size}",
         "${XRFI_ALL_OPTS:sig_adj}",
         "${XRFI_ALL_OPTS:Nwf_per_load}",
 	"${GLOBAL_OPTS:yaml_dir}",
+	"{basename}",
         "{obsid_list}"
        ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in

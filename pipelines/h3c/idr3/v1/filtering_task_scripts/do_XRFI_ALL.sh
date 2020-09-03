@@ -16,11 +16,16 @@ source ${src_dir}/_common.sh
 # 4 - sig_adj
 # 5 - Nwf_per_load
 # 6 - yaml directory
-# 7+ - filenames
+# 7 - basename
+# 8+ - filenames
 jd=$(get_jd ${7})
-flag_yaml=${6}/${jd}.yaml
-data_files="${@:7}"
+jd_int=${jd:0:7}
+flag_yaml=${6}/${jd_int}.yaml
+data_files="${@:8}"
 
+
+echo ${jd}
+echo ${jd_int}
 echo ${data_files}
 
 ocal_files=${data_files/.uvh5/.omni.calfits}
