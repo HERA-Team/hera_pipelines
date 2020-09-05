@@ -1,0 +1,68 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/stage_1_task_scripts/"
+path_to_observer_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/observer_bad_ants"
+path_to_analysis_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/analysis_bad_ants"
+conda_env = "hera3"
+source_script = "~/.bashrc"
+base_mem = 16000
+base_cpu = 1
+timeout = "24h"
+pbs_mail_user = "aaronew+nrao@berkeley.edu"
+
+[GLOBAL_OPTS]
+yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/flagging_yamls"
+
+[XRFI_OPTS]
+kt_size = 8
+kf_size = 8
+sig_init = 5.0
+sig_adj = 2.0
+Nwf_per_load = 250
+
+[XRFI_DAY_THRESHOLD_OPTS]
+nsig_f = 7.0
+nsig_t = 7.0
+nsig_f_adj = 3.0
+nsig_t_adj = 3.0
+
+############################################################################################################
+
+[WorkFlow]
+actions = [
+           "XRFI",
+           "XRFI_DAY_THRESHOLD",
+          ]
+
+[XRFI]
+args = ["${XRFI_OPTS:kt_size}",
+        "${XRFI_OPTS:kf_size}",
+        "${XRFI_OPTS:sig_init}",
+        "${XRFI_OPTS:sig_adj}",
+        "${XRFI_OPTS:Nwf_per_load}",
+	"${GLOBAL_OPTS:yaml_dir}",
+	"{basename}",
+        "{obsid_list}"
+       ]
+# xrfi will drop data within kt_size of time edge. Total integrations read in
+# must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
+# chunk_size must be >= 9 (with centered==True).
+# Larger chunk_size will reduce redundant i/o and median filter calculation.
+# The numbers below result in about 35% redundancy.
+# TODO: update these numbers for site
+chunk_size = 3
+stride_length = 1
+time_centered = true
+collect_stragglers = true
+
+[XRFI_DAY_THRESHOLD]
+prereqs = "XRFI"
+args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
+        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t}",
+        "${XRFI_DAY_THRESHOLD_OPTS:nsig_f_adj}",
+        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t_adj}",
+        "{obsid_list}"
+       ]
+chunk_size = "all"
+stride_length = "all"
+time_centered = false
