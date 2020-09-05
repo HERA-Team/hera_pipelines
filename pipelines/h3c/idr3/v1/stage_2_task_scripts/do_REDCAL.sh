@@ -39,7 +39,7 @@ check_after="${13}"
 
 # get a priori ex_ants yaml file
 jd_int=$(get_int_jd `basename ${1}`)
-ex_ants_yaml=`echo "${path_to_a_priori_flags}/jd_int.yaml"`
+ex_ants_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
 
 # run redcal
 echo redcal_run.py ${fn} --ant_z_thresh ${ant_z_thresh} --solar_horizon ${solar_horizon} --oc_maxiter ${oc_maxiter} \
