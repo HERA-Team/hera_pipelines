@@ -20,11 +20,11 @@ solar_horizon = 0.0
 nInt_to_load = 10
 flag_nchan_low = 0
 flag_nchan_high = 0
-oc_maxiter = 5000
+oc_maxiter = 10000
 min_bl_cut = 1 # 15
 max_bl_cut = 10000 # 100
 max_dims = 2
-check_every = 100
+check_every = 50
 check_after = 500
 
 [ABSCAL_OPTS]
