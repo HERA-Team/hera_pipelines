@@ -39,8 +39,8 @@ calibration = "none"
 
 [XTALK_BASELINE_PARALLELIZED_OPTS]
 # dividing this by two for low band.
-frmax0 = 0.024
-frmax1 = -0.230
+frmax0 = 0.0
+frmax1 = 0.1
 tol = 1e-9
 
 [FILTER_CLEANUP_OPTS]
