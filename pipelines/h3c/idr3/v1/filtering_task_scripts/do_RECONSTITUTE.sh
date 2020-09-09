@@ -25,7 +25,7 @@ outfilename=${fn%.uvh5}.${label}.xtalk_filtered.${data_ext}
 fragment_list=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall.${data_ext}`
 
 echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-    --fragmentlist ${fragment_list}
+    --fragmentlist ${fragment_list} --clobber
 
 reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-    --fragmentlist ${fragment_list}
+    --fragmentlist ${fragment_list} --clobber

@@ -9,7 +9,7 @@
 # ---------------
 
 # freq_flags are an array of length-2 arrays of floats in units of Hz (freq ranges, inclusive)
-freq_flags: [[86e6, 111e6],
+freq_flags: [[87e6, 111e6],
              [137e6, 138e6]]
 # FM band and ORBCOMM
 
