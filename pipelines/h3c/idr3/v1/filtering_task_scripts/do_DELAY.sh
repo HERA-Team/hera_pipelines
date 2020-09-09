@@ -44,9 +44,9 @@ fn_in=${fn%.uvh5}.${label}.${data_ext}
 
 
 echo dayenu_delay_filter_run.py ${fn_in} --calfile ${calfile} \
-  --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} \
+  --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} --trim_edges \
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} #--write_cache --read_cache
 
 dayenu_delay_filter_run.py ${fn_in} --calfile ${calfile} \
-    --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} \
+    --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} --trim_edges \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} #--write_cache --read_cache

@@ -1,6 +1,6 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/stage_1_task_scripts/"
+path_to_do_scripts = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/filtering_task_scripts/"
 path_to_observer_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/observer_bad_ants"
 path_to_analysis_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/analysis_bad_ants"
 conda_env = "hera3"
@@ -13,7 +13,7 @@ pbs_mail_user = "aaronew+nrao@berkeley.edu"
 [GLOBAL_OPTS]
 yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/flagging_yamls"
 
-[XRFI_OPTS]
+[XRFI_DATAONLY_OPTS]
 kt_size = 8
 kf_size = 8
 sig_init = 5.0
@@ -30,16 +30,16 @@ nsig_t_adj = 3.0
 
 [WorkFlow]
 actions = [
-           "XRFI",
+           "XRFI_DATAONLY",
            "XRFI_DAY_THRESHOLD",
           ]
 
-[XRFI]
-args = ["${XRFI_OPTS:kt_size}",
-        "${XRFI_OPTS:kf_size}",
-        "${XRFI_OPTS:sig_init}",
-        "${XRFI_OPTS:sig_adj}",
-        "${XRFI_OPTS:Nwf_per_load}",
+[XRFI_DATAONLY]
+args = ["${XRFI_DATAONLY_OPTS:kt_size}",
+        "${XRFI_DATAONLY_OPTS:kf_size}",
+        "${XRFI_DATAONLY_OPTS:sig_init}",
+        "${XRFI_DATAONLY_OPTS:sig_adj}",
+        "${XRFI_DATAONLY_OPTS:Nwf_per_load}",
 	"${GLOBAL_OPTS:yaml_dir}",
 	"{basename}",
         "{obsid_list}"
@@ -56,7 +56,7 @@ time_centered = true
 collect_stragglers = true
 
 [XRFI_DAY_THRESHOLD]
-prereqs = "XRFI"
+prereqs = "XRFI_DATAONLY"
 args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
         "${XRFI_DAY_THRESHOLD_OPTS:nsig_t}",
         "${XRFI_DAY_THRESHOLD_OPTS:nsig_f_adj}",
