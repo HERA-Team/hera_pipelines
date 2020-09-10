@@ -43,8 +43,9 @@ for data_file in ${data_files[@]}; do
   model_files=${model_files}${data_file%.*}.omni_vis.uvh5' '
 done
 
-
 echo xrfi_run.py --ocalfits_files ${ocalfits_files} --acalfits_files ${acalfits_files} --model_files ${model_files} --data_files ${data_files} \
-    --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} --a_priori_flag_yaml ${flag_yaml} --clobber
+    --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} --a_priori_flag_yaml ${flag_yaml} \
+    --skip_abscal_chi2_median_filter --skip_abscal_chi2_mean_filter --skip_omnical_zscore_filter --skip_abscal_zscore_filter --clobber
 xrfi_run.py --ocalfits_files ${ocalfits_files} --acalfits_files ${acalfits_files} --model_files ${model_files} --data_files ${data_files} \
-    --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} --a_priori_flag_yaml ${flag_yaml} --clobber
+    --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} --a_priori_flag_yaml ${flag_yaml} \
+    --skip_abscal_chi2_median_filter --skip_abscal_chi2_mean_filter --skip_omnical_zscore_filter --skip_abscal_zscore_filter --clobber
