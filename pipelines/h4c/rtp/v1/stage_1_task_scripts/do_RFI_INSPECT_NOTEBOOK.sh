@@ -20,8 +20,8 @@ git_push=${4}
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/rfi_inspect
-if [ ! -d ${nb_output_repo} ]; then
-  mkdir -p ${nb_output_repo}
+if [ ! -d ${nb_outdir} ]; then
+  mkdir -p ${nb_outdir}
 fi
 nb_outfile=${nb_outdir}/rfi_inspect_${jd}.ipynb
 
