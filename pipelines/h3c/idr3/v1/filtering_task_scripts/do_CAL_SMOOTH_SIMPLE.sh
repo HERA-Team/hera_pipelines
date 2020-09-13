@@ -25,12 +25,13 @@ freq_scale="${2}"
 time_threshold="${3}"
 freq_threshold="${4}"
 ant_threshold="${5}"
-flag_ext="${6}"
-spw_range0="${7}"
-spw_range1="${8}"
-label="${9}"
-yaml_dir="${10}"
-lst_blacklists="${@:11}"
+flag_files="${6}"
+flag_ext="${7}"
+spw_range0="${8}"
+spw_range1="${9}"
+label="${10}"
+yaml_dir="${11}"
+lst_blacklists="${@:12}"
 
 # get list of all calfiles for a day
 jd=$(get_jd $fn)
@@ -44,11 +45,14 @@ this_calfile=`echo ${fn%.*}.abs.calfits`
 flag_yaml=${yaml_dir}/${int_jd}.yaml
 
 # get the list of external cal files.
-if [ "${flag_ext}" != "none" ]
+if [ "${flag_files}" == "none"]
 then
-  flag_files=`echo zen.${int_jd}.*.stage_1_xrfi/*${flag_ext}.h5`
-else
-  flag_files="none"
+  if [ "${flag_ext}" != "none" ]
+  then
+    flag_files=`echo zen.${int_jd}.*.stage_1_xrfi/*${flag_ext}.h5`
+  else
+    flag_files="none"
+  fi
 fi
 
 echo smooth_cal_timeavg_run.py ${calfiles} --infile_replace .abs. --outfile_replace .${label}.smooth_abs. --clobber \
