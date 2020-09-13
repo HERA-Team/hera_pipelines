@@ -40,9 +40,9 @@ data_files=`echo zen.${int_jd}.*.sum.${label}.foreground_filtered.${data_ext}`
 
 echo dayenu_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
  --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_out} \
- --clobber --datafilelist ${data_files} --trim_edges
+ --clobber --datafilelist ${data_files} --skip_flagged_edges
 
 
  dayenu_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_out} \
-  --clobber --datafilelist ${data_files} --trim_edges
+  --clobber --datafilelist ${data_files} --skip_flagged_edges
