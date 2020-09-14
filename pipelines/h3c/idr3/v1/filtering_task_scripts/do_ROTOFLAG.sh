@@ -40,7 +40,7 @@ echo roto_flag_run.py --data_files ${xtalk_wf} \
                       --output_label ${label}.roto_flag \
                       --kf_size ${kf_size} \
                       --kt_size ${kt_size} \
-                      --niters ${niters}
+                      --niters ${niters} --clobber --metric_only
 
 roto_flag_run.py --data_files ${xtalk_wf} \
                  --flag_percentile_freq ${percentile_freq} \
@@ -48,4 +48,4 @@ roto_flag_run.py --data_files ${xtalk_wf} \
                  --output_label ${label}.roto_flag \
                  --kf_size ${kf_size} \
                  --kt_size ${kt_size} \
-                 --niters ${niters}
+                 --niters ${niters} --clobber --metric_only
