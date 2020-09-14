@@ -66,6 +66,7 @@ actions = ["CAL_SMOOTH_SIMPLE",
            "APPLY_CAL_REDUNDANT_AVERAGE",
            "DELAY_NOSPW",
            "XTALK_BASELINE_PARALLELIZED",
+           "ROTOFLAG",
            "RECONSTITUTE",
 	         "FILTER_CLEANUP"]
 
@@ -110,8 +111,18 @@ mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_BASELINE_PARALLELIZED_OPTS:tol}",
         "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax0}", "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
-[RECONSTITUTE]
+[ROTOFLAG]
 prereqs = "XTALK_BASELINE_PARALLELIZED"
+prereq_chunk_size=1
+chunk_size=1
+stride_length=1
+mem=64000
+args=["{basename}", "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
+      "${ROTOFLAG_OPTS:niters}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
+      "${ROTOFLAG_OPTS:kf_size}", "${ROTOFLAG_OPTS:kt_size}"]
+
+[RECONSTITUTE]
+prereqs = "ROTOFLAG"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]

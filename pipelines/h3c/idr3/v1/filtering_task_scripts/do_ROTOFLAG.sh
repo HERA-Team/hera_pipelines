@@ -21,7 +21,7 @@ fn="${1}"
 percentile_freq="${2}"
 percentile_time="${3}"
 niters="${4}"
-output_label="${5}"
+label="${5}"
 data_ext="${6}"
 kf_size="${7}"
 kt_size="${8}"
@@ -45,7 +45,6 @@ echo roto_flag_run.py --data_files ${xtalk_wf} \
 roto_flag_run.py --data_files ${xtalk_wf} \
                  --flag_percentile_freq ${percentile_freq} \
                  --flag_percentile_time ${percentile_time} \
-                 --a_priori_flag_yaml ${a_priori_flag_yaml} \
                  --output_label ${label}.roto_flag \
                  --kf_size ${kf_size} \
                  --kt_size ${kt_size} \
