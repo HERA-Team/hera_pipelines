@@ -45,7 +45,7 @@ this_calfile=`echo ${fn%.*}.abs.calfits`
 flag_yaml=${yaml_dir}/${int_jd}.yaml
 
 # get the list of external cal files.
-if [ "${flag_files}" == "none"]
+if [ "${flag_files}" == "none" ]
 then
   if [ "${flag_ext}" != "none" ]
   then
