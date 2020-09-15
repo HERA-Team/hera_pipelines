@@ -21,7 +21,11 @@ ant_metrics_extension=${5}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/redcal_inspect_maybe_good/redcal_inspect_maybe_good_${jd}.ipynb
+nb_outdir=${nb_output_repo}/redcal_inspect_maybe_good
+if [ ! -d ${nb_outdir} ]; then
+  mkdir -p ${nb_outdir}
+fi
+nb_outfile=${nb_outdir}/redcal_inspect_maybe_good_${jd}.ipynb
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
