@@ -19,7 +19,11 @@ git_push=${4}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/rfi_inspect/rfi_inspect_${jd}.ipynb
+nb_outdir=${nb_output_repo}/rfi_inspect
+if [ ! -d ${nb_outdir} ]; then
+  mkdir -p ${nb_outdir}
+fi
+nb_outfile=${nb_outdir}/rfi_inspect_${jd}.ipynb
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
