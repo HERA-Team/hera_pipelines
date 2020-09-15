@@ -24,8 +24,8 @@ xrfi_day_threshold_run.py ${data_files} --skip_making_flagged_abs_calfits --nsig
 # Rename results so that there will be no conflict with stage 2
 if [ $? == 0 ]; then
     for df in ${data_files}; do
-        echo rm -f ${df%.sum.uvh5}.stage_1_xrfi
-        rm -f ${df%.sum.uvh5}.stage_1_xrfi
+        echo rm -rf ${df%.sum.uvh5}.stage_1_xrfi
+        rm -rf ${df%.sum.uvh5}.stage_1_xrfi
         echo mv ${df%.sum.uvh5}.xrfi  ${df%.sum.uvh5}.stage_1_xrfi
         mv ${df%.sum.uvh5}.xrfi ${df%.sum.uvh5}.stage_1_xrfi
     done
