@@ -47,7 +47,7 @@ tol = 1e-9
 
 [ROTOFLAG_OPTS]
 percentile_freq = 92.5
-percentile_time = 99.
+percentile_time = 99.0
 niters = 3
 kf_size = 8
 kt_size = 32
