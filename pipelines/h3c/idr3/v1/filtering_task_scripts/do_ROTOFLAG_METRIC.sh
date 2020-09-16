@@ -18,13 +18,10 @@ source ${src_dir}/_common.sh
 # 11 - kt_size
 
 fn="${1}"
-percentile_freq="${2}"
-percentile_time="${3}"
-niters="${4}"
-label="${5}"
-data_ext="${6}"
-kf_size="${7}"
-kt_size="${8}"
+label="${2}"
+data_ext="${3}"
+kf_size="${4}"
+kt_size="${5}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -35,17 +32,13 @@ xtalk_wf=${fn%.uvh5}.${label}.xtalk_filtered_waterfall.${data_ext}
 
 
 echo roto_flag_run.py --data_files ${xtalk_wf} \
-                      --flag_percentile_freq ${percentile_freq} \
-                      --flag_percentile_time ${percentile_time} \
                       --output_label ${label}.roto_flag \
                       --kf_size ${kf_size} \
                       --kt_size ${kt_size} \
-                      --niters ${niters} --clobber --metric_only
+                      --clobber --metric_only
 
 roto_flag_run.py --data_files ${xtalk_wf} \
-                 --flag_percentile_freq ${percentile_freq} \
-                 --flag_percentile_time ${percentile_time} \
                  --output_label ${label}.roto_flag \
                  --kf_size ${kf_size} \
                  --kt_size ${kt_size} \
-                 --niters ${niters} --clobber --metric_only
+                 --clobber --metric_only

@@ -46,9 +46,9 @@ frmax1 = 0.1
 tol = 1e-9
 
 [ROTOFLAG_OPTS]
-percentile_freq = 95.0
-percentile_time = 95.0
-niters = 6
+percentile_freq = 92.5
+percentile_time = 99.
+niters = 3
 kf_size = 8
 kt_size = 32
 
@@ -66,7 +66,10 @@ actions = ["CAL_SMOOTH_SIMPLE",
            "APPLY_CAL_REDUNDANT_AVERAGE",
            "DELAY_NOSPW",
            "XTALK_BASELINE_PARALLELIZED",
-           "ROTOFLAG",
+           "ROTOFLAG_METRIC",
+           "ROTOFLAG_FLAG",
+           "DELAY_NOSPW_ROUND2",
+           "XTALK_BASELINE_PARALLELIZED_ROUND2",
            "RECONSTITUTE",
 	         "FILTER_CLEANUP"]
 
@@ -111,18 +114,27 @@ mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_BASELINE_PARALLELIZED_OPTS:tol}",
         "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax0}", "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
-[ROTOFLAG]
+[ROTOFLAG_METRIC]
 prereqs = "XTALK_BASELINE_PARALLELIZED"
 prereq_chunk_size=1
 chunk_size=1
 stride_length=1
 mem=64000
-args=["{basename}", "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
-      "${ROTOFLAG_OPTS:niters}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
       "${ROTOFLAG_OPTS:kf_size}", "${ROTOFLAG_OPTS:kt_size}"]
 
+[ROTOFLAG_FLAG]
+prepreqs = "ROTOFLAG_METRIC"
+prereq_chunk_size="all"
+chunk_size = 1
+stride_length = 1
+mem = 64000
+args=["{basename}", "${GLOBAL_OPTS:label}",
+      "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
+      "${ROTOFLAG_OPTS:niters}"]
+
 [RECONSTITUTE]
-prereqs = "ROTOFLAG"
+prereqs = "ROTOFLAG_METRIC"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
