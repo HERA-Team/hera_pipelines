@@ -17,7 +17,7 @@ spw1 = 320
 label = "low-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
-yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/flagging_yamls"
+yaml_dir = "pipelines/h3c/idr3/v1/stage_2_a_priori_flags/"
 
 [CAL_SMOOTH_SIMPLE_OPTS]
 freq_scale = 10.0
