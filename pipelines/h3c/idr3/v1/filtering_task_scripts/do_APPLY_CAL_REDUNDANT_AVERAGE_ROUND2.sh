@@ -20,7 +20,6 @@ fn="${1}"
 label="${2}"
 output_ext="${3}"
 nbl_per_load="${4}"
-pols="${@:4}"
 
 jd=$(get_jd $fn)
 

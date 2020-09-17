@@ -134,6 +134,15 @@ args=["{basename}", "${GLOBAL_OPTS:label}",
       "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
       "${ROTOFLAG_OPTS:niters}"]
 
+[APPLY_CAL_REDUNDANT_AVERAGE_ROUND2]
+prereqs = "ROTOFLAG_FLAG"
+prereq_chunk_size="all"
+chunk_size = 1
+stride_length = 1
+mem = 64000
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:output_ext}",
+      "${GLOBAL_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}"]
+
 [RECONSTITUTE]
 prereqs = "ROTOFLAG_FLAG"
 prereq_chunk_size="all"
