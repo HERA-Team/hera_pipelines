@@ -28,7 +28,7 @@ check_every = 50
 check_after = 500
 
 [ABSCAL_OPTS]
-model_files_glob = "'/lustre/aoc/projects/hera/H3C/abscal_models/RIMEz_v2_No_Outriggers/zen.2458894.?????.uvh5'"
+model_files_glob = "'/lustre/aoc/projects/hera/zmartino/hera_calib_model/H3C/abscal_files_unique_baselines/zen.2458894.?????.uvh5'"
 nInt_to_load = 6
 min_bl_cut = 40.0
 max_bl_cut = 140.0
