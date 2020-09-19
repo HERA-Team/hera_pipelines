@@ -12,7 +12,7 @@ pbs_mail_user = "aaronew+nrao@berkeley.edu"
 
 [GLOBAL_OPTS]
 data_ext = 'smooth_abs_vis.uvh5'
-spw0 = 600
+spw0 = 856
 spw1 = 1112
 label = "eor-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
@@ -68,10 +68,10 @@ actions = ["CAL_SMOOTH_SIMPLE",
            "XTALK_BASELINE_PARALLELIZED",
            "ROTOFLAG_METRIC",
            "ROTOFLAG_FLAG",
+           "RECONSTITUTE",
            "APPLY_CAL_REDUNDANT_AVERAGE_ROUND2",
            #"DELAY_NOSPW_ROUND2",
            #"XTALK_BASELINE_PARALLELIZED_ROUND2",
-           "RECONSTITUTE",
 	         "FILTER_CLEANUP"]
 
 [CAL_SMOOTH_SIMPLE]
