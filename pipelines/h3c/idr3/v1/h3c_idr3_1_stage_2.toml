@@ -78,6 +78,7 @@ actions = ["FIX_DATAFILE",
            # "RFI_INSPECT_NOTEBOOK", # TODO: add this back
            "CAL_SMOOTH",
            #"SMOOTH_CAL_INSPECT_NOTEBOOK", # TODO: build this
+           "APPLY_CAL_REDUNDANT_AVERAGE",
            # "CLEAN_FILES", # TODO: add this back in 
           ]
 
