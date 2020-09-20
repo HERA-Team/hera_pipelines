@@ -37,7 +37,7 @@ echo roto_flag_run.py --data_files ${metrics} \
                       --cal_files ${cal_files} \
                       --flag_percentile_freq ${percentile_freq} \
                       --flag_percentile_time ${percentile_time} \
-                      --output_label ${label}.roto_flag \
+                      --output_label roto_flag \
                       --fname ${this_metric} \
                       --niters ${niters} --clobber --flag_only
 
@@ -46,6 +46,6 @@ roto_flag_run.py --data_files ${metrics} \
                  --cal_files ${cal_files} \
                  --flag_percentile_freq ${percentile_freq} \
                  --flag_percentile_time ${percentile_time} \
-                 --output_label ${label}.roto_flag \
+                 --output_label roto_flag \
                  --fname ${this_metric} \
                  --niters ${niters} --clobber --flag_only
