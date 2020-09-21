@@ -19,42 +19,36 @@ source ${src_dir}/_common.sh
 # define input arguments
 fn="${1}"
 data_ext="${2}"
-clear_xtalk_cache="${3}"
-clear_delay_cache="${4}"
-xtalk_cache="${5}"
-delay_cache="${6}"
-clear_delay="${7}"
-xtalk_label="${8}"
-delay_label="${9}"
+label="${3}"
 
 # clear the xtalk fragment file.
-xtalk_fn=zen.${jd}.${xtalk_label}.xtalk_filtered_waterfall.${data_ext}
-delay_fn=zen.${jd}.${delay_label}.foreground_filtered.${data_ext}
+xtalk_fn=zen.${jd}.sum.${label}.xtalk_filtered_waterfall.${data_ext}
+delay_fn=zen.${jd}.sum.${label}.foreground_filtered.${data_ext}
 
 # remove per-baseline xtalk waterfall files.
 echo rm -rfv ${xtalk_fn}
 rm -rfv ${xtalk_fn}
 
-# remove delay filtered files if requested.
-if ${clear_delay}
-then
-    echo rm -rfv ${xtalk_fn}
-    rm -rfv ${xtalk_fn}
-fi
+# remove the delay files.
+echo rm -rfv ${delay_fn}
+rm -rfv ${delay_fn}
 
-# clear xtalk cache
-if ${clear_xtalk_cache}
-then
-    if [ -d ${xtalk_cache} ]
-    then
-	rm -rfv ${xtalk_cache}
-    fi
-fi
-# clear delay cache
-if ${clear_delay_cache}
-then
-    if [ -d ${delay_cache} ]
-    then
-	rm -rfv ${delay_cache}
-    fi
-fi
+# remove even waterfalls.
+xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_res.${data_ext}
+echo rm -rfv ${xtalk_fn}
+rm -rfv ${xtalk_fn}
+
+# remove odd waterfalls.
+xtalk_fn=zen.${jd}.odd.${label}.*.xtalk_filtered_waterfall_res.${data_ext}
+echo rm -rfv ${xtalk_fn}
+rm -rfv ${xtalk_fn}
+
+# remove even waterfalls.
+xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_filled.${data_ext}
+echo rm -rfv ${xtalk_fn}
+rm -rfv ${xtalk_fn}
+
+# remove odd waterfalls.
+xtalk_fn=zen.${jd}.odd.${label}.*.xtalk_filtered_waterfall_filled.${data_ext}
+echo rm -rfv ${xtalk_fn}
+rm -rfv ${xtalk_fn}

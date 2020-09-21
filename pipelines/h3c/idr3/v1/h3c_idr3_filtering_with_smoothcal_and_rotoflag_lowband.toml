@@ -71,7 +71,7 @@ actions = [#"CAL_SMOOTH_SIMPLE",
            #"APPLY_CAL_REDUNDANT_AVERAGE_ROUND2",
            "DELAY_NOSPW_ROUND2",
            "XTALK_BASELINE_PARALLELIZED_ROUND2",
-           "RECONSTITUTE",
+           "RECONSTITUTE_EVEN_ODD",
 	         "FILTER_CLEANUP"]
 
 [CAL_SMOOTH_SIMPLE]
@@ -163,15 +163,14 @@ mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_BASELINE_PARALLELIZED_OPTS:tol}",
         "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax0}", "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
-[RECONSTITUTE]
+[RECONSTITUTE_EVEN_ODD]
 prereqs = "XTALK_BASELINE_PARALLELIZED_ROUND2"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [FILTER_CLEANUP]
-prereqs = "RECONSTITUTE"
+prereqs = "RECONSTITUTE_EVEN_ODD"
 prereq_chunk_size="all"
 mem = 64000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${FILTER_CLEANUP_OPTS:clear_xtalk_cache}", "${FILTER_CLEANUP_OPTS:clear_delay_cache}", "${GLOBAL_OPTS:cache_dir}", "${GLOBAL_OPTS:cache_dir}",
-       		      "${FILTER_CLEANUP_OPTS:clear_delay}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:label}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
