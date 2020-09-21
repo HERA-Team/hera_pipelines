@@ -23,7 +23,16 @@ cache_dir="${7}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
-fn_out=${fn%.uvh5}.${label}.foreground_filtered.${data_ext}
+fn_in=${fn%.uvh5}.${label}.${output_ext}
+fn_in_even=${fn_in/sum/even}
+fn_in_odd=${fn_in/sum/odd}
+
+fn_res_even=${fn_in_even%.uvh5}.${label}.foreground_res.uvh5
+fn_filled_even=${fn_in_even%.uvh5}.${label}.foreground_filled.uvh5
+
+fn_res_odd=${fn_in_odd%.uvh5}.${label}.foreground_res.uvh5
+fn_filled_odd=${fn_in_odd%.uvh5}.${label}.foreground_filled.uvh5
+
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
@@ -36,13 +45,25 @@ else
   calfile="none"
 fi
 
-fn_in=${fn%.uvh5}.${label}.${data_ext}
 
 
-echo dayenu_delay_filter_run.py ${fn_in} --calfile ${calfile} \
-  --res_outfilename ${fn_out} --clobber --skip_flagged_edges \
-  --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} #--write_cache --read_cache
+echo dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
+  --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
+  --filled_outfilename ${fn_filled} \
+  --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
 
-dayenu_delay_filter_run.py ${fn_in} --calfile ${calfile} \
-    --res_outfilename ${fn_out} --clobber --skip_flagged_edges \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} #--write_cache --read_cache
+dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
+    --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
+    --filled_outfilename ${fn_filled} \
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+
+
+echo dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
+  --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
+  --filled_outfilename ${fn_filled} \
+  --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+
+dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
+    --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
+    --filled_outfilename ${fn_filled} \
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
