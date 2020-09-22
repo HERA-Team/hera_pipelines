@@ -26,18 +26,13 @@ cache_dir="${7}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 # generate output file name
-fn_in=${fn%.uvh5}.${label}.foreground_filtered.${data_ext}
-fn_in_even=${fn_in/sum/even}
-fn_in_even=${fn_in_even%.uvh5}.${label}.foreground_res.uvh5
-fn_in_odd=${fn_odd/sum/odd}
+fn_in_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
+fn_in_odd=${fn_in_even/even/odd}
+fn_res_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_res.${data_ext}
+fn_res_odd=${fn_res_even/even/odd}
+fn_filled_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_filled.${data_ext}
+fn_filled_odd=${fn_filled_even/even/odd}
 
-fn_res=${fn%.uvh5}.${label}.xtalk_filtered_waterfall_res.${data_ext}
-fn_res_even=${fn_res/sum/even}
-fn_res_odd=${fn_res/sum/odd}
-
-fn_filled=${fn%.uvh5}.${label}.xtalk_filtered_waterfall_filled.${data_ext}
-fn_filled_even=${fn_filled/sum/even}
-fn_filled_odd=${fn_filled/sum/odd}
 
 
 
@@ -48,8 +43,8 @@ fi
 # list of all foreground filtered files.
 # this will be broken by diff files.
 # had to hard code sum annoyingly.
-data_files_even=`echo zen.${int_jd}.*.even.${label}.foreground_res.${data_ext}`
-data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_res.${data_ext}`
+data_files_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_res.${data_ext}`
+data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_res.${data_ext}`
 
 
 echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \

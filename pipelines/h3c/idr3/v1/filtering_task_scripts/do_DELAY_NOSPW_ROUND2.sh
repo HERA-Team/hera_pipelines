@@ -23,15 +23,14 @@ cache_dir="${7}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
-fn_in=${fn%.uvh5}.${label}.${output_ext}
-fn_in_even=${fn_in/sum/even}
-fn_in_odd=${fn_in/sum/odd}
+fn_in_even=zen.${jd}.even.${label}.${data_ext}
+fn_in_odd=${fn_in_even/even/odd}
 
-fn_res_even=${fn_in_even%.uvh5}.${label}.foreground_res.uvh5
-fn_filled_even=${fn_in_even%.uvh5}.${label}.foreground_filled.uvh5
+fn_res_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
+fn_res_odd=${fn_res_even/even/odd}
+fn_filled_even=${fn_in_even%.uvh5}.${label}.foreground_filtered_filled.${data_ext}
+fn_filled_odd=${fn_filled_even/even/odd}
 
-fn_res_odd=${fn_in_odd%.uvh5}.${label}.foreground_res.uvh5
-fn_filled_odd=${fn_in_odd%.uvh5}.${label}.foreground_filled.uvh5
 
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
@@ -49,21 +48,21 @@ fi
 
 echo dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
   --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
-  --filled_outfilename ${fn_filled} \
+  --filled_outfilename ${fn_filled_even} \
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
 
 dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
     --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
-    --filled_outfilename ${fn_filled} \
+    --filled_outfilename ${fn_filled_even} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
 
 
 echo dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
   --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
-  --filled_outfilename ${fn_filled} \
+  --filled_outfilename ${fn_filled_odd} \
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
 
 dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
     --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
-    --filled_outfilename ${fn_filled} \
+    --filled_outfilename ${fn_filled_odd} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
