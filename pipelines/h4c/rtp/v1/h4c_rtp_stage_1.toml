@@ -89,11 +89,11 @@ actions = ["SETUP",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           "REDCAL_KNOWN_GOOD",
-           "LIBRARIAN_REDCAL_KNOWN_GOOD",
+           # "REDCAL_KNOWN_GOOD", TODO: add this back in 
+           # "LIBRARIAN_REDCAL_KNOWN_GOOD", TODO: add this back in 
            "REDCAL_MAYBE_GOOD",
            "LIBRARIAN_REDCAL_MAYBE_GOOD",
-           "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
+           # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in 
            "REDCAL_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "XRFI",
            "LIBRARIAN_XRFI",
@@ -424,7 +424,7 @@ args = ["{basename}",
 prereqs = ["DATA_INSPECT_NOTEBOOK_KNOWN_GOOD", 
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
+           # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in
            "REDCAL_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "RFI_INSPECT_NOTEBOOK",
           ]

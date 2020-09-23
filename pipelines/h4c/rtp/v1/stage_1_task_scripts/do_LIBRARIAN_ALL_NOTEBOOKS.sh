@@ -26,7 +26,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             "data_inspect_known_good"
             "data_inspect_maybe_good"
             "data_inspect_all_ants"
-            "redcal_inspect_known_good"
+            # "redcal_inspect_known_good" TODO: add this back in
             "redcal_inspect_maybe_good"
             "rfi_inspect"
         )
