@@ -25,8 +25,8 @@ jd=$(get_jd $fn)
 
 calfile=${fn%.uvh5}.${label}.smooth_abs.roto_flag.calfits
 diff_file=${fn/sum/diff}
-outfile=${fn%.uvh5}.${label}.${output_ext}
-outfile_diff=${fn/sum/diff}.${label}.${output_ext}
+outfile=zen.${jd}.sum.${label}.${output_ext}
+outfile_diff=zen.${jd}.diff.${label}.${output_ext}
 
 #calibrate sum.
 echo apply_cal.py  ${fn} ${outfile} \

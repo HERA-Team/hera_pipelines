@@ -28,7 +28,7 @@ fn_in_odd=${fn_in_even/even/odd}
 
 fn_res_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
 fn_res_odd=${fn_res_even/even/odd}
-fn_filled_even=${fn_in_even%.uvh5}.${label}.foreground_filtered_filled.${data_ext}
+fn_filled_even=zen.${jd}.even.${label}.foreground_filtered_filled.${data_ext}
 fn_filled_odd=${fn_filled_even/even/odd}
 
 
