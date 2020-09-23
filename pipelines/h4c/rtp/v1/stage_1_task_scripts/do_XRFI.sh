@@ -18,5 +18,5 @@ source ${src_dir}/_common.sh
 # 6+ - filenames
 data_files="${@:6}"
 
-echo xrfi_run_data_only.py --data_files ${data_files} --kt_size=${1} --kf_size=${2} --sig_init=${3} --sig_adj=${4} --Nwf_per_load=${5} --clobber
-xrfi_run_data_only.py --data_files ${data_files} --kt_size=${1} --kf_size=${2} --sig_init=${3} --sig_adj=${4} --Nwf_per_load=${5} --clobber
+echo xrfi_run_data_only.py --data_files ${data_files} --kt_size=${1} --kf_size=${2} --sig_init=${3} --sig_adj=${4} --Nwf_per_load=${5} --skip_cross_mean_filter --clobber
+xrfi_run_data_only.py --data_files ${data_files} --kt_size=${1} --kf_size=${2} --sig_init=${3} --sig_adj=${4} --Nwf_per_load=${5} --skip_cross_mean_filter --clobber
