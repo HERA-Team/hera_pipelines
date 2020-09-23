@@ -16,7 +16,6 @@ fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
 git_push=${4}
-ant_metrics_extension=${5}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
