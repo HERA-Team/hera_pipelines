@@ -30,7 +30,7 @@ check_after = 500
 [ABSCAL_OPTS]
 model_files_glob = "'/lustre/aoc/projects/hera/zmartino/hera_calib_model/H3C/abscal_files_unique_baselines/zen.2458894.?????.uvh5'"
 nInt_to_load = 6
-min_bl_cut = 40.0
+min_bl_cut = 60.0
 max_bl_cut = 140.0
 phs_max_iter = 100
 phs_conv_crit = 1e-6
