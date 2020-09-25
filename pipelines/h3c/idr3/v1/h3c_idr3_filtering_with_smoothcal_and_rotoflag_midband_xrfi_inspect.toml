@@ -75,7 +75,7 @@ actions = ["CAL_SMOOTH_SIMPLE_TDEP",
            #"RECONSTITUTE_EVEN_ODD",
 	         #"FILTER_CLEANUP"]
 
-[CAL_SMOOTH_SIMPLE]
+[CAL_SMOOTH_SIMPLE_TDEP]
 mem = 64000
 args = ["{basename}", "${CAL_SMOOTH_SIMPLE_OPTS:freq_scale}", "${CAL_SMOOTH_SIMPLE_OPTS:time_threshold}",
         "${CAL_SMOOTH_SIMPLE_OPTS:freq_threshold}", "${CAL_SMOOTH_SIMPLE_OPTS:ant_threshold}",
@@ -88,7 +88,7 @@ chunk_size=1
 stride_length=1
 
 [APPLY_CAL_REDUNDANT_AVERAGE]
-prereqs = "CAL_SMOOTH_SIMPLE"
+prereqs = "CAL_SMOOTH_SIMPLE_TDEP"
 prereq_chunk_size = "all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
@@ -136,7 +136,7 @@ args=["{basename}", "${GLOBAL_OPTS:label}",
       "${ROTOFLAG_OPTS:niters}"]
 
 [RECONSTITUTE]
-prereqs = "ROTOFLAG_FLAG"
+prereqs = "XTALK_BASELINE_PARALLELIZED"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]

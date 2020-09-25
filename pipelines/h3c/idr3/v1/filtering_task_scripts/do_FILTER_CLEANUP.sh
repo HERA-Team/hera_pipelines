@@ -20,6 +20,7 @@ source ${src_dir}/_common.sh
 fn="${1}"
 data_ext="${2}"
 label="${3}"
+jd=$(get_jd $fn)
 
 # clear the xtalk fragment file.
 xtalk_fn=zen.${jd}.sum.${label}.xtalk_filtered_waterfall.${data_ext}
