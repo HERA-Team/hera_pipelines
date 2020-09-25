@@ -34,20 +34,18 @@ flag_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
 
 # build up omnical and abscal files
 ocalfits_files=''
-acalfits_files=''
 model_files=''
 for data_file in ${data_files[@]}; do
   # Append list of cal files
   ocalfits_files=${ocalfits_files}${data_file%.*}.omni.calfits' '
-  acalfits_files=${acalfits_files}${data_file%.*}.abs.calfits' '
   model_files=${model_files}${data_file%.*}.omni_vis.uvh5' '
 done
 
-echo xrfi_run.py --ocalfits_files ${ocalfits_files} --acalfits_files ${acalfits_files} --model_files ${model_files} --data_files ${data_files} \
+echo xrfi_run.py --ocalfits_files ${ocalfits_files} --model_files ${model_files} --data_files ${data_files} \
     --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} \
     --a_priori_flag_yaml ${flag_yaml} --skip_abscal_chi2_median_filter --skip_abscal_chi2_mean_filter --skip_abscal_median_filter \
     --skip_abscal_mean_filter --skip_abscal_zscore_filter --skip_omnical_zscore_filter --clobber
-xrfi_run.py --ocalfits_files ${ocalfits_files} --acalfits_files ${acalfits_files} --model_files ${model_files} --data_files ${data_files} \
+xrfi_run.py --ocalfits_files ${ocalfits_files} --model_files ${model_files} --data_files ${data_files} \
     --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} \
     --a_priori_flag_yaml ${flag_yaml} --skip_abscal_chi2_median_filter --skip_abscal_chi2_mean_filter --skip_abscal_median_filter \
     --skip_abscal_mean_filter --skip_abscal_zscore_filter --skip_omnical_zscore_filter --clobber

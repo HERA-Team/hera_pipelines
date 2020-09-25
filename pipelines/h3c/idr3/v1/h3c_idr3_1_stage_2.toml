@@ -41,7 +41,7 @@ kt_size = 16
 kf_size = 8
 sig_init = 5.0
 sig_adj = 2.0
-Nwf_per_load = 1000
+Nwf_per_load = 500
 
 [XRFI_DAY_THRESHOLD_OPTS]
 nsig_f = 7.0
@@ -143,7 +143,7 @@ args = ["{basename}",
        ]
 
 [XRFI]
-prereqs = "ABSCAL"
+prereqs = "REDCAL"
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
         "${XRFI_OPTS:sig_init}",
@@ -189,7 +189,9 @@ time_centered = false
 #         ]
 
 [CAL_SMOOTH]
-prereqs = "XRFI_DAY_THRESHOLD"
+prereqs = ["ABSCAL",
+           "XRFI_DAY_THRESHOLD", 
+          ]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
