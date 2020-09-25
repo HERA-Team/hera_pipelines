@@ -73,7 +73,7 @@ actions = ["CAL_SMOOTH_SIMPLE_TDEP",
            #"DELAY_NOSPW_ROUND2",
            #"XTALK_BASELINE_PARALLELIZED_ROUND2",
            #"RECONSTITUTE_EVEN_ODD",
-	         #"FILTER_CLEANUP"]
+	         "FILTER_CLEANUP_SUM_ONLY"]
 
 [CAL_SMOOTH_SIMPLE_TDEP]
 mem = 64000
@@ -137,6 +137,13 @@ args=["{basename}", "${GLOBAL_OPTS:label}",
 
 [RECONSTITUTE]
 prereqs = "XTALK_BASELINE_PARALLELIZED"
+prereq_chunk_size="all"
+mem = 64000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
+
+
+[FILTER_CLEANUP_SUM_ONLY]
+prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
