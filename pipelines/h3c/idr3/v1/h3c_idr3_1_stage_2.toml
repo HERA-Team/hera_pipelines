@@ -30,14 +30,14 @@ check_after = 500
 [ABSCAL_OPTS]
 model_files_glob = "'/lustre/aoc/projects/hera/zmartino/hera_calib_model/H3C/abscal_files_unique_baselines/zen.2458894.?????.uvh5'"
 nInt_to_load = 6
-min_bl_cut = 40.0
+min_bl_cut = 60.0
 max_bl_cut = 140.0
 phs_max_iter = 100
 phs_conv_crit = 1e-6
 edge_cut = 100
 
 [XRFI_OPTS]
-kt_size = 8
+kt_size = 16
 kf_size = 8
 sig_init = 5.0
 sig_adj = 2.0
@@ -72,7 +72,7 @@ actions = ["FIX_DATAFILE",
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL",
-           #"ABSCAL_INSPECT_NOTEBOOK", # TODO: build this
+           "ABSCAL_INSPECT_NOTEBOOK",
            "XRFI",
            "XRFI_DAY_THRESHOLD",
            # "RFI_INSPECT_NOTEBOOK", # TODO: add this back
@@ -127,6 +127,21 @@ args = ["{basename}",
         "${ABSCAL_OPTS:edge_cut}"
        ]
 
+[ABSCAL_INSPECT_NOTEBOOK]
+prereqs = "ABSCAL"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ABSCAL_OPTS:model_files_glob}",
+        "${CAL_SMOOTH_OPTS:lst_blacklists}",
+       ]
+
 [XRFI]
 prereqs = "ABSCAL"
 args = ["${XRFI_OPTS:kt_size}",
@@ -141,9 +156,9 @@ args = ["${XRFI_OPTS:kt_size}",
 # must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
 # chunk_size must be >= 9 (with centered==True).
 # Larger chunk_size will reduce redundant i/o and median filter calculation.
-# The numbers below result in about 35% redundancy.
-chunk_size = 31
-stride_length = 23
+# The numbers below result in about 39% redundancy.
+chunk_size = 41
+stride_length = 25 # should be chunk_size - 2 * kt_size / ints_per_file
 time_centered = true
 collect_stragglers = true
 
