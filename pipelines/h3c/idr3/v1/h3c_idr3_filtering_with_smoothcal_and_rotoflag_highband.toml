@@ -12,9 +12,9 @@ pbs_mail_user = "aaronew+nrao@berkeley.edu"
 
 [GLOBAL_OPTS]
 data_ext = 'smooth_abs_vis.uvh5'
-spw0 = 600
-spw1 = 856
-label = "mid-band-xrfi-inspect"
+spw0 = 856
+spw1 = 1112
+label = "high-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
 yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/stage_2_a_priori_flags/"
@@ -62,20 +62,19 @@ clear_delay = false
 ############################################################################################################
 
 [WorkFlow]
-actions = ["CAL_SMOOTH_SIMPLE_TDEP",
+actions = ["CAL_SMOOTH_SIMPLE",
            "APPLY_CAL_REDUNDANT_AVERAGE",
            "DELAY_NOSPW",
            "XTALK_BASELINE_PARALLELIZED",
-           #"ROTOFLAG_METRIC",
-           #"ROTOFLAG_FLAG",
-           "RECONSTITUTE"]
-           #"APPLY_CAL_REDUNDANT_AVERAGE_ROUND2",
-           #"DELAY_NOSPW_ROUND2",
-           #"XTALK_BASELINE_PARALLELIZED_ROUND2",
-           #"RECONSTITUTE_EVEN_ODD",
-	         #"FILTER_CLEANUP"]
+           "ROTOFLAG_METRIC",
+           "ROTOFLAG_FLAG",
+           "APPLY_CAL_REDUNDANT_AVERAGE_ROUND2",
+           "DELAY_NOSPW_ROUND2",
+           "XTALK_BASELINE_PARALLELIZED_ROUND2",
+           "RECONSTITUTE_EVEN_ODD",
+	         "FILTER_CLEANUP"]
 
-[CAL_SMOOTH_SIMPLE_TDEP]
+[CAL_SMOOTH_SIMPLE]
 mem = 64000
 args = ["{basename}", "${CAL_SMOOTH_SIMPLE_OPTS:freq_scale}", "${CAL_SMOOTH_SIMPLE_OPTS:time_threshold}",
         "${CAL_SMOOTH_SIMPLE_OPTS:freq_threshold}", "${CAL_SMOOTH_SIMPLE_OPTS:ant_threshold}",
@@ -88,7 +87,7 @@ chunk_size=1
 stride_length=1
 
 [APPLY_CAL_REDUNDANT_AVERAGE]
-prereqs = "CAL_SMOOTH_SIMPLE_TDEP"
+prereqs = "CAL_SMOOTH_SIMPLE"
 prereq_chunk_size = "all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
@@ -135,8 +134,43 @@ args=["{basename}", "${GLOBAL_OPTS:label}",
       "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
       "${ROTOFLAG_OPTS:niters}"]
 
-[RECONSTITUTE]
-prereqs = "XTALK_BASELINE_PARALLELIZED"
+[APPLY_CAL_REDUNDANT_AVERAGE_ROUND2]
+prereqs = "ROTOFLAG_FLAG"
+prereq_chunk_size="all"
+chunk_size = 1
+stride_length = 1
+mem = 64000
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
+      "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}"]
+
+[DELAY_NOSPW_ROUND2]
+prereqs="APPLY_CAL_REDUNDANT_AVERAGE_ROUND2"
+prereq_chunk_size = 1
+mem = 64000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_NOSPW_OPTS:calibration}", "${GLOBAL_OPTS:label}",
+        "${DELAY_NOSPW_OPTS:tol}",
+        "${DELAY_NOSPW_OPTS:standoff}", "${GLOBAL_OPTS:cache_dir}"]
+chunk_size = 1
+stride_length = 1
+time_centered = false
+
+[XTALK_BASELINE_PARALLELIZED_ROUND2]
+prereqs = "DELAY_NOSPW_ROUND2"
+prereq_chunk_size="all"
+chunk_size = 1
+stride_length = 1
+mem = 64000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_BASELINE_PARALLELIZED_OPTS:tol}",
+        "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax0}", "${XTALK_BASELINE_PARALLELIZED_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
+
+[RECONSTITUTE_EVEN_ODD]
+prereqs = "XTALK_BASELINE_PARALLELIZED_ROUND2"
+prereq_chunk_size="all"
+mem = 64000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
+
+[FILTER_CLEANUP]
+prereqs = "RECONSTITUTE_EVEN_ODD"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
