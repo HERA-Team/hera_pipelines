@@ -24,7 +24,9 @@ jd=$(get_jd $fn)
 
 # clear the xtalk fragment file.
 xtalk_fn=zen.${jd}.*.${label}.xtalk_filtered_waterfall.${data_ext}
-delay_fn=zen.${jd}.*.${label}.foreground_filtered.${data_ext}
+# remove all sum files.
+#delay_fn=zen.${jd}.*.${label}.foreground_filtered.${data_ext}
+#delay_fn=zen.${jd}.*.${label}.xtalk_filtered.${data_ext}
 
 # remove per-baseline xtalk waterfall files.
 echo rm -rfv ${xtalk_fn}
