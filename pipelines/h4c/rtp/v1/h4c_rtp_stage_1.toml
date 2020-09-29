@@ -243,6 +243,10 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_redcal_known_good}",
        ]
+# This runs redcal on 1 out of every 10 files
+chunk_size = 1
+stride_length = 10
+time_centered = false
 
 [REDCAL_MAYBE_GOOD]
 # queue = "gpu"
@@ -262,6 +266,10 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_redcal_maybe_good}",
        ]
+# This runs redcal on 1 out of every 10 files
+chunk_size = 1
+stride_length = 10
+time_centered = false
 
 [REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD]
 prereqs = "REDCAL_KNOWN_GOOD"
