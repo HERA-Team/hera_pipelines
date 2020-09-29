@@ -175,15 +175,9 @@ args = ["${ANT_METRICS_OPTS:crossCut}",
         "${ANT_METRICS_OPTS:Nbls_per_load}",
         "${ANT_METRICS_OPTS:all_extension}",
         "${ANT_METRICS_OPTS:all_statuses}",
-        "{obsid_list}",
-       ]
-
-[LIBRARIAN_ANT_METRICS_ALL_ANTS]
-prereqs = "ANT_METRICS_ALL_ANTS"
-args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_ant_metrics}",
-        "${ANT_METRICS_OPTS:all_extension}"
+        "{obsid_list}",
        ]
 
 [DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
