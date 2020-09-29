@@ -134,6 +134,7 @@ args = ["{basename}",
 ########## ANT METRICS AND ASSOCIATED DATA INSPECT NOTEBOOKS ##########
 
 [ANT_METRICS_KNOWN_GOOD]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 chunk_size = 10 # TODO: update this once we're using single integration files
 stride_length = 10
 time_centered = false
@@ -149,6 +150,7 @@ args = ["${ANT_METRICS_OPTS:crossCut}",
        ]
 
 [ANT_METRICS_MAYBE_GOOD]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 chunk_size = 10
 stride_length = 10
 time_centered = false
@@ -164,6 +166,7 @@ args = ["${ANT_METRICS_OPTS:crossCut}",
        ]
 
 [ANT_METRICS_ALL_ANTS]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 chunk_size = 10
 stride_length = 10
 time_centered = false
@@ -291,6 +294,7 @@ args = ["{basename}",
 ########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
 
 [XRFI]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
         "${XRFI_OPTS:sig_init}",
@@ -341,6 +345,7 @@ stride_length = "all"
 time_centered = false
 
 [SSINS]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 mem = 36000
 args = ["${SSINS_OPTS:streak_sig}",
         "${SSINS_OPTS:other_sig}",
@@ -375,6 +380,7 @@ args = ["{basename}",
 ########## DATA DOWNSELECTION ##########
 
 [DATA_DOWNSELECT]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 args = ["{basename}"]
 
 [LIBRARIAN_DATA_DOWNSELECT]
