@@ -79,7 +79,6 @@ actions = ["SETUP",
            "LIBRARIAN_MAKE_SESSION",
            "ADD_RTP_PROCESS_RECORD",
            "EXTRACT_AUTOS",
-           "LIBRARIAN_AUTOS",
            "ANT_METRICS_KNOWN_GOOD",
            "LIBRARIAN_ANT_METRICS_KNOWN_GOOD",
            "ANT_METRICS_MAYBE_GOOD",
@@ -131,10 +130,6 @@ args = ["{basename}",
         "${WorkFlow:actions}"]
 
 [EXTRACT_AUTOS]
-args = ["{basename}"]
-
-[LIBRARIAN_AUTOS]
-prereqs = "EXTRACT_AUTOS"
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_autos}",
