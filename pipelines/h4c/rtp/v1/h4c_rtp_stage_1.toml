@@ -226,8 +226,8 @@ args = ["{basename}",
 ########## REDCAL AND ASSOCIATED NOTEBOOKS ##########
 
 [REDCAL_KNOWN_GOOD]
-queue = "gpu"
-extra_batch_options = "--gres=gpu"
+# queue = "gpu"
+# extra_batch_options = "--gres=gpu"
 prereqs = "ANT_METRICS_KNOWN_GOOD"
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
@@ -245,8 +245,8 @@ args = ["{basename}",
        ]
 
 [REDCAL_MAYBE_GOOD]
-queue = "gpu"
-extra_batch_options = "--gres=gpu"
+# queue = "gpu"
+# extra_batch_options = "--gres=gpu"
 prereqs = "ANT_METRICS_MAYBE_GOOD"
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
