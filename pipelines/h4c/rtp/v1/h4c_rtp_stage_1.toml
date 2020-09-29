@@ -89,7 +89,6 @@ actions = ["SETUP",
            # "REDCAL_KNOWN_GOOD", TODO: add this back in 
            # "LIBRARIAN_REDCAL_KNOWN_GOOD", TODO: add this back in 
            "REDCAL_MAYBE_GOOD",
-           "LIBRARIAN_REDCAL_MAYBE_GOOD",
            # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in 
            "REDCAL_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "XRFI",
@@ -263,11 +262,6 @@ args = ["{basename}",
         "${REDCAL_OPTS:max_bl_cut}",
         "${ANT_METRICS_OPTS:maybe_extension}",
         "${REDCAL_OPTS:max_dims}",
-       ]
-
-[LIBRARIAN_REDCAL_MAYBE_GOOD]
-prereqs = "REDCAL_MAYBE_GOOD"
-args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_redcal_maybe_good}",
        ]
