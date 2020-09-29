@@ -135,7 +135,6 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_autos}",
        ]
 
-
 ########## ANT METRICS AND ASSOCIATED DATA INSPECT NOTEBOOKS ##########
 
 [ANT_METRICS_KNOWN_GOOD]
