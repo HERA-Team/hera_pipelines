@@ -13,15 +13,19 @@ source ${src_dir}/_common.sh
 # 2 - deadCut: Modified z-score cut for most likely dead antenna.
 # 3 - Nbls_per_load: Number of baselines to load simultaneously.
 # 4 - extension: Extension to be appended to the file name.
-# 5 - maybe_good_statuses: string list of comma-separated (no spaces) antenna statuses that represent possibly "good" antennas
-# 6+ - filenames
+# 5 - maybe_good_statuses: string list of comma-separated (no spaces) antenna statuses that represent "good" antennas
+# 6 - upload_to_librarian: global boolean trigger
+# 7 - librarian_ant_metrics: boolean trigger for this step
+# 8+ - filenames
 crossCut=${1}
 deadCut=${2}
 Nbls_per_load=${3}
 extension=${4}
 maybe_good_statuses=${5}
-fn1=`basename ${6}`
-data_files="${@:6}"
+upload_to_librarian="${6}"
+librarian_ant_metrics="${7}"
+fn1=`basename ${8}`
+data_files="${@:8}"
 
 # get exants from HERA CM database
 jd=$(get_jd ${fn1})
@@ -32,3 +36,20 @@ echo ant_metrics_run.py ${data_files} --crossCut ${crossCut} --deadCut ${deadCut
     --clobber --apriori_xants ${apriori_xants}
 ant_metrics_run.py ${data_files} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} \
     --clobber --apriori_xants ${apriori_xants}
+
+# upload results to librarian if desired
+if [ "${upload_to_librarian}" == "True" ]; then
+    if [ "${librarian_ant_metrics}" == "True" ]; then
+        for fn in data_files; do
+
+            # get the integer portion of the JD
+            jd=$(get_int_jd ${fn})
+
+            # get ant_metrics file
+            metrics_f=`echo ${fn%.uvh5}${extension}`
+
+            echo librarian upload local-rtp ${metrics_f} ${jd}/${metrics_f}
+            librarian upload local-rtp ${metrics_f} ${jd}/${metrics_f}
+        done
+    fi
+fi
