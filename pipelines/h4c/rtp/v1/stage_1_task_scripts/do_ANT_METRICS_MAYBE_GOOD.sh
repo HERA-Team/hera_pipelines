@@ -13,7 +13,7 @@ source ${src_dir}/_common.sh
 # 2 - deadCut: Modified z-score cut for most likely dead antenna.
 # 3 - Nbls_per_load: Number of baselines to load simultaneously.
 # 4 - extension: Extension to be appended to the file name.
-# 5 - maybe_good_statuses: string list of comma-separated (no spaces) antenna statuses that represent "good" antennas
+# 5 - maybe_good_statuses: string list of comma-separated (no spaces) antenna statuses that represent possibly "good" antennas
 # 6 - upload_to_librarian: global boolean trigger
 # 7 - librarian_ant_metrics: boolean trigger for this step
 # 8+ - filenames
