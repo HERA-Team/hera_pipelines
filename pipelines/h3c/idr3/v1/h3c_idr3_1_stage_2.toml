@@ -37,7 +37,7 @@ phs_conv_crit = 1e-6
 edge_cut = 100
 
 [XRFI_OPTS]
-kt_size = 16
+kt_size = 8
 kf_size = 8
 sig_init = 5.0
 sig_adj = 2.0
@@ -156,9 +156,9 @@ args = ["${XRFI_OPTS:kt_size}",
 # must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
 # chunk_size must be >= 9 (with centered==True).
 # Larger chunk_size will reduce redundant i/o and median filter calculation.
-# The numbers below result in about 39% redundancy.
-chunk_size = 41
-stride_length = 25 # should be chunk_size - 2 * kt_size / ints_per_file
+# The numbers below result in about 35% redundancy.
+chunk_size = 31
+stride_length = 23
 time_centered = true
 collect_stragglers = true
 
