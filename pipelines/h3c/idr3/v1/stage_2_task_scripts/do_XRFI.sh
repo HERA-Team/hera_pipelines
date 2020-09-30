@@ -44,8 +44,8 @@ done
 echo xrfi_run.py --ocalfits_files ${ocalfits_files} --model_files ${model_files} --data_files ${data_files} \
     --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} \
     --a_priori_flag_yaml ${flag_yaml} --skip_abscal_chi2_median_filter --skip_abscal_chi2_mean_filter --skip_abscal_median_filter \
-    --skip_abscal_mean_filter --skip_abscal_zscore_filter --skip_omnical_zscore_filter --clobber
+    --skip_abscal_mean_filter --skip_abscal_zscore_filter --skip_omnical_zscore_filter --skip_cross_mean_filter --clobber
 xrfi_run.py --ocalfits_files ${ocalfits_files} --model_files ${model_files} --data_files ${data_files} \
     --kt_size ${kt_size} --kf_size ${kf_size} --sig_init ${sig_init} --sig_adj ${sig_adj} --Nwf_per_load ${Nwf_per_load} \
     --a_priori_flag_yaml ${flag_yaml} --skip_abscal_chi2_median_filter --skip_abscal_chi2_mean_filter --skip_abscal_median_filter \
-    --skip_abscal_mean_filter --skip_abscal_zscore_filter --skip_omnical_zscore_filter --clobber
+    --skip_abscal_mean_filter --skip_abscal_zscore_filter --skip_omnical_zscore_filter --skip_cross_mean_filter --clobber
