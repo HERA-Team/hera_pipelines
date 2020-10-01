@@ -125,6 +125,7 @@ args = ["{basename}",
         "${WorkFlow:actions}"]
 
 [EXTRACT_AUTOS]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_autos}",
