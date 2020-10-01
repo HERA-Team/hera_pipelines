@@ -73,6 +73,7 @@ actions = ["CAL_SMOOTH_SIMPLE",
            "DELAY_NOSPW_ROUND2",
            "XTALK_BASELINE_PARALLELIZED_ROUND2",
            "RECONSTITUTE_EVEN_ODD",
+           "PSPEC",
 	         "FILTER_CLEANUP"]
 
 [CAL_SMOOTH_SIMPLE]
