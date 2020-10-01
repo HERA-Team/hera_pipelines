@@ -82,7 +82,6 @@ actions = ["SETUP",
            "ANT_METRICS_KNOWN_GOOD",
            "ANT_METRICS_MAYBE_GOOD",
            "ANT_METRICS_ALL_ANTS",
-           "LIBRARIAN_ANT_METRICS_ALL_ANTS",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
@@ -115,7 +114,7 @@ args = ["{basename}",
 [LIBRARIAN_MAKE_SESSION]
 prereqs = "LIBRARIAN_RAW_DATA"
 prereq_chunk_size = "all"
-chunk_size = 1
+chunk_size = "all"
 stride_length = "all"
 args = ["${LIBRARIAN_OPTS:upload_to_librarian}"]
 
@@ -126,6 +125,7 @@ args = ["{basename}",
         "${WorkFlow:actions}"]
 
 [EXTRACT_AUTOS]
+prereqs = "LIBRARIAN_MAKE_SESSION"
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_autos}",
