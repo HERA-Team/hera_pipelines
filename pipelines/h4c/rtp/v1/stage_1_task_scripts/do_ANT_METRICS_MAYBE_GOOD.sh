@@ -40,7 +40,7 @@ ant_metrics_run.py ${data_files} --crossCut ${crossCut} --deadCut ${deadCut} --e
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_ant_metrics}" == "True" ]; then
-        for fn in data_files; do
+        for fn in ${data_files[@]}; do
 
             # get the integer portion of the JD
             jd=$(get_int_jd ${fn})
