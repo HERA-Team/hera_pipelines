@@ -18,6 +18,7 @@ label = "low-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
 yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/stage_2_a_priori_flags/"
+beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_power_beam_healpix.fits"
 
 [CAL_SMOOTH_SIMPLE_OPTS]
 freq_scale = 10.0
@@ -169,8 +170,14 @@ prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
-[FILTER_CLEANUP]
+[PSPEC]
 prereqs = "RECONSTITUTE_EVEN_ODD"
+prereq_chunk_size="all"
+mem=64000
+args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:beam_file}"]
+
+[FILTER_CLEANUP]
+prereqs = "PSPEC"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
