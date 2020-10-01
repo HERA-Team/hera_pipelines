@@ -43,7 +43,8 @@ if [ "${upload_to_librarian}" == "True" ]; then
         for fn in ${data_files[@]}; do
 
             # get the integer portion of the JD
-            jd=$(get_int_jd ${fn})
+            bn=`basename ${fn}`
+            jd=$(get_int_jd ${bn})
 
             # get ant_metrics file
             metrics_f=`echo ${fn%.uvh5}${extension}`
