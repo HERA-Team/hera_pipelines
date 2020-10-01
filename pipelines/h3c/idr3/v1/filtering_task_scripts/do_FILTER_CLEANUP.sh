@@ -34,10 +34,10 @@ rm -rfv ${xtalk_wf_fn}
 
 # remove the delay files.
 #echo rm -rfv ${delay_fn}
-#rm -rfv ${delay_fn}
+rm -rfv ${delay_fn}
 
 #echo rm -rfv ${xtalk_fn}
-#rm -rfv ${xtalk_fn}
+rm -rfv ${xtalk_fn}
 
 # remove even waterfalls.
 xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_res.${data_ext}
