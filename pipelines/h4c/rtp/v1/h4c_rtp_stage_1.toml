@@ -114,7 +114,7 @@ args = ["{basename}",
 [LIBRARIAN_MAKE_SESSION]
 prereqs = "LIBRARIAN_RAW_DATA"
 prereq_chunk_size = "all"
-chunk_size = 1
+chunk_size = "all"
 stride_length = "all"
 args = ["${LIBRARIAN_OPTS:upload_to_librarian}"]
 
