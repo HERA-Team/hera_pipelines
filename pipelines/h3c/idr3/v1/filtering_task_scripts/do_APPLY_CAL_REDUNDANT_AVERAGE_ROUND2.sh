@@ -30,22 +30,22 @@ outfile_diff=zen.${jd}.diff.${label}.${output_ext}
 
 #calibrate sum.
 echo apply_cal.py  ${fn} ${outfile} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile} --overwrite_data_flags
 
 apply_cal.py ${fn} ${outfile} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile} --overwrite_data_flags
 
 # calibrate diff.
 echo apply_cal.py  ${diff_file} ${outfile_diff} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile} --overwrite_data_flags
 
 apply_cal.py ${diff_file} ${outfile_diff} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile} --overwrite_data_flags
 
 # generate even / odd files.
 outfile_even=${outfile/sum/even}
 outfile_odd=${outfile/sum/odd}
 
-echo sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber
+echo sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber --overwrite_data_flags
 
-sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber
+sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber --overwrite_data_flags

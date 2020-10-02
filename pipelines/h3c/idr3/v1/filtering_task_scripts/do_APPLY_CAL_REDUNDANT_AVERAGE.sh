@@ -13,7 +13,7 @@ source ${src_dir}/_common.sh
 # 2 - identifying label for pipeline settings.
 # 3 - output data extension.
 # 4 - baselines to load at once.
-# 5 - polarizations to output. 
+# 5 - polarizations to output.
 # POLARIZATION SELECTION HAS NOT YET BEEN IMPLEMENTED IN HERA-CAL
 
 fn="${1}"
@@ -28,7 +28,7 @@ calfile=${fn%.uvh5}.${label}.smooth_abs.calfits
 outfile=${fn%.uvh5}.${label}.${output_ext}
 
 echo apply_cal.py  ${fn} ${outfile} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber --new_cal ${calfile} --overwrite_data_flags
 
 apply_cal.py ${fn} ${outfile} \
---nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile}
+--nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile} --overwrite_data_flags
