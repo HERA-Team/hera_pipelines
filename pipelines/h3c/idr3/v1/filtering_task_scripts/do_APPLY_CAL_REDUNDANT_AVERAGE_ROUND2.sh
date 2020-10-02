@@ -46,6 +46,6 @@ apply_cal.py ${diff_file} ${outfile_diff} \
 outfile_even=${outfile/sum/even}
 outfile_odd=${outfile/sum/odd}
 
-echo sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber --overwrite_data_flags
+echo sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber
 
-sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber --overwrite_data_flags
+sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber
