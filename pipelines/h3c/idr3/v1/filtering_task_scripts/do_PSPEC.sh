@@ -29,13 +29,15 @@ echo pspec_run.py --allow_fft --store_cov_diag\
  --vis_units Jy --cov_model empirical_pspec --overwrite\
  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
- --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}
+ --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+ --taper bh
 
 pspec_run.py --allow_fft --store_cov_diag\
   --vis_units Jy --cov_model empirical_pspec --overwrite\
   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-  --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}
+  --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+  --taper bh
 
 
 even_file=zen.${jd}.even.${label}.foreground_filtered_filled.${data_ext}
@@ -47,10 +49,12 @@ echo pspec_run.py --allow_fft --store_cov_diag\
  --vis_units Jy --cov_model empirical_pspec --overwrite\
  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
- --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}
+ --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+ --taper bh
 
 pspec_run.py --allow_fft --store_cov_diag\
   --vis_units Jy --cov_model empirical_pspec --overwrite\
   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-  --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}
+  --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+  --taper bh
