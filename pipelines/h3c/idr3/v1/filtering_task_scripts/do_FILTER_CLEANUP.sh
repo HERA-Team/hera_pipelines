@@ -55,3 +55,5 @@ echo rm -rfv ${xtalk_fn}
 rm -rfv ${xtalk_fn}
 echo rm -rfv ${xtalk_fn/even/odd}
 rm -rfv ${xtalk_fn/even/odd}
+
+# remove pspec fragments. WAIT UNTIL VERIFYING THIS.
