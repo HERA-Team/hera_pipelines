@@ -31,21 +31,25 @@ metrics=`echo zen.${int_jd}.*.${label}.roto_flag.metrics.h5`
 flags=`echo zen.${int_jd}.*.${label}.roto_flag.flags.h5`
 cal_files=`echo zen.${int_jd}.*.${label}.smooth_abs.calfits`
 
+if [ -e "${this_metric}" ]
+then
+  echo roto_flag_run.py --data_files ${metrics} \
+                        --flag_files ${flags} \
+                        --cal_files ${cal_files} \
+                        --flag_percentile_freq ${percentile_freq} \
+                        --flag_percentile_time ${percentile_time} \
+                        --output_label ${label}.roto_flag \
+                        --fname ${this_metric} \
+                        --niters ${niters} --clobber --flag_only
 
-echo roto_flag_run.py --data_files ${metrics} \
-                      --flag_files ${flags} \
-                      --cal_files ${cal_files} \
-                      --flag_percentile_freq ${percentile_freq} \
-                      --flag_percentile_time ${percentile_time} \
-                      --output_label ${label}.roto_flag \
-                      --fname ${this_metric} \
-                      --niters ${niters} --clobber --flag_only
-
-roto_flag_run.py --data_files ${metrics} \
-                 --flag_files ${flags} \
-                 --cal_files ${cal_files} \
-                 --flag_percentile_freq ${percentile_freq} \
-                 --flag_percentile_time ${percentile_time} \
-                 --output_label ${label}.roto_flag \
-                 --fname ${this_metric} \
-                 --niters ${niters} --clobber --flag_only
+  roto_flag_run.py --data_files ${metrics} \
+                   --flag_files ${flags} \
+                   --cal_files ${cal_files} \
+                   --flag_percentile_freq ${percentile_freq} \
+                   --flag_percentile_time ${percentile_time} \
+                   --output_label ${label}.roto_flag \
+                   --fname ${this_metric} \
+                   --niters ${niters} --clobber --flag_only
+else
+  echo "${this_metric} does not exist!"
+fi

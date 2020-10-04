@@ -29,16 +29,20 @@ int_jd=${jd:0:7}
 # get xtalk waterfall file
 xtalk_wf=${fn%.uvh5}.${label}.xtalk_filtered_waterfall.${data_ext}
 
+# check if xtalk_wf exists
+if [ -e "${xtalk_wf}" ]
+then
+  echo roto_flag_run.py --data_files ${xtalk_wf} \
+                        --output_label ${label}.roto_flag \
+                        --kf_size ${kf_size} \
+                        --kt_size ${kt_size} \
+                        --clobber --metric_only
 
-
-echo roto_flag_run.py --data_files ${xtalk_wf} \
-                      --output_label ${label}.roto_flag \
-                      --kf_size ${kf_size} \
-                      --kt_size ${kt_size} \
-                      --clobber --metric_only
-
-roto_flag_run.py --data_files ${xtalk_wf} \
-                 --output_label ${label}.roto_flag \
-                 --kf_size ${kf_size} \
-                 --kt_size ${kt_size} \
-                 --clobber --metric_only
+  roto_flag_run.py --data_files ${xtalk_wf} \
+                   --output_label ${label}.roto_flag \
+                   --kf_size ${kf_size} \
+                   --kt_size ${kt_size} \
+                   --clobber --metric_only
+else
+  echo "${xtalk_wf} does not exist."
+fi
