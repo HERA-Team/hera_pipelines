@@ -40,21 +40,18 @@ rm -rfv ${delay_fn}
 rm -rfv ${xtalk_fn}
 
 # remove even waterfalls.
-xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_res.${data_ext}
+xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
 echo rm -rfv ${xtalk_fn}
 rm -rfv ${xtalk_fn}
-
-# remove odd waterfalls.
-xtalk_fn=zen.${jd}.odd.${label}.*.xtalk_filtered_waterfall_res.${data_ext}
+echo rm -rfv ${xtalk_fn/even/odd}
+rm -rfv ${xtalk_fn/even/odd}
+xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
 echo rm -rfv ${xtalk_fn}
 rm -rfv ${xtalk_fn}
-
-# remove even waterfalls.
-xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_filled.${data_ext}
+echo rm -rfv ${xtalk_fn/even/odd}
+rm -rfv ${xtalk_fn/even/odd}
+xtalk_fn=zen.${jd}.even.${label}.*.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
 echo rm -rfv ${xtalk_fn}
 rm -rfv ${xtalk_fn}
-
-# remove odd waterfalls.
-xtalk_fn=zen.${jd}.odd.${label}.*.xtalk_filtered_waterfall_filled.${data_ext}
-echo rm -rfv ${xtalk_fn}
-rm -rfv ${xtalk_fn}
+echo rm -rfv ${xtalk_fn/even/odd}
+rm -rfv ${xtalk_fn/even/odd}
