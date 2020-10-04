@@ -74,6 +74,7 @@ actions = ["CAL_SMOOTH_SIMPLE",
            "XTALK_BASELINE_PARALLELIZED_ROUND2",
            "RECONSTITUTE_EVEN_ODD",
            "PSPEC",
+           "COMBINE_PSPEC",
 	         "FILTER_CLEANUP"]
 
 [CAL_SMOOTH_SIMPLE]
@@ -177,8 +178,14 @@ prereq_chunk_size="all"
 mem=64000
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:beam_file}"]
 
-[FILTER_CLEANUP]
+[COMBINE_PSPEC]
 prereqs = "PSPEC"
+prereq_chunk_size="all"
+mem = 64000
+args = ["{basename}", "${GLOBAL_OPTS:label}"]
+
+[FILTER_CLEANUP]
+prereqs = "COMBINE_PSPEC"
 prereq_chunk_size="all"
 mem = 64000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
