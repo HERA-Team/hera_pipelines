@@ -19,10 +19,32 @@ beam_file="${4}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-even_file=zen.${jd}.even.${label}.xtalk_filtered_res.${data_ext}
+even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
 odd_file=${even_file/even/odd}
 
-output=zen.${jd}.${label}.xtalk_filtered_res.uvp
+output=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
+# form power spectrum between even and odd data sets with offset times.
+
+
+# pspec of residual xtalk waterfall
+echo pspec_run.py --allow_fft --store_cov_diag\
+ --vis_units Jy --cov_model empirical_pspec --overwrite\
+ --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+ --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+ --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+ --taper bh
+
+pspec_run.py --allow_fft --store_cov_diag\
+  --vis_units Jy --cov_model empirical_pspec --overwrite\
+  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+  --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+  --taper bh
+
+
+even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
+odd_file=${even_file/even/odd}
+output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
 # form power spectrum between even and odd data sets with offset times.
 
 echo pspec_run.py --allow_fft --store_cov_diag\
@@ -40,21 +62,44 @@ pspec_run.py --allow_fft --store_cov_diag\
   --taper bh
 
 
-even_file=zen.${jd}.even.${label}.foreground_filtered_filled.${data_ext}
-odd_file=${even_file/even/odd}
-output=zen.${jd}.${label}.foreground_filtered_filled.uvp
-# form power spectrum between even and odd data sets with offset times.
 
-echo pspec_run.py --allow_fft --store_cov_diag\
- --vis_units Jy --cov_model empirical_pspec --overwrite\
- --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
- --Jy2mK --beam ${beam_file} --interleave_times --sampling\
- --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
- --taper bh
+  even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
+  odd_file=${even_file/even/odd}
+  output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
+  # form power spectrum between even and odd data sets with offset times.
 
-pspec_run.py --allow_fft --store_cov_diag\
-  --vis_units Jy --cov_model empirical_pspec --overwrite\
-  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-  --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
-  --taper bh
+  echo pspec_run.py --allow_fft --store_cov_diag\
+   --vis_units Jy --cov_model empirical_pspec --overwrite\
+   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+   --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+   --taper bh
+
+  pspec_run.py --allow_fft --store_cov_diag\
+    --vis_units Jy --cov_model empirical_pspec --overwrite\
+    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+    --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+    --taper bh
+
+
+
+    even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
+    odd_file=${even_file/even/odd}
+    output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res_dayenu.uvp
+    # form power spectrum between even and odd data sets with offset times.
+
+    echo pspec_run.py --allow_fft --store_cov_diag\
+     --vis_units Jy --cov_model empirical_pspec --overwrite\
+     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+     --input_data_weight dayenu
+
+    pspec_run.py --allow_fft --store_cov_diag\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+      --input_data_weight dayenu
+      # form power spectra with dayenu filter

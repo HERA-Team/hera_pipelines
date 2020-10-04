@@ -28,12 +28,8 @@ int_jd=${jd:0:7}
 # generate output file name
 fn_in_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
 fn_in_odd=${fn_in_even/even/odd}
-fn_res_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_res.${data_ext}
+fn_res_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
 fn_res_odd=${fn_res_even/even/odd}
-fn_filled_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_filled.${data_ext}
-fn_filled_odd=${fn_filled_even/even/odd}
-
-
 
 
 # if cache directory does not exist, make it
@@ -49,20 +45,48 @@ data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_res.${data
 
 echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
  --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
- --filled_outfilename ${fn_filled_even} \
  --clobber --datafilelist ${data_files_even} --skip_flagged_edges
 
  dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
-  --filled_outfilename ${fn_filled_even} \
   --clobber --datafilelist ${data_files_even} --skip_flagged_edges
 
  echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-  --filled_outfilename ${fn_filled_odd} \
   --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
 
  dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-  --filled_outfilename ${fn_filled_odd} \
   --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
+
+
+  # generate output file name
+  fn_in_even=zen.${jd}.even.${label}.foreground_filtered_filled.${data_ext}
+  fn_in_odd=${fn_in_even/even/odd}
+  fn_res_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
+  fn_res_odd=${fn_res_even/even/odd}
+  fn_filled_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
+  fn_filled_odd=${fn_filled_even/even/odd}
+
+  data_files_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_filled.${data_ext}`
+  data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_filled.${data_ext}`
+
+  echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
+   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_out_even} \
+   --filled_outfilename ${fn_filled_even} \
+   --clobber --datafilelist ${data_files_even} --skip_flagged_edges
+
+   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_out_even} \
+    --filled_outfilename ${fn_filled_even} \
+    --clobber --datafilelist ${data_files_even} --skip_flagged_edges
+
+   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_out_odd} \
+    --filled_outfilename ${fn_filled_odd} \
+    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
+
+   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_out_odd} \
+    --filled_outfilename ${fn_filled_odd} \
+    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
