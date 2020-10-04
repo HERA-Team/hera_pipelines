@@ -36,9 +36,7 @@ fn_res_odd=${fn_res_even/even/odd}
 if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
-# list of all foreground filtered files.
-# this will be broken by diff files.
-# had to hard code sum annoyingly.
+# foreground filtered and xtalk filtered files.
 data_files_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_res.${data_ext}`
 data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_res.${data_ext}`
 
@@ -60,7 +58,7 @@ echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
   --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
 
 
-  # generate output file name
+  # foreground filled and xtalk filtered/filled files.
   fn_in_even=zen.${jd}.even.${label}.foreground_filtered_filled.${data_ext}
   fn_in_odd=${fn_in_even/even/odd}
   fn_res_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
@@ -72,21 +70,21 @@ echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
   data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_filled.${data_ext}`
 
   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
-   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_out_even} \
+   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
    --filled_outfilename ${fn_filled_even} \
    --clobber --datafilelist ${data_files_even} --skip_flagged_edges
 
    dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_out_even} \
+    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
     --filled_outfilename ${fn_filled_even} \
     --clobber --datafilelist ${data_files_even} --skip_flagged_edges
 
    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_out_odd} \
+    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
     --filled_outfilename ${fn_filled_odd} \
     --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
 
    dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_out_odd} \
+    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
     --filled_outfilename ${fn_filled_odd} \
     --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
