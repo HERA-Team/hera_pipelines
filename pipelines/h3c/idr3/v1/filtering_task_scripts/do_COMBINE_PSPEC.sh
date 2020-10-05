@@ -15,17 +15,20 @@ label="${2}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-fragments=`echo *.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp`
-intput=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
 combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
-combine_pspec_containers.py ${fagments} ${input} ${combined} --clobber
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
-fragments=`echo *.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp`
-intput=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
 combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
-combine_pspec_containers.py ${fagments} ${input} ${combined} --clobber
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
-fragments=`echo *.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp`
-intput=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
 combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
-combine_pspec_containers.py ${fagments} ${input} ${combined} --clobber
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
