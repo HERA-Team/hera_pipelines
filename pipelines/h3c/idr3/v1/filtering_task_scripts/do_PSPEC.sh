@@ -27,38 +27,22 @@ output=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
 if [ -e "${even_file}" ]
 then
   # power spectra of data with no foregrounds or xtalk.
-  echo pspec_run.py --allow_fft --store_cov_diag\
-   --vis_units Jy --cov_model empirical_pspec --overwrite\
-   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
-   --taper bh
-
-  pspec_run.py --allow_fft --store_cov_diag\
+  echo pspec_run.py ${even_file} ${odd_file} ${output}\
+    --allow_fft --store_cov_diag\
     --vis_units Jy --cov_model empirical_pspec --overwrite\
     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-    --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+    --time_avg --file_type uvh5\
     --taper bh
 
-    # power spectra of data with foregrounds but no xtalk.
-  even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
-  odd_file=${even_file/even/odd}
-  output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
 
-  echo pspec_run.py --allow_fft --store_cov_diag\
-   --vis_units Jy --cov_model empirical_pspec --overwrite\
-   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
-   --taper bh
-
-  pspec_run.py --allow_fft --store_cov_diag\
-    --vis_units Jy --cov_model empirical_pspec --overwrite\
-    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-    --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
-    --taper bh
+   pspec_run.py ${even_file} ${odd_file} ${output}\
+     --allow_fft --store_cov_diag\
+     --vis_units Jy --cov_model empirical_pspec --overwrite\
+     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --time_avg --file_type uvh5\
+     --taper bh
 
 
     # power spectra of data with the foregrounds and xtalk retained -- to estimate signal loss from xtalk filter.
@@ -66,18 +50,45 @@ then
     odd_file=${even_file/even/odd}
     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
 
-    echo pspec_run.py --allow_fft --store_cov_diag\
-     --vis_units Jy --cov_model empirical_pspec --overwrite\
-     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-     --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
-     --taper bh
-
-    pspec_run.py --allow_fft --store_cov_diag\
+    echo pspec_run.py ${even_file} ${odd_file} ${output}\
+      --allow_fft --store_cov_diag\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
+      --time_avg --file_type uvh5\
+      --taper bh
+
+
+     pspec_run.py ${even_file} ${odd_file} ${output}\
+       --allow_fft --store_cov_diag\
+       --vis_units Jy --cov_model empirical_pspec --overwrite\
+       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+       --time_avg --file_type uvh5\
+       --taper bh
+
+
+
+      # power spectra of data with foregrounds but no xtalk.
+    even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
+    odd_file=${even_file/even/odd}
+    output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
+
+    echo pspec_run.py ${even_file} ${odd_file} ${output}\
+      --allow_fft --store_cov_diag\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --time_avg --file_type uvh5\
+      --taper bh
+
+
+    pspec_run.py ${even_file} ${odd_file} ${output}\
+      --allow_fft --store_cov_diag\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --time_avg --file_type uvh5\
       --taper bh
 
 
