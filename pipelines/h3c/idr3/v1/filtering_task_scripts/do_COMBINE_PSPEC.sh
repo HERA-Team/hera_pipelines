@@ -21,14 +21,34 @@ combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_noforegrounds_res.fullband_ps.uvp`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.fullband_ps.uvp
+combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.fullband_ps.uvp
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+
 fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp`
 input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
 combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.uvp`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.uvp
+combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.uvp
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+
+
 fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp`
 input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
 combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+
+
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
+combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber

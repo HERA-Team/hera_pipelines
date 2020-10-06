@@ -46,6 +46,25 @@ then
      --time_avg --file_type uvh5\
      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
+  output=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.fullband_ps.uvp
+  # do full subband power spectra.
+   echo pspec_run.py ${even_file} ${odd_file} ${output}\
+     --allow_fft --store_cov_diag\
+     --vis_units Jy --cov_model empirical_pspec --overwrite\
+     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --time_avg --file_type uvh5\
+     --taper bh --exclude_flagged_edge_channels
+
+
+    pspec_run.py ${even_file} ${odd_file} ${output}\
+      --allow_fft --store_cov_diag\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --time_avg --file_type uvh5\
+      --taper bh --exclude_flagged_edge_channels
+
 
     # power spectra of data with the foregrounds and xtalk retained -- to estimate signal loss from xtalk filter.
     even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
@@ -69,7 +88,24 @@ then
        --time_avg --file_type uvh5\
        --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
+    output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
+   # do full subband power spectra.
+    echo pspec_run.py ${even_file} ${odd_file} ${output}\
+      --allow_fft --store_cov_diag\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --time_avg --file_type uvh5\
+      --taper bh --exclude_flagged_edge_channels
 
+
+     pspec_run.py ${even_file} ${odd_file} ${output}\
+       --allow_fft --store_cov_diag\
+       --vis_units Jy --cov_model empirical_pspec --overwrite\
+       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+       --time_avg --file_type uvh5\
+       --taper bh --exclude_flagged_edge_channels
 
       # power spectra of data with foregrounds but no xtalk.
     even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
@@ -92,6 +128,26 @@ then
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
+
+
+    output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.uvp
+   # do full subband power spectra.
+    echo pspec_run.py ${even_file} ${odd_file} ${output}\
+      --allow_fft --store_cov_diag\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --time_avg --file_type uvh5\
+      --taper bh --exclude_flagged_edge_channels
+
+
+     pspec_run.py ${even_file} ${odd_file} ${output}\
+       --allow_fft --store_cov_diag\
+       --vis_units Jy --cov_model empirical_pspec --overwrite\
+       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+       --time_avg --file_type uvh5\
+       --taper bh --exclude_flagged_edge_channels
 
 
       # power spectra of data with the foregrounds and no xtalk but also with dayenu filter so that
