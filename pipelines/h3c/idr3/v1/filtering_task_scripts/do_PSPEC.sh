@@ -10,12 +10,14 @@ source ${src_dir}/_common.sh
 # 2 - data extension.
 # 3 - label
 # 4 - name of beamfits file.
+# 5 - number of spectral windows to estimate pspec over.
 
 # define input arguments
 fn="${1}"
 data_ext="${2}"
 label="${3}"
 beam_file="${4}"
+nspw="${5}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
@@ -33,7 +35,7 @@ then
     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
     --time_avg --file_type uvh5\
-    --taper bh
+    --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
    pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -42,7 +44,7 @@ then
      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
      --time_avg --file_type uvh5\
-     --taper bh
+     --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
     # power spectra of data with the foregrounds and xtalk retained -- to estimate signal loss from xtalk filter.
@@ -56,7 +58,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5\
-      --taper bh
+      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
      pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -65,7 +67,7 @@ then
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
        --time_avg --file_type uvh5\
-       --taper bh
+       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
 
@@ -80,7 +82,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5\
-      --taper bh
+      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
     pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -89,7 +91,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5\
-      --taper bh
+      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
       # power spectra of data with the foregrounds and no xtalk but also with dayenu filter so that
