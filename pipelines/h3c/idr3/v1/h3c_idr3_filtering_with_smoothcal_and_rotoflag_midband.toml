@@ -43,7 +43,7 @@ calibration = "none"
 [XTALK_BASELINE_PARALLELIZED_OPTS]
 # dividing this by two for low band.
 frmax0 = 0.0
-frmax1 = 0.1
+frmax1 = 0.025
 tol = 1e-9
 
 [ROTOFLAG_OPTS]
