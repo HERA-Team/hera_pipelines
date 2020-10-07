@@ -12,12 +12,12 @@ source ${src_dir}/_common.sh
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
 # 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5 - ant_metrics_extension: extension to be appended to the file name for accessing ant_metrics files.
+# 5 - apriori_statuses: string list of comma-separated (no spaces) antenna statuses to include here
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
 git_push=${4}
-ant_metrics_extension=${5}
+apriori_statuses=${5}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -30,7 +30,7 @@ nb_outfile=${nb_outdir}/data_inspect_known_good_${jd}.ipynb
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
 export JULIANDATE=${jd}
-export ANT_METRICS_EXT=${ant_metrics_extension}
+export APRIORI_STATUSES=${apriori_statuses}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
