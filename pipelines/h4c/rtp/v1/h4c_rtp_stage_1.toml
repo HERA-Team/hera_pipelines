@@ -77,14 +77,14 @@ tb_aggro = 0.5
 actions = ["SETUP",
            "LIBRARIAN_RAW_DATA",
            "LIBRARIAN_MAKE_SESSION",
+           "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
+           "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
+           "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "ADD_RTP_PROCESS_RECORD",
            "EXTRACT_AUTOS",
            "ANT_METRICS_KNOWN_GOOD",
            "ANT_METRICS_MAYBE_GOOD",
            "ANT_METRICS_ALL_ANTS",
-           "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
-           "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
-           "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            # "REDCAL_KNOWN_GOOD", TODO: add this back in 
            "REDCAL_MAYBE_GOOD",
            # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in 
