@@ -180,7 +180,8 @@ prereqs = "RECONSTITUTE_EVEN_ODD"
 prereq_chunk_size="all"
 mem=64000
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
-      "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}"]
+      "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
+      "${DELAY_NOSPW_OPTS:standoff}", "${DELAY_NOSPW_OPTS:tol}"]
 
 [COMBINE_PSPEC]
 prereqs = "PSPEC"

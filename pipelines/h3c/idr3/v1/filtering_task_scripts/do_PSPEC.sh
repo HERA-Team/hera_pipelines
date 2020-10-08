@@ -11,13 +11,16 @@ source ${src_dir}/_common.sh
 # 3 - label
 # 4 - name of beamfits file.
 # 5 - number of spectral windows to estimate pspec over.
-
+# 6 - delay-buffer beyond wedge in ns
+# 7 - suppression factor in foreground filter.
 # define input arguments
 fn="${1}"
 data_ext="${2}"
 label="${3}"
 beam_file="${4}"
 nspw="${5}"
+standoff="${6}"
+suppression="${7}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
@@ -34,7 +37,7 @@ then
     --vis_units Jy --cov_model empirical_pspec --overwrite\
     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-    --time_avg --file_type uvh5\
+    --time_avg --file_type uvh5 --include_autocorrs\
     --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
@@ -43,7 +46,7 @@ then
      --vis_units Jy --cov_model empirical_pspec --overwrite\
      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-     --time_avg --file_type uvh5\
+     --time_avg --file_type uvh5 --include_autocorrs\
      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
   output=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.fullband_ps.uvp
@@ -53,7 +56,7 @@ then
      --vis_units Jy --cov_model empirical_pspec --overwrite\
      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-     --time_avg --file_type uvh5\
+     --time_avg --file_type uvh5 --include_autocorrs\
      --taper bh --exclude_flagged_edge_channels
 
 
@@ -62,7 +65,7 @@ then
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --time_avg --file_type uvh5\
+      --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels
 
 
@@ -76,7 +79,7 @@ then
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --time_avg --file_type uvh5\
+      --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
@@ -85,7 +88,7 @@ then
        --vis_units Jy --cov_model empirical_pspec --overwrite\
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-       --time_avg --file_type uvh5\
+       --time_avg --file_type uvh5 --include_autocorrs\
        --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
@@ -95,7 +98,7 @@ then
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --time_avg --file_type uvh5\
+      --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels
 
 
@@ -104,7 +107,7 @@ then
        --vis_units Jy --cov_model empirical_pspec --overwrite\
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-       --time_avg --file_type uvh5\
+       --time_avg --file_type uvh5 --include_autocorrs\
        --taper bh --exclude_flagged_edge_channels
 
       # power spectra of data with foregrounds but no xtalk.
@@ -117,7 +120,7 @@ then
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --time_avg --file_type uvh5\
+      --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
@@ -126,7 +129,7 @@ then
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --time_avg --file_type uvh5\
+      --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
@@ -137,7 +140,7 @@ then
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --time_avg --file_type uvh5\
+      --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels
 
 
@@ -146,33 +149,111 @@ then
        --vis_units Jy --cov_model empirical_pspec --overwrite\
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-       --time_avg --file_type uvh5\
+       --time_avg --file_type uvh5 --include_autocorrs\
        --taper bh --exclude_flagged_edge_channels
 
 
-      # power spectra of data with the foregrounds and no xtalk but also with dayenu filter so that
-      # we effectively get no foregrounds or cross-talk (should be same as first case) but we also get accurate window functions.
-      # this isn't ready yet because we don't yet have a streamlined way of setting dayenu filter parameters.
-      # COMMENT OUT FOR NOW!
 
-      #even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
-      #odd_file=${even_file/even/odd}
-      #output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res_dayenu.uvp
 
-      #echo pspec_run.py --allow_fft --store_cov_diag\
-      # --vis_units Jy --cov_model empirical_pspec --overwrite\
-      # --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-      # --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      # --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
-      # --input_data_weight dayenu
+     # power spectra of data with foregrounds but no xtalk with DAYENU applied.
+     # use external roto-flag file.
+     external_flags=zen.${int_jd}.${label}.roto_flag.flags.h5
+     even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
+     odd_file=${even_file/even/odd}
+     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.uvp
 
-      #pspec_run.py --allow_fft --store_cov_diag\
-      #  --vis_units Jy --cov_model empirical_pspec --overwrite\
-      #  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-      #  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      #  --time_avg --file_type uvh5 ${even_file} ${odd_file} ${output}\
-      #  --input_data_weight dayenu
-      # form power spectra with dayenu filter
+     echo pspec_run.py ${even_file} ${odd_file} ${output}\
+       --allow_fft --store_cov_diag\
+       --vis_units Jy --cov_model empirical_pspec --overwrite\
+       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+       --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+       --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+       --exclude_flagged_edge_channels --Nspws ${nspw}\
+       --external_flags ${external_flags}
+
+
+     pspec_run.py ${even_file} ${odd_file} ${output}\
+       --allow_fft --store_cov_diag\
+       --vis_units Jy --cov_model empirical_pspec --overwrite\
+       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+       --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+       --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+       --exclude_flagged_edge_channels --Nspws ${nspw}\
+       --external_flags ${external_flags}
+
+     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.fullband_ps.uvp
+    # do full subband power spectra.
+    echo pspec_run.py ${even_file} ${odd_file} ${output}\
+      --allow_fft --store_cov_diag\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+      --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+      --exclude_flagged_edge_channels\
+      --external_flags ${external_flags}
+
+
+    pspec_run.py ${even_file} ${odd_file} ${output}\
+    --allow_fft --store_cov_diag\
+    --vis_units Jy --cov_model empirical_pspec --overwrite\
+    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+    --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+    --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+    --exclude_flagged_edge_channels\
+    --external_flags ${external_flags}
+
+  # try H^-1 norm too
+  output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.Hinv.uvp
+  echo pspec_run.py ${even_file} ${odd_file} ${output}\
+    --allow_fft --store_cov_diag\
+    --vis_units Jy --cov_model empirical_pspec --overwrite\
+    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+    --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+    --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+    --exclude_flagged_edge_channels --Nspws ${nspw} --rcond 1e-17\
+    --external_flags ${external_flags} --norm 'H^-1'
+
+
+  pspec_run.py ${even_file} ${odd_file} ${output}\
+    --allow_fft --store_cov_diag\
+    --vis_units Jy --cov_model empirical_pspec --overwrite\
+    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+    --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+    --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+    --exclude_flagged_edge_channels --Nspws ${nspw} --rcond 1e-17\
+    --external_flags ${external_flags} --norm 'H^-1'
+
+  output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.Hinv.fullband_ps.uvp
+ # do full subband power spectra.
+ echo pspec_run.py ${even_file} ${odd_file} ${output}\
+   --allow_fft --store_cov_diag\
+   --vis_units Jy --cov_model empirical_pspec --overwrite\
+   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+   --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+   --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+   --exclude_flagged_edge_channels --rcond 1e-17\
+   --external_flags ${external_flags} --norm 'H^-1'
+
+
+ pspec_run.py ${even_file} ${odd_file} ${output}\
+ --allow_fft --store_cov_diag\
+ --vis_units Jy --cov_model empirical_pspec --overwrite\
+ --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+ --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+ --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
+ --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+ --exclude_flagged_edge_channels --rcond 1e-17\
+ --external_flags ${external_flags} --norm 'H^-1'
+
+
+
 else
   echo "${even_file} does not exist!"
 fi
