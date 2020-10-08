@@ -77,14 +77,14 @@ tb_aggro = 0.5
 actions = ["SETUP",
            "LIBRARIAN_RAW_DATA",
            "LIBRARIAN_MAKE_SESSION",
+           "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
+           "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
+           "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "ADD_RTP_PROCESS_RECORD",
            "EXTRACT_AUTOS",
            "ANT_METRICS_KNOWN_GOOD",
            "ANT_METRICS_MAYBE_GOOD",
            "ANT_METRICS_ALL_ANTS",
-           "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
-           "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
-           "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            # "REDCAL_KNOWN_GOOD", TODO: add this back in 
            "REDCAL_MAYBE_GOOD",
            # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in 
@@ -131,7 +131,45 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_autos}",
        ]
 
-########## ANT METRICS AND ASSOCIATED DATA INSPECT NOTEBOOKS ##########
+########## DATA INSPECT NOTEBOOKS ##########
+
+[DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ANT_METRICS_OPTS:good_statuses}"
+        ]
+
+[DATA_INSPECT_NOTEBOOK_MAYBE_GOOD]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ANT_METRICS_OPTS:maybe_statuses}"
+        ]
+
+[DATA_INSPECT_NOTEBOOK_ALL_ANTS]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ANT_METRICS_OPTS:all_statuses}"
+        ]
+
+########## ANT METRICS ##########
 
 [ANT_METRICS_KNOWN_GOOD]
 prereqs = "LIBRARIAN_MAKE_SESSION"
@@ -180,48 +218,6 @@ args = ["${ANT_METRICS_OPTS:crossCut}",
         "${LIBRARIAN_OPTS:librarian_ant_metrics}",
         "{obsid_list}",
        ]
-
-[DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
-prereqs = "ANT_METRICS_KNOWN_GOOD"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:good_extension}"
-        ]
-
-[DATA_INSPECT_NOTEBOOK_MAYBE_GOOD]
-prereqs = "ANT_METRICS_MAYBE_GOOD"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:maybe_extension}"
-        ]
-
-[DATA_INSPECT_NOTEBOOK_ALL_ANTS]
-prereqs = "ANT_METRICS_ALL_ANTS"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:all_extension}"
-        ]
 
 ########## REDCAL AND ASSOCIATED NOTEBOOKS ##########
 
