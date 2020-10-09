@@ -34,7 +34,7 @@ nbl_per_load = 0
 
 [DELAY_NOSPW_OPTS]
 tol = 1e-9
-standoff = 300
+standoff = 200
 calibration = "none"
 
 # we may want to consider another flagging round after delay filtering.

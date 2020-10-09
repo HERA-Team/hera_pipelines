@@ -23,6 +23,9 @@ nbl_per_load="${4}"
 
 jd=$(get_jd $fn)
 
+auto_file = ${fn%.uvh5}.auto.uvh5
+outfile_auto = ${fn%.uvh5}.${label}.calibrated.auto.uvh5
+
 calfile=${fn%.uvh5}.${label}.smooth_abs.roto_flags.calfits
 diff_file=${fn/sum/diff}
 outfile=zen.${jd}.sum.${label}.${output_ext}
@@ -41,6 +44,11 @@ echo apply_cal.py  ${diff_file} ${outfile_diff} \
 
 apply_cal.py ${diff_file} ${outfile_diff} \
 --nbl_per_load ${nbl_per_load} --redundant_average --clobber  --new_cal ${calfile} --overwrite_data_flags
+
+# calibrate sum autos. DO NOT REDUNDANT AVERAGE.
+apply_cal.py ${auto_file} ${outfile_auto}\
+--nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+
 
 # generate even / odd files.
 outfile_even=${outfile/sum/even}

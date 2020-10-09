@@ -25,6 +25,11 @@ jd=$(get_jd $fn)
 # generate output file name
 fn_in_even=zen.${jd}.even.${label}.${data_ext}
 fn_in_odd=${fn_in_even/even/odd}
+auto_file=${fn%.uvh5}.${label}.calibrated.auto.uvh5
+auto_filled_out=${fn%.uvh5}.${label}.foreground_filtered_auto_filled.uvh5
+auto_res_out=${fn%.uvh5}.${label}.foreground_filtered_auto_res.uvh5
+
+
 
 fn_res_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
 fn_res_odd=${fn_res_even/even/odd}
@@ -45,7 +50,7 @@ else
 fi
 
 
-
+# even files
 echo dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
   --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
   --filled_outfilename ${fn_filled_even} \
@@ -56,7 +61,7 @@ dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
     --filled_outfilename ${fn_filled_even} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
 
-
+# odd files
 echo dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
   --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
   --filled_outfilename ${fn_filled_odd} \
@@ -65,4 +70,15 @@ echo dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
 dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
     --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
     --filled_outfilename ${fn_filled_odd} \
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+
+# auto file
+echo dpss_delay_filter_run.py ${auto_file} --calfile ${calfile} \
+  --res_outfilename ${auto_res_out} --clobber --skip_flagged_edges \
+  --filled_outfilename ${auto_filled_out} \
+  --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+
+dpss_delay_filter_run.py ${auto_file} --calfile ${calfile} \
+    --res_outfilename ${auto_res_out} --clobber --skip_flagged_edges \
+    --filled_outfilename ${auto_filled_out} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
