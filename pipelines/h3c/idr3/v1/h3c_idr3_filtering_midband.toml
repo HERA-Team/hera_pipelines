@@ -74,13 +74,14 @@ actions = [
            "ROTOFLAG_FLAG",
            "FLAG_DATA_ROUND2",
            "APPLY_FLAGS_GENERATE_EVEN_ODD",
-           "DELAY_BASELINE_PARALLELIZED_ROUND2",
+           "DELAY_NOSPW_ROUND2",
            "XTALK_BASELINE_PARALLELIZED_ROUND2",
            "RECONSTITUTE_EVEN_ODD",
            #"TIME_AVERAGE",
            "PSPEC",
            "COMBINE_PSPEC",
 	         "FILTER_CLEANUP"]
+
 
 [CAL_SMOOTH_SIMPLE]
 mem = 64000
