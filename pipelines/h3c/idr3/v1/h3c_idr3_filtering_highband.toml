@@ -73,10 +73,11 @@ actions = [
            "ROTOFLAG_METRIC",
            "ROTOFLAG_FLAG",
            "FLAG_DATA_ROUND2",
+           "APPLY_FLAGS_GENERATE_EVEN_ODD",
            "DELAY_BASELINE_PARALLELIZED_ROUND2",
            "XTALK_BASELINE_PARALLELIZED_ROUND2",
            "RECONSTITUTE_EVEN_ODD",
-           "TIME_AVERAGE",
+           #"TIME_AVERAGE",
            "PSPEC",
            "COMBINE_PSPEC",
 	         "FILTER_CLEANUP"]
