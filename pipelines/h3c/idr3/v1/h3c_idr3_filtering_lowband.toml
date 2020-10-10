@@ -18,6 +18,9 @@ label = "low-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
 yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/stage_2_a_priori_flags/"
+flag_ext="og_flags1"
+time_threshold = 0.02
+
 
 [CAL_SMOOTH_SIMPLE_OPTS]
 freq_scale = 10.0
@@ -29,7 +32,7 @@ flag_ext="og_flags1"
 #flag_file="xrfi_runs/default/zen.2458937.auto_stage_1_threshold_flags.h5"
 flag_file="none"
 
-[APPLY_CAL_REDUNDANT_AVERAGE_OPTS]
+[APPLY_FLAGS_GENERATE_EVEN_ODD]
 nbl_per_load = 0
 
 [DELAY_NOSPW_OPTS]
@@ -83,40 +86,19 @@ actions = [
 	         "FILTER_CLEANUP"]
 
 
-[CAL_SMOOTH_SIMPLE]
+[DELAY_BASELINE_PARALLELIZED]
+#prereqs="APPLY_CAL_REDUNDANT_AVERAGE"
+#prereq_chunk_size = 1
 mem = 64000
-args = ["{basename}", "${CAL_SMOOTH_SIMPLE_OPTS:freq_scale}", "${CAL_SMOOTH_SIMPLE_OPTS:time_threshold}",
-        "${CAL_SMOOTH_SIMPLE_OPTS:freq_threshold}", "${CAL_SMOOTH_SIMPLE_OPTS:ant_threshold}",
-        "${CAL_SMOOTH_SIMPLE_OPTS:flag_file}",
-        "${CAL_SMOOTH_SIMPLE_OPTS:flag_ext}",
-        "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}",
-	"${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:yaml_dir}",
-	"${CAL_SMOOTH_SIMPLE_OPTS:lst_blacklists}"]
-chunk_size=1
-stride_length=1
-
-[APPLY_CAL_REDUNDANT_AVERAGE]
-prereqs = "CAL_SMOOTH_SIMPLE"
-prereq_chunk_size = "all"
-mem = 64000
-args = ["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
-        "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}"]
-chunk_size = 1
-stride_length = 1
-
-[DELAY_NOSPW]
-prereqs="APPLY_CAL_REDUNDANT_AVERAGE"
-prereq_chunk_size = 1
-mem = 64000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_NOSPW_OPTS:calibration}", "${GLOBAL_OPTS:label}",
-        "${DELAY_NOSPW_OPTS:tol}",
-        "${DELAY_NOSPW_OPTS:standoff}", "${GLOBAL_OPTS:cache_dir}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:flag_ext}",
+        "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}",
+        "${DELAY_OPTS:tol}", "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:time_thresh}", "${GLOBAL_OPTS:cache_dir}"]
 chunk_size = 1
 stride_length = 1
 time_centered = false
 
 [XTALK_BASELINE_PARALLELIZED]
-prereqs = "DELAY_NOSPW"
+prereqs = "DELAY_BASELINE_PARALLELIZED"
 prereq_chunk_size="all"
 chunk_size = 1
 stride_length = 1
@@ -143,7 +125,7 @@ args=["{basename}", "${GLOBAL_OPTS:label}",
       "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
       "${ROTOFLAG_OPTS:niters}"]
 
-[APPLY_CAL_REDUNDANT_AVERAGE_ROUND2]
+[APPLY_FLAGS_GENERATE_EVEN_ODD]
 prereqs = "ROTOFLAG_FLAG"
 prereq_chunk_size="all"
 chunk_size = 1
