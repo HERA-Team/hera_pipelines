@@ -77,11 +77,11 @@ tb_aggro = 0.5
 actions = ["SETUP",
            "LIBRARIAN_RAW_DATA",
            "LIBRARIAN_MAKE_SESSION",
+           "ADD_RTP_PROCESS_RECORD",
+           "EXTRACT_AUTOS",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           "ADD_RTP_PROCESS_RECORD",
-           "EXTRACT_AUTOS",
            "ANT_METRICS_KNOWN_GOOD",
            "ANT_METRICS_MAYBE_GOOD",
            "ANT_METRICS_ALL_ANTS",
@@ -125,7 +125,6 @@ args = ["{basename}",
         "${WorkFlow:actions}"]
 
 [EXTRACT_AUTOS]
-prereqs = "LIBRARIAN_MAKE_SESSION"
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_autos}",
@@ -134,6 +133,8 @@ args = ["{basename}",
 ########## DATA INSPECT NOTEBOOKS ##########
 
 [DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
@@ -146,6 +147,8 @@ args = ["{basename}",
         ]
 
 [DATA_INSPECT_NOTEBOOK_MAYBE_GOOD]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
@@ -158,6 +161,8 @@ args = ["{basename}",
         ]
 
 [DATA_INSPECT_NOTEBOOK_ALL_ANTS]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
