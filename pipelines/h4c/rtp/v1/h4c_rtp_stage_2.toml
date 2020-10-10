@@ -83,7 +83,6 @@ actions = ["REDCAL",
 
 
 [REDCAL]
-prereqs = "FIX_DATAFILE"
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
         "${REDCAL_OPTS:solar_horizon}",
