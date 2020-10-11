@@ -27,6 +27,8 @@ time_threshold="${9}"
 cache_dir="${10}"
 # get julian day from file name
 jd=$(get_jd $fn)
+int_jd=${jd:0:7}
+
 # generate output file name
 fn_out=${fn%.uvh5}.${label}.foreground_filtered.${data_ext}
 # if cache directory does not exist, make it
@@ -35,14 +37,21 @@ if [ ! -d "${cache_dir}" ]; then
 fi
 
 data_files=`echo zen.${int_jd}.*.sum.${data_ext}`
-flag_files=`echo zen.${int_jd}.*.stage_1_xrfi/*${flag_ext}.h5`
+flag_files=`echo zen.${int_jd}.*.xrfi/*${flag_ext}.h5`
 
 
-fn_in=${fn%.uvh5}.${label}.${data_ext}
+fn_in=${fn%.uvh5}.${data_ext}
 
 
 echo dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags ${flag_files} \
-  --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1} --trim_edges \
+  --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1}\
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
   --factorize_flags --time_thresh ${time_threshold} --overwrite_data_flags\
-  --datafilelist ${data_files}#--write_cache --read_cache
+  --datafilelist ${data_files}
+  #--write_cache --read_cache
+
+  dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags ${flag_files} \
+    --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1}\
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
+    --factorize_flags --time_thresh ${time_threshold} --overwrite_data_flags\
+    --datafilelist ${data_files}
