@@ -30,7 +30,7 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 # generate output file name
-fn_out=${fn%.uvh5}.${label}.foreground_filtered.${data_ext}
+fn_out=${fn%.uvh5}.${label}.foreground_filtered_waterfall.${data_ext}
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}

@@ -30,7 +30,7 @@ int_jd=${jd:0:7}
 infile=${fn%.uvh5}.sum.${output_ext}
 infile_diff=${infile/sum/diff}
 
-auto_file=${fn%.uvh5}.auto.uvh5
+auto_file=${fn%.uvh5}.autos.uvh5
 outfile_auto=${fn%.uvh5}.${label}.autos.calibrated.uvh5
 auto_file_diff=${auto_file/sum/diff}
 outfile_auto_diff=${outfile_auto/sum/diff}
@@ -44,17 +44,17 @@ outfile_diff=zen.${jd}.diff.${label}.${output_ext}
 
 
 # calibrate sum autos. DO NOT REDUNDANT AVERAGE.
-echo apply_cal.py ${auto_file} ${outfile_auto}\
+echo apply_cal.py ${auto_file} ${outfile_auto} \
 --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
-apply_cal.py ${auto_file} ${outfile_auto}\
+apply_cal.py ${auto_file} ${outfile_auto} \
 --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
 # calibrate diff autos. DO NOT REDUNDANT AVERAGE.
-echo apply_cal.py ${auto_file_diff} ${outfile_auto_diff}\
+echo apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
 --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
-apply_cal.py ${auto_file_diff} ${outfile_auto_diff}\
+apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
 --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
 # generate even / odd files.
@@ -63,13 +63,17 @@ outfile_odd=${outfile/sum/odd}
 outfile_even_auto=${outfile_auto/sum/even}
 outfile_odd_auto=${outfile_auto/sum/odd}
 
-echo sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} --nbl_per_load ${nbl_per_load}, --clobber\
+echo sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
+--nbl_per_load ${nbl_per_load} --clobber \
 --polarizations ${pols}
-sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} --nbl_per_load ${nbl_per_load}, --clobber\
+sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
+--nbl_per_load ${nbl_per_load} --clobber \
 --polarizations ${pols}
 
 
-echo sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber\
+echo sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd}\
+ --nbl_per_load ${nbl_per_load} --clobber \
 --overwrite_data_flags --external_flags ${flagfile} --polarizations ${pols}
-sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd} --nbl_per_load ${nbl_per_load} --clobber\
+sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd}\
+ --nbl_per_load ${nbl_per_load} --clobber \
 --overwrite_data_flags --external_flags ${flagfile} --polarizations ${pols}

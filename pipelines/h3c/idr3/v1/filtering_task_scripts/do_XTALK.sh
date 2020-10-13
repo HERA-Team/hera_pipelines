@@ -16,25 +16,31 @@ source ${src_dir}/_common.sh
 # 8 - cache_dir, directory to store cache files in.
 fn="${1}"
 data_ext="${2}"
-label="${4}"
-tol="${5}"
-frc0="${6}"
-frc1="${7}"
-cache_dir="${8}"
+label="${3}"
+tol="${4}"
+frc0="${5}"
+frc1="${6}"
+cache_dir="${7}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
-fn_in=zen.${jd}.${label}.foreground_filtered_waterfall.${data_ext}
-fn_out=zen.${jd}.${label}.xtalk_filtered_waterfall.${data_ext}
-# if cache directory does not exist, make it
-if [ ! -d "${cache_dir}" ]; then
-  mkdir ${cache_dir}
-fi
+fn_in=zen.${jd}.sum.${label}.foreground_filtered_waterfall.${data_ext}
 
-echo dayenu_xtalk_filter_run.py ${fn_in} \
-  --res_outfilename ${fn_out} --clobber \
-  --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}   --max_frate_coeffs ${frc0} ${frc1}
+if [ -e "${fn_in}" ]
+then
+  fn_out=zen.${jd}.sum.${label}.xtalk_filtered_waterfall.${data_ext}
+  # if cache directory does not exist, make it
+  if [ ! -d "${cache_dir}" ]; then
+    mkdir ${cache_dir}
+  fi
 
-dayenu_xtalk_filter_run.py ${fn_in} \
+  echo dayenu_xtalk_filter_run.py ${fn_in} \
     --res_outfilename ${fn_out} --clobber \
-    --tol ${tol} --cache_dir ${cache_dir} --max_frate_coeffs ${frc0} ${frc1}
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}   --max_frate_coeffs ${frc0} ${frc1}
+
+  dayenu_xtalk_filter_run.py ${fn_in} \
+      --res_outfilename ${fn_out} --clobber \
+      --tol ${tol} --cache_dir ${cache_dir} --max_frate_coeffs ${frc0} ${frc1}
+else
+  echo "${fn_in} does not exist!"
+fi

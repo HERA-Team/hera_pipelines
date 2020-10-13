@@ -25,10 +25,15 @@ jd=$(get_jd $fn)
 # generate output file name
 fn_in_even=zen.${jd}.even.${label}.${data_ext}
 fn_in_odd=${fn_in_even/even/odd}
-auto_file=${fn%.uvh5}.${label}.calibrated.auto.uvh5
-auto_filled_out=${fn%.uvh5}.${label}.foreground_filtered_auto_filled.uvh5
-auto_res_out=${fn%.uvh5}.${label}.foreground_filtered_auto_res.uvh5
-
+auto_file=${fn%.uvh5}.${label}.calibrated.autos.uvh5
+auto_file_even = ${auto_file/sum/odd}
+auto_file_odd = ${auto_file/sum/odd}
+auto_even_filled_out=${fn%.uvh5}.${label}.foreground_filtered_auto_filled.uvh5
+auto_even_filled_out=${auto_even_filled_out/sum/even}
+auto_even_res_out=${fn%.uvh5}.${label}.foreground_filtered_auto_res.uvh5
+auto_even_res_out=${auto_even_res_out/sum/even}
+auto_odd_filled_out=${auto_even_filled_out/even/odd}
+auto_odd_res_out=${auto_even_res_out/even/odd}
 
 
 fn_res_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}

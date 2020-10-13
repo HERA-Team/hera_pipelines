@@ -29,7 +29,7 @@ int_jd=${jd:0:7}
 this_metric=zen.${jd}.${label}.roto_flag.metrics.h5
 metrics=`echo zen.${int_jd}.*.${label}.roto_flag.metrics.h5`
 flags=`echo zen.${int_jd}.*.${label}.roto_flag.flags.h5`
-cal_files=`echo zen.${int_jd}.*.smooth_abs.calfits`
+cal_files=`echo zen.${int_jd}.*.${label}.smooth_abs.calfits`
 
 if [ -e "${this_metric}" ]
 then
