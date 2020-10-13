@@ -20,14 +20,14 @@ fn="${1}"
 label="${2}"
 output_ext="${3}"
 nbl_per_load="${4}"
-pols="${5}"
-flag_file="${6}"
+pol0="${5}"
+pol1="${6}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 
-infile=${fn%.uvh5}.sum.${output_ext}
+infile=${fn%.uvh5}.${output_ext}
 infile_diff=${infile/sum/diff}
 
 auto_file=${fn%.uvh5}.autos.uvh5
@@ -39,8 +39,7 @@ outfile_auto_diff=${outfile_auto/sum/diff}
 flagfile=zen.${jd}.${label}.roto_flags.flags.h5
 calfile=${fn%.uvh5}.${label}.smooth_abs.roto_flags.calfits
 diff_file=${fn/sum/diff}
-outfile=zen.${jd}.sum.${label}.${output_ext}
-outfile_diff=zen.${jd}.diff.${label}.${output_ext}
+
 
 
 # calibrate sum autos. DO NOT REDUNDANT AVERAGE.
@@ -58,22 +57,22 @@ apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
 --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
 # generate even / odd files.
-outfile_even=${outfile/sum/even}
-outfile_odd=${outfile/sum/odd}
+outfile_even=zen.${jd}.even.${label}.${output_ext}
+outfile_odd=${outfile_odd/even/odd}
 outfile_even_auto=${outfile_auto/sum/even}
 outfile_odd_auto=${outfile_auto/sum/odd}
 
 echo sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
 --nbl_per_load ${nbl_per_load} --clobber \
---polarizations ${pols}
+--polarizations ${pol0} ${pol1}
 sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
 --nbl_per_load ${nbl_per_load} --clobber \
---polarizations ${pols}
+--polarizations ${pol0} ${pol1}
 
 
-echo sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd}\
+echo sum_diff_2_even_odd.py ${infile} ${infile_diff} ${outfile_even} ${outfile_odd}\
  --nbl_per_load ${nbl_per_load} --clobber \
---overwrite_data_flags --external_flags ${flagfile} --polarizations ${pols}
-sum_diff_2_even_odd.py ${outfile} ${outfile_diff} ${outfile_even} ${outfile_odd}\
+--overwrite_data_flags --external_flags ${flagfile} --polarizations ${pol0} ${pol1}
+sum_diff_2_even_odd.py ${infile} ${infile_diff} ${outfile_even} ${outfile_odd}\
  --nbl_per_load ${nbl_per_load} --clobber \
---overwrite_data_flags --external_flags ${flagfile} --polarizations ${pols}
+--overwrite_data_flags --external_flags ${flagfile} --polarizations ${pol0} ${pol1}
