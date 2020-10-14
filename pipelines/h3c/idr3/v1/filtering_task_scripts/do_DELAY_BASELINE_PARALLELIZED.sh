@@ -47,11 +47,11 @@ echo dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags 
   --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1}\
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
   --factorize_flags --time_thresh ${time_threshold} --overwrite_data_flags\
-  --datafilelist ${data_files}
+  --datafilelist ${data_files} --verbose
   #--write_cache --read_cache
 
   dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags ${flag_files} \
     --res_outfilename ${fn_out} --clobber --spw_range ${spw0} ${spw1}\
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
     --factorize_flags --time_thresh ${time_threshold} --overwrite_data_flags\
-    --datafilelist ${data_files}
+    --datafilelist ${data_files} --verbose
