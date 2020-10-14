@@ -1,8 +1,6 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/filtering_task_scripts/"
-path_to_observer_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/observer_bad_ants"
-path_to_analysis_bad_ants = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/analysis_bad_ants"
+path_to_do_scripts = "/users/aewallwi/hera_pipelines/pipelines/h4c/post_processing/v1/filtering_task_scripts/"
 conda_env = "hera3"
 source_script = "~/.bashrc"
 base_mem = 16000
@@ -12,14 +10,16 @@ pbs_mail_user = "aaronew+nrao@berkeley.edu"
 
 [GLOBAL_OPTS]
 data_ext = 'smooth_avg_vis.uvh5'
+cal_ext = 'smooth_abs.calfits'
 spw0 = 48
 spw1 = 320
 label = "low-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
-yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h3c/idr3/v1/stage_2_a_priori_flags/"
+yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
 flag_ext="og_flags1"
 time_threshold = 0.02
+chunk_size=60
 
 
 [CAL_SMOOTH_SIMPLE_OPTS]
@@ -70,6 +70,7 @@ clear_delay = false
 
 [WorkFlow]
 actions = [
+           "PRE_CHUNK",
            "DELAY_BASELINE_PARALLELIZED",
            "XTALK",
            "ROTOFLAG_METRIC",
@@ -83,42 +84,62 @@ actions = [
            "COMBINE_PSPEC",
 	         "FILTER_CLEANUP"]
 
+[PRE_CHUNK]
+mem=16000
+chunk_size=1
+stride_length=60
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
+      "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}", "${GLOBAL_OPTS:cal_ext}",
+      "${GLOBAL_OPTS:chunk_size}", "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}"]
 
 [DELAY_BASELINE_PARALLELIZED]
+prereqs="PRE_CHUNK"
 mem = 16000
+chunk_size=1
+stride_length=60
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:flag_ext}",
-        "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}",
+        "${GLOBAL_OPTS:label}",
         "${DELAY_OPTS:tol}", "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:time_threshold}", "${GLOBAL_OPTS:cache_dir}"]
 
 [XTALK]
 prereqs = "DELAY_BASELINE_PARALLELIZED"
 mem = 16000
+chunk_size=1
+stride_length=60
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
 [ROTOFLAG_METRIC]
 prereqs = "XTALK"
 mem=16000
+chunk_size=1
+stride_length=60
 args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
       "${ROTOFLAG_OPTS:kf_size}", "${ROTOFLAG_OPTS:kt_size}"]
 
 [ROTOFLAG_FLAG]
 prereqs = "ROTOFLAG_METRIC"
 prereq_chunk_size="all"
+chunk_size=1
+stride_length=60
 mem = 16000
 args=["{basename}", "${GLOBAL_OPTS:label}",
       "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
-      "${ROTOFLAG_OPTS:niters}"]
+      "${ROTOFLAG_OPTS:niters}", "${GLOBAL_OPTS:cal_ext}"]
 
 [APPLY_FLAGS_GENERATE_EVEN_ODD]
 prereqs = "ROTOFLAG_FLAG"
 prereq_chunk_size="all"
+chunk_size=1
+stride_length=60
 mem = 16000
 args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
       "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}"]
 
 [DELAY_NOSPW_ROUND2]
 prereqs="APPLY_FLAGS_GENERATE_EVEN_ODD"
+chunk_size=1
+stride_length=60
 mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_OPTS:calibration}", "${GLOBAL_OPTS:label}",
         "${DELAY_OPTS:tol}",
@@ -127,6 +148,8 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_OPTS:calibration}", "$
 [XTALK_BASELINE_PARALLELIZED_ROUND2]
 prereqs = "DELAY_NOSPW_ROUND2"
 prereq_chunk_size="all"
+chunk_size=1
+stride_length=60
 mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
@@ -134,6 +157,8 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTAL
 [RECONSTITUTE_EVEN_ODD]
 prereqs = "XTALK_BASELINE_PARALLELIZED_ROUND2"
 prereq_chunk_size="all"
+chunk_size=1
+stride_length=60
 mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
@@ -141,6 +166,8 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 prereqs = "RECONSTITUTE_EVEN_ODD"
 prereq_chunk_size="all"
 mem=16000
+chunk_size=1
+stride_length=60
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
       "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}"]
@@ -149,10 +176,14 @@ args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
 prereqs = "PSPEC"
 prereq_chunk_size="all"
 mem = 16000
+chunk_size=1
+stride_length=60
 args = ["{basename}", "${GLOBAL_OPTS:label}"]
 
 [FILTER_CLEANUP]
 prereqs = "COMBINE_PSPEC"
 prereq_chunk_size="all"
 mem = 16000
+chunk_size=1
+stride_length=60
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]

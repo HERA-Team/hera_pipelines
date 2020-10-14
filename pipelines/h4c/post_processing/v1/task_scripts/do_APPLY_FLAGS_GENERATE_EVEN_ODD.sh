@@ -26,18 +26,17 @@ pol1="${6}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-
-infile=${fn%.uvh5}.${output_ext}
+infile=zen.${jd}.sum.${label}.chunked.${output_ext}
 infile_diff=${infile/sum/diff}
 
-auto_file=${fn%.uvh5}.autos.uvh5
+auto_file=zen.${jd}.sum.${label}.autos.chunked.uvh5
 outfile_auto=${fn%.uvh5}.${label}.autos.calibrated.uvh5
 auto_file_diff=${auto_file/sum/diff}
 outfile_auto_diff=${outfile_auto/sum/diff}
 
 
 flagfile=zen.${jd}.${label}.roto_flags.flags.h5
-calfile=${fn%.uvh5}.${label}.smooth_abs.roto_flags.calfits
+calfile=${fn%.uvh5}.chunked.smooth_abs.roto_flags.calfits
 diff_file=${fn/sum/diff}
 
 

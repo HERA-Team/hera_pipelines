@@ -56,4 +56,5 @@ rm -rfv ${xtalk_fn}
 #echo rm -rfv ${xtalk_fn/even/odd}
 #rm -rfv ${xtalk_fn/even/odd}
 
+#rm -rfv zen.${jd}.*.${label}.chunked.*
 # remove pspec fragments. WAIT UNTIL VERIFYING THIS.
