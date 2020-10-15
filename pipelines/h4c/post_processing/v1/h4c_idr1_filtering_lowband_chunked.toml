@@ -81,6 +81,7 @@ args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
 
 [DELAY_BASELINE_PARALLELIZED]
 prereqs="PRE_CHUNK"
+prereq_chunk_size="all"
 mem = 16000
 chunk_size=1
 stride_length=60
