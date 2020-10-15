@@ -34,7 +34,7 @@ if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
 
-data_files=`echo zen.${int_jd}.*.sum.chunked.${label}.${data_ext}`
+data_files=`echo zen.${int_jd}.*.sum.${label}.chunked.${data_ext}`
 flag_files=`echo zen.${int_jd}.*.xrfi/*${flag_ext}.h5`
 
 
