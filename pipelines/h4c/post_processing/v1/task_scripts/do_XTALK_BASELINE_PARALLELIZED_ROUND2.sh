@@ -40,8 +40,9 @@ fi
 data_files_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_res.${data_ext}`
 data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_res.${data_ext}`
 
-
-echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
+if [ -e "${fn_in_even}" ]
+then
+ echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
  --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
  --clobber --datafilelist ${data_files_even} --skip_flagged_edges
 
@@ -88,3 +89,6 @@ echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
     --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
     --filled_outfilename ${fn_filled_odd} \
     --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
+  else
+    echo "${fn_in_even} does not exist!"
+  fi

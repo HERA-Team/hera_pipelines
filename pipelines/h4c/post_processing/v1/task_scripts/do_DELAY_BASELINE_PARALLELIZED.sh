@@ -40,7 +40,8 @@ flag_files=`echo zen.${int_jd}.*.xrfi/*${flag_ext}.h5`
 
 fn_in=zen.${jd}.sum.${label}.chunked.${data_ext}
 
-
+if [ -e "${fn_in}" ]
+then
 echo dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags ${flag_files} \
   --res_outfilename ${fn_out} --clobber\
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
@@ -53,3 +54,6 @@ echo dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags 
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
     --factorize_flags --time_thresh ${time_threshold} --overwrite_data_flags\
     --datafilelist ${data_files} --verbose
+else
+  echo "${fn_in} does not exists!"
+fi

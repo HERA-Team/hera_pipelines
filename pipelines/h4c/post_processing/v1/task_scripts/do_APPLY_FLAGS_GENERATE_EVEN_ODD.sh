@@ -36,42 +36,46 @@ outfile_auto_diff=${outfile_auto/sum/diff}
 
 
 flagfile=zen.${jd}.${label}.roto_flags.flags.h5
-calfile=${fn%.uvh5}.chunked.smooth_abs.roto_flags.calfits
+calfile=${fn%.uvh5}.${label}.chunked.smooth_abs.roto_flags.calfits
 diff_file=${fn/sum/diff}
 
 
+if [ -e "${infile}" ]
+then
+  # calibrate sum autos. DO NOT REDUNDANT AVERAGE.
+  echo apply_cal.py ${auto_file} ${outfile_auto} \
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
-# calibrate sum autos. DO NOT REDUNDANT AVERAGE.
-echo apply_cal.py ${auto_file} ${outfile_auto} \
---nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  apply_cal.py ${auto_file} ${outfile_auto} \
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
-apply_cal.py ${auto_file} ${outfile_auto} \
---nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  # calibrate diff autos. DO NOT REDUNDANT AVERAGE.
+  echo apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
-# calibrate diff autos. DO NOT REDUNDANT AVERAGE.
-echo apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
---nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
-apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
---nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  # generate even / odd files.
+  outfile_even=zen.${jd}.even.${label}.${output_ext}
+  outfile_odd=${outfile_even/even/odd}
+  outfile_even_auto=${outfile_auto/sum/even}
+  outfile_odd_auto=${outfile_auto/sum/odd}
 
-# generate even / odd files.
-outfile_even=zen.${jd}.even.${label}.${output_ext}
-outfile_odd=${outfile_odd/even/odd}
-outfile_even_auto=${outfile_auto/sum/even}
-outfile_odd_auto=${outfile_auto/sum/odd}
-
-echo sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
---nbl_per_load ${nbl_per_load} --clobber \
---polarizations ${pol0} ${pol1}
-sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
---nbl_per_load ${nbl_per_load} --clobber \
---polarizations ${pol0} ${pol1}
+  echo sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
+  --nbl_per_load ${nbl_per_load} --clobber \
+  --polarizations ${pol0} ${pol1}
+  sum_diff_2_even_odd.py ${outfile_auto} ${outfile_auto_diff} ${outfile_even_auto} ${outfile_odd_auto} \
+  --nbl_per_load ${nbl_per_load} --clobber \
+  --polarizations ${pol0} ${pol1}
 
 
-echo sum_diff_2_even_odd.py ${infile} ${infile_diff} ${outfile_even} ${outfile_odd}\
- --nbl_per_load ${nbl_per_load} --clobber \
---overwrite_data_flags --external_flags ${flagfile} --polarizations ${pol0} ${pol1}
-sum_diff_2_even_odd.py ${infile} ${infile_diff} ${outfile_even} ${outfile_odd}\
- --nbl_per_load ${nbl_per_load} --clobber \
---overwrite_data_flags --external_flags ${flagfile} --polarizations ${pol0} ${pol1}
+  echo sum_diff_2_even_odd.py ${infile} ${infile_diff} ${outfile_even} ${outfile_odd}\
+   --nbl_per_load ${nbl_per_load} --clobber \
+  --overwrite_data_flags --external_flags ${flagfile} --polarizations ${pol0} ${pol1}
+  sum_diff_2_even_odd.py ${infile} ${infile_diff} ${outfile_even} ${outfile_odd}\
+   --nbl_per_load ${nbl_per_load} --clobber \
+  --overwrite_data_flags --external_flags ${flagfile} --polarizations ${pol0} ${pol1}
+else
+  echo "${infile} does not exist!"
+fi
