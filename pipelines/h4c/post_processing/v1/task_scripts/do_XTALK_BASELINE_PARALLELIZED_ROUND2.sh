@@ -44,19 +44,19 @@ if [ -e "${fn_in_even}" ]
 then
  echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
  --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
- --clobber --datafilelist ${data_files_even} --skip_flagged_edges
+ --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
 
  dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
-  --clobber --datafilelist ${data_files_even} --skip_flagged_edges
+  --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
 
  echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-  --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
+  --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
 
  dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
   --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-  --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
+  --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
 
 
   # foreground filled and xtalk filtered/filled files.
@@ -73,22 +73,22 @@ then
   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
    --filled_outfilename ${fn_filled_even} \
-   --clobber --datafilelist ${data_files_even} --skip_flagged_edges
+   --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
 
    dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
     --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
     --filled_outfilename ${fn_filled_even} \
-    --clobber --datafilelist ${data_files_even} --skip_flagged_edges
+    --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
 
    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
     --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
     --filled_outfilename ${fn_filled_odd} \
-    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
+    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
 
    dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
     --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
     --filled_outfilename ${fn_filled_odd} \
-    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges
+    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
   else
     echo "${fn_in_even} does not exist!"
   fi

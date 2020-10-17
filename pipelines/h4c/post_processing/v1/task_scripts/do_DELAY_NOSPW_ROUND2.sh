@@ -60,45 +60,45 @@ then
   echo dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
     --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
     --filled_outfilename ${fn_filled_even} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
       --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
       --filled_outfilename ${fn_filled_even} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   # odd files
   echo dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
     --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
     --filled_outfilename ${fn_filled_odd} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
       --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
       --filled_outfilename ${fn_filled_odd} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   # auto file
   echo dpss_delay_filter_run.py ${auto_file_even} --calfile ${calfile} \
     --res_outfilename ${auto_even_res_out} --clobber --skip_flagged_edges \
     --filled_outfilename ${auto_even_filled_out} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${auto_file_even} --calfile ${calfile} \
       --res_outfilename ${auto_even_res_out} --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_even_filled_out} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   # auto file
   echo dpss_delay_filter_run.py ${auto_file_odd} --calfile ${calfile} \
     --res_outfilename ${auto_odd_res_out} --clobber --skip_flagged_edges \
     --filled_outfilename ${auto_odd_filled_out} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${auto_file_odd} --calfile ${calfile} \
       --res_outfilename ${auto_odd_res_out} --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_odd_filled_out} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 else
   echo "${fn_in_even} does not exist!"
 fi
