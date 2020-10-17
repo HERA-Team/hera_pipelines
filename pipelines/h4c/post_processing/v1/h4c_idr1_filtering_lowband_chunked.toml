@@ -91,6 +91,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:flag_ext}",
 
 [XTALK]
 prereqs = "DELAY_BASELINE_PARALLELIZED"
+prereq_chunk_size="all"
 mem = 16000
 chunk_size=1
 stride_length=60
