@@ -2,7 +2,7 @@
 makeflow_type = "analysis"
 path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_task_scripts"
 path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags"
-conda_env = "h3c_idr3"
+conda_env = "h4c"
 source_script = "~/.bashrc"
 base_mem = 16000
 base_cpu = 1
