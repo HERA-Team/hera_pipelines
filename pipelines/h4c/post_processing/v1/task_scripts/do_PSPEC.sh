@@ -253,7 +253,7 @@ then
     --external_flags ${external_flags}
 
     # now do waterfall.
-    external_flags=zen.${int_jd}.${label}.roto_flag.tavg.flags.h5
+    external_flags=zen.${jd}.${label}.flags.tavg.h5
     even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}
     odd_file=${even_file/even/odd}
     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.tavg.uvp
@@ -301,33 +301,7 @@ then
         --exclude_flagged_edge_channels
 
 
-
-
- # make auto power spectra with dayenu filter.
- output=zen.${jd}.${label}.auto.day.fullband_ps.uvp
- echo pspec_run.py ${auto_file} ${output}\
-   --allow_fft --store_cov_diag --Jy2mK_avg\
-   --vis_units Jy --cov_model empirical_pspec --overwrite\
-   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
-   --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
-   --exclude_flagged_edge_channels --rcond 1e-17\
-   --external_flags ${external_flags}
-
-
- pspec_run.py ${auto_file} ${output}\
- --allow_fft --store_cov_diag --Jy2mK_avg\
- --vis_units Jy --cov_model empirical_pspec --overwrite\
- --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
- --Jy2mK --beam ${beam_file} --interleave_times --sampling\
- --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
- --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
- --exclude_flagged_edge_channels --rcond 1e-17\
- --external_flags ${external_flags}
-
-
- # AUTO POWER SPECTRA
+# NEED TO CLEAN UP AUTOS HERE.
 
  # make auto power spectra without dayenu filter. Full band.
  output=zen.${jd}.${label}.auto.fullband_ps.uvp

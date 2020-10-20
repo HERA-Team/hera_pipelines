@@ -23,7 +23,6 @@ chunk_size=60
 nbl_per_load = 0
 t_avg = 300.0
 
-
 [DELAY_OPTS]
 tol = 1e-9
 standoff = 200
@@ -59,15 +58,6 @@ clear_delay = false
 
 [WorkFlow]
 actions = [
-           "PRE_CHUNK",
-           "DELAY_BASELINE_PARALLELIZED",
-           "XTALK",
-           "ROTOFLAG_METRIC",
-           "ROTOFLAG_FLAG",
-           "APPLY_FLAGS_GENERATE_EVEN_ODD",
-           "DELAY_NOSPW_ROUND2",
-           "XTALK_BASELINE_PARALLELIZED_ROUND2",
-           "RECONSTITUTE_EVEN_ODD",
            "TIME_AVERAGE",
            "PSPEC",
            "COMBINE_PSPEC",
@@ -154,8 +144,6 @@ mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [TIME_AVERAGE]
-prereqs="XTALK_BASELINE_PARALLELIZED_ROUND2"
-prereq_chunk_size="all"
 chunk_size=1
 stride_length=60
 mem=16000

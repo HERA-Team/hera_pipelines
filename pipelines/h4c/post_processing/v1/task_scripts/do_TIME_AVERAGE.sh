@@ -32,41 +32,56 @@ nofg_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res
 nofg_out_odd=${nofg_out_even/even/odd}
 
 fgfilled_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
-fgfilled_in_odd=${nofg_in_even/even/odd}
+fgfilled_in_odd=${fgfilled_in_even/even/odd}
 fgfilled_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.${data_ext}
-fgfilled_out_odd=${nofg_out_even/even/odd}
+fgfilled_out_odd=${fgfilled_out_even/even/odd}
 
 fgres_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
-fgres_in_odd=${nofg_in_even/even/odd}
+fgres_in_odd=${fgres_in_even/even/odd}
 fgres_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}
-fgres_out_odd=${nofg_out_even/even/odd}
+fgres_out_odd=${fgres_out_even/even/odd}
 
+tavg_flag=zen.${jd}.${label}.flags.tavg.h5
 
 auto_list_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_auto_filled.uvh5`
 auto_list_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_auto_filled.uvh5`
 # time-average autocorrs using waterfall averaging cornerturn.
 # even
-echo time_avg_data_and_write_baseline_list.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber
-time_avg_data_and_write_baseline_list.py ${auto_in_even} ${auto_out_even} ${t_avg} --rephase --clobber
-# odd
-echo time_avg_data_and_write_baseline_list.py ${auto_in_odd} ${auto_out_odd} ${auto_list_even} ${t_avg} --rephase --clobber
-time_avg_data_and_write_baseline_list.py ${auto_in_odd} ${auto_out_odd} ${t_avg} --rephase --clobber
+if [ -e "${auto_in_even}" ]
+then
+  echo time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber
+  time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber
+  # odd
+  echo time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
+  time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
+else
+  echo "${auto_in_even} does not exist!"
+fi
 
 # time-average no-fg resids -- use for id weight estimator.
 # even
-echo time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg} --rephase --clobber --flag_output
-time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg} --rephase --clobber --flag_output zen.${jd}.${label}.roto_flags.tavg.flags.h5
-# odd
-echo time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
-time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
+if [ -e "${fgfilled_in_even}" ]
+then
+  #echo time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg} --rephase --clobber --flag_output
+  #time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg} --rephase --clobber --flag_output zen.${jd}.${label}.roto_flags.tavg.flags.h5
+  # odd
+  #echo time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
+  #time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
+  # time-average with-fg filled -- use for signal loss estimation.
+  # even
+  echo time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber
+  time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber
+  # odd
+  echo time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
+  time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
 
-# time-average with-fg filled -- use for signal loss estimation.
-# even
-echo time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber
-time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber
-# odd
-echo time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
-time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
 
-
-# time-average with-fg resids -- use for dayenu estimator.
+  # time-average with-fg resids -- use for dayenu estimator.
+  echo time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag}
+  time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag}
+  # odd
+  echo time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
+  time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
+else
+  echo "${fgfilled_in_even} does not exist!"
+fi
