@@ -46,19 +46,19 @@ image_outdir="${filename}_image"
 mkdir -p ${image_outdir}
 cd ${image_outdir}
 
-# call sky_image.py from CASA_IMAGING package
+# call opm_imaging.py from CASA_IMAGING package
 echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${cwd}/${uvfits_file} --image ${uvfits_file_out}
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${cwd}/${uvfits_file} --image ${uvfits_file_out}
 
 # get model visibility files
-echo get_model_vis.py ${filename} ${model_vis} '"${image_outdir}"'
-get_model_vis.py ${filename} ${model_vis} '"${image_outdir}"'
+echo get_model_vis.py ${filename} '"${model_vis}"' "./"
+get_model_vis.py ${filename} '"${model_vis}"' "./"
 model_file=`basename ${filename}`
-model_file="${image_outdir}/${model_file%.uvh5}.model.uvfits"
-model_out="${image_outdir}/${model_file%.uvh5}.image"
+model_file="${model_file%.uvh5}.model.uvfits"
+model_out="${model_file%.uvh5}.image"
 # if it ran through, image model
 if [ -f ${model_file} ]; then
-    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${cwd}/${uvfits_file} --image ${uvfits_file_out}
+    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${cwd}/${model_file} --image ${model_out}
     ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${cwd}/${model_file} --image ${model_out}
 fi
 
@@ -66,8 +66,8 @@ fi
 cd ${cwd}
 echo rm ${uvfits_file}
 rm ${uvfits_file}
-echo rm basename ${model_file}
-rm basename ${model_file}
+echo rm ${model_file}
+rm ${model_file}
 
 # keep ms files for 2458098
 JD=`get_jd "${1}" | cut -c 1-7`
