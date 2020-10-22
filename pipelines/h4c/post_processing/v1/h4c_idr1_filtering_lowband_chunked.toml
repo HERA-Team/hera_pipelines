@@ -71,8 +71,8 @@ actions = [
            "RECONSTITUTE_EVEN_ODD",
            "TIME_AVERAGE",
            "PSPEC",
-           "COMBINE_PSPEC",
-	         "FILTER_CLEANUP"]
+           "COMBINE_PSPEC"]#,
+	         #"FILTER_CLEANUP"]
 
 [PRE_CHUNK]
 mem=16000
