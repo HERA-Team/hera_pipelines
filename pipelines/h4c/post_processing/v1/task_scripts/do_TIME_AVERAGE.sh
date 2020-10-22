@@ -23,7 +23,7 @@ int_jd=${jd:0:7}
 
 auto_in_even=zen.${jd}.even.${label}.foreground_filtered_auto_filled.uvh5
 auto_in_odd=${auto_in_even/even/odd}
-auto_out_even=zen.${jd}.even.${label}.foreground_filtered_auto_filled.tavg.uvh5
+auto_out_even=zen.${jd}.even.${label}.foreground_filtered_waterfall_filled.auto.tavg.uvh5
 auto_out_odd=${auto_out_even/even/odd}
 
 nofg_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}

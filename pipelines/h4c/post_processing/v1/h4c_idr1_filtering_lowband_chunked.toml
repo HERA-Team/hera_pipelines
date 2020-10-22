@@ -7,6 +7,7 @@ base_mem = 16000
 base_cpu = 1
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
+chunk_size = 60
 
 [GLOBAL_OPTS]
 data_ext = 'smooth_avg_vis.uvh5'
@@ -76,7 +77,7 @@ actions = [
 [PRE_CHUNK]
 mem=16000
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
       "${GLOBAL_OPTS:cal_ext}", "${GLOBAL_OPTS:chunk_size}",
       "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}"]
@@ -86,7 +87,7 @@ prereqs="PRE_CHUNK"
 prereq_chunk_size="all"
 mem = 16000
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:flag_ext}",
         "${GLOBAL_OPTS:label}",
         "${DELAY_OPTS:tol}", "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:time_threshold}", "${GLOBAL_OPTS:cache_dir}"]
@@ -96,7 +97,7 @@ prereqs = "DELAY_BASELINE_PARALLELIZED"
 prereq_chunk_size="all"
 mem = 16000
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
@@ -104,7 +105,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTAL
 prereqs = "XTALK"
 mem=16000
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
       "${ROTOFLAG_OPTS:kf_size}", "${ROTOFLAG_OPTS:kt_size}"]
 
@@ -112,7 +113,7 @@ args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
 prereqs = "ROTOFLAG_METRIC"
 prereq_chunk_size="all"
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 mem = 16000
 args=["{basename}", "${GLOBAL_OPTS:label}",
       "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
@@ -122,7 +123,7 @@ args=["{basename}", "${GLOBAL_OPTS:label}",
 prereqs = "ROTOFLAG_FLAG"
 prereq_chunk_size="all"
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 mem = 16000
 args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
       "${GLOBAL_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}"]
@@ -130,7 +131,7 @@ args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
 [DELAY_NOSPW_ROUND2]
 prereqs="APPLY_FLAGS_GENERATE_EVEN_ODD"
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_OPTS:calibration}", "${GLOBAL_OPTS:label}",
         "${DELAY_OPTS:tol}",
@@ -140,8 +141,8 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_OPTS:calibration}", "$
 prereqs = "DELAY_NOSPW_ROUND2"
 prereq_chunk_size="all"
 chunk_size=1
-stride_length=60
-mem = 16000
+stride_length="${Options:chunk_size}"
+mem = 32000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
@@ -149,7 +150,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTAL
 prereqs = "XTALK_BASELINE_PARALLELIZED_ROUND2"
 prereq_chunk_size="all"
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
@@ -157,7 +158,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 prereqs="XTALK_BASELINE_PARALLELIZED_ROUND2"
 prereq_chunk_size="all"
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 mem=16000
 args=["{basename}",
       "${GLOBAL_OPTS:data_ext}",
@@ -169,7 +170,7 @@ prereqs = "TIME_AVERAGE"
 prereq_chunk_size="all"
 mem=64000
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
       "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}"]
@@ -177,9 +178,9 @@ args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
 [COMBINE_PSPEC]
 prereqs = "PSPEC"
 prereq_chunk_size="all"
-mem = 16000
+mem = 64000
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 args = ["{basename}", "${GLOBAL_OPTS:label}"]
 
 [FILTER_CLEANUP]
@@ -187,5 +188,5 @@ prereqs = "COMBINE_PSPEC"
 prereq_chunk_size="all"
 mem = 16000
 chunk_size=1
-stride_length=60
+stride_length="${Options:chunk_size}"
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]

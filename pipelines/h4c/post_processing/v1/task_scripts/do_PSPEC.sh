@@ -42,7 +42,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
-      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
+      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} --store_window
 
 
      pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -51,7 +51,7 @@ then
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
        --time_avg --file_type uvh5 --include_autocorrs\
-       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
+       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} --store_window
 
     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
    # do full subband power spectra.
@@ -61,7 +61,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
-      --taper bh --exclude_flagged_edge_channels
+      --taper bh --exclude_flagged_edge_channels --store_window
 
 
      pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -70,7 +70,7 @@ then
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
        --time_avg --file_type uvh5 --include_autocorrs\
-       --taper bh --exclude_flagged_edge_channels
+       --taper bh --exclude_flagged_edge_channels --store_window
 
     # now do coherently averaged files and keep full covariances.
     even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.${data_ext}
@@ -78,7 +78,7 @@ then
     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.uvp
 
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
-      --allow_fft --store_cov --Jy2mK_avg\
+      --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -87,7 +87,7 @@ then
 
 
    pspec_run.py ${even_file} ${odd_file} ${output}\
-     --allow_fft --store_cov --Jy2mK_avg\
+     --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\
      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -95,10 +95,10 @@ then
      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
-     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
+     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.tavg.uvp
      # do full subband power spectra.
      echo pspec_run.py ${even_file} ${odd_file} ${output}\
-       --allow_fft --store_cov --Jy2mK_avg\
+       --allow_fft --store_cov_diag --Jy2mK_avg\
        --vis_units Jy --cov_model empirical_pspec --overwrite\
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -107,7 +107,7 @@ then
 
 
       pspec_run.py ${even_file} ${odd_file} ${output}\
-        --allow_fft --store_cov --Jy2mK_avg\
+        --allow_fft --store_cov_diag --Jy2mK_avg\
         --vis_units Jy --cov_model empirical_pspec --overwrite\
         --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
         --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -126,7 +126,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
-      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
+      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} --store_window
 
 
     pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -135,7 +135,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
-      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
+      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} --store_window
 
 
     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.uvp
@@ -146,7 +146,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
-      --taper bh --exclude_flagged_edge_channels
+      --taper bh --exclude_flagged_edge_channels --store_window
 
 
      pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -155,14 +155,14 @@ then
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
        --time_avg --file_type uvh5 --include_autocorrs\
-       --taper bh --exclude_flagged_edge_channels
+       --taper bh --exclude_flagged_edge_channels --store_window
 
        even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}
        odd_file=${even_file/even/odd}
        output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.uvp
 
        echo pspec_run.py ${even_file} ${odd_file} ${output}\
-         --allow_fft --store_cov --Jy2mK_avg\
+         --allow_fft --store_cov_diag --Jy2mK_avg\
          --vis_units Jy --cov_model empirical_pspec --overwrite\
          --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
          --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -171,7 +171,7 @@ then
 
 
        pspec_run.py ${even_file} ${odd_file} ${output}\
-        --allow_fft --store_cov --Jy2mK_avg\
+        --allow_fft --store_cov_diag --Jy2mK_avg\
         --vis_units Jy --cov_model empirical_pspec --overwrite\
         --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
         --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -179,10 +179,10 @@ then
         --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
-        output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
+        output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.tavg.uvp
         # do full subband power spectra.
         echo pspec_run.py ${even_file} ${odd_file} ${output}\
-          --allow_fft --store_cov --Jy2mK_avg\
+          --allow_fft --store_cov_diag --Jy2mK_avg\
           --vis_units Jy --cov_model empirical_pspec --overwrite\
           --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
           --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -191,7 +191,7 @@ then
 
 
          pspec_run.py ${even_file} ${odd_file} ${output}\
-           --allow_fft --store_cov --Jy2mK_avg\
+           --allow_fft --store_cov_diag --Jy2mK_avg\
            --vis_units Jy --cov_model empirical_pspec --overwrite\
            --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
            --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -216,7 +216,7 @@ then
        --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
        --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
        --exclude_flagged_edge_channels --Nspws ${nspw}\
-       --external_flags ${external_flags}
+       --external_flags ${external_flags} --store_window
 
 
      pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -227,7 +227,7 @@ then
        --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
        --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
        --exclude_flagged_edge_channels --Nspws ${nspw}\
-       --external_flags ${external_flags}
+       --external_flags ${external_flags} --store_window
 
      output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.fullband_ps.uvp
     # do full subband power spectra.
@@ -239,7 +239,7 @@ then
       --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
       --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
       --exclude_flagged_edge_channels\
-      --external_flags ${external_flags}
+      --external_flags ${external_flags} --store_window
 
 
     pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -250,7 +250,7 @@ then
     --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
     --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
     --exclude_flagged_edge_channels\
-    --external_flags ${external_flags}
+    --external_flags ${external_flags} --store_window
 
     # now do waterfall.
     external_flags=zen.${jd}.${label}.flags.tavg.h5
@@ -260,7 +260,7 @@ then
 
     # three spectral windows
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
-      --allow_fft --store_cov --Jy2mK_avg\
+      --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -270,7 +270,7 @@ then
 
 
     pspec_run.py ${even_file} ${odd_file} ${output}\
-     --allow_fft --store_cov --Jy2mK_avg\
+     --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\
      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -279,10 +279,10 @@ then
      --exclude_flagged_edge_channels --Nspws ${nspw}\
 
 
-     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.tavg.uvp
+     output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.fullband_ps.tavg.uvp
      # do full subband power spectra.
      echo pspec_run.py ${even_file} ${odd_file} ${output}\
-       --allow_fft --store_cov --Jy2mK_avg\
+       --allow_fft --store_cov_diag --Jy2mK_avg\
        --vis_units Jy --cov_model empirical_pspec --overwrite\
        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -292,7 +292,7 @@ then
 
 
       pspec_run.py ${even_file} ${odd_file} ${output}\
-        --allow_fft --store_cov --Jy2mK_avg\
+        --allow_fft --store_cov_diag --Jy2mK_avg\
         --vis_units Jy --cov_model empirical_pspec --overwrite\
         --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
         --Jy2mK --beam ${beam_file} --interleave_times --sampling\
@@ -301,74 +301,51 @@ then
         --exclude_flagged_edge_channels
 
 
-# NEED TO CLEAN UP AUTOS HERE.
-
- # make auto power spectra without dayenu filter. Full band.
- output=zen.${jd}.${label}.auto.fullband_ps.uvp
- echo pspec_run.py ${auto_file} ${output}\
+# Just make power spectra of filled autos.
+ auto_file_even=zen.${jd}.even.${label}.foreground_filtered_waterfall_filled.auto.tavg.uvh5
+ auto_file_odd=${auto_file_even/even/odd}
+ output=zen.${jd}.${label}.auto.fullband_ps.tavg.uvp
+ echo pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
    --allow_fft --store_cov_diag --Jy2mK_avg\
    --vis_units Jy --cov_model empirical_pspec --overwrite\
    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
-   --exclude_flagged_edge_channels --rcond 1e-17\
+   --file_type uvh5 --fullband_filter --include_autocorrs\
+   --exclude_flagged_edge_channels\
    --external_flags ${external_flags}
 
 
- pspec_run.py ${auto_file} ${output}\
- --allow_fft --store_cov_diag --Jy2mK_avg\
- --vis_units Jy --cov_model empirical_pspec --overwrite\
- --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
- --Jy2mK --beam ${beam_file} --interleave_times --sampling\
- --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
- --exclude_flagged_edge_channels --rcond 1e-17\
- --external_flags ${external_flags}
-
- # make auto power spectra with dayenu filter. Fully band.
- output=zen.${jd}.${label}.auto.day.ps.uvp
- echo pspec_run.py ${auto_file} ${output}\
+ pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
    --allow_fft --store_cov_diag --Jy2mK_avg\
    --vis_units Jy --cov_model empirical_pspec --overwrite\
    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
-   --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
-   --exclude_flagged_edge_channels --rcond 1e-17\
-   --external_flags ${external_flags} --Nspws 3
+   --file_type uvh5 --fullband_filter --include_autocorrs\
+   --exclude_flagged_edge_channels\
+   --external_flags ${external_flags}
+
+   # Now do subbands.
+    auto_file_even=zen.${jd}.even.${label}.foreground_filtered_waterfall_filled.auto.tavg.uvh5
+    auto_file_odd=${auto_file_even/even/odd}
+    output=zen.${jd}.${label}.auto.tavg.uvp
+    echo pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
+      --allow_fft --store_cov_diag --Jy2mK_avg\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --file_type uvh5 --fullband_filter --include_autocorrs\
+      --exclude_flagged_edge_channels --Nspws ${nspw}\
+      --external_flags ${external_flags}
 
 
- pspec_run.py ${auto_file} ${output}\
- --allow_fft --store_cov_diag --Jy2mK_avg\
- --vis_units Jy --cov_model empirical_pspec --overwrite\
- --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
- --Jy2mK --beam ${beam_file} --interleave_times --sampling\
- --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
- --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
- --exclude_flagged_edge_channels --rcond 1e-17\
- --external_flags ${external_flags} --Nspws 3
-
-
- # make auto power spectra without dayenu filter.
- output=zen.${jd}.${label}.auto.ps.uvp
- echo pspec_run.py ${auto_file} ${output}\
-   --allow_fft --store_cov_diag --Jy2mK_avg\
-   --vis_units Jy --cov_model empirical_pspec --overwrite\
-   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
-   --exclude_flagged_edge_channels --rcond 1e-17\
-   --external_flags ${external_flags} --Nspws 3
-
-
- pspec_run.py ${auto_file} ${output}\
- --allow_fft --store_cov_diag --Jy2mK_avg\
- --vis_units Jy --cov_model empirical_pspec --overwrite\
- --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
- --Jy2mK --beam ${beam_file} --interleave_times --sampling\
- --time_avg --file_type uvh5 --fullband_filter --include_autocorrs\
- --exclude_flagged_edge_channels --rcond 1e-17\
- --external_flags ${external_flags} --Nspws 3
-
+    pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
+      --allow_fft --store_cov_diag --Jy2mK_avg\
+      --vis_units Jy --cov_model empirical_pspec --overwrite\
+      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --file_type uvh5 --fullband_filter --include_autocorrs\
+      --exclude_flagged_edge_channels --Nspws ${nspw}\
+      --external_flags ${external_flags}
 
 
 
