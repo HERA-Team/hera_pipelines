@@ -155,7 +155,7 @@ mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [TIME_AVERAGE]
-prereqs="XTALK_BASELINE_PARALLELIZED_ROUND2"
+prereqs="RECONSTITUTE_EVEN_ODD"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
