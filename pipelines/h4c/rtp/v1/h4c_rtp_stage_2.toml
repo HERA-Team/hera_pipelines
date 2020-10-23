@@ -180,18 +180,18 @@ args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
         "{obsid_list}"
        ]
 
-# [RFI_INSPECT_NOTEBOOK]
-# prereqs = "XRFI_DAY_THRESHOLD"
-# prereq_chunk_size = "all"
-# chunk_size = 1
-# stride_length = "all"
-# time_centered = false
-# mem = 128000
-# args = ["{basename}",
-#         "${NOTEBOOK_OPTS:nb_template_dir}",
-#         "${NOTEBOOK_OPTS:nb_output_repo}",
-#         "${NOTEBOOK_OPTS:git_push}",
-#         ]
+[RFI_INSPECT_NOTEBOOK]
+prereqs = "XRFI_DAY_THRESHOLD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
 
 [CAL_SMOOTH]
 prereqs = "XRFI_DAY_THRESHOLD"
