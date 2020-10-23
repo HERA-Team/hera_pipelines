@@ -38,6 +38,6 @@ then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
-    git commit -m "H3C IDR3 stage 2 redcal notebook for JD ${jd}"
+    git commit -m "H4C RTP stage 2 redcal notebook for JD ${jd}"
     git push origin master
 fi
