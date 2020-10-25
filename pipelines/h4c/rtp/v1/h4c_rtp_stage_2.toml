@@ -80,7 +80,7 @@ actions = ["REDCAL",
            "ABSCAL_INSPECT_NOTEBOOK",
            "XRFI",
            "XRFI_DAY_THRESHOLD",
-           # "RFI_INSPECT_NOTEBOOK", # TODO: add this back
+           "RFI_INSPECT_NOTEBOOK",
            "CAL_SMOOTH",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "IMAGING",
