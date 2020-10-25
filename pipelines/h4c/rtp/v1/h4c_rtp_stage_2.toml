@@ -82,8 +82,8 @@ actions = ["REDCAL",
            "XRFI_DAY_THRESHOLD",
            # "RFI_INSPECT_NOTEBOOK", # TODO: add this back
            "CAL_SMOOTH",
+           "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "IMAGING",
-           #"SMOOTH_CAL_INSPECT_NOTEBOOK", # TODO: build this
            "APPLY_CAL_REDUNDANT_AVERAGE",
            # "CLEAN_FILES", # TODO: add this back in
           ]
@@ -212,6 +212,21 @@ args = ["{basename}",
         "${CAL_SMOOTH_OPTS:time_threshold}",
         "${CAL_SMOOTH_OPTS:ant_threshold}",
         "${CAL_SMOOTH_OPTS:lst_blacklists}"
+       ]
+
+[SMOOTH_CAL_INSPECT_NOTEBOOK]
+prereqs = "CAL_SMOOTH"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ABSCAL_OPTS:model_files_glob}",
+        "${CAL_SMOOTH_OPTS:lst_blacklists}",
        ]
 
 [IMAGING]
