@@ -20,7 +20,7 @@ templatefile=${fn%.uvh5}.${label}.chunked.${data_ext}
 jd=$(get_jd $templatefile)
 int_jd=${jd:0:7}
 
-if [ -e "${fn_in}" ]
+if [ -e "${template_file}" ]
 then
   # reconstitute xtalk filtered files with no foregrounds
   outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_noforegrounds_res.${data_ext}
