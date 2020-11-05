@@ -396,6 +396,7 @@ chunk_size = 1
 stride_length = "all"
 time_centered = false
 mem = 128000
+ncpu = 8
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
