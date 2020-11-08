@@ -233,7 +233,7 @@ args = ["{basename}",
 [IMAGING]
 prereqs = "CAL_SMOOTH"
 prereq_chunk_size = "all"
-args = ["{basename}", "${IMAGING_OPTS:casa}", "${IMAGING_OPTS:casa_imaging_scripts}", "${IMAGING_OPTS:model_vis}", "${IMAGING_OPTS:calibration}"]
+args = ["{basename}", "${IMAGING_OPTS:casa}", "${IMAGING_OPTS:casa_imaging_scripts}", "${IMAGING_OPTS:spw}", "${IMAGING_OPTS:model_vis}", "${IMAGING_OPTS:calibration}"]
 
 [APPLY_CAL_REDUNDANT_AVERAGE]
 prereqs = "CAL_SMOOTH"
