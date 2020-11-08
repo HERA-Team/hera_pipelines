@@ -58,21 +58,27 @@ model_file=`basename ${filename%.uvh5}.model.uvfits`
 res_file=`basename ${filename%.uvh5}.res.uvfits`
 # if it ran through, image model and residual
 if [ -f ${model_file} ]; then
-    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_out%.uvfits}.image --spw ${spw}
-    ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_out%.uvfits}.image --spw ${spw}
+    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits}.image --spw ${spw}
+    ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits}.image --spw ${spw}
 fi
 if [ -f ${res_file} ]; then
-    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_out%.uvfits}.image --spw ${spw}
-    ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_out%.uvfits}.image --spw ${spw}
+    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits}.image --spw ${spw}
+    ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits}.image --spw ${spw}
 fi
 
 # erase uvfits file
-echo rm ${uvfits_file}
-rm ${uvfits_file}
-echo rm ${model_file}
-rm ${model_file}
-echo rm ${res_file}
-rm ${res_file}
+if [ -f ${uvfits_file} ]; then
+    echo rm ${uvfits_file}
+    rm ${uvfits_file}
+fi
+if [ -f ${model_file} ]; then
+    echo rm ${model_file}
+    rm ${model_file}
+fi
+if [ -f ${res_file} ]; then
+    echo rm ${res_file}
+    rm ${res_file}
+fi
 
 # keep ms files for 2458098
 JD=`get_jd "${1}" | cut -c 1-7`
