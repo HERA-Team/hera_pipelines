@@ -40,15 +40,15 @@ fi
 
 # convert file to uvfits
 uvfits_file=`basename ${filename%.uvh5}.uvfits`
-echo convert_to_uvfits.py ${filename} --output_filename uvfits_file --overwrite
-convert_to_uvfits.py ${filename} --output_filename uvfits_file --overwrite
+echo convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
+convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
 
 # get uvfits and ms filename
 image_file="${uvfits_file%.uvfits}.image"
 ms_file="${uvfits_file%.uvfits}.ms"
 
 # call opm_imaging.py from CASA_IMAGING package
-echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname {uvfits_file} --image ${image_file} --spw ${spw}
+echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
 # get model visibility files
