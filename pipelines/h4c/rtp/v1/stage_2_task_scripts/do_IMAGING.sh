@@ -52,8 +52,8 @@ echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_fil
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
 # get model visibility files
-echo ${casa_imaging_scripts}/get_model_vis.py ${filename} '"${model_vis}"' "./"
-python ${casa_imaging_scripts}/get_model_vis.py ${filename} '"${model_vis}"' "./"
+echo ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
+python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
 model_file=`basename ${filename%.uvh5}.model.uvfits`
 res_file=`basename ${filename%.uvh5}.res.uvfits`
 # if it ran through, image model and residual
