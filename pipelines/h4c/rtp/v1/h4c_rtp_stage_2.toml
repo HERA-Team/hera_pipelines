@@ -69,7 +69,6 @@ nbl_per_load = 1000
 casa = "/home/casa/packages/RHEL7/release/casa-release-5.1.0-68/bin/casa"
 casa_imaging_scripts = "/users/heramgr/hera_software/casa_imaging/scripts"
 spw = "0:200~280,0:600~700,0:900~1000"
-model_vis = "/your/model/vis"
 calibration = "smooth_abs.calfits"
 
 ############################################################################################################
@@ -234,7 +233,13 @@ args = ["{basename}",
 [IMAGING]
 prereqs = "CAL_SMOOTH"
 prereq_chunk_size = "all"
-args = ["{basename}", "${IMAGING_OPTS:casa}", "${IMAGING_OPTS:casa_imaging_scripts}", "${IMAGING_OPTS:spw}", "${IMAGING_OPTS:model_vis}", "${IMAGING_OPTS:calibration}"]
+args = ["{basename}",
+        "${IMAGING_OPTS:casa}",
+        "${IMAGING_OPTS:casa_imaging_scripts}",
+        "${IMAGING_OPTS:spw}",
+        "${ABSCAL_OPTS:model_files_glob}",
+        "${IMAGING_OPTS:calibration}"
+       ]
 
 [APPLY_CAL_REDUNDANT_AVERAGE]
 prereqs = "CAL_SMOOTH"
