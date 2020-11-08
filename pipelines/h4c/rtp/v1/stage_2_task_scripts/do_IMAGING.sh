@@ -62,8 +62,8 @@ if [ -f ${model_file} ]; then
     ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits}.image --spw ${spw}
 fi
 if [ -f ${res_file} ]; then
-    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits}.image --spw ${spw}
-    ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits}.image --spw ${spw}
+    echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits}.image --spw ${spw}
+    ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits}.image --spw ${spw}
 fi
 
 # erase uvfits file
