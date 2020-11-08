@@ -92,9 +92,17 @@ if [ -f ${model_file} ]; then
     echo rm ${model_file}
     rm ${model_file}
 fi
+if [ -f ${model_file%.uvfits}.ms ]; then
+    echo rm -r ${model_file%.uvfits}.ms
+    rm -r ${model_file%.uvfits}.ms
+fi
 if [ -f ${res_file} ]; then
     echo rm ${res_file}
     rm ${res_file}
+fi
+if [ -f ${res_file%.uvfits}.ms ]; then
+    echo rm -r ${res_file%.uvfits}.ms
+    rm -r ${res_file%.uvfits}.ms
 fi
 
 # keep ms files for 2458098
