@@ -52,7 +52,7 @@ echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_fil
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
 # get model visibility files
-echo ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
+echo python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
 python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
 model_file=`basename ${filename%.uvh5}.model.uvfits`
 res_file=`basename ${filename%.uvh5}.res.uvfits`
@@ -65,6 +65,23 @@ if [ -f ${res_file} ]; then
     echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
     ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
 fi
+
+# collect stokpol FITS output
+fits_files=(`ls *spw?.stokpol.image.fits`)
+for ff in "${fits_files[@]}"
+do
+    # stokes I, Q, U, V
+    echo python ${casa_imaging_scripts}/plot_fits.py --filename ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-10,-5,-5 --vmax 15,10,5,5 --radius 20
+    python ${casa_imaging_scripts}/plot_fits.py --filename ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-10,-5,-5 --vmax 15,10,5,5 --radius 20
+done
+# collect vispol FITS output
+fits_files=(`ls *spw?.vispol.image.fits`)
+for ff in "${fits_files[@]}"
+do
+    # XX, YY
+    echo python ${casa_imaging_scripts}/plot_fits.py --filename ${ff} --cmap bone_r --vmin 0 --vmax 15 --radius 20
+    python ${casa_imaging_scripts}/plot_fits.py --filename ${ff} --cmap bone_r --vmin 0 --vmax 15 --radius 20
+done
 
 # erase uvfits file
 if [ -f ${uvfits_file} ]; then
