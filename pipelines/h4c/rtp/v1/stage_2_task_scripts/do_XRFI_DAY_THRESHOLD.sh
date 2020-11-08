@@ -12,9 +12,15 @@ source ${src_dir}/_common.sh
 # 2 - nsig_t
 # 3 - nsig_f_adj
 # 4 - nsig_t_adj
-# 5+ - filenames
+# 5 - path_to_a_priori_flags: folder containing a priori flag YAML files
+# 6+ - filenames
 
-data_files="${@:5}"
+path_to_a_priori_flags="${5}"
+data_files="${@:6}"
+
+# get a priori flag yaml file
+jd_int=$(get_int_jd `basename ${6}`)
+flag_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
 
 echo xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --clobber ${data_files}
 xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --clobber ${data_files}
