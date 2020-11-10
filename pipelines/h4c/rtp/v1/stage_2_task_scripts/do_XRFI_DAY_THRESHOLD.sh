@@ -19,7 +19,7 @@ data_files="${@:6}"
 
 # get a priori flag yaml file
 jd_int=$(get_int_jd `basename ${6}`)
-flag_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
+flag_yaml=`echo "${5}/${jd_int}.yaml"`
 
-echo xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${5} --clobber ${data_files}
-xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${5} --clobber ${data_files}
+echo xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${flag_yaml} --clobber ${data_files}
+xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${flag_yaml} --clobber ${data_files}
