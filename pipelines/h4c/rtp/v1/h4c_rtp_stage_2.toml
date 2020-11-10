@@ -67,7 +67,7 @@ nbl_per_load = 1000
 
 [IMAGING_OPTS]
 casa = "/home/casa/packages/RHEL7/release/casa-release-5.1.0-68/bin/casa"
-casa_imaging_scripts = "/users/heramgr/hera_software/casa_imaging/scripts"
+casa_imaging_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/casa_imaging/scripts"
 spw = "0:200~280,0:600~700,0:900~1000"
 calibration = "smooth_abs.calfits"
 
