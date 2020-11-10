@@ -96,6 +96,7 @@ actions = ["SETUP",
            "SSINS",
            "LIBRARIAN_SSINS",
            "RFI_INSPECT_NOTEBOOK",
+           "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
            # "DATA_DOWNSELECT", # TODO: THIS DOES NOTHING CURRENTLY
            # "LIBRARIAN_DATA_DOWNSELECT", # TODO: THIS DOES NOTHING CURRENTLY
            "LIBRARIAN_ALL_NOTEBOOKS",
@@ -386,6 +387,22 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:git_push}",
         ]
 
+########## DELAY SPECTRUM INSPECTION ##########
+
+[DELAY_SPECTRUM_INSPECT_NOTEBOOK]
+prereqs = "XRFI_DAY_THRESHOLD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+ncpu = 8
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
 ########## DATA DOWNSELECTION ##########
 
 [DATA_DOWNSELECT]
@@ -408,6 +425,7 @@ prereqs = ["DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in
            "REDCAL_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "RFI_INSPECT_NOTEBOOK",
+           "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1

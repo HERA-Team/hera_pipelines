@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-# This script generates a notebook for inspecting the results of redundant baseline calibration for stage 2 analysis
+# This script generates a notebook for inspecting the results of XRFI for stage 2 analysis
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
@@ -19,7 +19,7 @@ git_push=${4}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/stage_2_redcal/stage_2_redcal_${jd}.ipynb
+nb_outfile=${nb_output_repo}/stage_2_rfi_inspect/stage_2_rfi_inspect_${jd}.ipynb
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
@@ -30,7 +30,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --to notebook \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/stage_2_redcal.ipynb
+--execute ${nb_template_dir}/stage_2_rfi_inspect.ipynb
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
@@ -38,6 +38,6 @@ then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
-    git commit -m "H4C RTP stage 2 redcal notebook for JD ${jd}"
+    git commit -m "H4C RTP stage 2 rfi notebook for JD ${jd}"
     git push origin master
 fi

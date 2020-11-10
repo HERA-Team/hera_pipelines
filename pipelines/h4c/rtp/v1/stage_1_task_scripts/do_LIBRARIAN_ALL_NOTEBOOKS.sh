@@ -29,6 +29,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             # "redcal_inspect_known_good" TODO: add this back in
             "redcal_inspect_maybe_good"
             "rfi_inspect"
+            "delay_spectrum_inspect"
         )
 
         for nb_name in ${nb_names[@]}; do

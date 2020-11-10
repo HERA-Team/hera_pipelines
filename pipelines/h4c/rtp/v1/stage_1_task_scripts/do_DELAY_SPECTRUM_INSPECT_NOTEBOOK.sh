@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-# This script generates a notebook for inspecting the results of redundant baseline calibration for stage 2 analysis
+# This script generates a notebook for inspecting delay spectrum of autocorrelations
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
@@ -19,7 +19,11 @@ git_push=${4}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/stage_2_redcal/stage_2_redcal_${jd}.ipynb
+nb_outdir=${nb_output_repo}/delay_spectrum_inspect
+if [ ! -d ${nb_outdir} ]; then
+  mkdir -p ${nb_outdir}
+fi
+nb_outfile=${nb_outdir}/delay_spectrum_inspect_${jd}.ipynb
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
@@ -30,7 +34,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --to notebook \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/stage_2_redcal.ipynb
+--execute ${nb_template_dir}/delay_spectrum_inspect.ipynb
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
@@ -38,6 +42,7 @@ then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
-    git commit -m "H4C RTP stage 2 redcal notebook for JD ${jd}"
+    # TODO: also commit html file
+    git commit -m "RTP delay spectrum inspection notebook commit for JD ${jd}"
     git push origin master
 fi
