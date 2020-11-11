@@ -70,9 +70,9 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem=16000
 args=["{basename}",
-      "${GLOBAL_OPTS:data_ext}",
-      "${GLOBAL_OPTS:label}",
-      "${GLOBAL_OPTS:t_avg}"]
+     "${GLOBAL_OPTS:data_ext}",
+     "${GLOBAL_OPTS:label}",
+     "${GLOBAL_OPTS:t_avg}"]
 
 [PSPEC]
 prereqs = "TIME_AVERAGE"
