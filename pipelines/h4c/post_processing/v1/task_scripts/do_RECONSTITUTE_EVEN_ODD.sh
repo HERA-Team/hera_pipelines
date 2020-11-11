@@ -84,7 +84,7 @@ then
           --fragmentlist ${fragment_list_odd} --clobber
 
   # time averaged data
-  tfilename_even=zen.${jd}.even.${label}.xtalk_filtered_withforegrounds_res.tavg.${data_ext}
+  outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_withforegrounds_res.tavg.${data_ext}
   fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}`
   outfilename_odd=${outfilename_even/even/odd}
   fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}`
