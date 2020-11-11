@@ -67,16 +67,14 @@ if [ -f ${res_file} ]; then
 fi
 
 # collect stokpol FITS output
-fits_files=(`ls *spw?.stokpol.image.fits`)
-for ff in "${fits_files[@]}"
+for ff in *spw?.stokpol.image.fits
 do
     # stokes I, Q, U, V
     echo python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
     python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
 done
 # collect vispol FITS output
-fits_files=(`ls *spw?.vispol.image.fits`)
-for ff in "${fits_files[@]}"
+for ff in *spw?.vispol.image.fits
 do
     # XX, YY
     echo python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r --vmin 0 --vmax 10 --radius 20
