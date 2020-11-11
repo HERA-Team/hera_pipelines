@@ -103,13 +103,6 @@ if [ -d ${res_file%.uvfits}.ms ]; then
     rm -r ${res_file%.uvfits}.ms
 fi
 
-# keep ms files for 2458098
-JD=`get_jd "${1}" | cut -c 1-7`
-if [ $JD -ne 2458098 ]; then
-    echo rm ${ms_file}
-    rm -r ${ms_file} || echo "No ${ms_file} to remove."
-fi
-
 # remove calibrated visibility
 if [ ! -z "${calibration}" ]; then
     rm ${filename}
