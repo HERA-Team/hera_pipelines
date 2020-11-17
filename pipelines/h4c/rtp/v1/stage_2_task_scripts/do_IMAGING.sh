@@ -67,16 +67,16 @@ if [ -f ${res_file} ]; then
 fi
 
 # collect stokpol FITS output
-fits_files=(`ls *spw?.stokpol.image.fits`)
-for ff in "${fits_files[@]}"
+shopt -s nullglob # skip loop if nothing is found, e.g. if the file is totally flagged
+for ff in *spw?.stokpol.image.fits
 do
     # stokes I, Q, U, V
     echo python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
     python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
 done
 # collect vispol FITS output
-fits_files=(`ls *spw?.vispol.image.fits`)
-for ff in "${fits_files[@]}"
+shopt -s nullglob # skip loop if nothing is found, e.g. if the file is totally flagged
+for ff in *spw?.vispol.image.fits
 do
     # XX, YY
     echo python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r --vmin 0 --vmax 10 --radius 20
@@ -103,13 +103,6 @@ fi
 if [ -d ${res_file%.uvfits}.ms ]; then
     echo rm -r ${res_file%.uvfits}.ms
     rm -r ${res_file%.uvfits}.ms
-fi
-
-# keep ms files for 2458098
-JD=`get_jd "${1}" | cut -c 1-7`
-if [ $JD -ne 2458098 ]; then
-    echo rm ${ms_file}
-    rm -r ${ms_file} || echo "No ${ms_file} to remove."
 fi
 
 # remove calibrated visibility
