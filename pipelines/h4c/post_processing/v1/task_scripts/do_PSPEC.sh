@@ -312,7 +312,7 @@ then
    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
    --file_type uvh5 --fullband_filter --include_autocorrs\
    --exclude_flagged_edge_channels --taper bh\
-   --external_flags ${external_flags}
+   --external_flags ${external_flags} --exclude_cross_bls
 
 
  pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
@@ -322,7 +322,7 @@ then
    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
    --file_type uvh5 --fullband_filter --include_autocorrs\
    --exclude_flagged_edge_channels --taper bh\
-   --external_flags ${external_flags}
+   --external_flags ${external_flags} --exclude_cross_bls
 
    # Now do subbands.
     auto_file_even=zen.${jd}.even.${label}.foreground_filtered_waterfall_filled.auto.tavg.uvh5
@@ -335,7 +335,7 @@ then
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
       --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
-      --external_flags ${external_flags}
+      --external_flags ${external_flags} --exclude_cross_bls
 
 
     pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
@@ -345,7 +345,7 @@ then
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
       --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
-      --external_flags ${external_flags}
+      --external_flags ${external_flags} --exclude_cross_bls
 
 
 
