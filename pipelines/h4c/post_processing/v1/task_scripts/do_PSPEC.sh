@@ -311,7 +311,7 @@ then
    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
    --file_type uvh5 --fullband_filter --include_autocorrs\
-   --exclude_flagged_edge_channels\
+   --exclude_flagged_edge_channels --taper bh\
    --external_flags ${external_flags}
 
 
@@ -321,7 +321,7 @@ then
    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
    --file_type uvh5 --fullband_filter --include_autocorrs\
-   --exclude_flagged_edge_channels\
+   --exclude_flagged_edge_channels --taper bh\
    --external_flags ${external_flags}
 
    # Now do subbands.
@@ -334,7 +334,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
-      --exclude_flagged_edge_channels --Nspws ${nspw}\
+      --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
       --external_flags ${external_flags}
 
 
@@ -344,7 +344,7 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
-      --exclude_flagged_edge_channels --Nspws ${nspw}\
+      --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
       --external_flags ${external_flags}
 
 

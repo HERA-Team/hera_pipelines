@@ -68,11 +68,11 @@ actions = [
            "APPLY_FLAGS_GENERATE_EVEN_ODD",
            "DELAY_NOSPW_ROUND2",
            "XTALK_BASELINE_PARALLELIZED_ROUND2",
-           "RECONSTITUTE_EVEN_ODD",
            "TIME_AVERAGE",
+           "RECONSTITUTE_EVEN_ODD",
            "PSPEC",
-           "COMBINE_PSPEC",
-	         "FILTER_CLEANUP"]
+           "COMBINE_PSPEC"]#,
+	         #"FILTER_CLEANUP"]
 
 [PRE_CHUNK]
 mem=16000
@@ -90,7 +90,8 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:flag_ext}",
         "${GLOBAL_OPTS:label}",
-        "${DELAY_OPTS:tol}", "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:time_threshold}", "${GLOBAL_OPTS:cache_dir}"]
+        "${DELAY_OPTS:tol}", "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:time_threshold}", "${GLOBAL_OPTS:cache_dir}",
+        "${GLOBAL_OPTS:yaml_dir}"]
 
 [XTALK]
 prereqs = "DELAY_BASELINE_PARALLELIZED"
@@ -146,16 +147,9 @@ mem = 32000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
-[RECONSTITUTE_EVEN_ODD]
-prereqs = "XTALK_BASELINE_PARALLELIZED_ROUND2"
-prereq_chunk_size="all"
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [TIME_AVERAGE]
-prereqs="XTALK_BASELINE_PARALLELIZED_ROUND2"
+prereqs= "XTALK_BASELINE_PARALLELIZED_ROUND2"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
@@ -165,8 +159,17 @@ args=["{basename}",
       "${GLOBAL_OPTS:label}",
       "${GLOBAL_OPTS:t_avg}"]
 
-[PSPEC]
+
+[RECONSTITUTE_EVEN_ODD]
 prereqs = "TIME_AVERAGE"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
+
+[PSPEC]
+prereqs = "RECONSTITUTE_EVEN_ODD"
 prereq_chunk_size="all"
 mem=64000
 chunk_size=1

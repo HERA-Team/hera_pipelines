@@ -15,6 +15,8 @@ source ${src_dir}/_common.sh
 # 6 - standoff delay standoff in ns for filtering window.
 # 7 - time threshold to factorize_flags on.
 # 8 - cache_dir, directory to store cache files in.
+# 9 - yaml_dir, directory of yaml file.
+
 fn="${1}"
 data_ext="${2}"
 flag_ext="${3}"
@@ -23,9 +25,11 @@ tol="${5}"
 standoff="${6}"
 time_threshold="${7}"
 cache_dir="${8}"
+yaml_dir="${9}"
 # get julian day from file name
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
+yaml_file=${yaml_dir}/${int_jd}.yaml
 
 # generate output file name
 fn_out=${fn%.uvh5}.${label}.foreground_filtered_waterfall.${data_ext}
@@ -43,14 +47,14 @@ fn_in=zen.${jd}.sum.${label}.chunked.${data_ext}
 if [ -e "${fn_in}" ]
 then
 echo dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags ${flag_files} \
-  --res_outfilename ${fn_out} --clobber\
+  --res_outfilename ${fn_out} --clobber --a_priori_flag_yaml ${yaml_file}\
   --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
   --factorize_flags --time_thresh ${time_threshold} --overwrite_data_flags\
   --datafilelist ${data_files} --verbose
   #--write_cache --read_cache
 
   dayenu_delay_filter_run_baseline_parallelized.py ${fn_in} --external_flags ${flag_files} \
-    --res_outfilename ${fn_out} --clobber\
+    --res_outfilename ${fn_out} --clobber --a_priori_flag_yaml ${yaml_file}\
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --skip_flagged_edges\
     --factorize_flags --time_thresh ${time_threshold} --overwrite_data_flags\
     --datafilelist ${data_files} --verbose

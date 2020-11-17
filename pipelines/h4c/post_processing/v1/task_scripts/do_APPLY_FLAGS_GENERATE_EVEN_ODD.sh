@@ -35,7 +35,7 @@ auto_file_diff=${auto_file/sum/diff}
 outfile_auto_diff=${outfile_auto/sum/diff}
 
 
-flagfile=zen.${jd}.${label}.roto_flags.flags.h5
+flagfile=zen.${int_jd}.${label}.roto_flag.flags.h5
 calfile=${fn%.uvh5}.${label}.chunked.smooth_abs.roto_flags.calfits
 diff_file=${fn/sum/diff}
 
