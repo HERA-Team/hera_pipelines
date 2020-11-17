@@ -23,7 +23,7 @@ flag_nchan_high = 0
 oc_maxiter = 10000
 min_bl_cut = 1 # 15
 max_bl_cut = 10000 # 100
-max_dims = 2
+max_dims = 4
 check_every = 50
 check_after = 500
 
@@ -67,7 +67,7 @@ nbl_per_load = 1000
 
 [IMAGING_OPTS]
 casa = "/home/casa/packages/RHEL7/release/casa-release-5.1.0-68/bin/casa"
-casa_imaging_scripts = "/users/heramgr/hera_software/casa_imaging/scripts"
+casa_imaging_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/casa_imaging/scripts"
 spw = "0:200~280,0:600~700,0:900~1000"
 calibration = "smooth_abs.calfits"
 
