@@ -46,7 +46,7 @@ kf_size = 8
 kt_size = 32
 
 [PSPEC_OPTS]
-nspws = 3
+nspws = 2
 beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_power_beam_healpix.fits"
 
 [FILTER_CLEANUP_OPTS]

@@ -300,29 +300,30 @@ then
         --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression} --external_flags ${external_flags}\
         --exclude_flagged_edge_channels
 
-
 # Just make power spectra of filled autos.
  auto_file_even=zen.${jd}.even.${label}.foreground_filtered_waterfall_filled.auto.tavg.uvh5
- auto_file_odd=${auto_file_even/even/odd}
- output=zen.${jd}.${label}.auto.fullband_ps.tavg.uvp
- echo pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
-   --allow_fft --store_cov_diag --Jy2mK_avg\
-   --vis_units Jy --cov_model empirical_pspec --overwrite\
-   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --file_type uvh5 --fullband_filter --include_autocorrs\
-   --exclude_flagged_edge_channels --taper bh\
-   --external_flags ${external_flags} --exclude_cross_bls
+ if [ -e "${auto_file_even}" ]
+ then
+   auto_file_odd=${auto_file_even/even/odd}
+   output=zen.${jd}.${label}.auto.fullband_ps.tavg.uvp
+   echo pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
+     --allow_fft --store_cov_diag --Jy2mK_avg\
+     --vis_units Jy --cov_model empirical_pspec --overwrite\
+     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --file_type uvh5 --fullband_filter --include_autocorrs\
+     --exclude_flagged_edge_channels --taper bh\
+     --external_flags ${external_flags} --exclude_cross_bls
 
 
- pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
-   --allow_fft --store_cov_diag --Jy2mK_avg\
-   --vis_units Jy --cov_model empirical_pspec --overwrite\
-   --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-   --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-   --file_type uvh5 --fullband_filter --include_autocorrs\
-   --exclude_flagged_edge_channels --taper bh\
-   --external_flags ${external_flags} --exclude_cross_bls
+   pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
+     --allow_fft --store_cov_diag --Jy2mK_avg\
+     --vis_units Jy --cov_model empirical_pspec --overwrite\
+     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --file_type uvh5 --fullband_filter --include_autocorrs\
+     --exclude_flagged_edge_channels --taper bh\
+     --external_flags ${external_flags} --exclude_cross_bls
 
    # Now do subbands.
     auto_file_even=zen.${jd}.even.${label}.foreground_filtered_waterfall_filled.auto.tavg.uvh5
@@ -346,8 +347,9 @@ then
       --file_type uvh5 --fullband_filter --include_autocorrs\
       --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
       --external_flags ${external_flags} --exclude_cross_bls
-
-
+ else
+   echo "${auto_file_even} does not exist!"
+ fi
 
 else
   echo "${even_file} does not exist!"
