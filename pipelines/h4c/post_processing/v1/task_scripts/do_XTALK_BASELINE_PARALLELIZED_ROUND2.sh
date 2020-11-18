@@ -14,6 +14,7 @@ source ${src_dir}/_common.sh
 # 5 - First xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1.
 # 6 - Second xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1
 # 7 - Cache Directory.
+# 8 - if true, do no foregrounds file. This could run substantially slower if flags are not separable.
 
 fn="${1}"
 data_ext="${2}"
@@ -22,6 +23,7 @@ tol="${4}"
 frc0="${5}"
 frc1="${6}"
 cache_dir="${7}"
+do_noforegrounds="${8}"
 # get julian day from file name
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -42,21 +44,24 @@ data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_res.${data
 
 if [ -e "${fn_in_even}" ]
 then
- echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
- --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
- --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
+ if [ -e "${do_noforegrounds}" = "true" ]
+ then
+   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
+   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
+   --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
 
- dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
-  --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
-  --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
+   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
+    --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
 
- echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-  --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-  --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
+   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
+    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
 
- dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-  --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-  --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
+   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
+    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
+  fi
 
 
   # foreground filled and xtalk filtered/filled files.

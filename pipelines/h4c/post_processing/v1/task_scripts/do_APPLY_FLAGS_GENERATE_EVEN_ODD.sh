@@ -14,6 +14,7 @@ source ${src_dir}/_common.sh
 # 3 - output data extension.
 # 4 - baselines to load at once.
 # 5 - polarizations to output.
+# 6 - calibration extension.
 
 
 fn="${1}"
@@ -22,10 +23,13 @@ output_ext="${3}"
 nbl_per_load="${4}"
 pol0="${5}"
 pol1="${6}"
+flag_ext="${7}"
+cal_ext="${8}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
+flagfile=zen.${int_jd}.${flag_ext}
 infile=zen.${jd}.sum.${label}.chunked.${output_ext}
 infile_diff=${infile/sum/diff}
 
@@ -35,8 +39,7 @@ auto_file_diff=${auto_file/sum/diff}
 outfile_auto_diff=${outfile_auto/sum/diff}
 
 
-flagfile=zen.${int_jd}.${label}.roto_flag.flags.h5
-calfile=${fn%.uvh5}.${label}.chunked.smooth_abs.roto_flags.calfits
+calfile=${fn%.uvh5}.${label}.chunked.${cal_ext}
 diff_file=${fn/sum/diff}
 
 

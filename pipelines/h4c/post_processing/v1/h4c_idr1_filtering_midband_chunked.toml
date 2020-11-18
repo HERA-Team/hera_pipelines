@@ -12,9 +12,9 @@ chunk_size = 60
 [GLOBAL_OPTS]
 data_ext = 'smooth_avg_vis.uvh5'
 cal_ext = 'smooth_abs.calfits'
-spw0 = 48
-spw1 = 320
-label = "low-band"
+spw0 = 600
+spw1 = 856
+label = "mid-band"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
 yaml_dir = "/users/aewallwi/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
@@ -25,6 +25,7 @@ nbl_per_load = 0
 t_avg = 300.0
 flag_ext = "${label}.roto_flag.flags.h5"
 final_cal_ext="smooth_abs.roto_flags.calfits"
+
 
 [DELAY_OPTS]
 tol = 1e-9
@@ -182,6 +183,7 @@ args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
       "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:flag_ext}"
       "${PSPEC_OPTS:do_noforegrounds}"]
+
 
 [COMBINE_PSPEC]
 prereqs = "PSPEC"

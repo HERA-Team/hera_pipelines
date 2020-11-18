@@ -27,20 +27,24 @@ then
   fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}`
   outfilename_odd=${outfilename_even/even/odd}
   fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}`
+  tfile=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
+  if [ -e "${tfile}" ]
+  then
+    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
+        --fragmentlist ${fragment_list_even} --clobber
+
+    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
+        --fragmentlist ${fragment_list_even} --clobber
 
 
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber
+    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
+        --fragmentlist ${fragment_list_odd} --clobber
 
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber
-
-
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-      --fragmentlist ${fragment_list_odd} --clobber
-
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-          --fragmentlist ${fragment_list_odd} --clobber
+    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
+            --fragmentlist ${fragment_list_odd} --clobber
+  else
+    echo "noforeground files were not produced."
+  fi
 
   # do time averaged data.
   #outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_noforegrounds_res.tavg.${data_ext}
