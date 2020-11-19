@@ -28,72 +28,56 @@ do_noforegrounds="${8}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 # generate output file name
-fn_in_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
-fn_in_odd=${fn_in_even/even/odd}
-fn_res_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
-fn_res_odd=${fn_res_even/even/odd}
-
 
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
   mkdir ${cache_dir}
 fi
-# foreground filtered and xtalk filtered files.
-data_files_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_res.${data_ext}`
-data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_res.${data_ext}`
+parities=("even" "odd")
+for parity in ${parities[@]}
+do
+  fn_residual=zen.${jd}.${parity}.${label}.foreground_filtered_res.${data_ext}
+  fn_foregrounds=zen.${jd}.${parity}.${label}.foreground_filtered_CLEAN.${data_ext}
+  fn_CLEAN_xtalk=zen.${jd}.${parity}.${label}.waterfall_foregrounds.${data_ext}
+  fn_resid_xtalk=zen.${jd}.${parity}.${label}.waterfall_res.${data_ext}
+  fn_xtalk=zen.${jd}.${parity}.${label}.waterfall_withforegrounds.${data_ext}
+  fn_CLEAN_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_foregrounds.${data_ext}
+  fn_resid_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}
+  fn_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.${data_ext}
+  foreground_files=`echo zen.${int_jd}.*.${parity}.${label}.foreground_filtered_CLEAN.${data_ext}`
+  resid_files=`echo zen.${int_jd}.*.${parity}.${label}.foreground_filtered_res.${data_ext}`
+  if [ -e "${fn_foregrounds}" ]
+  then
+    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_residual} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_resid_noxtalk} \
+    --filled_outfilename ${fn_resid_xtalk} \
+    --clobber --datafilelist ${resid_files} --skip_flagged_edges --verbose
 
-if [ -e "${fn_in_even}" ]
-then
- if [ -e "${do_noforegrounds}" = "true" ]
- then
-   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
-   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
-   --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
+    dpss_xtalk_filter_run_baseline_parallelized.py ${fn_residual} --tol ${tol} \
+    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_resid_noxtalk} \
+    --filled_outfilename ${fn_resid_xtalk} \
+    --clobber --datafilelist ${resid_files} --skip_flagged_edges --verbose
 
-   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
-    --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
+    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_foregrounds} --tol ${tol} \
+     --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_CLEAN_noxtalk} \
+     --CLEAN_outfilename ${fn_CLEAN_xtalk} \
+     --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose
 
-   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
+     dpss_xtalk_filter_run_baseline_parallelized.py ${fn_foregrounds} --tol ${tol} \
+      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_CLEAN_noxtalk} \
+      --CLEAN_outfilename ${fn_CLEAN_xtalk} \
+      --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose
 
-   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
+    echo sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --flag_mode "and"
+    sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --flag_mode "and"
+
+    echo sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_noxtalk} ${fn_xtalk} --flag_mode "and"
+    sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_xtalk} ${fn_xtalk} --flag_mode "and"
   fi
+done
 
 
-  # foreground filled and xtalk filtered/filled files.
-  fn_in_even=zen.${jd}.even.${label}.foreground_filtered_filled.${data_ext}
-  fn_in_odd=${fn_in_even/even/odd}
-  fn_res_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
-  fn_res_odd=${fn_res_even/even/odd}
-  fn_filled_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
-  fn_filled_odd=${fn_filled_even/even/odd}
 
-  data_files_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_filled.${data_ext}`
-  data_files_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_filled.${data_ext}`
-
-  echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
-   --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
-   --filled_outfilename ${fn_filled_even} \
-   --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
-
-   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_even} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res_even} \
-    --filled_outfilename ${fn_filled_even} \
-    --clobber --datafilelist ${data_files_even} --skip_flagged_edges --verbose
-
-   echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-    --filled_outfilename ${fn_filled_odd} \
-    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
-
-   dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in_odd} --tol ${tol} \
-    --max_frate_coeffs ${frc0} ${frc1}  --res_outfilename ${fn_res_odd} \
-    --filled_outfilename ${fn_filled_odd} \
-    --clobber --datafilelist ${data_files_odd} --skip_flagged_edges --verbose
-  else
-    echo "${fn_in_even} does not exist!"
-  fi
+else
+echo "${fn_in_even} does not exist!"
+fi

@@ -33,8 +33,9 @@ even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${d
 odd_file=${even_file/even/odd}
 output=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
 # form power spectrum between even and odd data sets with offset times.
+tfile=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.${data_ext}
 
-if [ -e "${even_file}" ]
+if [ -e "${tfile}" ]
 then
     # power spectra of data with the foregrounds and xtalk retained -- to estimate signal loss from xtalk filter.
     even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}

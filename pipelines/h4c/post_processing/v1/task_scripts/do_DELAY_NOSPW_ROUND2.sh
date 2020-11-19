@@ -28,18 +28,18 @@ fn_in_odd=${fn_in_even/even/odd}
 auto_file=${fn%.uvh5}.${label}.autos.calibrated.uvh5
 auto_file_even=${auto_file/sum/odd}
 auto_file_odd=${auto_file/sum/odd}
-auto_even_filled_out=${fn%.uvh5}.${label}.foreground_filtered_auto_filled.uvh5
-auto_even_filled_out=${auto_even_filled_out/sum/even}
+auto_even_CLEAN_out=${fn%.uvh5}.${label}.foreground_filtered_auto_CLEAN.uvh5
+auto_even_CLEAN_out=${auto_even_CLEAN_out/sum/even}
 auto_even_res_out=${fn%.uvh5}.${label}.foreground_filtered_auto_res.uvh5
 auto_even_res_out=${auto_even_res_out/sum/even}
-auto_odd_filled_out=${auto_even_filled_out/even/odd}
+auto_odd_CLEAN_out=${auto_even_CLEAN_out/even/odd}
 auto_odd_res_out=${auto_even_res_out/even/odd}
 
 
 fn_res_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
 fn_res_odd=${fn_res_even/even/odd}
-fn_filled_even=zen.${jd}.even.${label}.foreground_filtered_filled.${data_ext}
-fn_filled_odd=${fn_filled_even/even/odd}
+fn_CLEAN_even=zen.${jd}.even.${label}.foreground_filtered_CLEAN.${data_ext}
+fn_CLEAN_odd=${fn_CLEAN_even/even/odd}
 
 
 # if cache directory does not exist, make it
@@ -59,45 +59,45 @@ then
   # even files
   echo dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
     --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
-    --filled_outfilename ${fn_filled_even} \
+    --CLEAN_outfilename ${fn_CLEAN_even} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
       --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
-      --filled_outfilename ${fn_filled_even} \
+      --CLEAN_outfilename ${fn_CLEAN_even} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   # odd files
   echo dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
     --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
-    --filled_outfilename ${fn_filled_odd} \
+    --CLEAN_outfilename ${fn_CLEAN_odd} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
       --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
-      --filled_outfilename ${fn_filled_odd} \
+      --CLEAN_outfilename ${fn_CLEAN_odd} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   # auto file
   echo dpss_delay_filter_run.py ${auto_file_even} --calfile ${calfile} \
     --res_outfilename ${auto_even_res_out} --clobber --skip_flagged_edges \
-    --filled_outfilename ${auto_even_filled_out} \
+    --CLEAN_outfilename ${auto_even_CLEAN_out} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${auto_file_even} --calfile ${calfile} \
       --res_outfilename ${auto_even_res_out} --clobber --skip_flagged_edges \
-      --filled_outfilename ${auto_even_filled_out} \
+      --CLEAN_outfilename ${auto_even_CLEAN_out} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   # auto file
   echo dpss_delay_filter_run.py ${auto_file_odd} --calfile ${calfile} \
     --res_outfilename ${auto_odd_res_out} --clobber --skip_flagged_edges \
-    --filled_outfilename ${auto_odd_filled_out} \
+    --CLEAN_outfilename ${auto_odd_CLEAN_out} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${auto_file_odd} --calfile ${calfile} \
       --res_outfilename ${auto_odd_res_out} --clobber --skip_flagged_edges \
-      --filled_outfilename ${auto_odd_filled_out} \
+      --CLEAN_outfilename ${auto_odd_CLEAN_out} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 else
   echo "${fn_in_even} does not exist!"
