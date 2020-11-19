@@ -26,7 +26,7 @@ commas="${spw//[^,]}"
 (( nspw = "${#commas}" + 1 ))
 
 # loop over data, model, and residual; stokes pol and vis pol; and over spectral windows
-for dtype in data, model, res; do
+for dtype in data model res; do
     for pol in stokpol vispol; do
         for n in `seq 0 ${nspw}`; do
             image_glob="'*_image/zen.${jd}.*.calibrated.${dtype}.spw${n}.${pol}.image.png'"
