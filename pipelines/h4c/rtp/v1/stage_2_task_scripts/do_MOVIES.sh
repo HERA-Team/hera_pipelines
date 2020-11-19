@@ -26,14 +26,14 @@ commas="${spw//[^,]}"
 (( nspw = "${#commas}" + 1 ))
 
 # loop over data, model, and residual; stokes pol and vis pol; and over spectral windows
-for dtype in data model res; do
+for dtype in "." ".model." ".res."; do
     for pol in stokpol vispol; do
         for n in `seq 0 ${nspw}`; do
-            image_glob="'*_image/zen.${jd}.*.calibrated.${dtype}.spw${n}.${pol}.image.png'"
+            image_glob="'*_image/zen.${jd}.*.calibrated${dtype}spw${n}.${pol}.image.png'"
             echo ${ffmpeg} -framerate ${framerate} -pattern_type glob -i ${image_glob} -s:v ${framesize} \
-                -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p zen.${jd}.${dtype}.spw${n}.${pol}.mp4
+                -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p zen.${jd}${dtype}spw${n}.${pol}.mp4
             ${ffmpeg} -framerate ${framerate} -pattern_type glob -i ${image_glob} -s:v ${framesize} \
-                -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p zen.${jd}.${dtype}.spw${n}.${pol}.mp4
+                -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p zen.${jd}${dtype}spw${n}.${pol}.mp4
         done
     done
 done
