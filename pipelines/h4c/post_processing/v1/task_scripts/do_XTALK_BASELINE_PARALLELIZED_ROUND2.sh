@@ -36,34 +36,37 @@ fi
 parities=("even" "odd")
 for parity in ${parities[@]}
 do
-  fn_residual=zen.${jd}.${parity}.${label}.foreground_filtered_res.${data_ext}
-  fn_foregrounds=zen.${jd}.${parity}.${label}.foreground_filtered_CLEAN.${data_ext}
+  fn_res=zen.${jd}.${parity}.${label}.foreground_res.${data_ext} #foreground residual
+  resid_files=`echo zen.${int_jd}.*.${parity}.${label}.foreground_res.${data_ext}`
+  fn_model=zen.${jd}.${parity}.${label}.foreground_model.${data_ext} #foreground model
+  foreground_files=`echo zen.${int_jd}.*.${parity}.${label}.foreground_model.${data_ext}`
+
   fn_CLEAN_xtalk=zen.${jd}.${parity}.${label}.waterfall_foregrounds.${data_ext}
   fn_resid_xtalk=zen.${jd}.${parity}.${label}.waterfall_res.${data_ext}
+
   fn_xtalk=zen.${jd}.${parity}.${label}.waterfall_withforegrounds.${data_ext}
   fn_CLEAN_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_foregrounds.${data_ext}
   fn_resid_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}
   fn_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.${data_ext}
-  foreground_files=`echo zen.${int_jd}.*.${parity}.${label}.foreground_filtered_CLEAN.${data_ext}`
-  resid_files=`echo zen.${int_jd}.*.${parity}.${label}.foreground_filtered_res.${data_ext}`
+
   if [ -e "${fn_foregrounds}" ]
   then
-    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_residual} --tol ${tol} \
+    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_res} --tol ${tol} \
     --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_resid_noxtalk} \
     --filled_outfilename ${fn_resid_xtalk} \
     --clobber --datafilelist ${resid_files} --skip_flagged_edges --verbose
 
-    dpss_xtalk_filter_run_baseline_parallelized.py ${fn_residual} --tol ${tol} \
+    dpss_xtalk_filter_run_baseline_parallelized.py ${fn_res} --tol ${tol} \
     --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_resid_noxtalk} \
     --filled_outfilename ${fn_resid_xtalk} \
     --clobber --datafilelist ${resid_files} --skip_flagged_edges --verbose
 
-    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_foregrounds} --tol ${tol} \
+    echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_model} --tol ${tol} \
      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_CLEAN_noxtalk} \
      --CLEAN_outfilename ${fn_CLEAN_xtalk} \
      --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose
 
-     dpss_xtalk_filter_run_baseline_parallelized.py ${fn_foregrounds} --tol ${tol} \
+     dpss_xtalk_filter_run_baseline_parallelized.py ${fn_model} --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_CLEAN_noxtalk} \
       --CLEAN_outfilename ${fn_CLEAN_xtalk} \
       --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose

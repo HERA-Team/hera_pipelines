@@ -23,7 +23,6 @@ cache_dir="${7}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
-fn_in_even=zen.${jd}.even.${label}.${data_ext}
 fn_in_odd=${fn_in_even/even/odd}
 auto_file=${fn%.uvh5}.${label}.autos.calibrated.uvh5
 auto_file_even=${auto_file/sum/odd}
@@ -36,10 +35,7 @@ auto_odd_CLEAN_out=${auto_even_CLEAN_out/even/odd}
 auto_odd_res_out=${auto_even_res_out/even/odd}
 
 
-fn_res_even=zen.${jd}.even.${label}.foreground_filtered_res.${data_ext}
-fn_res_odd=${fn_res_even/even/odd}
-fn_CLEAN_even=zen.${jd}.even.${label}.foreground_filtered_CLEAN.${data_ext}
-fn_CLEAN_odd=${fn_CLEAN_even/even/odd}
+
 
 
 # if cache directory does not exist, make it
@@ -53,52 +49,38 @@ then
 else
   calfile="none"
 fi
-
-if [ -e "${fn_in_even}" ]
-then
-  # even files
-  echo dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
-    --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
-    --CLEAN_outfilename ${fn_CLEAN_even} \
+parities=("even" "odd")
+for parity in ${parities[@]}
+do
+  fn_in=zen.${jd}.${parity}.${label}.${data_ext}
+  fn_res=zen.${jd}.${parity}.${label}.foreground_res.${data_ext}
+  fn_model=zen.${jd}.${parity}.${label}.foreground_model.${data_ext}
+  auto_in=zen.${jd}.${parity}.${label}.autos.calibrated.uvh5
+  auto_res=zen.${jd}.${parity}.${label}.auto.foreground_model.uvh5
+  auto_filled=zen.${jd}.${parity}.${label}.auto.foreground_filled.uvh5
+  if [ -e "${fn_in}" ]
+  then
+  echo dpss_delay_filter_run.py ${fn_in} --calfile ${calfile} \
+    --res_outfilename ${fn_res} --clobber --skip_flagged_edges \
+    --CLEAN_outfilename ${fn_model} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
-  dpss_delay_filter_run.py ${fn_in_even} --calfile ${calfile} \
-      --res_outfilename ${fn_res_even} --clobber --skip_flagged_edges \
-      --CLEAN_outfilename ${fn_CLEAN_even} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
-
-  # odd files
-  echo dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
-    --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
-    --CLEAN_outfilename ${fn_CLEAN_odd} \
+  dpss_delay_filter_run.py ${fn_in} --calfile ${calfile} \
+    --res_outfilename ${fn_res} --clobber --skip_flagged_edges \
+    --CLEAN_outfilename ${fn_model} \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
-  dpss_delay_filter_run.py ${fn_in_odd} --calfile ${calfile} \
-      --res_outfilename ${fn_res_odd} --clobber --skip_flagged_edges \
-      --CLEAN_outfilename ${fn_CLEAN_odd} \
+    # auto file
+    echo dpss_delay_filter_run.py ${auto_in} --calfile ${calfile} \
+      --res_outfilename ${auto_res} --clobber --skip_flagged_edges \
+      --filled_outfilename ${auto_filled} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
-  # auto file
-  echo dpss_delay_filter_run.py ${auto_file_even} --calfile ${calfile} \
-    --res_outfilename ${auto_even_res_out} --clobber --skip_flagged_edges \
-    --CLEAN_outfilename ${auto_even_CLEAN_out} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
-
-  dpss_delay_filter_run.py ${auto_file_even} --calfile ${calfile} \
-      --res_outfilename ${auto_even_res_out} --clobber --skip_flagged_edges \
-      --CLEAN_outfilename ${auto_even_CLEAN_out} \
+    dpss_delay_filter_run.py ${auto_in} --calfile ${calfile} \
+      --res_outfilename ${auto_res} --clobber --skip_flagged_edges \
+      --filled_outfilename ${auto_filled} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
-
-  # auto file
-  echo dpss_delay_filter_run.py ${auto_file_odd} --calfile ${calfile} \
-    --res_outfilename ${auto_odd_res_out} --clobber --skip_flagged_edges \
-    --CLEAN_outfilename ${auto_odd_CLEAN_out} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
-
-  dpss_delay_filter_run.py ${auto_file_odd} --calfile ${calfile} \
-      --res_outfilename ${auto_odd_res_out} --clobber --skip_flagged_edges \
-      --CLEAN_outfilename ${auto_odd_CLEAN_out} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
-else
-  echo "${fn_in_even} does not exist!"
-fi
+  else
+    echo "${fn_in} does not exist!"
+  fi
+done
