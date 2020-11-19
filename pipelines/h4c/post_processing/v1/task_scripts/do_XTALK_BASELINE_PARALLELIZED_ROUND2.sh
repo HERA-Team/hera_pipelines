@@ -23,7 +23,6 @@ tol="${4}"
 frc0="${5}"
 frc1="${6}"
 cache_dir="${7}"
-do_noforegrounds="${8}"
 # get julian day from file name
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}

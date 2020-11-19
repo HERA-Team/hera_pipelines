@@ -38,7 +38,6 @@ calibration = "none"
 frmax0 = 0.0
 frmax1 = 0.025
 tol = 1e-9
-do_noforegrounds = "true"
 
 [ROTOFLAG_OPTS]
 percentile_freq = 92.5
@@ -148,8 +147,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 32000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
-        "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}", "${XTALK_OPTS:do_noforegrounds}"]
-
+        "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
 [TIME_AVERAGE]
 prereqs= "XTALK_BASELINE_PARALLELIZED_ROUND2"
