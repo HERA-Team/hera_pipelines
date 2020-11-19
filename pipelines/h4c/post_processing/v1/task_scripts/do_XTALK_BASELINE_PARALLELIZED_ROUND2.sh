@@ -71,11 +71,11 @@ do
       --CLEAN_outfilename ${fn_CLEAN_xtalk} \
       --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose
 
-    echo sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --flag_mode "and"
-    sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --flag_mode "and"
+    echo sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --clobber
+    sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --clobber
 
-    echo sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_noxtalk} ${fn_xtalk} --flag_mode "and"
-    sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_xtalk} ${fn_xtalk} --flag_mode "and"
+    echo sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_noxtalk} ${fn_xtalk} --clobber
+    sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_xtalk} ${fn_xtalk} --clobber
   fi
 done
 

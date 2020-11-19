@@ -39,7 +39,6 @@ calibration = "none"
 frmax0 = 0.0
 frmax1 = 0.025
 tol = 1e-9
-do_noforegrounds = "true"
 
 [ROTOFLAG_OPTS]
 percentile_freq = 92.5
@@ -51,7 +50,6 @@ kt_size = 32
 [PSPEC_OPTS]
 nspws = 2
 beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_power_beam_healpix.fits"
-do_noforegrounds = "true"
 
 [FILTER_CLEANUP_OPTS]
 clear_xtalk_cache = false
@@ -181,8 +179,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
-      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:flag_ext}",
-      "${PSPEC_OPTS:do_noforegrounds}"]
+      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:flag_ext}"]
 
 
 [COMBINE_PSPEC]

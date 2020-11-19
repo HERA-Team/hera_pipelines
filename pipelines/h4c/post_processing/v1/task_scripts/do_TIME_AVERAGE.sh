@@ -21,30 +21,30 @@ t_avg="${4}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-auto_in_even=zen.${jd}.even.${label}.foreground_filtered_auto_filled.uvh5
+auto_in_even=zen.${jd}.even.${label}.auto.foreground_filled.uvh5
 auto_in_odd=${auto_in_even/even/odd}
-auto_out_even=zen.${jd}.even.${label}.foreground_filtered_waterfall_filled.auto.tavg.uvh5
+auto_out_even=zen.${jd}.even.${label}.auto.foreground_filled_waterfall.tavg.uvh5
 auto_out_odd=${auto_out_even/even/odd}
 
-nofg_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
+nofg_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_res.${data_ext}
 nofg_in_odd=${nofg_in_even/even/odd}
-nofg_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.tavg.${data_ext}
+nofg_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_res.tavg.${data_ext}
 nofg_out_odd=${nofg_out_even/even/odd}
 
-fgfilled_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
+fgfilled_in_even=zen.${jd}.even.${label}.waterfall_withforegrounds.${data_ext}
 fgfilled_in_odd=${fgfilled_in_even/even/odd}
-fgfilled_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.${data_ext}
+fgfilled_out_even=zen.${jd}.even.${label}.waterfall_withforegrounds.tavg.${data_ext}
 fgfilled_out_odd=${fgfilled_out_even/even/odd}
 
-fgres_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
+fgres_in_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds.${data_ext}
 fgres_in_odd=${fgres_in_even/even/odd}
-fgres_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}
+fgres_out_even=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}
 fgres_out_odd=${fgres_out_even/even/odd}
 
 tavg_flag=zen.${jd}.${label}.flags.tavg.h5
 
-auto_list_even=`echo zen.${int_jd}.*.even.${label}.foreground_filtered_auto_filled.uvh5`
-auto_list_odd=`echo zen.${int_jd}.*.odd.${label}.foreground_filtered_auto_filled.uvh5`
+auto_list_even=`echo zen.${int_jd}.*.even.${label}.auto.foreground_filled.uvh5`
+auto_list_odd=`echo zen.${int_jd}.*.odd.${label}.auto.foreground_filled.uvh5`
 # time-average autocorrs using waterfall averaging cornerturn.
 # even
 if [ -e "${auto_in_even}" ]

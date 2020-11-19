@@ -31,99 +31,83 @@ int_jd=${jd:0:7}
 #combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.uvp
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.pspec.h5`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.pspec.h5
+combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.tavg.uvp
-echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-
-
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.fullband_ps.uvp
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.pspec.h5`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.pspec.h5
+combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.tavg.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.fullband_ps.tavg.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.fullband_ps.tavg.uvp
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.fullband.pspec.h5`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.fullband.pspec.h5
+combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.fullband.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_filled.uvp
-echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_filled.tavg.uvp
+fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.fullband.pspec.h5`
+input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.fullband.pspec.h5
+combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.fullband.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_filled.fullband_ps.uvp
+fragments=`echo zen.${int_jd}.*.${label}.waterfall_withforegrounds.pspec.h5`
+input=zen.${jd}.${label}.waterfall_withforegrounds.pspec.h5
+combined=zen.${int_jd}.${label}.waterfall_withforegrounds.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.tavg.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_filled.fullband_ps.tavg.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_filled.fullband_ps.tavg.uvp
+fragments=`echo zen.${int_jd}.*.${label}.waterfall_withforegrounds.tavg.pspec.h5`
+input=zen.${jd}.${label}.waterfall_withforegrounds.tavg.pspec.h5
+combined=zen.${int_jd}.${label}.waterfall_withforegrounds.tavg.pspec.h5
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+
+
+fragments=`echo zen.${int_jd}.*.${label}.waterfall_withforegrounds.fullband.pspec.h5`
+input=zen.${jd}.${label}.waterfall_withforegrounds.fullband.pspec.h5
+combined=zen.${int_jd}.${label}.waterfall_withforegrounds.fullband.pspec.h5
+echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+
+fragments=`echo zen.${int_jd}.*.${label}.waterfall_withforegrounds.tavg.pspec.h5`
+input=zen.${jd}.${label}.waterfall_withforegrounds.tavg.pspec.h5
+combined=zen.${int_jd}.${label}.waterfall_withforegrounds.tavg.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 # only combine dayenu pspec if they exist.
-fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.uvp`
-input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.uvp
-combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.day.uvp
-if [ -e "${input}" ]
-then
+  fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5`
+  input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5
+  combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5
   echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 
-  fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.tavg.uvp`
-  input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.tavg.uvp
-  combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.day.tavg.uvp
-  echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-  combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-
-
-  fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.fullband_ps.uvp`
-  input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.fullband_ps.uvp
-  combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.day.fullband_ps.uvp
-  echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-  combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-
-
-  fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.fullband_ps.tavg.uvp`
-  input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds_res.day.fullband_ps.tavg.uvp
-  combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds_res.day.fullband_ps.tavg.uvp
+  fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.day.tavg.fullband.pspec.h5`
+  input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.tavg.fullband.pspec.h5
+  combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.tavg.fullband.pspec.h5
   echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 fi
 
 
-fragments=`echo zen.${int_jd}.*.${label}.auto.fullband_ps.tavg.uvp`
-input=zen.${jd}.${label}.auto.fullband_ps.tavg.uvp
-combined=zen.${int_jd}.${label}.auto.fullband_ps.tavg.uvp
+fragments=`echo zen.${int_jd}.*.${label}.auto.tavg.fullband.pspec.h5`
+input=zen.${jd}.${label}.auto.tavg.fullband.pspec.h5
+combined=zen.${int_jd}.${label}.auto.tavg.fullband.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 
-fragments=`echo zen.${int_jd}.*.${label}.auto.tavg.uvp`
-input=zen.${jd}.${label}.auto.tavg.uvp
-combined=zen.${int_jd}.${label}.auto.tavg.uvp
+fragments=`echo zen.${int_jd}.*.${label}.auto.tavg.pspec.h5`
+input=zen.${jd}.${label}.auto.tavg.pspec.h5
+combined=zen.${int_jd}.${label}.auto.tavg.pspec.h5
 echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
