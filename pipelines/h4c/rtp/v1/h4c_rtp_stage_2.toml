@@ -70,6 +70,9 @@ casa = "/home/casa/packages/RHEL7/release/casa-release-5.1.0-68/bin/casa"
 casa_imaging_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/casa_imaging/scripts"
 spw = "0:200~280,0:600~700,0:900~1000"
 calibration = "smooth_abs.calfits"
+ffmpeg = "/users/heramgr/hera_software/ffmpeg-3.4.2-64bit-static/ffmpeg"
+framerate = 40
+framesize = "1280x720"
 
 ############################################################################################################
 
@@ -84,6 +87,7 @@ actions = ["REDCAL",
            "CAL_SMOOTH",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "IMAGING",
+           "MOVIES",
            "APPLY_CAL_REDUNDANT_AVERAGE",
            # "CLEAN_FILES", # TODO: add this back in
           ]
@@ -239,6 +243,19 @@ args = ["{basename}",
         "${IMAGING_OPTS:spw}",
         "${ABSCAL_OPTS:model_files_glob}",
         "${IMAGING_OPTS:calibration}"
+       ]
+
+[MOVIES]
+prereqs = "IMAGING"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${IMAGING_OPTS:spw}",
+        "${IMAGING_OPTS:ffmpeg}",
+        "${IMAGING_OPTS:framerate}",
+        "${IMAGING_OPTS:framesize}",
        ]
 
 [APPLY_CAL_REDUNDANT_AVERAGE]
