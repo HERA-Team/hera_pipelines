@@ -22,134 +22,69 @@ int_jd=${jd:0:7}
 
 if [ -e "${templatefile}" ]
 then
-  # reconstitute xtalk filtered files with no foregrounds
-  outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_noforegrounds_res.${data_ext}
-  fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}`
-  outfilename_odd=${outfilename_even/even/odd}
-  fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}`
-  tfile=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
-  if [ -e "${tfile}" ]
-  then
-    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-        --fragmentlist ${fragment_list_even} --clobber
+  parities=("even" "odd")
+  for parity in ${parities[@]}
+  do
+    # reconstitute xtalk filtered files with no foregrounds
+    outfilename=zen.${jd}.${parity}.${label}.xtalk_filtered_res.${data_ext}
+    fragment_list=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}`
+    tfile=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}
+    if [ -e "${tfile}" ]
+    then
+      echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+          --fragmentlist ${fragment_list} --clobber
 
-    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-        --fragmentlist ${fragment_list_even} --clobber
+      reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+          --fragmentlist ${fragment_list} --clobber
+    else
+      echo "noforeground files were not produced."
+    fi
 
-
-    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-        --fragmentlist ${fragment_list_odd} --clobber
-
-    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-            --fragmentlist ${fragment_list_odd} --clobber
-  else
-    echo "noforeground files were not produced."
-  fi
-
-  # do time averaged data.
-  #outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_noforegrounds_res.tavg.${data_ext}
-  #fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.tavg.${data_ext}`
-  #outfilename_odd=${outfilename_even/even/odd}
-  #fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_noforegrounds_res.tavg.${data_ext}`
+    outfilename=zen.${jd}.${parity}.${label}.xtalk_filtered_withforegrounds.${data_ext}
+    fragment_list=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.${data_ext}`
 
 
-  #echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-  #    --fragmentlist ${fragment_list_even} --clobber --time_bounds
+    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber
 
-  #reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-  #    --fragmentlist ${fragment_list_even} --clobber --time_bounds
+    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber
 
+    # time averaged data
+    outfilename=zen.${jd}.${parity}.${label}.xtalk_filtered_withforegrounds.tavg.${data_ext}
+    fragment_list=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}`
 
-  #echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-  #    --fragmentlist ${fragment_list_odd} --clobber --time_bounds
+    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber --time_bounds
 
-  #reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-  #        --fragmentlist ${fragment_list_odd} --clobber --time_bounds
-
-
-  # reconstitute xtalk filtered files with foregrounds but low fringe-rates removed.
-  outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_withforegrounds_res.${data_ext}
-  fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}`
-  outfilename_odd=${outfilename_even/even/odd}
-  fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}`
+    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber --time_bounds
 
 
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber
-
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber
+    # reconstitute xtalk filtered files with foregrounds but low fringe-rates filled in.
+    outfilename=zen.${jd}.even.${label}.withforegrounds.${data_ext}
+    fragment_list=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.${data_ext}`
 
 
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-      --fragmentlist ${fragment_list_odd} --clobber
+    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber
 
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-          --fragmentlist ${fragment_list_odd} --clobber
-
-  # time averaged data
-  outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_withforegrounds_res.tavg.${data_ext}
-  fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}`
-  outfilename_odd=${outfilename_even/even/odd}
-  fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_withforegrounds_res.tavg.${data_ext}`
+    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber
 
 
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber --time_bounds
-
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber --time_bounds
+    # time averaged data
+    outfilename=zen.${jd}.even.${label}.withforegrounds.tavg.${data_ext}
+    fragment_list=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.tavg.${data_ext}`
 
 
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-      --fragmentlist ${fragment_list_odd} --clobber --time_bounds
+    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber --time_bounds
 
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-          --fragmentlist ${fragment_list_odd} --clobber --time_bounds
+    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
+        --fragmentlist ${fragment_list} --clobber --time_bounds
 
-
-  # reconstitute xtalk filtered files with foregrounds but low fringe-rates filled in.
-  outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_withforegrounds_filled.${data_ext}
-  fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}`
-  outfilename_odd=${outfilename_even/even/odd}
-  fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}`
-
-
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber
-
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber
-
-
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-      --fragmentlist ${fragment_list_odd} --clobber
-
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-          --fragmentlist ${fragment_list_odd} --clobber
-
-  # time averaged data
-  outfilename_even=zen.${jd}.even.${label}.xtalk_filtered_withforegrounds_filled.tavg.${data_ext}
-  fragment_list_even=`echo zen.${int_jd}.*.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.${data_ext}`
-  outfilename_odd=${outfilename_even/even/odd}
-  fragment_list_odd=`echo zen.${int_jd}.*.odd.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.${data_ext}`
-
-
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber --time_bounds
-
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_even}\
-      --fragmentlist ${fragment_list_even} --clobber --time_bounds
-
-
-  echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-      --fragmentlist ${fragment_list_odd} --clobber --time_bounds
-
-  reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename_odd}\
-          --fragmentlist ${fragment_list_odd} --clobber --time_bounds
-
-  # reconstitute the auto waterfalls.
-
+  done
 
 else
   echo "${templatefile} does not exist!"

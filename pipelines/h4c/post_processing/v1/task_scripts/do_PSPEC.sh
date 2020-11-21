@@ -31,7 +31,7 @@ even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${d
 odd_file=${even_file/even/odd}
 output=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
 # form power spectrum between even and odd data sets with offset times.
-tfile=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.tavg.${data_ext}
+tfile=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}
 
 if [ -e "${tfile}" ]
 then
@@ -305,5 +305,5 @@ then
  fi
 
 else
-  echo "${even_file} does not exist!"
+  echo "${tfile} does not exist!"
 fi

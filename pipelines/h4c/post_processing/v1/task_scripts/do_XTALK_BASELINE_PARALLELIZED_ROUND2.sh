@@ -48,7 +48,7 @@ do
   fn_resid_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}
   fn_noxtalk=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.${data_ext}
 
-  if [ -e "${fn_foregrounds}" ]
+  if [ -e "${fn_model}" ]
   then
     echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_res} --tol ${tol} \
     --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_resid_noxtalk} \
@@ -70,16 +70,15 @@ do
       --CLEAN_outfilename ${fn_CLEAN_xtalk} \
       --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose
 
-    echo sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --clobber
-    sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --clobber
+    if [ -e "${fn_CLEAN_xtalk}" ]
+    then
+      echo sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --clobber
+      sum_files.py ${fn_CLEAN_noxtalk} ${fn_resid_noxtalk} ${fn_noxtalk} --clobber
 
-    echo sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_noxtalk} ${fn_xtalk} --clobber
-    sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_xtalk} ${fn_xtalk} --clobber
+      echo sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_xtalk} ${fn_xtalk} --clobber
+      sum_files.py ${fn_CLEAN_xtalk} ${fn_resid_xtalk} ${fn_xtalk} --clobber
+    fi
+  else
+    echo "${fn_model} does not exist!"
   fi
 done
-
-
-
-else
-echo "${fn_in_even} does not exist!"
-fi
