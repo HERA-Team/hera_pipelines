@@ -16,76 +16,76 @@ fn="${1}"
 data_ext="${2}"
 label="${3}"
 
-templatefile=${fn%.uvh5}.${label}.chunked.${data_ext}
-jd=$(get_jd $templatefile)
+time_chunk_template=${fn%.uvh5}.${label}.chunked.${data_ext}
+jd=$(get_jd $time_chunk_template)
 int_jd=${jd:0:7}
 
-if [ -e "${templatefile}" ]
+if [ -e "${time_chunk_template}" ]
 then
   parities=("even" "odd")
   for parity in ${parities[@]}
   do
     # reconstitute xtalk filtered files with no foregrounds
     outfilename=zen.${jd}.${parity}.${label}.xtalk_filtered_res.${data_ext}
-    fragment_list=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}`
+    baseline_chunk_files=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}`
     tfile=zen.${jd}.${parity}.${label}.xtalk_filtered_waterfall_res.${data_ext}
     if [ -e "${tfile}" ]
     then
-      echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-          --fragmentlist ${fragment_list} --clobber
+      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-      reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-          --fragmentlist ${fragment_list} --clobber
+      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber
     else
       echo "noforeground files were not produced."
     fi
 
     outfilename=zen.${jd}.${parity}.${label}.xtalk_filtered_withforegrounds.${data_ext}
-    fragment_list=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.${data_ext}`
+    baseline_chunk_files=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.${data_ext}`
 
 
-    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber
 
     # time averaged data
     outfilename=zen.${jd}.${parity}.${label}.xtalk_filtered_withforegrounds.tavg.${data_ext}
-    fragment_list=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}`
+    baseline_chunk_files=`echo zen.${int_jd}.*.${parity}.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}`
 
-    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber --time_bounds
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber --time_bounds
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
 
     # reconstitute xtalk filtered files with foregrounds but low fringe-rates filled in.
     outfilename=zen.${jd}.even.${label}.withforegrounds.${data_ext}
-    fragment_list=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.${data_ext}`
+    baseline_chunk_files=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.${data_ext}`
 
 
-    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber
 
 
     # time averaged data
     outfilename=zen.${jd}.even.${label}.withforegrounds.tavg.${data_ext}
-    fragment_list=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.tavg.${data_ext}`
+    baseline_chunk_files=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.tavg.${data_ext}`
 
 
-    echo reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber --time_bounds
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    reconstitute_filtered_files_run.py ${templatefile} --outfilename ${outfilename}\
-        --fragmentlist ${fragment_list} --clobber --time_bounds
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
   done
 
 else
-  echo "${templatefile} does not exist!"
+  echo "${time_chunk_template} does not exist!"
 fi
