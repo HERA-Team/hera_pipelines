@@ -84,6 +84,7 @@ echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 
 # only combine dayenu pspec if they exist.
+/*
   fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5`
   input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5
   combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5
@@ -96,8 +97,7 @@ combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   combined=zen.${int_jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.tavg.fullband.pspec.h5
   echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
-fi
-
+*/
 
 fragments=`echo zen.${int_jd}.*.${label}.auto.tavg.fullband.pspec.h5`
 input=zen.${jd}.${label}.auto.tavg.fullband.pspec.h5

@@ -35,6 +35,7 @@ tfile=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${da
 
 if [ -e "${tfile}" ]
 then
+
     # power spectra of data with the foregrounds and xtalk retained -- to estimate signal loss from xtalk filter.
     even_file=zen.${jd}.even.${label}.waterfall_withforegrounds.${data_ext}
     odd_file=${even_file/even/odd}
@@ -216,22 +217,25 @@ then
       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --file_type uvh5 --include_autocorrs\
-      --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression} --external_flags ${external_flags}\
+      --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+      --external_flags ${external_flags}\
       --exclude_flagged_edge_channels --Nspws ${nspw}\
       --store_window --time_avg --store_cov
 
 
-    pspec_run.py pspec_run.py ${even_file} ${odd_file} ${output}\
-      --allow_fft --store_cov_diag --Jy2mK_avg\
-      --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --file_type uvh5 --include_autocorrs\
-      --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression} --external_flags ${external_flags}\
-      --exclude_flagged_edge_channels --Nspws ${nspw}\
-      --store_window --time_avg --store_cov
+    pspec_run.py ${even_file} ${odd_file} ${output}\
+        --allow_fft --store_cov_diag --Jy2mK_avg\
+        --vis_units Jy --cov_model empirical_pspec --overwrite\
+        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+        --file_type uvh5 --include_autocorrs\
+        --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+        --external_flags ${external_flags}\
+        --exclude_flagged_edge_channels --Nspws ${nspw}\
+        --store_window --time_avg --store_cov
 
 
+     /*
      output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.tavg.fullband.pspec.h5
      # do full subband power spectra. Store window functions.
      echo pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -253,7 +257,7 @@ then
         --file_type uvh5 --include_autocorrs\
         --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression} --external_flags ${external_flags}\
         --exclude_flagged_edge_channels  --store_window --time_avg --store_cov
-
+        */
 
 # Just make power spectra of filled autos.
  auto_file_even=zen.${jd}.even.${label}.auto.foreground_filled.tavg.uvh5
