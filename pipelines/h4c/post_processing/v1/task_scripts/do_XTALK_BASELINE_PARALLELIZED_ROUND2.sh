@@ -62,12 +62,12 @@ do
 
     echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_model} --tol ${tol} \
      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_CLEAN_noxtalk} \
-     --CLEAN_outfilename ${fn_CLEAN_xtalk} \
+     --filled_outfilename ${fn_CLEAN_xtalk} \
      --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose
 
      dpss_xtalk_filter_run_baseline_parallelized.py ${fn_model} --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_CLEAN_noxtalk} \
-      --CLEAN_outfilename ${fn_CLEAN_xtalk} \
+      --filled_outfilename ${fn_CLEAN_xtalk} \
       --clobber --datafilelist ${foreground_files} --skip_flagged_edges --verbose
 
     if [ -e "${fn_CLEAN_xtalk}" ]
