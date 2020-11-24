@@ -62,7 +62,7 @@ then
 
 
     # reconstitute xtalk filtered files with foregrounds but low fringe-rates filled in.
-    outfilename=zen.${jd}.even.${label}.withforegrounds.${data_ext}
+    outfilename=zen.${jd}.${parity}.${label}.withforegrounds.${data_ext}
     baseline_chunk_files=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.${data_ext}`
 
 
@@ -74,7 +74,7 @@ then
 
 
     # time averaged data
-    outfilename=zen.${jd}.even.${label}.withforegrounds.tavg.${data_ext}
+    outfilename=zen.${jd}.${parity}.${label}.withforegrounds.tavg.${data_ext}
     baseline_chunk_files=`echo zen.${int_jd}.*.even.${label}.waterfall_withforegrounds.tavg.${data_ext}`
 
 
