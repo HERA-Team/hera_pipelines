@@ -29,11 +29,22 @@ commas="${spw//[^,]}"
 for dtype in "." ".model." ".res."; do
     for pol in stokpol vispol; do
         for n in `seq 0 ${nspw}`; do
-            image_glob="'*_image/zen.${jd}.*.calibrated${dtype}spw${n}.${pol}.image.png'"
-            echo ${ffmpeg} -framerate ${framerate} -pattern_type glob -i ${image_glob} -s:v ${framesize} \
+            tempdir=${jd}.${dtype}spw${n}.${pol}_movie_temp
+            mkdir ${tempdir}
+            cd ${tempdir}
+            for png in *_image/zen.${jd}.*.calibrated${dtype}spw${n}.${pol}.image.png; do
+                echo moving ${png}
+                cp ${png} .
+            done
+
+            echo ${ffmpeg} -framerate ${framerate} -pattern_type glob -i "./*.png" -s:v ${framesize} \
                 -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p zen.${jd}${dtype}spw${n}.${pol}.mp4
-            ${ffmpeg} -framerate ${framerate} -pattern_type glob -i ${image_glob} -s:v ${framesize} \
+            ${ffmpeg} -framerate ${framerate} -pattern_type glob -i "./*.png" -s:v ${framesize} \
                 -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p zen.${jd}${dtype}spw${n}.${pol}.mp4
+            
+            cd ..
+            mv ${tempdir}/zen.${jd}${dtype}spw${n}.${pol}.mp4 .
+            rm -rf ${tempdir}
         done
     done
 done
