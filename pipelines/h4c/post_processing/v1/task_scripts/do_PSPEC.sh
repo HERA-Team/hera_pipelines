@@ -100,7 +100,7 @@ then
      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
 
-     output=zen.${jd}.${label}.waterfall_withforegrounds.fullband.tavg.fullband.pspec.h5
+     output=zen.${jd}.${label}.waterfall_withforegrounds.tavg.fullband.pspec.h5
      # do full subband power spectra.
      echo pspec_run.py ${even_file} ${odd_file} ${output}\
        --allow_fft --store_cov_diag --Jy2mK_avg\
@@ -204,35 +204,37 @@ then
            --taper bh --exclude_flagged_edge_channels
 
 
+
+
     # now do tavg waterfall.
-    external_flags=zen.${jd}.${label}.flags.tavg.h5
-    even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}
-    odd_file=${even_file/even/odd}
-    output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5
+    #external_flags=zen.${jd}.${label}.flags.tavg.h5
+    #even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}
+    #odd_file=${even_file/even/odd}
+    #output=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.day.pspec.h5
 
     # three spectral windows. Store dayenu window functions and average in time.
-    echo pspec_run.py ${even_file} ${odd_file} ${output}\
-      --allow_fft --store_cov_diag --Jy2mK_avg\
-      --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-      --file_type uvh5 --include_autocorrs\
-      --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
-      --external_flags ${external_flags}\
-      --exclude_flagged_edge_channels --Nspws ${nspw}\
-      --store_window --time_avg --store_cov
+    #echo pspec_run.py ${even_file} ${odd_file} ${output}\
+    #  --allow_fft --store_cov_diag --Jy2mK_avg\
+    #  --vis_units Jy --cov_model empirical_pspec --overwrite\
+    #  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    #  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+    #  --file_type uvh5 --include_autocorrs\
+    #  --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+    #  --external_flags ${external_flags}\
+    #  --exclude_flagged_edge_channels --Nspws ${nspw}\
+    #  --store_window --time_avg --store_cov
 
 
-    pspec_run.py ${even_file} ${odd_file} ${output}\
-        --allow_fft --store_cov_diag --Jy2mK_avg\
-        --vis_units Jy --cov_model empirical_pspec --overwrite\
-        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
-        --file_type uvh5 --include_autocorrs\
-        --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
-        --external_flags ${external_flags}\
-        --exclude_flagged_edge_channels --Nspws ${nspw}\
-        --store_window --time_avg --store_cov
+    #pspec_run.py ${even_file} ${odd_file} ${output}\
+    #    --allow_fft --store_cov_diag --Jy2mK_avg\
+    #    --vis_units Jy --cov_model empirical_pspec --overwrite\
+    #    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    #    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+    #    --file_type uvh5 --include_autocorrs\
+    #    --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
+    #    --external_flags ${external_flags}\
+    #    --exclude_flagged_edge_channels --Nspws ${nspw}\
+    #    --store_window --time_avg --store_cov
 
 
      ###
@@ -260,7 +262,7 @@ then
 
 
 # Just make power spectra of filled autos.
- auto_file_even=zen.${jd}.even.${label}.auto.foreground_filled.tavg.uvh5
+ auto_file_even=zen.${jd}.even.${label}.auto.foreground_filled_waterfall.tavg.uvh5
  if [ -e "${auto_file_even}" ]
  then
    auto_file_odd=${auto_file_even/even/odd}
