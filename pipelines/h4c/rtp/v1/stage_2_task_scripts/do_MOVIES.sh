@@ -46,10 +46,10 @@ for dtype in "." ".model." ".res."; do
             ${ffmpeg} -framerate ${framerate} -pattern_type glob -i "./*.png" -s:v ${framesize} \
                 -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p zen.${jd}${dtype}spw${n}.${pol}.mp4
 
-            # return to main analysis directory, move movie, remove tempdir
+            # return to main analysis directory, move movie to main dir, remove tempdir
             cd ..
             mv ${tempdir}/zen.${jd}${dtype}spw${n}.${pol}.mp4 .
             rm -rf ${tempdir}
         done
     done
-
+done
