@@ -23,7 +23,7 @@ jd=$(get_int_jd ${fn})
 
 # count the number of commas in spw to get the number of spectral windows
 commas="${spw//[^,]}"
-(( nspw = "${#commas}" + 1 ))
+nspw="${#commas}"
 
 # loop over data, model, and residual; stokes pol and vis pol; and over spectral windows
 for dtype in "." ".model." ".res."; do
