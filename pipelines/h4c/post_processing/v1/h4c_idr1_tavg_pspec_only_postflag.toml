@@ -68,7 +68,7 @@ args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
 
 
 [COMBINE_PSPEC]
-prereqs = "PSPEC"
+##prereqs = "PSPEC"
 prereq_chunk_size="all"
 mem = 64000
 chunk_size=1

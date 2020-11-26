@@ -34,11 +34,14 @@ int_jd=${jd:0:7}
 fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.pspec.h5`
 input=zen.${jd}.${label}.xtalk_filtered_waterfall_withforegrounds.pspec.h5
 combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds.pspec.h5
-for i in "${!fragments[@]}"; do
-   if [[ "${fragments[$i]}" = "${input}" ]]; then
+i=0
+for f in zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.pspec.h5; do
+   if [[ "${f}" = "${input}" ]]; then
        fragment_position="${i}";
    fi
-
+   i=$(($i+1))
+done
+echo fragment position is ${fragment_position}
 if [ "${fragment_position}" = "0" ]; then
   echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber

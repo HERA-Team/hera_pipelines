@@ -13,7 +13,7 @@ chunk_size = 60
 data_ext = 'smooth_avg_vis.uvh5'
 cal_ext = 'smooth_abs.calfits'
 spw0 = 628
-spw1 = 884 
+spw1 = 884
 label = "mid-band-rtp-flags"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
@@ -23,7 +23,7 @@ chunk_size=60
 nbl_per_load = 0
 t_avg = 300.0
 flag_ext = "total_threshold_and_a_priori_flags.h5"
-final_cal_ext = "smooth_abs.calfits"
+final_cal_ext="smooth_abs.calfits"
 
 [DELAY_OPTS]
 tol = 1e-9
@@ -31,9 +31,28 @@ standoff = 200
 calibration = "none"
 
 # we may want to consider another flagging round after delay filtering.
+
+[XTALK_OPTS]
+# dividing this by two for low band.
+frmax0 = 0.0
+frmax1 = 0.025
+tol = 1e-9
+
+[ROTOFLAG_OPTS]
+percentile_freq = 92.5
+percentile_time = 99.0
+niters = 3
+kf_size = 8
+kt_size = 32
+
 [PSPEC_OPTS]
 nspws = 2
 beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_power_beam_healpix.fits"
+
+[FILTER_CLEANUP_OPTS]
+clear_xtalk_cache = false
+clear_delay_cache = false
+clear_delay = false
 
 
 
@@ -41,30 +60,81 @@ beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_
 
 [WorkFlow]
 actions = [
+           "PRE_CHUNK",
+           "APPLY_FLAGS_GENERATE_EVEN_ODD",
+           "DELAY_NOSPW_ROUND2",
+           "XTALK_BASELINE_PARALLELIZED_ROUND2",
            "TIME_AVERAGE",
+           "RECONSTITUTE_EVEN_ODD",
            "PSPEC",
-           "COMBINE_PSPEC"]#,
-	         #"FILTER_CLEANUP"]
+           "COMBINE_PSPEC"]
 
+[PRE_CHUNK]
+mem=16000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
+      "${GLOBAL_OPTS:cal_ext}", "${GLOBAL_OPTS:chunk_size}",
+      "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}"]
+
+
+[APPLY_FLAGS_GENERATE_EVEN_ODD]
+prereqs = "PRE_CHUNK"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
+      "${GLOBAL_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}", "${GLOBAL_OPTS:flag_ext}",
+      "${GLOBAL_OPTS:final_cal_ext}"]
+
+[DELAY_NOSPW_ROUND2]
+prereqs="APPLY_FLAGS_GENERATE_EVEN_ODD"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${DELAY_OPTS:calibration}", "${GLOBAL_OPTS:label}",
+        "${DELAY_OPTS:tol}",
+        "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:cache_dir}"]
+
+[XTALK_BASELINE_PARALLELIZED_ROUND2]
+prereqs = "DELAY_NOSPW_ROUND2"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 64000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
+        "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${GLOBAL_OPTS:cache_dir}"]
 
 [TIME_AVERAGE]
+prereqs= "XTALK_BASELINE_PARALLELIZED_ROUND2"
+prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem=16000
 args=["{basename}",
-     "${GLOBAL_OPTS:data_ext}",
-     "${GLOBAL_OPTS:label}",
-     "${GLOBAL_OPTS:t_avg}"]
+      "${GLOBAL_OPTS:data_ext}",
+      "${GLOBAL_OPTS:label}",
+      "${GLOBAL_OPTS:t_avg}"]
+
+
+[RECONSTITUTE_EVEN_ODD]
+prereqs = "TIME_AVERAGE"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [PSPEC]
-prereqs = "TIME_AVERAGE"
+prereqs = "RECONSTITUTE_EVEN_ODD"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
-     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
-     "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:flag_ext}"]
+      "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
+      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:flag_ext}"]
 
 
 [COMBINE_PSPEC]
@@ -74,3 +144,11 @@ mem = 64000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args = ["{basename}", "${GLOBAL_OPTS:label}"]
+
+[FILTER_CLEANUP]
+prereqs = "COMBINE_PSPEC"
+prereq_chunk_size="all"
+mem = 16000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
