@@ -44,7 +44,7 @@ then
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} #--store_window
@@ -53,7 +53,7 @@ then
      pspec_run.py ${even_file} ${odd_file} ${output}\
        --allow_fft --store_cov_diag --Jy2mK_avg\
        --vis_units Jy --cov_model empirical_pspec --overwrite\
-       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
        --time_avg --file_type uvh5 --include_autocorrs\
        --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} #--store_window
@@ -63,7 +63,7 @@ then
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels #--store_window
@@ -72,12 +72,13 @@ then
      pspec_run.py ${even_file} ${odd_file} ${output}\
        --allow_fft --store_cov_diag --Jy2mK_avg\
        --vis_units Jy --cov_model empirical_pspec --overwrite\
-       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
        --time_avg --file_type uvh5 --include_autocorrs\
        --taper bh --exclude_flagged_edge_channels #--store_window
 
     # now do coherently averaged files.
+    # do not interleave times!
     even_file=zen.${jd}.even.${label}.waterfall_withforegrounds.tavg.${data_ext}
     odd_file=${even_file/even/odd}
     output=zen.${jd}.${label}.waterfall_withforegrounds.tavg.pspec.h5
@@ -85,8 +86,8 @@ then
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+      --Jy2mK --beam ${beam_file} --sampling\
       --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
@@ -94,8 +95,8 @@ then
    pspec_run.py ${even_file} ${odd_file} ${output}\
      --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\
-     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+     --Jy2mK --beam ${beam_file} --sampling\
      --file_type uvh5 --include_autocorrs\
      --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
@@ -105,8 +106,8 @@ then
      echo pspec_run.py ${even_file} ${odd_file} ${output}\
        --allow_fft --store_cov_diag --Jy2mK_avg\
        --vis_units Jy --cov_model empirical_pspec --overwrite\
-       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+       --Jy2mK --beam ${beam_file} --sampling\
        --file_type uvh5 --include_autocorrs\
        --taper bh --exclude_flagged_edge_channels
 
@@ -114,8 +115,8 @@ then
       pspec_run.py ${even_file} ${odd_file} ${output}\
         --allow_fft --store_cov_diag --Jy2mK_avg\
         --vis_units Jy --cov_model empirical_pspec --overwrite\
-        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+        --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+        --Jy2mK --beam ${beam_file} --sampling\
         --file_type uvh5 --include_autocorrs\
         --taper bh --exclude_flagged_edge_channels
 
@@ -128,7 +129,7 @@ then
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} #--store_window
@@ -137,7 +138,7 @@ then
     pspec_run.py ${even_file} ${odd_file} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels --Nspws ${nspw} #--store_window
@@ -148,7 +149,7 @@ then
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --time_avg --file_type uvh5 --include_autocorrs\
       --taper bh --exclude_flagged_edge_channels #--store_window
@@ -157,7 +158,7 @@ then
      pspec_run.py ${even_file} ${odd_file} ${output}\
        --allow_fft --store_cov_diag --Jy2mK_avg\
        --vis_units Jy --cov_model empirical_pspec --overwrite\
-       --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
        --time_avg --file_type uvh5 --include_autocorrs\
        --taper bh --exclude_flagged_edge_channels #--store_window
@@ -169,8 +170,8 @@ then
        echo pspec_run.py ${even_file} ${odd_file} ${output}\
          --allow_fft --store_cov_diag --Jy2mK_avg\
          --vis_units Jy --cov_model empirical_pspec --overwrite\
-         --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-         --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+         --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+         --Jy2mK --beam ${beam_file} --sampling\
          --file_type uvh5 --include_autocorrs\
          --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
@@ -178,8 +179,8 @@ then
        pspec_run.py ${even_file} ${odd_file} ${output}\
         --allow_fft --store_cov_diag --Jy2mK_avg\
         --vis_units Jy --cov_model empirical_pspec --overwrite\
-        --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-        --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+        --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+        --Jy2mK --beam ${beam_file} --sampling\
         --file_type uvh5 --include_autocorrs\
         --taper bh --exclude_flagged_edge_channels --Nspws ${nspw}
 
@@ -189,8 +190,8 @@ then
         echo pspec_run.py ${even_file} ${odd_file} ${output}\
           --allow_fft --store_cov_diag --Jy2mK_avg\
           --vis_units Jy --cov_model empirical_pspec --overwrite\
-          --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-          --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+          --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+          --Jy2mK --beam ${beam_file} --sampling\
           --file_type uvh5 --include_autocorrs\
           --taper bh --exclude_flagged_edge_channels
 
@@ -198,8 +199,8 @@ then
          pspec_run.py ${even_file} ${odd_file} ${output}\
            --allow_fft --store_cov_diag --Jy2mK_avg\
            --vis_units Jy --cov_model empirical_pspec --overwrite\
-           --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
-           --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+           --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+           --Jy2mK --beam ${beam_file} --sampling\
            --file_type uvh5 --include_autocorrs\
            --taper bh --exclude_flagged_edge_channels
 
@@ -216,7 +217,7 @@ then
     #echo pspec_run.py ${even_file} ${odd_file} ${output}\
     #  --allow_fft --store_cov_diag --Jy2mK_avg\
     #  --vis_units Jy --cov_model empirical_pspec --overwrite\
-    #  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    #  --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
     #  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
     #  --file_type uvh5 --include_autocorrs\
     #  --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
@@ -228,7 +229,7 @@ then
     #pspec_run.py ${even_file} ${odd_file} ${output}\
     #    --allow_fft --store_cov_diag --Jy2mK_avg\
     #    --vis_units Jy --cov_model empirical_pspec --overwrite\
-    #    --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+    #    --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
     #    --Jy2mK --beam ${beam_file} --interleave_times --sampling\
     #    --file_type uvh5 --include_autocorrs\
     #    --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression}\
@@ -243,7 +244,7 @@ then
      #echo pspec_run.py ${even_file} ${odd_file} ${output}\
       # --allow_fft --store_cov_diag --Jy2mK_avg\
       # --vis_units Jy --cov_model empirical_pspec --overwrite\
-      # --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      # --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       # --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       # --file_type uvh5 --include_autocorrs\
       # --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression} --external_flags ${external_flags}\
@@ -254,7 +255,7 @@ then
       #pspec_run.py ${even_file} ${odd_file} ${output}\
       #  --allow_fft --store_cov_diag --Jy2mK_avg\
       #  --vis_units Jy --cov_model empirical_pspec --overwrite\
-      #  --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      #  --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       #  --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       #  --file_type uvh5 --include_autocorrs\
       #  --input_data_weight dayenu --standoff ${standoff} --suppression_factor ${suppression} --external_flags ${external_flags}\
@@ -270,42 +271,42 @@ then
    echo pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
      --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\
-     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+     --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
      --file_type uvh5 --fullband_filter --include_autocorrs\
      --exclude_flagged_edge_channels --taper bh\
-     --external_flags ${external_flags} --exclude_cross_bls
+     --exclude_cross_bls
 
 
    pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
      --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\
-     --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+     --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
      --file_type uvh5 --fullband_filter --include_autocorrs\
      --exclude_flagged_edge_channels --taper bh\
-     --external_flags ${external_flags} --exclude_cross_bls
+     --exclude_cross_bls
 
    # Now do subbands.
     output=zen.${jd}.${label}.auto.tavg.pspec.h5
     echo pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
       --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
-      --external_flags ${external_flags} --exclude_cross_bls
+      --exclude_cross_bls
 
 
     pspec_run.py ${auto_file_even} ${auto_file_odd} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0,1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
       --Jy2mK --beam ${beam_file} --interleave_times --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
       --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
-      --external_flags ${external_flags} --exclude_cross_bls
+      --exclude_cross_bls
  else
    echo "${auto_file_even} does not exist!"
  fi
