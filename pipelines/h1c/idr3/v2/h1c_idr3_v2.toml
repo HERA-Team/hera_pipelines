@@ -98,6 +98,10 @@ actions = ["MAKE_UVH5",
 mem = 32000
 args = ["{basename}"]
 
+[EXTRACT_AUTOS]
+prereqs = "MAKE_UVH5"
+args = ["{basename}"]
+
 [REDCAL]
 prereqs = "MAKE_UVH5"
 args = ["{basename}",
