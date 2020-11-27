@@ -23,7 +23,7 @@ flag_nchan_high = 50
 oc_maxiter = 10000
 min_bl_cut = 15
 max_bl_cut = 90
-max_dims = 4
+max_dims = 2
 check_every = 50
 check_after = 500
 
