@@ -40,6 +40,7 @@ for data_file in ${data_files[@]}; do
     model_files+=( ${uvh5_fn%.*}.omni_vis.uvh5 )
     ocalfits_files+=( ${uvh5_fn%.*}.omni.calfits )
     acalfits_files+=( ${uvh5_fn%.*}.abs.calfits )
+done
 
 # get a priori flag yaml file
 jd_int=$(get_int_jd `basename ${uvh5_files[0]}`)
