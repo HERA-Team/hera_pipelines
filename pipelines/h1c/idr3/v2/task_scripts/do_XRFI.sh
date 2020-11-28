@@ -48,10 +48,10 @@ jd_int=$(get_int_jd `basename ${uvh5_files[0]}`)
 flag_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
 
 # run script
-cmd="xrfi_run.py --ocalfits_files ${ocalfits_files} \
-                 --model_files ${model_files} \
-                 --data_files ${uvh5_files} \
-                 --acalfits_files ${acalfits_files} \
+cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
+                 --model_files ${model_files[@]} \
+                 --data_files ${uvh5_files[@]} \
+                 --acalfits_files ${acalfits_files[@]} \
                  --kt_size ${kt_size} \
                  --kf_size ${kf_size} \
                  --sig_init ${sig_init} \
