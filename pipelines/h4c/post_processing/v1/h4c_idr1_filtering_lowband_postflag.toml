@@ -23,7 +23,7 @@ chunk_size=60
 nbl_per_load = 0
 t_avg = 300.0
 flag_ext = "total_threshold_and_a_priori_flags.h5"
-final_cal_ext="smooth_abs.calfits"
+final_cal_ext = "smooth_abs.calfits"
 final_flag_ext = "total_threshold_and_a_priori_flags.h5"
 
 [DELAY_OPTS]

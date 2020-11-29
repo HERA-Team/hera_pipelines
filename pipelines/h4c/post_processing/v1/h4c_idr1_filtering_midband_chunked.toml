@@ -23,8 +23,8 @@ time_threshold = 0.02
 chunk_size=60
 nbl_per_load = 0
 t_avg = 300.0
-final_cal_ext="smooth_abs.roto_flags.calfits"
-final_flag_ext="${label}.roto_flag.flags.h5"
+final_cal_ext = "smooth_abs.roto_flags.calfits"
+final_flag_ext = "${label}.roto_flag.flags.h5"
 
 [DELAY_OPTS]
 tol = 1e-9
