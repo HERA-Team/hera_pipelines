@@ -23,7 +23,7 @@ time_threshold = 0.02
 chunk_size=60
 nbl_per_load = 0
 t_avg = 300.0
-flag_ext = "${label}.roto_flag.flags.h5"
+final_flag_ext = "${label}.roto_flag.flags.h5"
 final_cal_ext="smooth_abs.roto_flags.calfits"
 
 [DELAY_OPTS]
@@ -128,7 +128,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
-      "${GLOBAL_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}", "${GLOBAL_OPTS:flag_ext}",
+      "${GLOBAL_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}", "${GLOBAL_OPTS:final_flag_ext}",
       "${GLOBAL_OPTS:final_cal_ext}"]
 
 [DELAY_NOSPW_ROUND2]
@@ -177,7 +177,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
-      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:flag_ext}"]
+      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:final_flag_ext}"]
 
 [COMBINE_PSPEC]
 prereqs = "PSPEC"

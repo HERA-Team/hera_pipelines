@@ -36,7 +36,7 @@ then
 
   echo dayenu_xtalk_filter_run.py ${fn_in} \
     --res_outfilename ${fn_out} --clobber \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}   --max_frate_coeffs ${frc0} ${frc1}
+    --tol ${tol} --cache_dir ${cache_dir} --max_frate_coeffs ${frc0} ${frc1}
 
   dayenu_xtalk_filter_run.py ${fn_in} \
       --res_outfilename ${fn_out} --clobber \
