@@ -28,7 +28,7 @@ final_flag_ext = "total_threshold_and_a_priori_flags.h5"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 200
+standoff = 500
 calibration = "none"
 
 # we may want to consider another flagging round after delay filtering.
