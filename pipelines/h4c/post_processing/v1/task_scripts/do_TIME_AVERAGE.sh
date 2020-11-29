@@ -49,11 +49,12 @@ auto_list_odd=`echo zen.${int_jd}.*.odd.${label}.auto.foreground_filled.uvh5`
 # even
 if [ -e "${auto_in_even}" ]
 then
-  echo time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber
-  time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber
+  # do even/odd interleaving.
+  echo time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data ${auto_in_odd} --interleaved_output_data ${auto_out_odd}
+  time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data ${auto_in_odd} --interleaved_output_data ${auto_out_odd}
   # odd
-  echo time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
-  time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
+  #echo time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
+  #time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
 else
   echo "${auto_in_even} does not exist!"
 fi
@@ -68,20 +69,20 @@ then
   #echo time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
   #time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
   # time-average with-fg filled -- use for signal loss estimation.
-  # even
-  echo time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber
-  time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber
+  # even / odd interleave
+  echo time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
+  time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
   # odd
-  echo time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
-  time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
+  #echo time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
+  #time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
 
 
   # time-average with-fg resids -- use for dayenu estimator.
-  echo time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag}
-  time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag}
+  echo time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag} --interleaved_input_data  ${fgres_in_odd} --interleaved_output_data ${fgres_out_odd}
+  time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag} --interleaved_input_data ${fgres_in_odd}  --interleaved_output_data ${fgres_out_odd}
   # odd
-  echo time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
-  time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
+  #echo time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
+  #time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
 else
   echo "${fgfilled_in_even} does not exist!"
 fi
