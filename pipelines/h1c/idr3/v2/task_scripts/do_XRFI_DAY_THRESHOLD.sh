@@ -16,10 +16,18 @@ source ${src_dir}/_common.sh
 # 6+ - filenames
 
 data_files="${@:6}"
+uvh5_files=()
+for data_file in ${data_files[@]}; do
+    uvh5_fn=`basename "$data_file"`
+    uvh5_fn=$(remove_pol $uvh5_fn)
+    uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5 # this makes things more compatible with H3C/H4C software
+    uvh5_files+=( $uvh5_fn )
+done
+
 
 # get a priori flag yaml file
 jd_int=$(get_int_jd `basename ${6}`)
 flag_yaml=`echo "${5}/${jd_int}.yaml"`
 
-echo xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${flag_yaml} --clobber ${data_files}
-xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${flag_yaml} --clobber ${data_files}
+echo xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${flag_yaml} --clobber ${uvh5_files}
+xrfi_day_threshold_run.py --nsig_f=${1} --nsig_t=${2} --nsig_f_adj=${3} --nsig_t_adj=${4} --a_priori_flag_yaml=${flag_yaml} --clobber ${uvh5_files}
