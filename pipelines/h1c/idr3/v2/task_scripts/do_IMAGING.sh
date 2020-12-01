@@ -22,26 +22,30 @@ if [ "$#" -ge 6 ]; then
     calibration="${6}"
 fi
 
+# make sure input file is correct uvh5 file
+uvh5_fn=$(remove_pol $filename)
+uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5 # this makes things more compatible with H3C/H4C software
+
 # make an imaging dir for outputs
-image_outdir="${filename}_image"
+image_outdir="${uvh5_fn}_image"
 mkdir -p ${image_outdir}
 cd ${image_outdir}
-filename="../${filename}"
+uvh5_fn="../${uvh5_fn}"
 
 # if calibration suffix is not empty, parse it and apply it
 if [ ! -z "${calibration}" ]; then
     # parse calibration suffix
-    cal_file="${filename%.uvh5}.${calibration}"
-    output=`basename ${filename%.uvh5}.calibrated.uvh5`
-    echo apply_cal.py ${filename} ${output} --new_cal ${cal_file} --filetype_in uvh5 --filetype_out uvh5 --clobber
-    apply_cal.py ${filename} ${output} --new_cal ${cal_file} --filetype_in uvh5 --filetype_out uvh5 --clobber
-    filename="${output}"
+    cal_file="${uvh5_fn%.uvh5}.${calibration}"
+    output=`basename ${uvh5_fn%.uvh5}.calibrated.uvh5`
+    echo apply_cal.py ${uvh5_fn} ${output} --new_cal ${cal_file} --filetype_in uvh5 --filetype_out uvh5 --clobber
+    apply_cal.py ${uvh5_fn} ${output} --new_cal ${cal_file} --filetype_in uvh5 --filetype_out uvh5 --clobber
+    uvh5_fn="${output}"
 fi
 
 # convert file to uvfits
-uvfits_file=`basename ${filename%.uvh5}.uvfits`
-echo convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
-convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
+uvfits_file=`basename ${uvh5_fn%.uvh5}.uvfits`
+echo convert_to_uvfits.py ${uvh5_fn} --output_filename ${uvfits_file} --overwrite
+convert_to_uvfits.py ${uvh5_fn} --output_filename ${uvfits_file} --overwrite
 
 # get uvfits and ms filename
 image_file="${uvfits_file%.uvfits}"
@@ -52,10 +56,10 @@ echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_fil
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
 # get model visibility files
-echo python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
-python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
-model_file=`basename ${filename%.uvh5}.model.uvfits`
-res_file=`basename ${filename%.uvh5}.res.uvfits`
+echo python ${casa_imaging_scripts}/get_model_vis.py ${uvh5_fn} "'${model_vis}'" "./"
+python ${casa_imaging_scripts}/get_model_vis.py ${uvh5_fn} "'${model_vis}'" "./"
+model_file=`basename ${uvh5_fn%.uvh5}.model.uvfits`
+res_file=`basename ${uvh5_fn%.uvh5}.res.uvfits`
 # if it ran through, image model and residual
 if [ -f ${model_file} ]; then
     echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits} --spw ${spw}
@@ -107,5 +111,5 @@ fi
 
 # remove calibrated visibility
 if [ ! -z "${calibration}" ]; then
-    rm ${filename}
+    rm ${uvh5_fn}
 fi
