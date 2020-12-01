@@ -71,7 +71,7 @@ casa_imaging_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_softw
 spw = "0:150~900"
 calibration = "smooth_abs.calfits"
 ffmpeg = "/users/heramgr/hera_software/ffmpeg-3.4.2-64bit-static/ffmpeg"
-framerate = 40
+framerate = 10
 framesize = "1280x720"
 
 ############################################################################################################
