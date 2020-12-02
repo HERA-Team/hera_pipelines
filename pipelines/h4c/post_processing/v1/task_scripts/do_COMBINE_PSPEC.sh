@@ -134,3 +134,38 @@ if [ "${fragment_position}" = "9" ]; then
   echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
 fi
+
+
+
+if [ "${fragment_position}" = "10" ]; then
+  fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.diff.tavg.fullband.pspec.h5`
+  input=`ls zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.diff.tavg.fullband.pspec.h5 | head -1`
+  combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds.diff.tavg.fullband.pspec.h5
+  echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+  combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+fi
+
+if [ "${fragment_position}" = "11" ]; then
+  fragments=`echo zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.diff.tavg.fullband.pspec.h5`
+  input=`ls zen.${int_jd}.*.${label}.xtalk_filtered_waterfall_withforegrounds.diff.tavg.fullband.pspec.h5 | head -1`
+  combined=zen.${int_jd}.${label}.xtalk_filtered_withforegrounds.diff.tavg.fullband.pspec.h5
+  echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+  combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+fi
+
+
+if [ "${fragment_position}" = "12" ]; then
+  fragments=`echo zen.${int_jd}.*.${label}.auto.diff.tavg.fullband.pspec.h5`
+  input=`ls zen.${int_jd}.*.${label}.auto.diff.tavg.fullband.pspec.h5 | head -1`
+  combined=zen.${int_jd}.${label}.auto.diff.tavg.fullband.pspec.h5
+  echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+  combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+fi
+
+if [ "${fragment_position}" = "13" ]; then
+  fragments=`echo zen.${int_jd}.*.${label}.auto.diff.tavg.pspec.h5`
+  input=`ls zen.${int_jd}.*.${label}.auto.diff.tavg.pspec.h5 | head -1`
+  combined=zen.${int_jd}.${label}.auto.diff.tavg.pspec.h5
+  echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+  combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
+fi

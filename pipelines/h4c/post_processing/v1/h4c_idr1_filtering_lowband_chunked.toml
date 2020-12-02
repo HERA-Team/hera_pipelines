@@ -22,9 +22,9 @@ flag_ext="og_flags1"
 time_threshold = 0.02
 chunk_size=60
 nbl_per_load = 0
-#t_avg = 300.0
-t_avg = "none"
-n_avg = 32
+t_avg = 300.0
+#t_avg = "none"
+#n_avg = 32
 final_flag_ext = "low-band.roto_flag.flags.h5"
 final_cal_ext = "smooth_abs.roto_flags.calfits"
 
@@ -160,7 +160,7 @@ mem=16000
 args=["{basename}",
       "${GLOBAL_OPTS:data_ext}",
       "${GLOBAL_OPTS:label}",
-      "${GLOBAL_OPTS:t_avg}", "${GLOBAL_OPTS:n_avg}"]
+      "${GLOBAL_OPTS:t_avg}"]#, "${GLOBAL_OPTS:n_avg}"]
 
 
 [RECONSTITUTE_EVEN_ODD]
