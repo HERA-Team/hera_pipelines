@@ -249,7 +249,7 @@ args = ["{basename}",
 [IMAGING]
 prereqs = "CAL_SMOOTH"
 prereq_chunk_size = "all"
-mem = 64000
+mem = 128000
 args = ["{basename}",
         "${IMAGING_OPTS:casa}",
         "${IMAGING_OPTS:casa_imaging_scripts}",
