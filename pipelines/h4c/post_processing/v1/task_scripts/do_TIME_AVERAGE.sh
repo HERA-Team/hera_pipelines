@@ -17,6 +17,14 @@ fn="${1}"
 data_ext="${2}"
 label="${3}"
 t_avg="${4}"
+n_avg="${5}"
+
+if [ "${t_avg}" = "none" ]
+then
+  t_avg_arg="--n_avg ${n_avg}"
+else
+  t_avg_arg="--t_avg ${t_avg}"
+fi
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -50,11 +58,11 @@ auto_list_odd=`echo zen.${int_jd}.*.odd.${label}.auto.foreground_filled.uvh5`
 if [ -e "${auto_in_even}" ]
 then
   # do even/odd interleaving.
-  echo time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data_list ${auto_list_odd} --interleaved_output_data ${auto_out_odd}
-  time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data_list ${auto_list_odd} --interleaved_output_data ${auto_out_odd}
+  echo time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg_arg} --rephase --clobber --interleaved_input_data_list ${auto_list_odd} --interleaved_output_data ${auto_out_odd}
+  time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg_arg} --rephase --clobber --interleaved_input_data_list ${auto_list_odd} --interleaved_output_data ${auto_out_odd}
   # odd
-  #echo time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
-  #time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
+  #echo time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg_arg} --rephase --clobber
+  #time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg_arg} --rephase --clobber
 else
   echo "${auto_in_even} does not exist!"
 fi
@@ -63,26 +71,26 @@ fi
 # even
 if [ -e "${fgfilled_in_even}" ]
 then
-  #echo time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg} --rephase --clobber --flag_output
-  #time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg} --rephase --clobber --flag_output zen.${jd}.${label}.roto_flags.tavg.flags.h5
+  #echo time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg_arg} --rephase --clobber --flag_output
+  #time_average.py ${nofg_in_even} ${nofg_out_even} ${t_avg_arg} --rephase --clobber --flag_output zen.${jd}.${label}.roto_flags.tavg.flags.h5
   # odd
-  #echo time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
-  #time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg} --rephase --clobber
+  #echo time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg_arg} --rephase --clobber
+  #time_average.py ${nofg_in_odd} ${nofg_out_odd} ${t_avg_arg} --rephase --clobber
   # time-average with-fg filled -- use for signal loss estimation.
   # even / odd interleave
-  echo time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
-  time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg} --rephase --clobber --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
+  echo time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg_arg} --rephase --clobber --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
+  time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg_arg} --rephase --clobber --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
   # odd
-  #echo time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
-  #time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg} --rephase --clobber
+  #echo time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg_arg} --rephase --clobber
+  #time_average.py ${fgfilled_in_odd} ${fgfilled_out_odd} ${t_avg_arg} --rephase --clobber
 
 
   # time-average with-fg resids -- use for dayenu estimator.
-  echo time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag} --interleaved_input_data  ${fgres_in_odd} --interleaved_output_data ${fgres_out_odd}
-  time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg} --rephase --clobber --flag_output ${tavg_flag} --interleaved_input_data ${fgres_in_odd}  --interleaved_output_data ${fgres_out_odd}
+  echo time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg_arg} --rephase --clobber --flag_output ${tavg_flag} --interleaved_input_data  ${fgres_in_odd} --interleaved_output_data ${fgres_out_odd}
+  time_average.py ${fgres_in_even} ${fgres_out_even} ${t_avg_arg} --rephase --clobber --flag_output ${tavg_flag} --interleaved_input_data ${fgres_in_odd}  --interleaved_output_data ${fgres_out_odd}
   # odd
-  #echo time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
-  #time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg} --rephase --clobber
+  #echo time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg_arg} --rephase --clobber
+  #time_average.py ${fgres_in_odd} ${fgres_out_odd} ${t_avg_arg} --rephase --clobber
 else
   echo "${fgfilled_in_even} does not exist!"
 fi
