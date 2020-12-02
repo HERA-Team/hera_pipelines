@@ -82,3 +82,20 @@ do
     echo "${fn_model} does not exist!"
   fi
 done
+# obtain diff files by differencing even and odd files.
+#fn_even_noxtalk=zen.${jd}.even.${label}.waterfall_foregrounds.${data_ext}
+#fn_odd_noxtalk=${fn_even_noxtalk/even/odd}
+#fn_diff_noxtalk=${fn_even_noxtalk/even/diff}
+#if [ -e "${fn_even_noxtalk}" ]
+#  echo rms_diff_files.py ${fn_even_noxtalk} ${fn_odd_noxtalk} ${fn_odd_noxtalk} --clobber
+#  rms_diff_files.py ${fn_even_noxtalk} ${fn_odd_noxtalk} ${fn_odd_noxtalk} --clobber
+
+#  fn_even_xtalk=zen.${jd}.even.${label}.xtalk_filtered_waterfall_foregrounds.${data_ext}
+#  fn_odd_xtalk=${fn_even_xtalk/even/odd}
+#  fn_diff_xtalk=${fn_even_xtalk/even/diff}
+#  echo rms_diff_files.py ${fn_even_xtalk} ${fn_odd_xtalk} ${fn_odd_xtalk} --clobber
+#  rms_diff_files.py ${fn_even_xtalk} ${fn_odd_xtalk} ${fn_odd_xtalk} --clobber
+
+#else
+#  echo "${fn_even_noxtalk} does not exist!"
+#fi
