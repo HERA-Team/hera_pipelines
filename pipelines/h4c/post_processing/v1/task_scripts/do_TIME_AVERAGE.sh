@@ -50,8 +50,8 @@ auto_list_odd=`echo zen.${int_jd}.*.odd.${label}.auto.foreground_filled.uvh5`
 if [ -e "${auto_in_even}" ]
 then
   # do even/odd interleaving.
-  echo time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data ${auto_in_odd} --interleaved_output_data ${auto_out_odd}
-  time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data ${auto_in_odd} --interleaved_output_data ${auto_out_odd}
+  echo time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data_list ${auto_list_odd} --interleaved_output_data ${auto_out_odd}
+  time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg} --rephase --clobber --interleaved_input_data_list ${auto_list_odd} --interleaved_output_data ${auto_out_odd}
   # odd
   #echo time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber
   #time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg} --rephase --clobber

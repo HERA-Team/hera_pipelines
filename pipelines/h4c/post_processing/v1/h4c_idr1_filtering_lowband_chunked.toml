@@ -40,9 +40,9 @@ frmax1 = 0.025
 tol = 1e-9
 
 [ROTOFLAG_OPTS]
-percentile_freq = 92.5
+percentile_freq = 99.0
 percentile_time = 99.0
-niters = 3
+niters = 10
 kf_size = 8
 kt_size = 32
 

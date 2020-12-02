@@ -272,7 +272,7 @@ then
      --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\
      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
-     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --Jy2mK --beam ${beam_file} --sampling\
      --file_type uvh5 --fullband_filter --include_autocorrs\
      --exclude_flagged_edge_channels --taper bh\
      --exclude_cross_bls
@@ -282,7 +282,7 @@ then
      --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\
      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
-     --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+     --Jy2mK --beam ${beam_file} --sampling\
      --file_type uvh5 --fullband_filter --include_autocorrs\
      --exclude_flagged_edge_channels --taper bh\
      --exclude_cross_bls
@@ -293,7 +293,7 @@ then
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
-      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --Jy2mK --beam ${beam_file} --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
       --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
       --exclude_cross_bls
@@ -303,7 +303,7 @@ then
       --allow_fft --store_cov_diag --Jy2mK_avg\
       --vis_units Jy --cov_model empirical_pspec --overwrite\
       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
-      --Jy2mK --beam ${beam_file} --interleave_times --sampling\
+      --Jy2mK --beam ${beam_file} --sampling\
       --file_type uvh5 --fullband_filter --include_autocorrs\
       --exclude_flagged_edge_channels --Nspws ${nspw} --taper bh\
       --exclude_cross_bls
