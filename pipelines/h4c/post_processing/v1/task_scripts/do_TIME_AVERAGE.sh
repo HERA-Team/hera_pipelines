@@ -72,7 +72,8 @@ then
   time_average_baseline_parallelized.py ${auto_in_even} ${auto_out_even} ${auto_list_even} ${t_avg_arg}\
      --rephase --clobber --interleaved_input_data_list ${auto_list_odd}\
      --interleaved_output_data ${auto_out_odd} --interleaved_diff_even ${auto_diff_even}\
-      --interleaved_diff_odd ${auto_diff_odd}  # odd
+      --interleaved_diff_odd ${auto_diff_odd}
+       # odd
   #echo time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg_arg} --rephase --clobber
   #time_average_baseline_parallelized.py ${auto_in_odd} ${auto_out_odd} ${auto_list_odd} ${t_avg_arg} --rephase --clobber
 else
@@ -92,10 +93,10 @@ then
   # even / odd interleave
   # don't do diffs for non xtalk filtered files.
   echo time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg_arg} --rephase --clobber\
-   --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}#\
+   --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
    #--interleaved_diff_even ${fgfilled_diff_even} --interleaved_diff_odd ${fgfilled_diff_odd}
   time_average.py ${fgfilled_in_even} ${fgfilled_out_even} ${t_avg_arg} --rephase --clobber\
-   --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}#\
+   --interleaved_input_data ${fgfilled_in_odd} --interleaved_output_data ${fgfilled_out_odd}
    #--interleaved_diff_even ${fgfilled_diff_even} --interleaved_diff_odd ${fgfilled_diff_odd}
 
   # odd
