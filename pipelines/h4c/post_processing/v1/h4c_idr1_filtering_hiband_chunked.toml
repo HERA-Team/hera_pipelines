@@ -26,7 +26,7 @@ t_avg = 300.0
 #n_avg = 32
 flag_ext = "og_flags1"
 final_cal_ext = "smooth_abs.roto_flags.calfits"
-final_flag_ext = "mid-band.roto_flag.flags.h5"
+final_flag_ext = "high-band.roto_flag.flags.h5"
 
 [DELAY_OPTS]
 tol = 1e-9
