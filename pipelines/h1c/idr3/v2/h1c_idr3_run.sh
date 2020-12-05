@@ -116,6 +116,7 @@ for jd in ${jdArray[@]}; do
     mkdir -p $jd
     workdir=`realpath $jd`
     cd $jd
+    pwd
 
     # call child script
     echo ${run_script_dir}/build_h1c_idr3_makeflow.sh.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
@@ -130,4 +131,5 @@ for jd in ${jdArray[@]}; do
         exit 1
     fi
     echo Finished $jd
+    date
 done

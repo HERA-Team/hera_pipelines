@@ -35,6 +35,7 @@ current_dir=`pwd`
 
 # move to workdir
 cd $workdir
+pwd
 
 # The JSON search string doesn't need to be wrapped in single-quotes
 # if passed as an argument rather than entered interactively.
@@ -44,9 +45,8 @@ echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
 # Now make a makeflow
-input_files=`ls -d1 $stagedir/$jd/zen.???????.?????.xx.HH.uv | tr '\n' ' '`
-echo build_makeflow_from_config.py -c $config_file $input_files
-build_makeflow_from_config.py -c $config_file $input_files
+echo build_makeflow_from_config.py -c $config_file $stagedir/$jd/zen.???????.?????.xx.HH.uv
+build_makeflow_from_config.py -c $config_file $stagedir/$jd/zen.???????.?????.xx.HH.uv
 
 mf_file=`realpath *.mf`
 
@@ -63,3 +63,4 @@ screen -S "${jd}" -p 0 -X stuff "${cmd}"
 
 # go back to main directory
 cd $current_dir
+pwd
