@@ -59,6 +59,7 @@ cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
                  --Nwf_per_load ${Nwf_per_load} \
                  --a_priori_flag_yaml ${flag_yaml} \
                  --clobber \
+                 --skip_omnical_zscore_filter \
                  --skip_abscal_zscore_filter \
                  --skip_cross_mean_filter"
 echo $cmd
