@@ -44,7 +44,7 @@ echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
 # Now make a makeflow
-input_files=`ls -d1 $stagedir/$jd/zen.???????.?????.xx.uv | tr '\n' ' '`
+input_files=`ls -d1 $stagedir/$jd/zen.???????.?????.xx.HH.uv | tr '\n' ' '`
 echo build_makeflow_from_config.py -c $config_file $input_files
 build_makeflow_from_config.py -c $config_file $input_files
 
