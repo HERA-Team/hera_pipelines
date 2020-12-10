@@ -102,6 +102,20 @@ args = ["{basename}"]
 prereqs = "MAKE_UVH5"
 args = ["{basename}"]
 
+[DATA_INSPECT_NOTEBOOK]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${Options:path_to_a_priori_flags}",
+       ]
+
 [REDCAL]
 prereqs = "MAKE_UVH5"
 args = ["{basename}",
