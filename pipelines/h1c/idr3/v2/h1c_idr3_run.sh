@@ -9,7 +9,7 @@
 #
 # Positional arguments:
 # 1 - root directory to start from
-# 2 - path to .toml file defining workflow
+# 2 - path to .toml file defining workflow (assumed to be in makeflow dir)
 # 3 - conda environment to activate for librarian staging and makeflow execution
 # 4 - number of concurrent tasks to run for makeflow
 
@@ -21,7 +21,87 @@ ntasks="${4}"
 # define the list of JDs to process
 declare -a jdArray=(
     "2458041"
+    "2458042"
+    "2458043"
+    "2458044"
+    "2458045"
+    "2458046"
+    "2458047"
+    "2458048"
+    "2458049"
+    "2458050"
+    "2458051"
+    "2458052"
+    "2458054"
+    "2458055"
+    "2458056"
+    "2458061"
+    "2458062"
+    "2458063"
+    "2458064"
+    "2458065"
+    "2458066"
+    "2458067"
+    "2458068"
+    "2458069"
+    "2458070"
+    "2458071"
+    "2458072"
+    "2458081"
+    "2458083"
+    "2458084"
+    "2458085"
+    "2458086"
+    "2458087"
+    "2458088"
+    "2458089"
+    "2458090"
+    "2458091"
+    "2458092"
+    "2458094"
+    "2458095"
+    "2458097"
+    "2458098"
+    "2458099"
+    "2458101"
+    "2458102"
+    "2458103"
+    "2458105"
+    "2458106"
+    "2458107"
+    "2458108"
+    "2458110"
+    "2458111"
+    "2458112"
+    "2458113"
+    "2458114"
+    "2458115"
+    "2458116"
+    "2458134"
+    "2458135"
+    "2458139"
+    "2458142"
+    "2458143"
+    "2458144"
+    "2458145"
+    "2458146"
+    "2458147"
+    "2458149"
+    "2458150"
+    "2458151"
+    "2458153"
+    "2458154"
+    "2458155"
+    "2458157"
+    "2458158"
+    "2458187"
+    "2458188"
+    "2458189"
     "2458190"
+    "2458192"
+    "2458195"
+    "2458196"
+    "2458208"
 )
 
 makeflow_dir=`dirname $toml_path`
@@ -36,10 +116,11 @@ for jd in ${jdArray[@]}; do
     mkdir -p $jd
     workdir=`realpath $jd`
     cd $jd
+    pwd
 
     # call child script
-    echo ${run_script_dir}/make_h1c_idr3_makeflow.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
-    ${run_script_dir}/make_h1c_idr3_makeflow.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
+    echo ${run_script_dir}/build_h1c_idr3_makeflow.sh.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
+    ${run_script_dir}/build_h1c_idr3_makeflow.sh $jd $root_dir $workdir $toml_path $conda_env $ntasks
     # wait for the workflow to finish one way or the other
     while [[ ! -f "succeeded.out" && ! -f "failed.out" ]]; do
         sleep 60;
@@ -50,4 +131,5 @@ for jd in ${jdArray[@]}; do
         exit 1
     fi
     echo Finished $jd
+    date
 done
