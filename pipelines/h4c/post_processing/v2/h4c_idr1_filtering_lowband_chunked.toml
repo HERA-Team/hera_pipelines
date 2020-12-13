@@ -72,7 +72,7 @@ actions = [
            "DELAY_ROUND2",
            "XTALK",
            "TIME_AVERAGE",
-           "RECONSTITUTE_EVEN_ODD",
+           "RECONSTITUTE",
            "PSPEC",
            "COMBINE_PSPEC"]#,
 	         #"FILTER_CLEANUP"]
@@ -97,7 +97,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:flag_ext}",
         "${GLOBAL_OPTS:yaml_dir}"]
 
 [ROTOFLAG_METRIC]
-prereqs = "DELAY_BASELINE_PARALLELIZED"
+prereqs = "DELAY_ROUND1"
 mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
@@ -143,7 +143,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${XTAL
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:frate_standoff}", "${GLOBAL_OPTS:cache_dir}"]
 
 [TIME_AVERAGE]
-prereqs= "XTALK_BASELINE_PARALLELIZED_ROUND2"
+prereqs= "XTALK"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
@@ -154,7 +154,7 @@ args=["{basename}",
       "${GLOBAL_OPTS:t_avg}"]#, "${GLOBAL_OPTS:n_avg}"]
 
 
-[RECONSTITUTE_EVEN_ODD]
+[RECONSTITUTE]
 prereqs = "TIME_AVERAGE"
 prereq_chunk_size="all"
 chunk_size=1
@@ -163,7 +163,7 @@ mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [PSPEC]
-prereqs = "RECONSTITUTE_EVEN_ODD"
+prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
