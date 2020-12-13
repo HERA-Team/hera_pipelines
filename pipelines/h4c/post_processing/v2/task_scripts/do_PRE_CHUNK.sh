@@ -61,14 +61,14 @@ then
     --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
 
   chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-    --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber --redundant_groups 2
+    --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
 
     # chuck data diff files.
     echo chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
       --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
 
     chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-      --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber --redundant_groups 2
+      --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
 
 
   # chunk the calibration files.
