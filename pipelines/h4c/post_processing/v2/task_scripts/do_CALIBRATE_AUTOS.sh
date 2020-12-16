@@ -34,7 +34,7 @@ infile=zen.${jd}.sum.${label}.chunked.${output_ext}
 infile_diff=${infile/sum/diff}
 
 auto_file=zen.${jd}.sum.${label}.autos.chunked.uvh5
-outfile_auto=${fn%.uvh5}.${label}.autos.calibrated.uvh5
+outfile_auto=zen.${jd}.sum.${label}.autos.calibrated.uvh5
 auto_file_diff=${auto_file/sum/diff}
 outfile_auto_diff=${outfile_auto/sum/diff}
 
@@ -59,7 +59,7 @@ then
   apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
   --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
 
-  
+
 else
   echo "${infile} does not exist!"
 fi

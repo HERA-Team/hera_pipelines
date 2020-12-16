@@ -41,6 +41,7 @@ do
   do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
     fn_in=zen.${jd}.${sd}.${label}.foreground_filled.${data_extp}
+    fg_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.${data_extp}`
     fn_res=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}
     fn_filled=zen.${jd}.${sd}.${label}.waterfall.${data_extp}
     if [ -e "${fn_in}" ]
@@ -48,12 +49,12 @@ do
       echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
       --filled_outfilename ${fn_filled} --inpaint --frate_standoff ${frate_standoff} \
-      --clobber --datafilelist ${resid_files} --skip_flagged_edges --verbose
+      --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose
 
       dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
       --filled_outfilename ${fn_filled} --inpaint --frate_standoff ${frate_standoff} \
-      --clobber --datafilelist ${resid_files} --skip_flagged_edges --verbose
+      --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose
     else
       echo "${fn_in} does not exist!"
     fi

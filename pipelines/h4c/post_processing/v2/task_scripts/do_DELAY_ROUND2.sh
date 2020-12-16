@@ -20,11 +20,12 @@ label="${4}"
 tol="${5}"
 standoff="${6}"
 cache_dir="${7}"
+pols="${8}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
-flagfile=zen.${int_jd}.${flag_ext}
 int_jd=${jd:0:7}
+flagfile=zen.${int_jd}.${flag_ext}
 
 
 
@@ -43,34 +44,40 @@ fi
 parities=("0" "1")
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
-do# auto file
+do
+  # auto file
   auto_in=zen.${jd}.${sd}.${label}.autos.calibrated.uvh5
-  auto_out=zen.${jd}.${sd}.${label}.auto.foreground_filled.uvh5
-  echo dpss_delay_filter_run.py ${auto_in} \
-    --clobber --skip_flagged_edges \
-    --filled_outfilename ${auto_out} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
+  if [ -e "${auto_in}" ]
+  then
+    auto_out=zen.${jd}.${sd}.${label}.auto.foreground_filled.uvh5
+    echo dpss_delay_filter_run.py ${auto_in} \
+      --clobber --skip_flagged_edges \
+      --filled_outfilename ${auto_out} --polarizations ${pols} \
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
-  dpss_delay_filter_run.py ${auto_in} \
-    --clobber --skip_flagged_edges \
-    --filled_outfilename ${auto_out} \
-    --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
+    dpss_delay_filter_run.py ${auto_in} \
+      --clobber --skip_flagged_edges \
+      --filled_outfilename ${auto_out} --polarizations ${pols} \
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
+  else
+    echo "${auto_in} does not exist!"
+  fi
   for parity in ${parities[@]}
   do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
-    fn_in=zen.${jd}.${sd}.${label}.${data_extp}
+    fn_in=zen.${jd}.${sd}.${label}.chunked.${data_extp}
     fn_out=zen.${jd}.${sd}.${label}.foreground_filled.${data_extp}
     if [ -e "${fn_in}" ]
     then
     echo dpss_delay_filter_run.py ${fn_in} \
       --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --external_flags ${flagfile}
+      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags
 
     dpss_delay_filter_run.py ${fn_in} \
       --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --external_flags ${flagfile}
+      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags
     else
       echo "${fn_in} does not exist!"
     fi

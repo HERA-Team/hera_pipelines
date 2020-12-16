@@ -78,7 +78,7 @@ actions = [
 	         #"FILTER_CLEANUP"]
 
 [PRE_CHUNK]
-mem=16000
+mem=128000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
@@ -131,7 +131,7 @@ stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:final_flag_ext}", "${GLOBAL_OPTS:label}",
         "${DELAY_OPTS:tol}",
-        "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:cache_dir}"]
+        "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:cache_dir}", "${GLOBAL_OPTS:pols}"]
 
 [XTALK]
 prereqs = "DELAY_ROUND2"

@@ -70,7 +70,7 @@ then
         --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
   done
-
+done
 else
   echo "${time_chunk_template} does not exist!"
 fi
