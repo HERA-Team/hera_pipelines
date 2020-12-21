@@ -40,7 +40,8 @@ calibration = "none"
 frmax0 = 0.0
 frmax1 = 0.025
 tol = 1e-9
-frate_standoff = 0.025
+# inpaint beyond frate limit by this much.
+frate_standoff = 1.0
 
 [ROTOFLAG_OPTS]
 percentile_freq = 99.0
