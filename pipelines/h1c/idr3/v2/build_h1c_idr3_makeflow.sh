@@ -40,7 +40,7 @@ pwd
 # The JSON search string doesn't need to be wrapped in single-quotes
 # if passed as an argument rather than entered interactively.
 # Get sum files
-json_string='{"name-matches": "zen.'"$jd"'._____.__.HH.uv"}'
+json_string='{"name-matches": "zen.'"$jd"'.%.HH.uv"}'
 echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
