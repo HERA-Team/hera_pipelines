@@ -26,7 +26,7 @@ def write(jdflags):
     freqflags=[[100.0e6, 111e6], [137e6, 138e6], [187e6, 199.90234375e6]]
     # write
     for i in range(len(bad_ants)):
-        fname='./yaml2/'+str(days[i])+'.yaml'
+        fname='./a_priori_flags/'+str(days[i])+'.yaml'
         with open(fname,'w+') as f:
             f.write('JD_flags: {}'.format(jdflags[i])+"\n")
             f.write('freq_flags: {}'.format(freqflags)+"\n")
