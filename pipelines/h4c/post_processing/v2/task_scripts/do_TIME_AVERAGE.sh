@@ -30,7 +30,7 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 
-parities=("0" "1s")
+parities=("0" "1")
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
@@ -40,7 +40,7 @@ do
     auto_list=`echo zen.${int_jd}.*.${sd}.${label}.auto.foreground_filled.uvh5`
     auto_in=zen.${jd}.${sd}.${label}.auto.foreground_filled.uvh5
     auto_out=zen.${jd}.${sd}.${label}.foreground_filled_waterfall.tavg.uvh5
-    fn_in=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}
+    fg_in=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}
     fg_out=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.${data_extp}
     tavg_flag=zen.${jd}.${label}.flags.tavg.h5
 

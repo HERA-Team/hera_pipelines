@@ -22,7 +22,7 @@ int_jd=${jd:0:7}
 
 if [ -e "${time_chunk_template}" ]
 then
-  parities=("0" "1s")
+  parities=("0" "1")
   sumdiff=("sum" "diff")
   for sd in ${sumdiff[@]}
   do
@@ -49,7 +49,7 @@ then
         --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
     # reconstitute waterfall files.
-    outfilename=zen.${jd}.${sd}.${label}.waterfall.${data_extp}
+    outfilename=zen.${jd}.${sd}.${label}.fg_filtered.${data_extp}
     baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.${data_extp}`
     echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
         --baseline_chunk_files ${baseline_chunk_files} --clobber
@@ -59,15 +59,15 @@ then
 
 
     # time averaged data
-    outfilename=zen.${jd}.${sd}.${label}.waterfall.tavg.${data_extp}
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.tavg.${data_extp}`
+    #outfilename=zen.${jd}.${sd}.${label}.fg_filtered.tavg.${data_extp}
+    #baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.tavg.${data_extp}`
 
 
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    #echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+    #    --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    #time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+    #    --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
   done
 done
