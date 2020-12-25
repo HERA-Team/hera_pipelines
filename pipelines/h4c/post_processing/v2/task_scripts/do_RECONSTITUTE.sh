@@ -59,15 +59,15 @@ then
 
 
     # time averaged data
-    #outfilename=zen.${jd}.${sd}.${label}.fg_filtered.tavg.${data_extp}
-    #baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.tavg.${data_extp}`
+    outfilename=zen.${jd}.${sd}.${label}.fg_filtered.tavg.${data_extp}
+    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.tavg.${data_extp}`
 
 
-    #echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-    #    --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    #time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-    #    --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
   done
 done

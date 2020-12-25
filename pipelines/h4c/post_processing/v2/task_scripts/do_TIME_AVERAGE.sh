@@ -67,5 +67,19 @@ do
   else
     echo "${fg_in} does not exist!"
   fi
+
+  fg_in=zen.${jd}.${sd}.${label}.waterfall.${data_extp}
+  fg_out=zen.${jd}.${sd}.${label}.waterfall.tavg.${data_extp}
+  # time average non-xtalk filtered data
+  if [ -e "${fg_in}" ]
+  then
+    echo time_average.py ${fg_in} ${fg_out} --rephase --clobber \
+    --flag_output ${tavg_flag} --t_avg ${t_avg}
+    time_average.py ${fg_in} ${fg_out} --rephase --clobber \
+    --flag_output ${tavg_flag} --t_avg ${t_avg}
+  else
+    echo "${fg_in} does not exist!"
+  fi
+
   done
 done
