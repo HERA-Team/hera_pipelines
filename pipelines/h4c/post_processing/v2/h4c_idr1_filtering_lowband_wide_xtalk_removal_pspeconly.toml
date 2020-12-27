@@ -31,7 +31,7 @@ final_cal_ext = "smooth_abs.roto_flags.calfits"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 500
+standoff = 1000
 calibration = "none"
 
 # we may want to consider another flagging round after delay filtering.

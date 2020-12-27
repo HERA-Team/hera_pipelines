@@ -38,8 +38,8 @@ calibration = "none"
 
 [XTALK_OPTS]
 # dividing this by two for low band.
-frmax0 = 0.0106
-frmax1 = 0.0
+frmax0 = 0.0
+frmax1 = 0.025
 tol = 1e-9
 # inpaint beyond frate limit by this much.
 frate_standoff = 1.0
