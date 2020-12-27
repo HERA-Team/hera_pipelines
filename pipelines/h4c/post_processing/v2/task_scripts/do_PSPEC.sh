@@ -59,7 +59,7 @@ then
        --taper bh --exclude_flagged_edge_channels
 
 # Just make power spectra of filled autos.
- auto_file=zen.${jd}.${sd}.${label}.auto.foreground_filled_waterfall.tavg.uvh5
+ auto_file=zen.${jd}.${sd}.${label}.auto.waterfall.tavg.uvh5
  if [ -e "${auto_file}" ]
  then
    output=zen.${jd}.${sd}.${label}.auto.tavg.fullband.pspec.h5
@@ -83,7 +83,7 @@ then
      --exclude_cross_bls --interleave_times
 
  else
-   echo "${auto_file_even} does not exist!"
+   echo "${auto_file} does not exist!"
  fi
 
 else

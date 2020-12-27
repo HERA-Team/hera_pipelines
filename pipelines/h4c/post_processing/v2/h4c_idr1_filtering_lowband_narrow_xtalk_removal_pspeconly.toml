@@ -73,8 +73,8 @@ actions = [
            #"CALIBRATE_AUTOS",
            #"DELAY_ROUND2",
            #"XTALK_INIT",
-           #"TIME_AVERAGE",
-           #"RECONSTITUTE",
+           "TIME_AVERAGE",
+           "RECONSTITUTE",
            "PSPEC",
            "COMBINE_PSPEC"]#,
 	         #"FILTER_CLEANUP"]
@@ -127,7 +127,7 @@ args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
       "${GLOBAL_OPTS:final_cal_ext}"]
 
 [DELAY_ROUND2]
-#prereqs="CALIBRATE_AUTOS"
+prereqs="CALIBRATE_AUTOS"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
@@ -146,8 +146,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:labelin}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:frate_standoff}", "${GLOBAL_OPTS:cache_dir}"]
 
 [TIME_AVERAGE]
-prereqs= "XTALK_INIT"
-prereq_chunk_size="all"
+#prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem=16000
@@ -166,7 +165,7 @@ mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [PSPEC]
-#prereqs = "RECONSTITUTE"
+prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
