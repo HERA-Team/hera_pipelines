@@ -42,7 +42,7 @@ do
   do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
     fn_in=zen.${jd}.${sd}.${labelin}.foreground_filled.${data_extp}
-    fg_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.${data_extp}`
+    fg_files=`echo zen.${int_jd}.*.${sd}.${labelin}.foreground_filled.${data_extp}`
     fn_res=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}
     fn_filled=zen.${jd}.${sd}.${label}.waterfall.${data_extp}
     if [ -e "${fn_in}" ]

@@ -71,10 +71,10 @@ actions = [
            #"ROTOFLAG_METRIC",
            #"ROTOFLAG_FLAG",
            #"CALIBRATE_AUTOS",
-           "DELAY_ROUND2",
-           "XTALK_INIT",
-           "TIME_AVERAGE",
-           "RECONSTITUTE",
+           #"DELAY_ROUND2",
+           #"XTALK_INIT",
+           #"TIME_AVERAGE",
+           #"RECONSTITUTE",
            "PSPEC",
            "COMBINE_PSPEC"]#,
 	         #"FILTER_CLEANUP"]
@@ -166,7 +166,7 @@ mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [PSPEC]
-prereqs = "RECONSTITUTE"
+#prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1

@@ -27,22 +27,19 @@ suppression="${7}"
 flag_ext="${8}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
-even_file=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
-odd_file=${even_file/even/odd}
-output=zen.${jd}.${label}.xtalk_filtered_waterfall_noforegrounds_res.uvp
+
 # form power spectrum between even and odd data sets with offset times.
-tfile=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds.tavg.${data_ext}
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
-if [ -e "${tfile}" ]
-then
   data_ext0=${data_ext/.uvh5/.0.uvh5}
-  data_ext1=${data_ext/.uvh5/.0.uvh5}
+  data_ext1=${data_ext/.uvh5/.1.uvh5}
   #power spectra of data with the foregrounds and xtalk retained -- to estimate signal loss from xtalk filter.
   even_file=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.${data_ext0}
   odd_file=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.${data_ext1}
   output=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.fullband.pspec.h5
+if [ -e "${even_file}" ]
+then
     # average all times incoherently
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
       --allow_fft --store_cov_diag --Jy2mK_avg\

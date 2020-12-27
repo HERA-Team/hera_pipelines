@@ -14,7 +14,7 @@ data_ext = 'smooth_avg_vis.uvh5'
 cal_ext = 'smooth_abs.calfits'
 spw0 = 48
 spw1 = 320
-label = "low-band-v2-rm-hrzn"
+label = "low-band-v2"
 labelin="low-band-v2"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
@@ -71,10 +71,10 @@ actions = [
            #"ROTOFLAG_METRIC",
            #"ROTOFLAG_FLAG",
            #"CALIBRATE_AUTOS",
-           "DELAY_ROUND2",
-           "XTALK_INIT",
-           "TIME_AVERAGE",
-           "RECONSTITUTE",
+           #"DELAY_ROUND2",
+           #"XTALK_INIT",
+           #"TIME_AVERAGE",
+           #"RECONSTITUTE",
            "PSPEC",
            "COMBINE_PSPEC"]#,
 	         #"FILTER_CLEANUP"]
@@ -166,7 +166,7 @@ mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [PSPEC]
-prereqs = "RECONSTITUTE"
+#prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1

@@ -39,7 +39,7 @@ do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
     auto_list=`echo zen.${int_jd}.*.${sd}.${label}.auto.foreground_filled.uvh5`
     auto_in=zen.${jd}.${sd}.${label}.auto.foreground_filled.uvh5
-    auto_out=zen.${jd}.${sd}.${label}.foreground_filled_waterfall.tavg.uvh5
+    auto_out=zen.${jd}.${sd}.${label}.auto.foreground_filled_waterfall.tavg.uvh5
     fg_in=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}
     fg_out=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.${data_extp}
     tavg_flag=zen.${jd}.${label}.flags.tavg.h5
