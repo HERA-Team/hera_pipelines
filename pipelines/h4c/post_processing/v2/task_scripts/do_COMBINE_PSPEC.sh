@@ -22,7 +22,7 @@ do
   input=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.fullband.pspec.h5
   combined=zen.${int_jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.fullband.pspec.h5
   i=0
-  for f in zen.${int_jd}.*.${label}.xtalk_filtered_waterfall.tavg.fullband.pspec.h5; do
+  for f in zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_waterfall.tavg.fullband.pspec.h5; do
      if [[ "${f}" = "${input}" ]]; then
          fragment_position="${i}";
      fi
