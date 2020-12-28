@@ -42,39 +42,39 @@ if [ -e "${even_file}" ]
 then
     # average all times incoherently
     echo pspec_run.py ${even_file} ${odd_file} ${output}\
-      --allow_fft --store_cov_diag --Jy2mK_avg\
+      --allow_fft --store_cov_diag \
       --vis_units Jy --cov_model empirical_pspec --overwrite\
-      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
       --Jy2mK --beam ${beam_file} --sampling\
-      --time_avg --file_type uvh5 \
+      --file_type uvh5 \
       --taper bh --exclude_flagged_edge_channels
 
 
      pspec_run.py ${even_file} ${odd_file} ${output}\
-       --allow_fft --store_cov_diag --Jy2mK_avg\
+       --allow_fft --store_cov_diag \
        --vis_units Jy --cov_model empirical_pspec --overwrite\
-       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
        --Jy2mK --beam ${beam_file} --sampling\
-       --time_avg --file_type uvh5 \
+       --file_type uvh5 \
        --taper bh --exclude_flagged_edge_channels
 
      # do subbands
      output=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5
      echo pspec_run.py ${even_file} ${odd_file} ${output}\
-       --allow_fft --store_cov_diag --Jy2mK_avg\
+       --allow_fft --store_cov_diag \
        --vis_units Jy --cov_model empirical_pspec --overwrite\
-       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+       --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
        --Jy2mK --beam ${beam_file} --sampling\
-       --time_avg --file_type uvh5 --Nspws ${nspw} \
+       --file_type uvh5 --Nspws ${nspw} \
        --taper bh --exclude_flagged_edge_channels
 
 
       pspec_run.py ${even_file} ${odd_file} ${output}\
-        --allow_fft --store_cov_diag --Jy2mK_avg\
+        --allow_fft --store_cov_diag \
         --vis_units Jy --cov_model empirical_pspec --overwrite\
-        --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
+        --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
         --Jy2mK --beam ${beam_file} --sampling\
-        --time_avg --file_type uvh5 --Nspws ${nspw} \
+        --file_type uvh5 --Nspws ${nspw} \
         --taper bh --exclude_flagged_edge_channels
 
 # Just make power spectra of filled autos.

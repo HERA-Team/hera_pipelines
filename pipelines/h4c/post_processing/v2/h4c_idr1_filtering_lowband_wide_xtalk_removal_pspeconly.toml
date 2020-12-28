@@ -53,7 +53,7 @@ kt_size = 32
 
 [PSPEC_OPTS]
 nspws = 2
-beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_power_beam_healpix.fits"
+beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
 
 [FILTER_CLEANUP_OPTS]
 clear_xtalk_cache = false
@@ -73,8 +73,8 @@ actions = [
            #"CALIBRATE_AUTOS",
            #"DELAY_ROUND2",
            #"XTALK_INIT",
-           "TIME_AVERAGE",
-           "RECONSTITUTE",
+           #"TIME_AVERAGE",
+           #"RECONSTITUTE",
            "PSPEC",
            "COMBINE_PSPEC"]#,
 	         #"FILTER_CLEANUP"]
@@ -166,7 +166,7 @@ mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 
 [PSPEC]
-prereqs = "RECONSTITUTE"
+#prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
