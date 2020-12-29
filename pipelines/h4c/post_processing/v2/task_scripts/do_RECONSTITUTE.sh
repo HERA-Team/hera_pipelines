@@ -16,58 +16,60 @@ fn="${1}"
 data_ext="${2}"
 label="${3}"
 
-time_chunk_template=${fn%.uvh5}.${label}.chunked.${data_ext}
 jd=$(get_jd $time_chunk_template)
 int_jd=${jd:0:7}
 
-if [ -e "${time_chunk_template}" ]
-then
+
   parities=("0" "1")
   sumdiff=("sum" "diff")
+
   for sd in ${sumdiff[@]}
   do
     for parity in ${parities[@]}
     do
-    # reconstitute xtalk filtered files
-    data_extp=${data_ext/.uvh5/.${parity}.uvh5}
-    outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered_res.${data_extp}
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}`
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
+      data_extp=${data_ext/.uvh5/.${parity}.uvh5}
+      time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.${data_extp}
+      if [ -e "${time_chunk_template}" ]
+      then
+        # reconstitute xtalk filtered files
+        outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered_res.${data_extp}
+        baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}`
+        echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
+        time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-    # time averaged data
-    outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.${data_extp}
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_waterfall.tavg.${data_extp}`
+        # time averaged data
+        outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.${data_extp}
+        baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_waterfall.tavg.${data_extp}`
 
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+        echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+        time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    # reconstitute waterfall files.
-    outfilename=zen.${jd}.${sd}.${label}.fg_filtered.${data_extp}
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.${data_extp}`
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
+        # reconstitute waterfall files.
+        outfilename=zen.${jd}.${sd}.${label}.fg_filtered.${data_extp}
+        baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.${data_extp}`
+        echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
-
-
-    # time averaged data
-    outfilename=zen.${jd}.${sd}.${label}.fg_filtered.tavg.${data_extp}
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.tavg.${data_extp}`
+        time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber
 
 
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+        # time averaged data
+        outfilename=zen.${jd}.${sd}.${label}.fg_filtered.tavg.${data_extp}
+        baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.waterfall.tavg.${data_extp}`
 
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+
+        echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+
+        time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
   done
 done
