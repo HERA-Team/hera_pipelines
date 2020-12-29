@@ -141,7 +141,7 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 32000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}",
         "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:frate_standoff}", "${GLOBAL_OPTS:cache_dir}"]
 
