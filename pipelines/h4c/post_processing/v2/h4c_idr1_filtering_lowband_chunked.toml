@@ -52,7 +52,7 @@ kt_size = 32
 
 [PSPEC_OPTS]
 nspws = 2
-beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_power_beam_healpix.fits"
+beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
 
 [FILTER_CLEANUP_OPTS]
 clear_xtalk_cache = false
