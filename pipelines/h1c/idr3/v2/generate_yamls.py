@@ -3,34 +3,34 @@ import glob, os
 import pandas as pd
 
 
-def write(jdflags):
+def write(jdflags_csv):
     '''
     Writes the YAML files based on a csv file which contains the days of data
     and their corresponding JDflags. See write_csv for more details about that 
     file. 
 
     Args: 
-        jdflags (str): path to the csv file containing the jd flags 
+        jdflags_csv (str): path to the csv file containing the jd flags 
     '''
-    antfiles=glob.glob("./bad_ants/*.txt")
-    bad_ants=[]
-    for file in antfiles:
+    # ant flags
+    bad_ants = {}
+    for file in sorted(glob.glob("./bad_ants/*.txt")):
+        JD = int(file.split('/')[-1].split('.')[0])
         with open(file) as f:
-            day=f.readlines()
-        day=[int(ant.strip()) for ant in day]
-        bad_ants.append(day)
+            bad_ants[JD] = [int(ant.strip()) for ant in f.readlines()]
     # jd flags
-    data=pd.read_csv(jdflags)
-    days=np.array(data['days']+2458000)
-    jdflags=np.array(data['jdflags'])
+    data=pd.read_csv(jdflags_csv)
+    jd_flags = {int(day + 2458000): flags for day, flags in zip(data['days'], data['jdflags'])}
+    # freq flags
     freqflags=[[100.0e6, 111e6], [137e6, 138e6], [187e6, 199.90234375e6]]
     # write
-    for i in range(len(bad_ants)):
-        fname='./a_priori_flags/'+str(days[i])+'.yaml'
-        with open(fname,'w+') as f:
-            f.write('JD_flags: {}'.format(jdflags[i])+"\n")
-            f.write('freq_flags: {}'.format(freqflags)+"\n")
-            f.write('ex_ants: {}'.format(bad_ants[i])+"\n")
+    for JD in bad_ants.keys():
+        with open(f'./a_priori_flags/{JD}.yaml', 'w+') as f:
+            # print(jdflags[i], type(jdflags[i]))
+            if isinstance(jd_flags[JD], str): # check if not nan
+                f.write(f'JD_flags: {jd_flags[JD]}\n')
+            f.write(f'freq_flags: {freqflags}\n')
+            f.write(f'ex_ants: {bad_ants[JD]}\n')
     
     
 def write_csv(days,good,bad,badflags=None,savename='jdflags.csv'):
@@ -76,7 +76,7 @@ def driver():
 
     # badflags is a hardcoded array of the sketchy days and extra JD ranges to be flagges
     badflags=np.array([[58,[[0.2,0.42]]],[59,[[0.2,0.45]]],[96,[[0.2,0.4],[0.45,0.5]]],[104,[[0.2,0.27],[0.35,0.45]]],[109,[[0.2,0.46]]],
-        [136,[[0.2,0.36]]],[141,[[0.3,0.49],[0.25,0.29]]],[148,[[0.2,0.33]]],[159,[[0.2,0.5]]],[161,[[0.4,0.55]]],
+        [136,[[0.2,0.36]]],[140, [[.27,.33],[.44,.47],[.50,.58],[.62,.70]]], [141,[[0.3,0.49],[0.25,0.29]]],[148,[[0.2,0.33]]],[159,[[0.2,0.5]]],[161,[[0.4,0.55]]],
         [172,[[0.2,0.58]]],[173,[[0.2,0.37],[0.4,0.5]]],[185,[[0.35,0.45]]],[206,[[0.2,0.28]]]],dtype='object')
     
     savename=write_csv(days,good,bad,badflags)
