@@ -79,6 +79,7 @@ framesize = "1280x720"
 [WorkFlow]
 actions = ["MAKE_UVH5", 
            "EXTRACT_AUTOS",
+           "DATA_INSPECT_NOTEBOOK",
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL",
