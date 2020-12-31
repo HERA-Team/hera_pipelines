@@ -296,6 +296,7 @@ args = ["{basename}",
 [CLEAN_FILES]
 prereqs = ["MOVIES",
            "APPLY_CAL_REDUNDANT_AVERAGE",
+           "DATA_INSPECT_NOTEBOOK",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL_INSPECT_NOTEBOOK",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
