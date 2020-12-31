@@ -44,6 +44,11 @@ json_string='{"name-matches": "zen.'"$jd"'.%.HH.uv"}'
 echo librarian stage-files -w local $stagedir "$json_string"
 librarian stage-files -w local $stagedir "$json_string"
 
+# bring over files from site transfer
+# TODO: remove this
+echo scp -r heramgr@herastore01:/export/hera/herastore01-12/site_transfer/${jd}/zen.${jd}.?????.??.HH.uv $stagedir/$jd
+scp -r heramgr@herastore01:/export/hera/herastore01-12/site_transfer/${jd}/zen.${jd}.?????.??.HH.uv $stagedir/$jd
+
 # Now make a makeflow
 echo build_makeflow_from_config.py -c $config_file $stagedir/$jd/zen.???????.?????.xx.HH.uv
 build_makeflow_from_config.py -c $config_file $stagedir/$jd/zen.???????.?????.xx.HH.uv

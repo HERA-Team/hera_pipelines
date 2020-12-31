@@ -26,6 +26,7 @@ nb_outfile=${nb_output_repo}/data_inspect/data_inspect_${jd}.ipynb
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
 export JULIANDATE=${jd}
+export PATH_TO_A_PRIORI_FLAGS=${path_to_a_priori_flags}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
