@@ -19,8 +19,9 @@ flag_ext="${3}"
 label="${4}"
 tol="${5}"
 standoff="${6}"
-cache_dir="${7}"
-pols="${8}"
+min_dly="${7}"
+cache_dir="${8}"
+pols="${9}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
@@ -53,12 +54,15 @@ do
     echo dpss_delay_filter_run.py ${auto_in} \
       --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} \
+      --min_dly ${min_dly} --verbose
 
     dpss_delay_filter_run.py ${auto_in} \
       --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} \
+      --min_dly ${min_dly} --verbose
+
   else
     echo "${auto_in} does not exist!"
   fi
@@ -67,17 +71,21 @@ do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
     fn_in=zen.${jd}.${sd}.${label}.chunked.${data_extp}
     fn_out=zen.${jd}.${sd}.${label}.foreground_filled.${data_extp}
+    fn_res=zen.${jd}.${sd}.${label}.foreground_res.${data_extp}
+
     if [ -e "${fn_in}" ]
     then
     echo dpss_delay_filter_run.py ${fn_in} \
-      --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
+      --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags
+      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
+      --min_dly ${min_dly}
 
     dpss_delay_filter_run.py ${fn_in} \
-      --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
+      --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags
+      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
+      --min_dly ${min_dly}
     else
       echo "${fn_in} does not exist!"
     fi

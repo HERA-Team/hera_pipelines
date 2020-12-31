@@ -16,7 +16,7 @@ fn="${1}"
 data_ext="${2}"
 label="${3}"
 
-jd=$(get_jd $time_chunk_template)
+jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 
@@ -70,9 +70,8 @@ int_jd=${jd:0:7}
 
         time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
             --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
+      else
+        echo "${time_chunk_template} does not exist!"
+      fi
   done
 done
-else
-  echo "${time_chunk_template} does not exist!"
-fi
