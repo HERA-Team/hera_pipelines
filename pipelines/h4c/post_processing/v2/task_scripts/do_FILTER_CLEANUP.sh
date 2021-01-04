@@ -21,40 +21,5 @@ fn="${1}"
 data_ext="${2}"
 label="${3}"
 jd=$(get_jd $fn)
-
-# clear the xtalk fragment file.
-xtalk_wf_fn=zen.${jd}.*.${label}.xtalk_filtered_waterfall.${data_ext}
-# remove all sum files.
-delay_fn=zen.${jd}.*.${label}.foreground_filtered.${data_ext}
-xtalk_fn=zen.${jd}.*.${label}.xtalk_filtered.${data_ext}
-
-# remove per-baseline xtalk waterfall files.
-echo rm -rfv ${xtalk_wf_fn}
-rm -rfv ${xtalk_wf_fn}
-
-# remove the delay files.
-#echo rm -rfv ${delay_fn}
-rm -rfv ${delay_fn}
-
-#echo rm -rfv ${xtalk_fn}
-rm -rfv ${xtalk_fn}
-
-# remove even waterfalls.
-#xtalk_fn=zen.${jd}.even.${label}.xtalk_filtered_waterfall_noforegrounds_res.${data_ext}
-#echo rm -rfv ${xtalk_fn}
-#rm -rfv ${xtalk_fn}
-#echo rm -rfv ${xtalk_fn/even/odd}
-#rm -rfv ${xtalk_fn/even/odd}
-#xtalk_fn=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_res.${data_ext}
-#echo rm -rfv ${xtalk_fn}
-#rm -rfv ${xtalk_fn}
-#echo rm -rfv ${xtalk_fn/even/odd}
-#rm -rfv ${xtalk_fn/even/odd}
-#xtalk_fn=zen.${jd}.even.${label}.xtalk_filtered_waterfall_withforegrounds_filled.${data_ext}
-#echo rm -rfv ${xtalk_fn}
-#rm -rfv ${xtalk_fn}
-#echo rm -rfv ${xtalk_fn/even/odd}
-#rm -rfv ${xtalk_fn/even/odd}
-
-#rm -rfv zen.${jd}.*.${label}.chunked.*
-# remove pspec fragments. WAIT UNTIL VERIFYING THIS.
+# get rid of all the waterfall files associated with this JD.
+rm -rf zen.${jd}*${label}*waterfall*uvh5

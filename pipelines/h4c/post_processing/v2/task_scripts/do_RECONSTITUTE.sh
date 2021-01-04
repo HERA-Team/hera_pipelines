@@ -39,6 +39,8 @@ int_jd=${jd:0:7}
 
         time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
             --baseline_chunk_files ${baseline_chunk_files} --clobber
+        # cleanup baseline chunks
+        #rm -rf ${baseline_chunk_files}
 
         # time averaged data
         outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.${data_extp}
@@ -49,6 +51,7 @@ int_jd=${jd:0:7}
 
         time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
             --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+        #rm -rf ${baseline_chunk_files}
 
         # reconstitute waterfall files.
         outfilename=zen.${jd}.${sd}.${label}.fg_filtered.${data_extp}
@@ -58,6 +61,7 @@ int_jd=${jd:0:7}
 
         time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
             --baseline_chunk_files ${baseline_chunk_files} --clobber
+        #rm -rf ${baseline_chunk_files}
 
 
         # time averaged data
@@ -70,6 +74,8 @@ int_jd=${jd:0:7}
 
         time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
             --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+
+        #rm -rf ${baseline_chunk_files}
       else
         echo "${time_chunk_template} does not exist!"
       fi

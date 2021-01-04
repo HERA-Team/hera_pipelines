@@ -56,14 +56,14 @@ do
       --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly}
+      --min_dly ${min_dly} --flag_rms_outliers
 
 
     dpss_delay_filter_run.py ${auto_in} \
       --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly}
+      --min_dly ${min_dly} --flag_rms_outliers
 
   else
     echo "${auto_in} does not exist!"
@@ -81,14 +81,14 @@ do
       --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res}  \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
       --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-      --min_dly ${min_dly}
+      --min_dly ${min_dly} --flag_rms_outliers
 
 
     dpss_delay_filter_run.py ${fn_in} \
       --filled_outfilename ${fn_out} --clobber --skip_flagged_edges  --res_outfilename ${fn_res} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
       --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-      --min_dly ${min_dly}
+      --min_dly ${min_dly} --flag_rms_outliers
 
     else
       echo "${fn_in} does not exist!"

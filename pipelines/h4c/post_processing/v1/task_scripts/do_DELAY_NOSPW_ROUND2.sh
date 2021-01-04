@@ -62,7 +62,7 @@ do
   then
   echo dpss_delay_filter_run.py ${fn_in} --calfile ${calfile} \
     --res_outfilename ${fn_res} --clobber --skip_flagged_edges \
-    --CLEAN_outfilename ${fn_model} \
+    --CLEAN_outfilename ${fn_model} -- \
     --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose
 
   dpss_delay_filter_run.py ${fn_in} --calfile ${calfile} \
