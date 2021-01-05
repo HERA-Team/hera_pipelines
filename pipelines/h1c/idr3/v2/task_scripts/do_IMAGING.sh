@@ -92,6 +92,10 @@ if [ -f ${uvfits_file} ]; then
     echo rm ${uvfits_file}
     rm ${uvfits_file}
 fi
+if [ -d ${uvfits_file%.uvfits}.ms ]; then
+    echo rm -r ${uvfits_file%.uvfits}.ms
+    rm -r ${uvfits_file%.uvfits}.ms
+fi
 if [ -f ${model_file} ]; then
     echo rm ${model_file}
     rm ${model_file}
@@ -111,5 +115,6 @@ fi
 
 # remove calibrated visibility
 if [ ! -z "${calibration}" ]; then
+    echo rm ${uvh5_fn}
     rm ${uvh5_fn}
 fi
