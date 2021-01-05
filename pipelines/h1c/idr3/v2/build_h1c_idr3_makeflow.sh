@@ -48,6 +48,8 @@ librarian stage-files -w local $stagedir "$json_string"
 # TODO: remove this
 echo scp -r heramgr@herastore01:/export/hera/herastore01-12/site_transfer/${jd}/zen.${jd}.?????.??.HH.uv $stagedir/$jd
 scp -r heramgr@herastore01:/export/hera/herastore01-12/site_transfer/${jd}/zen.${jd}.?????.??.HH.uv $stagedir/$jd
+echo rm -rf $stagedir/$jd/zen.${jd}.[8-9]????.??.HH.uv
+rm -rf $stagedir/$jd/zen.${jd}.[8-9]????.??.HH.uv
 
 # Now make a makeflow
 echo build_makeflow_from_config.py -c $config_file $stagedir/$jd/zen.???????.?????.xx.HH.uv
