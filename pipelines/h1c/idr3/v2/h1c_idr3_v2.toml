@@ -28,7 +28,7 @@ check_every = 50
 check_after = 500
 
 [ABSCAL_OPTS]
-model_files_glob = "'/lustre/aoc/projects/hera/nkern/idr3_abscal_models/full_model/zen.245804*.HH.uvRXLS.uvh5'"
+model_files_glob = "'/lustre/aoc/projects/hera/H1C_IDR3/abscal_model/zen.245804*.HH.uvRXLS.uvh5'"
 nInt_to_load = 6
 min_bl_cut = 1.0
 max_bl_cut = 140.0
