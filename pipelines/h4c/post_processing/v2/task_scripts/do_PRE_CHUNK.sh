@@ -44,14 +44,15 @@ calfiles=`echo zen.${int_jd}.*.sum.${cal_ext}`
 
 
 
-
+if [ -e "${input_data}" ]
+then
 # chunk data sum files.
 echo chunk_data_files.py ${datafiles} ${input_data} ${output_data} ${chunk_size}\
   --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
 
 chunk_data_files.py ${datafiles} ${input_data} ${output_data} ${chunk_size}\
   --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
-
+fi
 
 # if no unflagged data, skip the rest.
 if [ -e "${output_data}" ]
@@ -71,7 +72,7 @@ then
     chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
       --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
 
-
+fi
   # chunk the calibration files.
   echo chunk_cal_files.py ${calfiles} ${input_cal} ${output_cal} ${chunk_size}\
    --spw_range ${spw0} ${spw1} --clobber
@@ -120,6 +121,3 @@ then
 
   chunk_data_files.py ${autofiles_diff} ${input_auto_diff} ${output_auto_diff} ${chunk_size}\
     --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
-else
-  echo "${output_data} does not exist!"
-fi

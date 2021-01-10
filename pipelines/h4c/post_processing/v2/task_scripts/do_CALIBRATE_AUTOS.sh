@@ -30,7 +30,7 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 flagfile=zen.${int_jd}.${flag_ext}
-infile=zen.${jd}.sum.${label}.chunked.${output_ext}
+#infile=zen.${jd}.sum.${label}.chunked.${output_ext}
 infile_diff=${infile/sum/diff}
 
 auto_file=zen.${jd}.sum.${label}.autos.chunked.uvh5
@@ -43,7 +43,7 @@ calfile=${fn%.uvh5}.${label}.chunked.${cal_ext}
 diff_file=${fn/sum/diff}
 
 
-if [ -e "${infile}" ]
+if [ -e "${auto_file}" ]
 then
   # calibrate sum autos. DO NOT REDUNDANT AVERAGE.
   echo apply_cal.py ${auto_file} ${outfile_auto} \
@@ -61,5 +61,5 @@ then
 
 
 else
-  echo "${infile} does not exist!"
+  echo "${auto_file} does not exist!"
 fi
