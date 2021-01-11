@@ -30,13 +30,16 @@ int_jd=${jd:0:7}
     baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.auto.waterfall.tavg.uvh5`
     time_chunk_template=zen.${jd}.${sd}.${label}.auto.foreground_filled.uvh5
 
+    if [ -e "${time_chunk_template}" ]
+    then
+      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
+          time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    else
+      echo "${time_chunk_template} does not exist!"
+    fi
     for parity in ${parities[@]}
     do
       data_extp=${data_ext/.uvh5/.${parity}.uvh5}
