@@ -129,7 +129,7 @@ do
 
   if [ -e "${auto_file}" ]
   then
-   output=zen.${jd}.${sd}.${label}.auto.tavg.fullband.pspec.h5
+   output=zen.${jd}.${sd}.${label}.auto.waterfall.tavg.fullband.pspec.h5
    echo pspec_run.py ${auto_file} ${output}\
      --allow_fft --store_cov_diag --Jy2mK_avg\
      --vis_units Jy --cov_model empirical_pspec --overwrite\

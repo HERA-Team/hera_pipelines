@@ -123,7 +123,8 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
-args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
+args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:label}",
+      "${GLOBAL_OPTS:data_ext}",
       "${GLOBAL_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}", "${GLOBAL_OPTS:final_flag_ext}",
       "${GLOBAL_OPTS:final_cal_ext}"]
 

@@ -18,13 +18,14 @@ source ${src_dir}/_common.sh
 
 
 fn="${1}"
-label="${2}"
-output_ext="${3}"
-nbl_per_load="${4}"
-pol0="${5}"
-pol1="${6}"
-flag_ext="${7}"
-cal_ext="${8}"
+labelin="${2}"
+label="${3}"
+output_ext="${4}"
+nbl_per_load="${5}"
+pol0="${6}"
+pol1="${7}"
+flag_ext="${8}"
+cal_ext="${9}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -33,13 +34,13 @@ flagfile=zen.${int_jd}.${flag_ext}
 #infile=zen.${jd}.sum.${label}.chunked.${output_ext}
 infile_diff=${infile/sum/diff}
 
-auto_file=zen.${jd}.sum.${label}.autos.chunked.uvh5
+auto_file=zen.${jd}.sum.${labelin}.autos.chunked.uvh5
 outfile_auto=zen.${jd}.sum.${label}.autos.calibrated.uvh5
 auto_file_diff=${auto_file/sum/diff}
 outfile_auto_diff=${outfile_auto/sum/diff}
 
 
-calfile=${fn%.uvh5}.${label}.chunked.${cal_ext}
+calfile=${fn%.uvh5}.${labelin}.chunked.${cal_ext}
 diff_file=${fn/sum/diff}
 
 
