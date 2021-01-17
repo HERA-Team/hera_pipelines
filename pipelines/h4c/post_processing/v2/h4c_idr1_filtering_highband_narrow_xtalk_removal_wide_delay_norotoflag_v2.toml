@@ -67,6 +67,7 @@ clear_delay = false
 
 [WorkFlow]
 actions = [
+           "RED_AVERAGE_GROUP",
            "PRE_CHUNK",
            #"DELAY_ROUND1",
            #"ROTOFLAG_METRIC",
@@ -80,8 +81,20 @@ actions = [
            "COMBINE_PSPEC"]#,
 	         #"FILTER_CLEANUP"]
 
+
+[RED_AVERAGE_GROUP]
+mem=16000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:data_ext}",
+     "${GLOBAL_OPTS:cal_ext}", "${GLOBAL_OPTS:chunk_size}",
+     "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}"]
+
+
 [PRE_CHUNK]
-mem=128000
+mem=16000
+prereqs="RED_AVERAGE_GROUP"
+prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:data_ext}",
@@ -141,7 +154,7 @@ prereqs = "DELAY_ROUND2_INIT"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 32000
+mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}",
         "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:frate_standoff}", "${GLOBAL_OPTS:cache_dir}"]
@@ -169,7 +182,7 @@ args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
 [PSPEC]
 prereqs = "RECONSTITUTE"
 prereq_chunk_size="all"
-mem=128000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
@@ -179,7 +192,7 @@ args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
 [COMBINE_PSPEC]
 prereqs = "PSPEC"
 prereq_chunk_size="all"
-mem = 64000
+mem = 16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args = ["{basename}", "${GLOBAL_OPTS:label}"]

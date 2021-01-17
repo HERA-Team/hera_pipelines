@@ -42,7 +42,22 @@ input_cal=zen.${jd}.sum.${cal_ext}
 output_cal=zen.${jd}.sum.${label}.chunked.${cal_ext}
 calfiles=`echo zen.${int_jd}.*.sum.${cal_ext}`
 
-
+parities=("0" "1")
+sumdiff=("sum" "diff")
+for sd in ${sumdiff[@]}
+do
+  for parity in ${parities[@]}
+  do
+    data_extp=${data_ext/.uvh5/.${parity}.uvh5}
+    input_file=zen.${jd}.${sd}.${data_extp}
+    input_files=`echo zen.${int_jd}.*.${sd}.${data_extp}`
+    output_file=zen.${jd}.${sd}.${label}.chunked.${data_extp}
+    echo chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
+    --throw_away_flagged_bls --clobber --spw_range ${spw0} ${spw1}
+    chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
+    --throw_away_flagged_bls --clobber --spw_range ${spw0} ${spw1}
+  done
+done
 
 if [ -e "${input_data}" ]
 then
@@ -79,35 +94,7 @@ fi
 
   chunk_cal_files.py ${calfiles} ${input_cal} ${output_cal} ${chunk_size}\
     --spw_range ${spw0} ${spw1} --clobber
-
-
-    # generate a chunked non redundantly averaged file temporarily.
-    # chunk data sum files.
-    echo chunk_data_files.py ${sumfiles} ${fn} ${tmp_sum} ${chunk_size}\
-      --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
-
-    chunk_data_files.py ${sumfiles} ${fn} ${tmp_sum} ${chunk_size}\
-      --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
-    # apply calibrationes to chunked non redundantly averaged file / red average into two groups.
-    echo apply_cal.py ${tmp_sum} ${output_data} --new_cal ${output_cal} --clobber --redundant_average --redundant_groups 2
-    apply_cal.py ${tmp_sum} ${output_data} --new_cal ${output_cal} --clobber --redundant_average --redundant_groups 2
-    # remove chunked non redundantly averaged file.
-    rm -rf ${tmp_sum}
-
-
-  # generate a chunked non redundantly averaged file temporarily.
-  # chunk data fiff files.
-  echo chunk_data_files.py ${difffiles} ${fn_diff} ${tmp_diff} ${chunk_size}\
-    --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
-
-  chunk_data_files.py ${difffiles} ${fn_diff} ${tmp_diff} ${chunk_size}\
-    --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
-  # apply calibrationes to chunked non redundantly averaged file / red average into two groups.
-  echo apply_cal.py ${tmp_diff} ${output_data_diff} --new_cal ${output_cal} --clobber --redundant_average --redundant_groups 2
-  apply_cal.py ${tmp_diff} ${output_data_diff} --new_cal ${output_cal} --clobber --redundant_average --redundant_groups 2
-  # remove chunked non redundantly averaged file.
-  rm -rf ${tmp_diff}
-
+ss
   # chunk auto sum files.
   echo chunk_data_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
     --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber

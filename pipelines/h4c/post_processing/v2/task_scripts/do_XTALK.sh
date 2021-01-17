@@ -30,9 +30,6 @@ int_jd=${jd:0:7}
 # generate output file name
 
 # if cache directory does not exist, make it
-if [ ! -d "${cache_dir}" ]; then
-  mkdir ${cache_dir}
-fi
 parities=("0" "1")
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
