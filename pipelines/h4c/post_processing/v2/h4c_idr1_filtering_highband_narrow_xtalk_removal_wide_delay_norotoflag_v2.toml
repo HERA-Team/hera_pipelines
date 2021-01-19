@@ -85,9 +85,9 @@ actions = [
 [RED_AVERAGE_GROUP]
 mem=16000
 chunk_size=1
-stride_length="${Options:chunk_size}"
+stride_length=4
 args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:data_ext}",
-     "${GLOBAL_OPTS:cal_ext}", "${GLOBAL_OPTS:chunk_size}",
+     "${GLOBAL_OPTS:cal_ext}", "4",
      "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}"]
 
 

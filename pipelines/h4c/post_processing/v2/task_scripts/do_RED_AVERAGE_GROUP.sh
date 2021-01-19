@@ -31,13 +31,15 @@ for start in "${!sumfiles[@]}"; do
      break
  fi
 done
-let "end=${start}+${chunk_size}"
+let "end=${start}+${chunk_size}-1"
 
 if [ "${end}" -gt "${#sumfiles[@]}" ]
 then
     end=${#sumfiles[@]}
+    let "end=${end}-1"
 fi
-
+#echo ${start}
+#echo ${end}
 for i in $(seq ${start} ${end})
 do
   it=${sumfiles[$i]}
