@@ -36,7 +36,7 @@ librarian_auto_metrics="${11}"
 metric_outfile=${fn%.uvh5}.auto_metrics.h5
 
 # get all autos files
-jd=$(get_jd ${fn})
+jd=$(get_int_jd ${fn})
 decimal_jd=$(get_jd ${fn})
 raw_auto_file=${fn%.uvh5}.autos.uvh5
 raw_auto_files=zen.${jd}*${raw_auto_file#zen.${decimal_jd}}
