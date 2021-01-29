@@ -14,6 +14,7 @@ default_queue = "hera,bigmem"
 # These trigger which sets of files get added to the librarian
 upload_to_librarian = true # upload raw data to librarian, if false all below switches will be ignored.
 librarian_autos = true
+librarian_auto_metrics = true
 librarian_ant_metrics = true
 librarian_redcal_known_good = true
 librarian_redcal_maybe_good = true
@@ -26,6 +27,12 @@ librarian_notebooks = true
 nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
 nb_output_repo = '/home/obs/src/H4C_Notebooks'
 git_push = true
+
+[AUTO_METRICS_OPTS]
+median_round_modz_cut = 16.0
+mean_round_modz_cut = 8.0
+edge_cut = 100
+chan_thresh_frac = 0.05
 
 [ANT_METRICS_OPTS]
 crossCut = 5.0
@@ -79,6 +86,8 @@ actions = ["SETUP",
            "LIBRARIAN_MAKE_SESSION",
            "ADD_RTP_PROCESS_RECORD",
            "EXTRACT_AUTOS",
+           "AUTO_METRICS",
+           "AUTO_METRICS_INSPECT_NOTEBOOK",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
@@ -131,7 +140,40 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_autos}",
        ]
 
-########## DATA INSPECT NOTEBOOKS ##########
+[AUTO_METRICS]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "{AUTO_METRICS_OPTS:median_round_modz_cut}",
+        "{AUTO_METRICS_OPTS:mean_round_modz_cut}",
+        "{AUTO_METRICS_OPTS:edge_cut}",
+        "${XRFI_OPTS:kt_size}",
+        "${XRFI_OPTS:kf_size}",
+        "${XRFI_OPTS:sig_init}",
+        "${XRFI_OPTS:sig_adj}",
+        "{AUTO_METRICS_OPTS:chan_thresh_frac}", 
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_auto_metrics}",
+        ]
+
+########## DATA/AUTO INSPECT NOTEBOOKS ##########
+
+[AUTO_METRICS_INSPECT_NOTEBOOK]
+prereqs = "AUTO_METRICS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
 
 [DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
 prereqs = "EXTRACT_AUTOS"
@@ -419,7 +461,8 @@ args = ["{basename}",
 ########## BACKUP NOTEBOOKS IN LIBRARIAN ##########
 
 [LIBRARIAN_ALL_NOTEBOOKS]
-prereqs = ["DATA_INSPECT_NOTEBOOK_KNOWN_GOOD", 
+prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
+           "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD", 
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in

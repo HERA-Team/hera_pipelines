@@ -23,6 +23,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
         decimal_jd=$(get_jd ${fn})
 
         declare -a nb_names=(
+            "auto_metrics_inspect"
             "data_inspect_known_good"
             "data_inspect_maybe_good"
             "data_inspect_all_ants"
@@ -34,9 +35,15 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
         for nb_name in ${nb_names[@]}; do
             nb_outfile=${nb_output_repo}/${nb_name}/${nb_name}_${jd}.ipynb
-            nb_basename=$(basename "${nb_outfile}")
-            echo librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
-            librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
+            # if the notebook doesn't exist, check to see whether there's an html file instead
+            if [ ! -f "$nb_outfile" ]; then
+                nb_outfile=${nb_outfile%.ipynb}.html
+            fi
+            if [ -f "$nb_outfile" ]; then
+                nb_basename=$(basename "${nb_outfile}")
+                echo librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
+                librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
+            fi
         done
     fi
 fi
