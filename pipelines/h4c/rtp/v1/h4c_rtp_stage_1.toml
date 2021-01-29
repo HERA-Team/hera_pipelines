@@ -87,6 +87,7 @@ actions = ["SETUP",
            "ADD_RTP_PROCESS_RECORD",
            "EXTRACT_AUTOS",
            "AUTO_METRICS",
+           "AUTO_METRICS_INSPECT_NOTEBOOK",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
@@ -139,7 +140,6 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_autos}",
        ]
 
-########## DATA INSPECT NOTEBOOKS ##########
 [AUTO_METRICS]
 prereqs = "EXTRACT_AUTOS"
 prereq_chunk_size = "all"
@@ -158,6 +158,21 @@ args = ["{basename}",
         "{AUTO_METRICS_OPTS:chan_thresh_frac}", 
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_auto_metrics}",
+        ]
+
+########## DATA/AUTO INSPECT NOTEBOOKS ##########
+
+[AUTO_METRICS_INSPECT_NOTEBOOK]
+prereqs = "AUTO_METRICS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
         ]
 
 [DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
