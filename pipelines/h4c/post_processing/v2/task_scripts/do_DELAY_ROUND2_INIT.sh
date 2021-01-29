@@ -48,7 +48,7 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   # auto file
-  auto_in=zen.${jd}.${sd}.${labelin}.autos.calibrated.uvh5
+  auto_in=zen.${jd}.${sd}.${label}.autos.calibrated.uvh5
   if [ -e "${auto_in}" ]
   then
     auto_out=zen.${jd}.${sd}.${label}.auto.foreground_filled.uvh5

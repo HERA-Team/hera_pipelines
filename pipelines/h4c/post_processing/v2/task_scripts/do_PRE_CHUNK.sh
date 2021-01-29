@@ -53,9 +53,9 @@ do
     input_files=`echo zen.${int_jd}.*.${sd}.${data_extp}`
     output_file=zen.${jd}.${sd}.${label}.chunked.${data_extp}
     echo chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
-    --throw_away_flagged_bls --clobber --spw_range ${spw0} ${spw1}
+    --throw_away_flagged_bls --clobber
     chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
-    --throw_away_flagged_bls --clobber --spw_range ${spw0} ${spw1}
+    --throw_away_flagged_bls --clobber
   done
 done
 
@@ -63,10 +63,10 @@ if [ -e "${input_data}" ]
 then
 # chunk data sum files.
 echo chunk_data_files.py ${datafiles} ${input_data} ${output_data} ${chunk_size}\
-  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+  --throw_away_flagged_bls --clobber
 
 chunk_data_files.py ${datafiles} ${input_data} ${output_data} ${chunk_size}\
-  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+  --throw_away_flagged_bls --clobber
 fi
 
 # if no unflagged data, skip the rest.
@@ -75,17 +75,17 @@ then
 
   # chuck data diff files.
   echo chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-    --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+    --throw_away_flagged_bls --clobber
 
   chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-    --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+    --throw_away_flagged_bls --clobber
 
     # chuck data diff files.
     echo chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-      --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+      --throw_away_flagged_bls --clobber
 
     chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-      --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+      --throw_away_flagged_bls --clobber
 
 fi
   # chunk the calibration files.
@@ -94,7 +94,6 @@ fi
 
   chunk_cal_files.py ${calfiles} ${input_cal} ${output_cal} ${chunk_size}\
     --spw_range ${spw0} ${spw1} --clobber
-ss
   # chunk auto sum files.
   echo chunk_data_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
     --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
