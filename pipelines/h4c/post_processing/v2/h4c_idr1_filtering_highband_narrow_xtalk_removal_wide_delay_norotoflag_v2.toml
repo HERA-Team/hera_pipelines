@@ -92,7 +92,7 @@ args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:data_ext}",
 
 
 [PRE_CHUNK]
-mem=16000
+mem=24000
 prereqs="RED_AVERAGE_GROUP"
 prereq_chunk_size="all"
 chunk_size=1
