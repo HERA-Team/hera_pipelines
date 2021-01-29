@@ -45,8 +45,8 @@ raw_auto_files=zen.${jd}*${raw_auto_file#zen.${decimal_jd}}
 cmd="auto_metrics_run.py --median_round_modz_cut ${median_round_modz_cut} \
                          --mean_round_modz_cut ${mean_round_modz_cut} \
                          --edge_cut ${edge_cut} \
-                         --kt_size ${kt_size} \
-                         --kf_size ${kf_size} \
+                         --Kt ${kt_size} \
+                         --Kf ${kf_size} \
                          --sig_init ${sig_init} \
                          --sig_adj ${sig_adj} \
                          --chan_thresh_frac ${chan_thresh_frac} \
