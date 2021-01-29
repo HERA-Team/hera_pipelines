@@ -42,15 +42,15 @@ raw_auto_file=${fn%.uvh5}.autos.uvh5
 raw_auto_files=zen.${jd}*${raw_auto_file#zen.${decimal_jd}}
 
 # run script
-cmd="auto_metrics.py --median_round_modz_cut ${median_round_modz_cut} \
-                     --mean_round_modz_cut ${mean_round_modz_cut} \
-                     --edge_cut ${edge_cut} \
-                     --kt_size ${kt_size} \
-                     --kf_size ${kf_size} \
-                     --sig_init ${sig_init} \
-                     --sig_adj ${sig_adj} \
-                     --chan_thresh_frac ${chan_thresh_frac} \
-                     ${metric_outfile} ${raw_auto_files}"
+cmd="auto_metrics_run.py --median_round_modz_cut ${median_round_modz_cut} \
+                         --mean_round_modz_cut ${mean_round_modz_cut} \
+                         --edge_cut ${edge_cut} \
+                         --kt_size ${kt_size} \
+                         --kf_size ${kf_size} \
+                         --sig_init ${sig_init} \
+                         --sig_adj ${sig_adj} \
+                         --chan_thresh_frac ${chan_thresh_frac} \
+                         ${metric_outfile} ${raw_auto_files}"
 echo $cmd
 $cmd
 
