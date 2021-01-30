@@ -42,6 +42,8 @@ then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
+    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
+    git add ${nb_outdir}/README.md
     git commit -m "RTP auto_metrics inspect notebook for JD ${jd}"
     git push origin master
 fi
