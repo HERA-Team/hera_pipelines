@@ -43,6 +43,8 @@ then
     git pull origin master
     git add ${nb_outfile}
     # TODO: also commit html file
+    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
+    git add ${nb_outdir}/README.md
     git commit -m "RTP delay spectrum inspection notebook commit for JD ${jd}"
     git push origin master
 fi
