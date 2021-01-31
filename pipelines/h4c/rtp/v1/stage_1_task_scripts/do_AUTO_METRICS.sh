@@ -50,6 +50,7 @@ cmd="auto_metrics_run.py --median_round_modz_cut ${median_round_modz_cut} \
                          --sig_init ${sig_init} \
                          --sig_adj ${sig_adj} \
                          --chan_thresh_frac ${chan_thresh_frac} \
+                         --clobber \
                          ${metric_outfile} ${raw_auto_files[@]}"
 echo $cmd
 $cmd
