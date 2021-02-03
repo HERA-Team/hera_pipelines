@@ -29,8 +29,8 @@ nb_output_repo = '/home/obs/src/H4C_Notebooks'
 git_push = true
 
 [AUTO_METRICS_OPTS]
-median_round_modz_cut = 16.0
-mean_round_modz_cut = 8.0
+median_round_modz_cut = 8.0
+mean_round_modz_cut = 4.0
 edge_cut = 100
 chan_thresh_frac = 0.05
 
