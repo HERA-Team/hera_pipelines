@@ -45,11 +45,20 @@ do
   it=${sumfiles[$i]}
   ot=${it/.uvh5/.${data_ext}}
   calfile=${calfiles[$i]}
-  echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
-  apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
-
+  if [ -e "${ot}" ]
+  then
+    echo "${ot} already exists!"
+  else
+    echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
+    apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
+  fi
   it=${difffiles[$i]}
   ot=${it/uvh5/${data_ext}}
-  echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
-  apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
+  if [ -e "${ot}" ]
+  then
+    echo "${ot} already exists!"
+  else
+    echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
+    apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
+  fi
 done
