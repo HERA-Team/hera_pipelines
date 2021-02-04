@@ -22,7 +22,7 @@ tol="${6}"
 standoff="${7}"
 min_dly="${8}"
 cache_dir="${9}"
-pols="${10}"
+pols="${@:10}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
@@ -43,8 +43,10 @@ then
 else
   calfile="none"
 fi
-parities=("0" "1")
-sumdiff=("sum" "diff")
+#parities=("0" "1")
+parities=("0")
+#sumdiff=("sum" "diff")
+sumdiff=("sum")
 for sd in ${sumdiff[@]}
 do
   # auto file

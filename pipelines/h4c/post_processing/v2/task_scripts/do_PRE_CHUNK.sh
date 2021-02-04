@@ -47,18 +47,18 @@ chunk_cal_files.py ${calfiles} ${input_cal} ${output_cal} ${chunk_size}\
 
 autofiles=`echo zen.${int_jd}.*.sum.autos.uvh5`
 echo chunk_data_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
-  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 
 chunk_data_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
-  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 
 # chunk auto diff files.
 autofiles_diff=`echo zen.${int_jd}.*.diff.autos.uvh5`
 echo chunk_data_files.py ${autofiles_diff} ${input_auto_diff} ${output_auto_diff} ${chunk_size}\
-  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 
 chunk_data_files.py ${autofiles_diff} ${input_auto_diff} ${output_auto_diff} ${chunk_size}\
-  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber
+  --spw_range ${spw0} ${spw1} --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 
 
 parities=("0" "1")
@@ -72,9 +72,9 @@ do
     input_files=`echo zen.${int_jd}.*.${sd}.${data_extp}`
     output_file=zen.${jd}.${sd}.${label}.chunked.${data_extp}
     echo chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
-    --throw_away_flagged_bls --clobber
+    --throw_away_flagged_bls --clobber --polarizations "ee, nn"
     chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
-    --throw_away_flagged_bls --clobber
+    --throw_away_flagged_bls --clobber --polarizations "ee, nn"
   done
 done
 
@@ -85,10 +85,10 @@ datafiles=`echo zen.${int_jd}.*.sum.${data_ext}`
   # chuck data diff files.
 # chunk data sum files.
 echo chunk_data_files.py ${datafiles} ${input_data} ${output_data} ${chunk_size}\
-  --throw_away_flagged_bls --clobber
+  --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 
 chunk_data_files.py ${datafiles} ${input_data} ${output_data} ${chunk_size}\
-  --throw_away_flagged_bls --clobber
+  --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 fi
 
 # if no unflagged data, skip the rest.
@@ -96,9 +96,9 @@ if [ -e "${output_data}" ]
 then
   datafiles_diff=`echo zen.${int_jd}.*.diff.${data_ext}`
   echo chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-    --throw_away_flagged_bls --clobber
+    --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 
   chunk_data_files.py ${datafiles_diff} ${input_data_diff} ${output_data_diff} ${chunk_size}\
-    --throw_away_flagged_bls --clobber
+    --throw_away_flagged_bls --clobber --polarizations "ee, nn"
 
 fi

@@ -13,10 +13,11 @@ cal_ext="${4}"
 chunk_size="${5}"
 spw0="${6}"
 spw1="${7}"
+yaml_dir="${8}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
-
+yaml=${yaml_dir}/${int_jd}.yaml
 # chunk data files
 fn_diff=${fn/sum/diff}
 sumfiles=(`echo zen.${int_jd}.*.sum.uvh5`)
@@ -43,14 +44,17 @@ fi
 for i in $(seq ${start} ${end})
 do
   it=${sumfiles[$i]}
-  ot=${it/.uvh5/.${data_ext}}
+  ot=${it/.uvh5/.${label}.${data_ext}}
   calfile=${calfiles[$i]}
   if [ -e "${ot}" ]
   then
     echo "${ot} already exists!"
   else
-    echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
-    apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
+    echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2\
+     --spw_range ${spw0} ${spw1} --exclude_from_redundant_mode "yaml" --a_priori_flags_yaml ${yaml}
+    apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2\
+     --spw_range ${spw0} ${spw1} --exclude_from_redundant_mode "yaml" --a_priori_flags_yaml ${yaml}\
+     --dont_red_average_flagged_data
   fi
   it=${difffiles[$i]}
   ot=${it/uvh5/${data_ext}}
@@ -58,7 +62,10 @@ do
   then
     echo "${ot} already exists!"
   else
-    echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
-    apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2 --spw_range ${spw0} ${spw1}
+    echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2\
+     --spw_range ${spw0} ${spw1} --exclude_from_redundant_mode "yaml" --a_priori_flags_yaml ${yaml}
+    apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2\
+     --spw_range ${spw0} ${spw1} --exclude_from_redundant_mode "yaml" --a_priori_flags_yaml ${yaml}\
+     --dont_red_average_flagged_data
   fi
 done
