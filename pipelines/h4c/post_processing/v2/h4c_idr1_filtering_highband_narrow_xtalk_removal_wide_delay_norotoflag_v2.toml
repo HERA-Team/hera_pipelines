@@ -88,7 +88,7 @@ chunk_size=1
 stride_length=4
 args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:data_ext}",
      "${GLOBAL_OPTS:cal_ext}", "4",
-     "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}"]
+     "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}", "${GLOBAL_OPTS:yaml_dir}"]
 
 
 [PRE_CHUNK]
