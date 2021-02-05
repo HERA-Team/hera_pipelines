@@ -172,6 +172,7 @@ for jd in ${jdArray[@]}; do
         else
             echo Cannot find ${sc_file}, removing ${miriad_file}.
         fi
+    done
 
     # build makeflow 
     echo build_makeflow_from_config.py -c $toml_path $root_dir/${jd}/zen.${jd}.?????.xx.HH.uv
