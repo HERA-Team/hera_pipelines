@@ -1,0 +1,26 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/a_priori_flags"
+conda_env = "h1c_idr3"
+source_script = "~/.bashrc"
+base_mem = 8000
+base_cpu = 1
+timeout = "24h"
+pbs_mail_user = "jsdillon+nrao@berkeley.edu"
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["MAKE_UVH5", 
+           "SMOOTH_CAL_APPLY",
+          ]
+
+[MAKE_UVH5]
+mem = 32000
+args = ["{basename}"]
+
+[SMOOTH_CAL_APPLY]
+prereqs = "MAKE_UVH5"
+mem = 32000
+args = ["{basename}"]
