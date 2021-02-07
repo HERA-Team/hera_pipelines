@@ -48,9 +48,10 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
             # get ant_metrics file
             metrics_f=`echo ${fn%.uvh5}${extension}`
+            metrics_out=`echo ${bn%.uvh5}${extension}`
 
-            echo librarian upload local-rtp ${metrics_f} ${jd}/${metrics_f}
-            librarian upload local-rtp ${metrics_f} ${jd}/${metrics_f}
+            echo librarian upload local-rtp ${metrics_f} ${jd}/${metrics_out}
+            librarian upload local-rtp ${metrics_f} ${jd}/${metrics_out}
         done
     fi
 fi
