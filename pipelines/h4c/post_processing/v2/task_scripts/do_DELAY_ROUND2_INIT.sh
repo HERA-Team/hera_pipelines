@@ -43,10 +43,8 @@ then
 else
   calfile="none"
 fi
-#parities=("0" "1")
-parities=("0")
-#sumdiff=("sum" "diff")
-sumdiff=("sum")
+parities=("0" "1")
+sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   # auto file

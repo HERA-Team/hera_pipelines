@@ -48,17 +48,17 @@ if [ -e "${auto_file}" ]
 then
   # calibrate sum autos. DO NOT REDUNDANT AVERAGE.
   echo apply_cal.py ${auto_file} ${outfile_auto} \
-  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile}
 
   apply_cal.py ${auto_file} ${outfile_auto} \
-  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile}
 
   # calibrate diff autos. DO NOT REDUNDANT AVERAGE.
   echo apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
-  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile}
 
   apply_cal.py ${auto_file_diff} ${outfile_auto_diff} \
-  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} --overwrite_data_flags
+  --nbl_per_load ${nbl_per_load} --clobber  --new_cal ${calfile} 
 
 
 else

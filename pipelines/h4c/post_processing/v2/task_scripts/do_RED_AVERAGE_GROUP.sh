@@ -46,9 +46,10 @@ do
   it=${sumfiles[$i]}
   ot=${it/.uvh5/.${label}.${data_ext}}
   calfile=${calfiles[$i]}
-  if [ -e "${ot}" ]
+  otz=${ot/.uvh5/.0.uvh5}
+  if [ -e "${otz}" ]
   then
-    echo "${ot} already exists!"
+    echo "${otz} already exists!"
   else
     echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2\
      --spw_range ${spw0} ${spw1} --exclude_from_redundant_mode "yaml" --a_priori_flags_yaml ${yaml}
@@ -57,10 +58,11 @@ do
      --dont_red_average_flagged_data
   fi
   it=${difffiles[$i]}
-  ot=${it/uvh5/${data_ext}}
-  if [ -e "${ot}" ]
+  ot=${it/.uvh5/.${label}.${data_ext}}
+  otz=${ot/.uvh5/.0.uvh5}
+  if [ -e "${otz}" ]
   then
-    echo "${ot} already exists!"
+    echo "${otz} already exists!"
   else
     echo apply_cal.py ${it} ${ot} --new_cal ${calfile} --clobber --redundant_average --redundant_groups 2\
      --spw_range ${spw0} ${spw1} --exclude_from_redundant_mode "yaml" --a_priori_flags_yaml ${yaml}
