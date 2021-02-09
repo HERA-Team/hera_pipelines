@@ -88,6 +88,10 @@ if [ -f ${uvfits_file} ]; then
     echo rm ${uvfits_file}
     rm ${uvfits_file}
 fi
+if [ -f ${uvfits_file%.uvfits}.ms ]; then
+    echo rm -rf ${uvfits_file%.uvfits}.ms
+    rm -rf ${uvfits_file%.uvfits}.ms
+fi
 if [ -f ${model_file} ]; then
     echo rm ${model_file}
     rm ${model_file}
