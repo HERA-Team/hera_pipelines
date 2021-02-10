@@ -75,9 +75,32 @@ def driver():
     bad=[d for d in days if d in bad]
 
     # badflags is a hardcoded array of the sketchy days and extra JD ranges to be flagges
-    badflags=np.array([[58,[[0.2,0.42]]],[59,[[0.2,0.45]]],[96,[[0.2,0.4],[0.45,0.5]]],[104,[[0.2,0.27],[0.35,0.45]]],[109,[[0.2,0.46]]],[114,[[.1,.32]]],
-        [136,[[0.2,0.36]]],[140, [[.27,.33],[.44,.47],[.50,.58],[.62,.70]]], [141,[[0.3,0.49],[0.25,0.29]]],[148,[[0.2,0.33]]],[159,[[0.2,0.5]]],[161,[[0.4,0.55]]],
-        [172,[[0.2,0.58]]],[173,[[0.2,0.37],[0.4,0.5]]],[185,[[0.35,0.45]]],[206,[[0.2,0.28]]]],dtype='object')
+    badflags=np.array([[41,[[0.5,0.7]]], # from Josh's inspecting notebooks on 2/9/21
+                       [49,[[0.1,0.41]]], # from Josh's inspecting notebooks on 2/9/21
+                       [52,[[0.5,0.9]]], # from Josh's inspecting notebooks on 2/9/21
+                       [54,[[0.1,0.9]]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+                       [55,[[0.1,0.9]]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+                       [56,[[0.1,0.9]]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+                       [58,[[0.1,0.48]]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh on 2/9/21
+                       [59,[[0.1,0.48]]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh on 2/9/21
+                       [61,[[0.1,0.9]]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+                       [65,[[0.1,0.9]]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+                       [66,[[0.1,0.9]]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+                       [96,[[0.2,0.4],[0.45,0.5]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [104,[[0.2,0.27],[0.35,0.45]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [109,[[0.2,0.46]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [114,[[.1,.32]]], # flagged due to a broken X-engine 
+                       [136,[[0.2,0.36]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [140, [[.27,.33],[.44,.47],[.50,.58],[.62,.70]]], # added by Josh on 12/29/20
+                       [141,[[0.3,0.49],[0.25,0.29]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [148,[[0.2,0.33]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [159,[[0.2,0.5]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [161,[[0.4,0.55]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [172,[[0.2,0.58]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [173,[[0.2,0.37],[0.4,0.5]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [185,[[0.35,0.45]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                       [206,[[0.2,0.28]]], # from Vignesh's by-hand analysis H1C IDR3.1
+                      ], dtype='object')
     for i, bf in enumerate(badflags):
         jd = bf[0] + 2458000
         badflags[i][1] = [[f[0] + jd, f[1] + jd] for f in bf[1]]
