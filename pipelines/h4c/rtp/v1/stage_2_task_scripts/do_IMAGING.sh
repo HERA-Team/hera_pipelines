@@ -85,24 +85,28 @@ done
 
 # erase uvfits file
 if [ -f ${uvfits_file} ]; then
-    echo rm ${uvfits_file}
-    rm ${uvfits_file}
+    echo rm -rf ${uvfits_file}
+    rm -rf ${uvfits_file}
+fi
+if [ -f ${uvfits_file%.uvfits}.ms ]; then
+    echo rm -rf ${uvfits_file%.uvfits}.ms
+    rm -rf ${uvfits_file%.uvfits}.ms
 fi
 if [ -f ${model_file} ]; then
-    echo rm ${model_file}
-    rm ${model_file}
+    echo rm -rf ${model_file}
+    rm -rf ${model_file}
 fi
 if [ -d ${model_file%.uvfits}.ms ]; then
-    echo rm -r ${model_file%.uvfits}.ms
-    rm -r ${model_file%.uvfits}.ms
+    echo rm -rf ${model_file%.uvfits}.ms
+    rm -rf ${model_file%.uvfits}.ms
 fi
 if [ -f ${res_file} ]; then
-    echo rm ${res_file}
-    rm ${res_file}
+    echo rm -rf ${res_file}
+    rm -rf ${res_file}
 fi
 if [ -d ${res_file%.uvfits}.ms ]; then
-    echo rm -r ${res_file%.uvfits}.ms
-    rm -r ${res_file%.uvfits}.ms
+    echo rm -rf ${res_file%.uvfits}.ms
+    rm -rf ${res_file%.uvfits}.ms
 fi
 
 # remove calibrated visibility
