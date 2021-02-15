@@ -22,7 +22,8 @@ tol="${6}"
 standoff="${7}"
 min_dly="${8}"
 cache_dir="${9}"
-pols="${@:10}"
+filter_mode="${10}"
+pols="${@:11}"
 # get julian day from file name
 jd=$(get_jd $fn)
 # generate output file name
@@ -74,22 +75,34 @@ do
     fn_in=zen.${jd}.${sd}.${labelin}.chunked.${data_extp}
     fn_out=zen.${jd}.${sd}.${label}.foreground_filled.${data_extp}
     fn_res=zen.${jd}.${sd}.${label}.foreground_res.${data_extp}
-
     if [ -e "${fn_in}" ]
     then
-    echo dpss_delay_filter_run.py ${fn_in} \
-      --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res}  \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-      --min_dly ${min_dly} --flag_rms_outliers
+      if [ "${filter_mode}" == "DPSS" ]
+      then
+        echo dpss_delay_filter_run.py ${fn_in} \
+          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res}  \
+          --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
+          --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
+          --min_dly ${min_dly} --flag_rms_outliers
+        dpss_delay_filter_run.py ${fn_in} \
+          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges  --res_outfilename ${fn_res} \
+          --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
+          --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
+          --min_dly ${min_dly} --flag_rms_outliers
+      elif [ "${filter_mode}" == "CLEAN" ]
+      then
+        echo delay_filter_run.py ${fn_in} \
+        --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
+        --tol ${tol} --standoff ${standoff} --verbose \
+        --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
+        --min_dly ${min_dly} --edgecut_low 136 --edgecut_hi 136 --zeropad 136
 
-
-    dpss_delay_filter_run.py ${fn_in} \
-      --filled_outfilename ${fn_out} --clobber --skip_flagged_edges  --res_outfilename ${fn_res} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-      --min_dly ${min_dly} --flag_rms_outliers
-
+        delay_filter_run.py ${fn_in} \
+        --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
+        --tol ${tol} --standoff ${standoff} --verbose \
+        --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
+        --min_dly ${min_dly} --edgecut_low 136 --edgecut_hi 128 --zeropad 136
+      fi
     else
       echo "${fn_in} does not exist!"
     fi

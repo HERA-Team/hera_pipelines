@@ -34,7 +34,7 @@ tol = 1e-9
 standoff = 100
 min_dly = 1000
 calibration = "none"
-
+filter_mode = "DPSS"
 # we may want to consider another flagging round after delay filtering.
 
 [XTALK_OPTS]
@@ -140,13 +140,14 @@ args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:label}",
       "${GLOBAL_OPTS:final_cal_ext}"]
 
 [DELAY_ROUND2_INIT]
-prereqs="CALIBRATE_AUTOS"
+prereqs = "CALIBRATE_AUTOS"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:final_flag_ext}", "${GLOBAL_OPTS:labelin}",
         "${GLOBAL_OPTS:label}", "${DELAY_OPTS:tol}",
-        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${GLOBAL_OPTS:cache_dir}", "${GLOBAL_OPTS:pols}"]
+        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${GLOBAL_OPTS:cache_dir}",
+        "${DELAY_OPTS:filter_mode}", "${GLOBAL_OPTS:pols}"]
 
 [XTALK]
 prereqs = "DELAY_ROUND2_INIT"
