@@ -17,8 +17,8 @@ do
   do
     inputargs=${inputargs}" '${str}/zen.*.${sd}.${label}.auto.foreground_filled.uvh5'"
   done
-  echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
-  lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
+  echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.auto.uvh5"
+  lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.auto.uvh5"
 
   for parity in ${parities[@]}
   do
@@ -28,14 +28,14 @@ do
       do
         inputargs=${inputargs}" '${str}/zen.*.${sd}.${label}.xtalk_filtered_res.smooth_avg_vis.${parity}.uvh5'"
       done
-      echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
-      lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
+      echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --average_redundant_baselines --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.xtalk_filtered.smooth_avg_vis.${parity}.uvh5"
+      lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --average_redundant_baselines --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.xtalk_filtered.smooth_avg_vis.${parity}.uvh5"
       for str in ${inputdirs[@]}
       do
         inputargs=${inputargs}" '${str}/zen.*.${sd}.${label}.fg_filtered_res.smooth_avg_vis.${parity}.uvh5'"
       done
-      echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
-      lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
+      echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --average_redundant_baselines --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.smooth_avg_vis.${parity}.uvh5"
+      lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --average_redundant_baselines --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.smooth_avg_vis.${parity}.uvh5"
 
     elif [ "${systematics}" == "before" ]
     then
@@ -43,8 +43,8 @@ do
       do
         inputargs=${inputargs}" '${str}/zen.*.${sd}.${label}.chunked.smooth_avg_vis.${parity}.uvh5'"
       done
-      echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
-      lstbin_run.py${inputargs} --outdir ${outputdir} --rephase
+      echo lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --average_redundant_baselines --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.chunked.smooth_avg_vis.${parity}.uvh5"
+      lstbin_run.py${inputargs} --outdir ${outputdir} --rephase --average_redundant_baselines --overwrite --file_ext "{type}.{time:7.5f}.${sd}.${label}.chunked.smooth_avg_vis.${parity}.uvh5"
     fi
   done
 done
