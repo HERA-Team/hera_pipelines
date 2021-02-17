@@ -23,18 +23,21 @@ extension=${4}
 upload_to_librarian="${5}"
 librarian_ant_metrics="${6}"
 fn1=`basename ${7}`
-data_files="${@:7}"
+sum_files="${@:7}"
 
-# get exants from HERA CM database
+diff_files=""
+for fn in ${sum_files[@]}; do
+    diff_files+=("${fn%.sum.uvh5}.diff.uvh5")
+done
 
 # We only want to run ant metrics on sum files
-echo ant_metrics_run.py ${data_files} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
-ant_metrics_run.py ${data_files} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
+echo ant_metrics_run.py ${sum_files} --diff_files ${diff_files} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
+ant_metrics_run.py ${sum_files} --diff_files ${diff_files} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
 
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_ant_metrics}" == "True" ]; then
-        for fn in ${data_files[@]}; do
+        for fn in ${sum_files[@]}; do
 
             # get the integer portion of the JD
             bn=`basename ${fn}`
