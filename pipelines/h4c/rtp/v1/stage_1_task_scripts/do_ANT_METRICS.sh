@@ -25,9 +25,9 @@ librarian_ant_metrics="${6}"
 fn1=`basename ${7}`
 sum_files="${@:7}"
 
-diff_files=""
+diff_files=()
 for fn in ${sum_files[@]}; do
-    diff_files+=("${fn%.sum.uvh5}.diff.uvh5")
+    diff_files+=(`echo ${fn%.sum.uvh5}.diff.uvh5`)
 done
 
 # We only want to run ant metrics on sum files
