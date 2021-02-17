@@ -26,15 +26,13 @@ fn1=`basename ${7}`
 sum_files="${@:7}"
 
 diff_files=()
-for fn in "${sum_files[@]}"; do
-    echo "${fn}"
-    echo "${fn%.sum.uvh5}.diff.uvh5"
-    diff_files+=( "${fn%.sum.uvh5}.diff.uvh5" )
+for fn in ${sum_files[@]}; do
+    diff_files+=( ${fn%.sum.uvh5}.diff.uvh5 )
 done
 
 # We only want to run ant metrics on sum files
-echo ant_metrics_run.py ${sum_files} --diff_files ${diff_files} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
-ant_metrics_run.py ${sum_files} --diff_files ${diff_files} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
+echo ant_metrics_run.py ${sum_files[@]} --diff_files ${diff_files[@]} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
+ant_metrics_run.py ${sum_files[@]} --diff_files ${diff_files[@]} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
 
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
