@@ -1,6 +1,6 @@
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/task_scripts/"
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/lst_binning/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "hera3dev"
 base_mem = 80000
@@ -21,17 +21,17 @@ fixed_lst_start = "True"
 vis_units = "Jy"
 parallelize = "True"
 average_redundant_baselines = "True"
-parity = "0"
-sumdiff = "sum"
+parity = "1"
+sumdiff = "diff"
 label = "low-band-v2-wide-dly-h2cflags"
 filetype= "xtalk_filtered.smooth_avg_vis"
-file_ext = "grp1.of1.{type}.{time:7.5f}.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered.smooth_avg_vis.0.uvh5"
+file_ext = "grp1.of1.{type}.{time:7.5f}.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered.smooth_avg_vis.1.uvh5"
 outdir = "/lustre/aoc/projects/hera/H4C/lstbin/after_filtering"
-parent_dir = "/lustre/aoc/projects/hera/H4C/makeflow/lstbin_after_filtering_xtalk_filtered_0"
-data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.0.uvh5",
-              "/lustre/aoc/projects/hera/H4C/postprocessing/2459119/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.0.uvh5",
-              "/lustre/aoc/projects/hera/H4C/postprocessing/2459122/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.0.uvh5",
-              "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.0.uvh5",
+parent_dir = "/lustre/aoc/projects/hera/H4C/makeflow/lstbin_after_filtering_xtalk_filtered_1"
+data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.1.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459119/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.1.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459122/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.1.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.sum.low-band-v2-wide-dly-h2cflags.xtalk_filtered_res.smooth_avg_vis.1.uvh5",
               ]
 calibration = "''"
 
