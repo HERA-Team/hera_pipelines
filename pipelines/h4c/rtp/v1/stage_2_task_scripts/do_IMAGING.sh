@@ -43,6 +43,10 @@ uvfits_file=`basename ${filename%.uvh5}.uvfits`
 echo convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
 convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
 
+# renumber antennas because any antenna numbers above 256 break casa
+echo renumber_ants.py ${uvfits_file} ${uvfits_file} --overwrite --verbose
+renumber_ants.py ${uvfits_file} ${uvfits_file} --overwrite --verbose
+
 # get uvfits and ms filename
 image_file="${uvfits_file%.uvfits}"
 ms_file="${uvfits_file%.uvfits}.ms"
