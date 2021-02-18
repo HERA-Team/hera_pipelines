@@ -66,11 +66,11 @@ clear_delay = false
 ############################################################################################################
 
 [WorkFlow]
-actions = ["TIME_AVERAGE",
+actions = ["TIME_AVERAGE_INIT",
            "RECONSTITUTE",
            "PSPEC"]
 
-[TIME_AVERAGE]
+[TIME_AVERAGE_INIT]
 prereqs= "XTALK"
 prereq_chunk_size="all"
 chunk_size=1
@@ -83,7 +83,7 @@ args=["{basename}",
 
 
 [RECONSTITUTE]
-prereqs = "TIME_AVERAGE"
+prereqs = "TIME_AVERAGE_INIT"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"

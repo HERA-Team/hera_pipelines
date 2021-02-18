@@ -17,14 +17,13 @@ fn="${1}"
 data_ext="${2}"
 label="${3}"
 t_avg="${4}"
-#n_avg="${5}"
+grpstr="${5}"
 
-#if [ "${t_avg}" = "none" ]
-#then
-#t_avg_arg="--n_avg ${n_avg}"
-#else
+
 t_avg_arg="--t_avg ${t_avg}"
-#fi
+
+# exctract LST
+lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
 
 
 parities=("0" "1")
@@ -35,11 +34,11 @@ do
   do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
     auto_list=`echo *.${sd}.${label}.auto.foreground_filled.uvh5`
-    auto_in=zen.grp1.of1.LST.${lst}.${sd}.${label}.auto.foreground_filled.uvh5
-    auto_out=zen.grp1.of1.LST.${jd}.${sd}.${label}.auto.waterfall.tavg.uvh5
-    fg_in=zen.${jd}.${sd}.${label}.xtalk_filtered_res.${data_extp}
-    fg_out=zen.${jd}.${sd}.${label}.xtalk_filtered_res.tavg.${data_extp}
-    tavg_flag=zen.${jd}.${label}.flags.tavg.h5
+    auto_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.auto.foreground_filled.uvh5
+    auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.auto.foreground_filled.waterfall.tavg.uvh5
+    fg_in=zen.${grpstr}.${lst}.${sd}.${label}.xtalk_filtered_res.${data_extp}
+    fg_out=zen.${grpstr}.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.${data_extp}
+    tavg_flag=zen.${label}.flags.tavg.h5
 
   # time-average autocorrs using waterfall averaging cornerturn.
   # even
@@ -65,8 +64,8 @@ do
     echo "${fg_in} does not exist!"
   fi
 
-  fg_in=zen.${jd}.${sd}.${label}.waterfall.${data_extp}
-  fg_out=zen.${jd}.${sd}.${label}.waterfall.tavg.${data_extp}
+  fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.${data_extp}
+  fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.tavg.${data_extp}
   # time average non-xtalk filtered data
   if [ -e "${fg_in}" ]
   then
