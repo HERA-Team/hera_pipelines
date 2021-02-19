@@ -33,11 +33,12 @@ do
   for parity in ${parities[@]}
   do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
-    auto_list=`echo *.${sd}.${label}.auto.foreground_filled.uvh5`
+    auto_list=`echo zen.${grpstr}.LST.*.${sd}.${label}.auto.foreground_filled.uvh5`
     auto_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.auto.foreground_filled.uvh5
     auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.auto.foreground_filled.waterfall.tavg.uvh5
-    fg_in=zen.${grpstr}.${lst}.${sd}.${label}.xtalk_filtered_res.${data_extp}
-    fg_out=zen.${grpstr}.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.${data_extp}
+    fg_list=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_res.${data_extp}`
+    fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.${data_extp}
+    fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.${data_extp}
     tavg_flag=zen.${label}.flags.tavg.h5
 
   # time-average autocorrs using waterfall averaging cornerturn.
@@ -56,22 +57,22 @@ do
   # even
   if [ -e "${fg_in}" ]
   then
-    echo time_average_baseline_parallelized.py ${fg_in} ${fg_out} --rephase --clobber \
+    echo time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_list} --rephase --clobber \
     --flag_output ${tavg_flag} --t_avg ${t_avg}
-    time_average_baseline_parallelized.py ${fg_in} ${fg_out} --rephase --clobber \
+    time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_list} --rephase --clobber \
     --flag_output ${tavg_flag} --t_avg ${t_avg}
   else
     echo "${fg_in} does not exist!"
   fi
-
+  fg_list=`echo zen.${grpstr}.LST.*.${sd}.${label}.waterfall.${data_extp}`
   fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.${data_extp}
   fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.tavg.${data_extp}
   # time average non-xtalk filtered data
   if [ -e "${fg_in}" ]
   then
-    echo time_average_baseline_parallelized.py ${fg_in} ${fg_out} --rephase --clobber \
+    echo time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_list} --rephase --clobber \
     --flag_output ${tavg_flag} --t_avg ${t_avg}
-    time_average_baseline_parallelized.py ${fg_in} ${fg_out} --rephase --clobber \
+    time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_list} --rephase --clobber \
     --flag_output ${tavg_flag} --t_avg ${t_avg}
   else
     echo "${fg_in} does not exist!"

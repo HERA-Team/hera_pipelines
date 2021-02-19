@@ -1,13 +1,13 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/task_scripts/"
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/post_lstbin/task_scripts/"
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
 base_mem = 16000
 base_cpu = 1
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
-chunk_size = 60
+chunk_size = 1
 
 [GLOBAL_OPTS]
 data_ext = 'smooth_avg_vis.uvh5'
@@ -28,6 +28,7 @@ t_avg = 300.0
 #n_avg = 32
 final_flag_ext = "total_threshold_and_a_priori_flags.h5"
 final_cal_ext = "smooth_abs.calfits"
+grpstr = "grp1.of1"
 
 [DELAY_OPTS]
 tol = 1e-9
@@ -71,15 +72,13 @@ actions = ["TIME_AVERAGE_INIT",
            "PSPEC"]
 
 [TIME_AVERAGE_INIT]
-prereqs= "XTALK"
-prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem=16000
 args=["{basename}",
       "${GLOBAL_OPTS:data_ext}",
       "${GLOBAL_OPTS:label}",
-      "${GLOBAL_OPTS:t_avg}"]#, "${GLOBAL_OPTS:n_avg}"]
+      "${GLOBAL_OPTS:t_avg}", "${GLOBAL_OPTS:grpstr}"]#, "${GLOBAL_OPTS:n_avg}"]
 
 
 [RECONSTITUTE]
@@ -88,7 +87,7 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
 
 [PSPEC]
 prereqs = "RECONSTITUTE"
@@ -98,7 +97,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
-      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:final_flag_ext}"]
+      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:final_flag_ext}", "${GLOBAL_OPTS:grpstr}"]
 
 [COMBINE_PSPEC]
 prereqs = "PSPEC"
@@ -106,7 +105,7 @@ prereq_chunk_size="all"
 mem = 64000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args = ["{basename}", "${GLOBAL_OPTS:label}"]
+args = ["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
 
 [FILTER_CLEANUP]
 prereqs = "COMBINE_PSPEC"

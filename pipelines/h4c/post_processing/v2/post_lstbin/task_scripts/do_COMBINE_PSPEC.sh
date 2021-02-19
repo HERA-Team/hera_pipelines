@@ -40,17 +40,17 @@ do
   fi
 
   if [ "${fragment_position}" = "4" ]; then
-    fragments=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5`
-    input=`ls zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5 | head -1`
-    combined=zen.${int_jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5
+    fragments=`echo zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5`
+    input=`ls zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5 | head -1`
+    combined=zen.${grpstr}.LST.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5
     echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
     combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   fi
 
   if [ "${fragment_position}" = "8" ]; then
-    fragments=`echo zen.${int_jd}.*.${sd}.${label}.auto.waterfall.tavg.fullband.pspec.h5`
-    input=`ls zen.${int_jd}.*.${sd}.${label}.auto.waterfall.tavg.fullband.pspec.h5 | head -1`
-    combined=zen.${int_jd}.${sd}.${label}.auto.tavg.fullband.pspec.h5
+    fragments=`echo zen.${grpstr}.*.${lst}.${sd}.${label}.auto.waterfall.tavg.fullband.pspec.h5`
+    input=`ls zen.${grpstr}.LST.*.${sd}.${label}.auto.waterfall.tavg.fullband.pspec.h5 | head -1`
+    combined=zen.${grpstr}.LST.${sd}.${label}.auto.tavg.fullband.pspec.h5
     echo combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
     combine_pspec_containers.py ${fragments} ${input} ${combined} --clobber
   fi

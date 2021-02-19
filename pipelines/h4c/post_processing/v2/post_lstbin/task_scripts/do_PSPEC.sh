@@ -60,7 +60,7 @@ do
          --taper bh --exclude_flagged_edge_channels
 
        # do subbands
-       output=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.tavg.pspec.h5
+       output=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.pspec.h5
        echo pspec_run.py ${even_file} ${odd_file} ${output}\
          --allow_fft --store_cov_diag \
          --vis_units Jy --cov_model empirical_pspec --overwrite\
