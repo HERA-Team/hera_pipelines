@@ -49,7 +49,7 @@ then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
-    git add rtp_summary_table_${jd}.csv
+    git add ${nb_outdir}/rtp_summary_table_${jd}.csv
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     git commit -m "RTP summary notebook for JD ${jd}"
