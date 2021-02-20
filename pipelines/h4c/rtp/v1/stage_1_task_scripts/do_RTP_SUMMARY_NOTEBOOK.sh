@@ -27,7 +27,7 @@ nb_outdir=${nb_output_repo}/_rtp_summary_
 if [ ! -d ${nb_outdir} ]; then
   mkdir -p ${nb_outdir}
 fi
-nb_outfile=${nb_outdir}rtp_summary_${jd}.html
+nb_outfile=${nb_outdir}/rtp_summary_${jd}.html
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
