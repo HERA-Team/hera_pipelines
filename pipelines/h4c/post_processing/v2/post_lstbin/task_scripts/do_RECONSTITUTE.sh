@@ -48,8 +48,8 @@ lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
       if [ -e "${time_chunk_template}" ]
       then
         # reconstitute xtalk filtered files
-        outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.${data_extp}
-        baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_res.waterfall.${data_extp}`
+        outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.${data_extp}
+        baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered.waterfall.${data_extp}`
         echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
             --baseline_chunk_files ${baseline_chunk_files} --clobber
 
@@ -60,10 +60,10 @@ lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
       else
         echo "${time_chunk_template} does not exist!"
       fi
-      time_chunk_template=zen.${grpstr}.${lst}.${sd}.${label}.xtalk_filtered_res.${data_extp}
+      time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.${data_extp}
       # time averaged data
-      outfilename=zen.${grpstr}.${lst}.${sd}.${label}.xtalk_filtered_res.tavg.${data_extp}
-      baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.${data_extp}`
+      outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.${data_extp}
+      baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered.waterfall.tavg.${data_extp}`
 
       echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
           --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds

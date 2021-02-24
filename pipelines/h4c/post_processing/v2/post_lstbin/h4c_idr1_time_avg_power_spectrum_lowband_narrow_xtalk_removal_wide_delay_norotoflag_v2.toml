@@ -69,7 +69,8 @@ clear_delay = false
 [WorkFlow]
 actions = ["TIME_AVERAGE_INIT",
            "RECONSTITUTE",
-           "PSPEC"]
+           "PSPEC",
+           "COMBINE_PSPEC"]
 
 [TIME_AVERAGE_INIT]
 chunk_size=1

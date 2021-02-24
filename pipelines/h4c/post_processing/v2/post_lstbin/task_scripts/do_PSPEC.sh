@@ -36,11 +36,11 @@ do
   data_ext0=${data_ext/.uvh5/.0.uvh5}
   data_ext1=${data_ext/.uvh5/.1.uvh5}
   #power spectra of data with the foregrounds and xtalk retained -- to estimate signal loss from xtalk filter.
-  even_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.${data_ext0}
-  odd_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.${data_ext1}
+  even_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.waterfall.tavg.${data_ext0}
+  odd_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.waterfall.tavg.${data_ext1}
   if [ -e "${even_file}" ]
   then
-      output=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.fullband.pspec.h5
+      output=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.waterfall.tavg.fullband.pspec.h5
       # average all times incoherently
       echo pspec_run.py ${even_file} ${odd_file} ${output}\
         --allow_fft --store_cov_diag \
@@ -48,7 +48,7 @@ do
         --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
         --Jy2mK --beam ${beam_file} --sampling\
         --file_type uvh5 \
-        --taper bh --exclude_flagged_edge_channels
+        --taper bh --truncate_taper
 
 
        pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -57,17 +57,17 @@ do
          --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
          --Jy2mK --beam ${beam_file} --sampling\
          --file_type uvh5 \
-         --taper bh --exclude_flagged_edge_channels
+         --taper bh --truncate_taper
 
        # do subbands
-       output=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.waterfall.tavg.pspec.h5
+       output=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.waterfall.tavg.pspec.h5
        echo pspec_run.py ${even_file} ${odd_file} ${output}\
          --allow_fft --store_cov_diag \
          --vis_units Jy --cov_model empirical_pspec --overwrite\
          --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
          --Jy2mK --beam ${beam_file} --sampling\
          --file_type uvh5 --Nspws ${nspw} \
-         --taper bh --exclude_flagged_edge_channels
+         --taper bh --truncate_taper
 
 
         pspec_run.py ${even_file} ${odd_file} ${output}\
@@ -76,12 +76,12 @@ do
           --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
           --Jy2mK --beam ${beam_file} --sampling\
           --file_type uvh5 --Nspws ${nspw} \
-          --taper bh --exclude_flagged_edge_channels
+          --taper bh --truncate_taper
     else
       echo "${even_file} does not exist!"
     fi
 
-  auto_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.auto.waterfall.tavg.uvh5
+  auto_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.auto.foreground_filled.waterfall.tavg.uvh5
   if [ -e "${auto_file}" ]
   then
    output=zen.${grpstr}.LST.${lst}.${sd}.${label}.auto.waterfall.tavg.fullband.pspec.h5
@@ -91,7 +91,7 @@ do
      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --sampling\
      --file_type uvh5 --fullband_filter --include_autocorrs\
-     --exclude_flagged_edge_channels --taper bh\
+     --truncate_taper --taper bh\
      --exclude_cross_bls --interleave_times
 
 
@@ -101,7 +101,7 @@ do
      --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn'\
      --Jy2mK --beam ${beam_file} --sampling\
      --file_type uvh5 --fullband_filter --include_autocorrs\
-     --exclude_flagged_edge_channels --taper bh\
+     --truncate_taper --taper bh\
      --exclude_cross_bls --interleave_times
 
   else

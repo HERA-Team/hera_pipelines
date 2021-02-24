@@ -37,14 +37,15 @@ output_file_select=${10}
 file_ext=${11}
 outdir=${12}
 Nbls_to_load=${13}
-calibration=${14}
+flag_thresh=${14}
 average_redundant_baselines=${15}
+calibration=${16}
 data_files=($@)
 # if calibration suffix is not empty, parse it and apply it
 if [ ! -z "${calibration}" ]
 then
-    # if there's a calibration string, then the data files start at the 15th position
-    data_files=(${data_files[*]:15})
+    # if there's a calibration string, then the data files start at the 17th position
+    data_files=(${data_files[*]:17})
     # parse calibration suffix for each nested list in data_files
     input_cals=()
     for df in "${data_files[@]}"; do
@@ -59,8 +60,8 @@ then
     input_cals="--input_cals ${input_cals[@]}"
 else
    input_cals=""
-   # if there's no calibration string, then they start at the 14th position
-   data_files=(${data_files[*]:14})
+   # if there's no calibration string, then they start at the 16th position
+   data_files=(${data_files[*]:16})
 fi
 
 # set special kwargs
@@ -82,9 +83,9 @@ fi
 echo ${average_redundant_baselines}
 if [ "${average_redundant_baselines}" = "True" ]
 then
-  echo lstbin_run.py --average_redundant_baselines --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
-  lstbin_run.py --average_redundant_baselines --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+  echo lstbin_run.py --flag_thresh ${flag_thresh} --average_redundant_baselines --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+  lstbin_run.py --flag_thresh ${flag_thresh} --average_redundant_baselines --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
 else
-  echo lstbin_run.py --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
-  lstbin_run.py --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+  echo lstbin_run.py --flag_thresh ${flag_thresh} --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+  lstbin_run.py --flag_thresh ${flag_thresh} --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
 fi

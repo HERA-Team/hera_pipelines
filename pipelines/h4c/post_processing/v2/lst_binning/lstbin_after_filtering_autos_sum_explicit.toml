@@ -1,6 +1,6 @@
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/task_scripts/"
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/lst_binning/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "hera3dev"
 base_mem = 80000
@@ -34,7 +34,7 @@ data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.sum.lo
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.sum.low-band-v2-wide-dly-h2cflags.auto.foreground_filled.uvh5",
               ]
 calibration = "''"
-
+flag_thresh = 0.8
 
 [WorkFlow]
 actions = ["LSTBIN"]
@@ -42,4 +42,4 @@ actions = ["LSTBIN"]
 [LSTBIN]
 args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
         "fixed_lst_start", "dlst", "vis_units", "output_file_select", "file_ext",
-        "outdir", "Nbls_to_load", "calibration", "average_redundant_baselines"]
+        "outdir", "Nbls_to_load", "flag_thresh", "average_redundant_baselines", "calibration"]
