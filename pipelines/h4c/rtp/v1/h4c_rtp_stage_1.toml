@@ -23,6 +23,13 @@ librarian_SSINS = true
 librarian_downselected_data = false
 librarian_notebooks = true
 
+[A_PRIORI_STATUS_OPTS]
+# TODO: these will need to be updated as commissioning gets underway
+# Antennas considered "good" and thus likely candidates for LST-binning
+good_statuses = "digital_ok,calibration_maintenance,calibration_triage,calibration_ok"
+# All antennas that are on and worth running ant_metrics and the data_inspect notebook on.
+all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital_maintenance,calibration_maintenance,calibration_triage,calibration_ok"
+
 [NOTEBOOK_OPTS]
 nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
 nb_output_repo = '/home/obs/src/H4C_Notebooks'
@@ -35,19 +42,10 @@ edge_cut = 50
 chan_thresh_frac = 0.05
 
 [ANT_METRICS_OPTS]
-crossCut = 5.0
-deadCut = 5.0
+crossCut = 0.0
+deadCut = 0.4
 Nbls_per_load = 1000
-# TODO: these will need to be updated as commissioning gets underway
-# Antennas considered "good" and thus likely candidates for LST-binning
-good_statuses = "digital_ok,calibration_maintenance,calibration_triage,calibration_ok"
-good_extension = ".known_good.ant_metrics.hdf5"
-# Good antennas as well as ntennas that might be ready to promote to "good" status, pending a commissioning meeting.
-maybe_statuses = "RF_ok,digital_maintenance,digital_ok,calibration_maintenance,calibration_triage,calibration_ok"
-maybe_extension = ".maybe_good.ant_metrics.hdf5"
-# All antennas that are on and worth running ant_metrics and the data_inspect notebook on.
-all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital_maintenance,calibration_maintenance,calibration_triage,calibration_ok"
-all_extension = ".all_ants.ant_metrics.hdf5"
+extension = ".ant_metrics.hdf5"
 
 [REDCAL_OPTS]
 ant_z_thresh = 4
@@ -91,9 +89,7 @@ actions = ["SETUP",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           "ANT_METRICS_KNOWN_GOOD",
-           "ANT_METRICS_MAYBE_GOOD",
-           "ANT_METRICS_ALL_ANTS",
+           "ANT_METRICS",
            "ADD_MC_ANT_METRICS",
            # "REDCAL_KNOWN_GOOD", TODO: add this back in 
            "REDCAL_MAYBE_GOOD",
@@ -220,7 +216,7 @@ args = ["{basename}",
 
 ########## ANT METRICS ##########
 
-[ANT_METRICS_KNOWN_GOOD]
+[ANT_METRICS]
 prereqs = "LIBRARIAN_MAKE_SESSION"
 chunk_size = 10 # TODO: update this once we're using single integration files
 stride_length = 10
@@ -229,40 +225,7 @@ collect_stragglers = true
 args = ["${ANT_METRICS_OPTS:crossCut}",
         "${ANT_METRICS_OPTS:deadCut}",
         "${ANT_METRICS_OPTS:Nbls_per_load}",
-        "${ANT_METRICS_OPTS:good_extension}",
-        "${ANT_METRICS_OPTS:good_statuses}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_ant_metrics}",
-        "{obsid_list}",
-       ]
-
-[ANT_METRICS_MAYBE_GOOD]
-prereqs = "LIBRARIAN_MAKE_SESSION"
-chunk_size = 10
-stride_length = 10
-time_centered = false
-collect_stragglers = true
-args = ["${ANT_METRICS_OPTS:crossCut}",
-        "${ANT_METRICS_OPTS:deadCut}",
-        "${ANT_METRICS_OPTS:Nbls_per_load}",
-        "${ANT_METRICS_OPTS:maybe_extension}",
-        "${ANT_METRICS_OPTS:maybe_statuses}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_ant_metrics}",
-        "{obsid_list}",
-       ]
-
-[ANT_METRICS_ALL_ANTS]
-prereqs = "LIBRARIAN_MAKE_SESSION"
-chunk_size = 10
-stride_length = 10
-time_centered = false
-collect_stragglers = true
-args = ["${ANT_METRICS_OPTS:crossCut}",
-        "${ANT_METRICS_OPTS:deadCut}",
-        "${ANT_METRICS_OPTS:Nbls_per_load}",
-        "${ANT_METRICS_OPTS:all_extension}",
-        "${ANT_METRICS_OPTS:all_statuses}",
+        "${ANT_METRICS_OPTS:extension}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_ant_metrics}",
         "{obsid_list}",
