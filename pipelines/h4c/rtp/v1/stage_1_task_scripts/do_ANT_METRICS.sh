@@ -60,3 +60,10 @@ if [ "${upload_to_librarian}" == "True" ]; then
         done
     fi
 fi
+
+# add metrics to m&c
+for fn in ${sum_files[@]}; do
+    metrics_f=`echo ${fn%.uvh5}${extension}`
+    echo add_qm_metrics.py --type=ant ${metrics_f}
+    add_qm_metrics.py --type=ant ${metrics_f}
+done

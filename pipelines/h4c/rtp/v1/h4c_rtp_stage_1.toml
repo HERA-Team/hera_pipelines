@@ -88,7 +88,6 @@ actions = ["SETUP",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "ANT_METRICS",
-           "ADD_MC_ANT_METRICS",
            "REDCAL_KNOWN_GOOD",
            "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "XRFI",
@@ -211,19 +210,6 @@ args = ["${ANT_METRICS_OPTS:crossCut}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_ant_metrics}",
         "{obsid_list}",
-       ]
-
-[ADD_MC_ANT_METRICS]
-prereqs = ["ANT_METRICS_KNOWN_GOOD", "ANT_METRICS_MAYBE_GOOD", "ANT_METRICS_ALL_ANTS"]
-# matching chunking options above
-chunk_size = 10
-stride_length = 10
-time_centered = false
-collect_stragglers = true
-args = ["{basename}",
-        "${ANT_METRICS_OPTS:good_extension}",
-        "${ANT_METRICS_OPTS:maybe_extension}",
-        "${ANT_METRICS_OPTS:all_extension}",
        ]
 
 ########## REDCAL AND ASSOCIATED NOTEBOOKS ##########
