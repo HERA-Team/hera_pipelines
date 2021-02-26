@@ -89,8 +89,8 @@ actions = ["SETUP",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "ANT_METRICS",
            "ADD_MC_ANT_METRICS",
-           # "REDCAL_KNOWN_GOOD", TODO: add this back in 
-           # "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD", TODO: add this back in 
+           "REDCAL_KNOWN_GOOD",
+           "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "XRFI",
            "LIBRARIAN_XRFI",
            "XRFI_DAY_THRESHOLD",
@@ -231,7 +231,7 @@ args = ["{basename}",
 [REDCAL_KNOWN_GOOD]
 # queue = "gpu"
 # extra_batch_options = "--gres=gpu"
-prereqs = "ANT_METRICS_KNOWN_GOOD"
+prereqs = ["ANT_METRICS", "AUTO_METRICS"]
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
         "${REDCAL_OPTS:solar_horizon}",
@@ -241,8 +241,9 @@ args = ["{basename}",
         "${REDCAL_OPTS:nInt_to_load}",
         "${REDCAL_OPTS:min_bl_cut}",
         "${REDCAL_OPTS:max_bl_cut}",
-        "${ANT_METRICS_OPTS:good_extension}",
         "${REDCAL_OPTS:max_dims}",
+        "${ANT_METRICS_OPTS:extension}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_redcal_known_good}",
        ]
@@ -262,7 +263,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:good_extension}"
+        "${ANT_METRICS_OPTS:extension}",
       ]
 
 ########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
