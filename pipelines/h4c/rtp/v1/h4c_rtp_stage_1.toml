@@ -85,6 +85,7 @@ actions = ["SETUP",
            "EXTRACT_AUTOS",
            "AUTO_METRICS",
            "AUTO_METRICS_INSPECT_NOTEBOOK",
+           "RTP_SUMMARY_NOTEBOOK_1",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "ANT_METRICS",
@@ -162,6 +163,19 @@ stride_length = "all"
 time_centered = false
 mem = 128000
 args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
+[RTP_SUMMARY_NOTEBOOK_1]
+prereqs = "AUTO_METRICS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${ANT_METRICS_OPTS:extension}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
