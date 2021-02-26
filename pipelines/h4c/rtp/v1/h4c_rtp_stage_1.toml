@@ -87,7 +87,6 @@ actions = ["SETUP",
            "AUTO_METRICS",
            "AUTO_METRICS_INSPECT_NOTEBOOK",
            "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
-           "DATA_INSPECT_NOTEBOOK_MAYBE_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "ANT_METRICS",
            "ADD_MC_ANT_METRICS",
@@ -183,21 +182,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:good_statuses}"
-        ]
-
-[DATA_INSPECT_NOTEBOOK_MAYBE_GOOD]
-prereqs = "EXTRACT_AUTOS"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:maybe_statuses}"
+        "${A_PRIORI_STATUS_OPTS:good_statuses}"
         ]
 
 [DATA_INSPECT_NOTEBOOK_ALL_ANTS]
@@ -211,7 +196,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:all_statuses}"
+        "${A_PRIORI_STATUS_OPTS:all_statuses}"
         ]
 
 ########## ANT METRICS ##########
