@@ -419,6 +419,7 @@ prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
            "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "RFI_INSPECT_NOTEBOOK",
            "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
+           "RTP_SUMMARY_NOTEBOOK_3",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
