@@ -92,6 +92,7 @@ actions = ["SETUP",
            "RTP_SUMMARY_NOTEBOOK_2",
            "REDCAL_KNOWN_GOOD",
            "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
+           "RTP_SUMMARY_NOTEBOOK_3",
            "XRFI",
            "LIBRARIAN_XRFI",
            "XRFI_DAY_THRESHOLD",
@@ -279,6 +280,19 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:git_push}",
         "${ANT_METRICS_OPTS:extension}",
       ]
+
+[RTP_SUMMARY_NOTEBOOK_3]
+prereqs = "REDCAL_KNOWN_GOOD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${ANT_METRICS_OPTS:extension}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
 
 ########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
 
