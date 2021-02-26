@@ -409,16 +409,16 @@ args = ["{basename}",
 
 ########## DATA DOWNSELECTION ##########
 
-[DATA_DOWNSELECT]
-prereqs = "LIBRARIAN_MAKE_SESSION"
-args = ["{basename}"]
+# [DATA_DOWNSELECT]
+# prereqs = "LIBRARIAN_MAKE_SESSION"
+# args = ["{basename}"]
 
-[LIBRARIAN_DATA_DOWNSELECT]
-prereqs = "DATA_DOWNSELECT"
-args = ["{basename}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_downselected_data}",
-       ]
+# [LIBRARIAN_DATA_DOWNSELECT]
+# prereqs = "DATA_DOWNSELECT"
+# args = ["{basename}",
+#         "${LIBRARIAN_OPTS:upload_to_librarian}",
+#         "${LIBRARIAN_OPTS:librarian_downselected_data}",
+#        ]
 
 ########## BACKUP NOTEBOOKS IN LIBRARIAN ##########
 
