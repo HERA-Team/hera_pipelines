@@ -43,6 +43,10 @@ uvfits_file=`basename ${filename%.uvh5}.uvfits`
 echo convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
 convert_to_uvfits.py ${filename} --output_filename ${uvfits_file} --overwrite
 
+# renumber antennas because any antenna numbers above 256 break casa
+echo renumber_ants.py ${uvfits_file} ${uvfits_file} --overwrite --verbose
+renumber_ants.py ${uvfits_file} ${uvfits_file} --overwrite --verbose
+
 # get uvfits and ms filename
 image_file="${uvfits_file%.uvfits}"
 ms_file="${uvfits_file%.uvfits}.ms"
@@ -56,6 +60,13 @@ echo python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'
 python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
 model_file=`basename ${filename%.uvh5}.model.uvfits`
 res_file=`basename ${filename%.uvh5}.res.uvfits`
+
+# renumber antennas because any antenna numbers above 256 break casa
+echo renumber_ants.py ${model_file} ${model_file} --overwrite --verbose
+renumber_ants.py ${model_file} ${model_file} --overwrite --verbose
+echo renumber_ants.py ${res_file} ${res_file} --overwrite --verbose
+renumber_ants.py ${res_file} ${res_file} --overwrite --verbose
+
 # if it ran through, image model and residual
 if [ -f ${model_file} ]; then
     echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${model_file} --image ${model_file%.uvfits} --spw ${spw}

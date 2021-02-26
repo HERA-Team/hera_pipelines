@@ -1,112 +1,54 @@
 import numpy as np
-import glob, os
-import pandas as pd
+import glob
 
+freq_flags = [[100.0e6, 111e6], 
+              [137e6, 138e6], 
+              [187e6, 199.90234375e6]]
 
-def write(jdflags_csv):
-    '''
-    Writes the YAML files based on a csv file which contains the days of data
-    and their corresponding JDflags. See write_csv for more details about that 
-    file. 
-
-    Args: 
-        jdflags_csv (str): path to the csv file containing the jd flags 
-    '''
-    # ant flags
-    bad_ants = {}
-    for file in sorted(glob.glob("./bad_ants/*.txt")):
-        JD = int(file.split('/')[-1].split('.')[0])
-        with open(file) as f:
-            bad_ants[JD] = [int(ant.strip()) for ant in f.readlines()]
-    # jd flags
-    data=pd.read_csv(jdflags_csv)
-    jd_flags = {int(day + 2458000): flags for day, flags in zip(data['days'], data['jdflags'])}
-    # freq flags
-    freqflags=[[100.0e6, 111e6], [137e6, 138e6], [187e6, 199.90234375e6]]
-    # write
-    for JD in bad_ants.keys():
-        with open(f'./a_priori_flags/{JD}.yaml', 'w+') as f:
-            # print(jdflags[i], type(jdflags[i]))
-            if isinstance(jd_flags[JD], str): # check if not nan
-                f.write(f'JD_flags: {jd_flags[JD]}\n')
-            f.write(f'freq_flags: {freqflags}\n')
-            f.write(f'ex_ants: {bad_ants[JD]}\n')
-    
-    
-def write_csv(days,good,bad,badflags=None,savename='jdflags.csv'):
-    '''
-    Writes a csv files consisting of the days of data and the corresponding JD flags
-    
-    Args:
-        days (array-like): array consisting of the dates being analysed
-
-        good (array-like): those days for which the data looks clean and 
-                           no flags other than the default are required.  
-        
-        bad (array-like): those days for which flags other than the default are required
-                          (for when there is partially sketchy data)
-
-        savename (str): the name under which the csv is to be saved; the default
-                        is flags.csv.
-
-        badflags (array-like) : default set to none. array consisting of the dates and 
-                                jd flags to apply to all the bad days. 
-
-        
-    '''
-    days,bad,good=[int(i) for i in days],[int(i) for i in bad],[int(i) for i in good]
-    df=pd.DataFrame({'days':good,'jdflags':None})
-    for i in badflags:
-        df.loc[len(df)]=i
-    df.set_index('days',inplace=True)
-    df.to_csv(savename)
-    return savename
-
-
+# TODO: load these from a csv rather than storing them here
+JD_flags = {2458041: [[0.50, 0.70]], # from Josh's inspecting notebooks on 2/9/21
+            2458049: [[0.10, 0.41]], # from Josh's inspecting notebooks on 2/9/21
+            2458052: [[0.50, 0.90]], # from Josh's inspecting notebooks on 2/9/21
+            2458054: [[0.10, 0.90]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+            2458055: [[0.10, 0.90]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+            2458056: [[0.10, 0.90]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+            2458058: [[0.10, 0.48]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh on 2/9/21
+            2458059: [[0.10, 0.48]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh on 2/9/21
+            2458061: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+            2458065: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+            2458066: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
+            2458096: [[0.20, 0.40], 
+                      [0.45, 0.50]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458104: [[0.20, 0.27],
+                      [0.35, 0.45]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458109: [[0.20, 0.46]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458114: [[0.10, 0.32]], # flagged due to a broken X-engine 
+            2458136: [[0.20, 0.36]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458140: [[0.27, 0.33],
+                      [0.44, 0.47],
+                      [0.50, 0.58],
+                      [0.62, 0.70]], # added by Josh on 12/29/20
+            2458141: [[0.30, 0.49],
+                      [0.25, 0.29]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458148: [[0.20, 0.33]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458159: [[0.20, 0.50]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458161: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inpsectiing notebooks 2/18/21
+            2458172: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inspecting notebooks 2/18/21
+            2458173: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inspecting notebooks 2/18/21
+            2458185: [[0.10, 0.50]], # from Vignesh's by-hand analysis H1C IDR3.1. Expanded by Josh on inspecting notebooks 2/18/21
+            2458206: [[0.20, 0.28]], # from Vignesh's by-hand analysis H1C IDR3.1
+           }
 
 def driver():
-    days=glob.glob("./bad_ants/*.txt")
-    days=[(f[-7:-4]) for f in days]
-
-    # bad is a hardcoded list of days with sketchy data
-    bad=['058','059','096','104','109','136','140','141','148','159','161','172','173','185','206']
-
-    good=[d for d in days if d not in bad]
-    bad=[d for d in days if d in bad]
-
-    # badflags is a hardcoded array of the sketchy days and extra JD ranges to be flagges
-    badflags=np.array([[41,[[0.5,0.7]]], # from Josh's inspecting notebooks on 2/9/21
-                       [49,[[0.1,0.41]]], # from Josh's inspecting notebooks on 2/9/21
-                       [52,[[0.5,0.9]]], # from Josh's inspecting notebooks on 2/9/21
-                       [54,[[0.1,0.9]]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
-                       [55,[[0.1,0.9]]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
-                       [56,[[0.1,0.9]]], # X-engine issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
-                       [58,[[0.1,0.48]]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh on 2/9/21
-                       [59,[[0.1,0.48]]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh on 2/9/21
-                       [61,[[0.1,0.9]]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
-                       [65,[[0.1,0.9]]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
-                       [66,[[0.1,0.9]]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
-                       [96,[[0.2,0.4],[0.45,0.5]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [104,[[0.2,0.27],[0.35,0.45]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [109,[[0.2,0.46]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [114,[[.1,.32]]], # flagged due to a broken X-engine 
-                       [136,[[0.2,0.36]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [140, [[.27,.33],[.44,.47],[.50,.58],[.62,.70]]], # added by Josh on 12/29/20
-                       [141,[[0.3,0.49],[0.25,0.29]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [148,[[0.2,0.33]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [159,[[0.2,0.5]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [161,[[0.4,0.55]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [172,[[0.2,0.58]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [173,[[0.2,0.37],[0.4,0.5]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [185,[[0.35,0.45]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                       [206,[[0.2,0.28]]], # from Vignesh's by-hand analysis H1C IDR3.1
-                      ], dtype='object')
-    for i, bf in enumerate(badflags):
-        jd = bf[0] + 2458000
-        badflags[i][1] = [[f[0] + jd, f[1] + jd] for f in bf[1]]
-
-    savename=write_csv(days,good,bad,badflags)
-    write(savename)
+    bad_ants_files = sorted(glob.glob("./bad_ants/*.txt"))
+    for baf in bad_ants_files:
+        JD = int(baf.split('/')[-1].split('.txt')[0])
+        bad_ants = np.loadtxt(baf).astype(int)
+        with open(f'./a_priori_flags/{JD}.yaml', 'w+') as f:
+            if JD in JD_flags:
+                f.write(f'JD_flags: {[[flag + JD for flag in pair] for pair in JD_flags[JD]]}\n')
+            f.write(f'freq_flags: {freq_flags}\n')
+            f.write(f'ex_ants: [{", ".join([str(ba) for ba in bad_ants])}]\n')
     
 if __name__ == "__main__":
     driver()

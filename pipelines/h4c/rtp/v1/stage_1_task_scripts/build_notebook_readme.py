@@ -11,7 +11,7 @@ starting_dir = os.getcwd()
 
 # Parse arguments and move to target_directory
 a = argparse.ArgumentParser(
-    description='Script for "fixing" H3C files to ensure that data is unflagged, nsamples = 1, and the uvws are correct given the antenna antenna_positions.'
+    description='Script for building README files for a folder in a github repo with html and ipynb files that link to appropriate preview sites.'
 )
 a.add_argument("target_dir", help="Path to folder in github repo to make a links README.md for.")
 args = a.parse_args()
@@ -24,6 +24,7 @@ if github_url[0:8] == "https://": # of the form https://github.com/HERA-Team/H4C
     user, repo = github_url.split('.com/')[-1].strip('.git').split('/')
 elif "@" in github_url: # of the form git@h4cnotebooks.github.com:HERA-Team/H4C_Notebooks
     user, repo = github_url.split('github.com:')[-1].split('/')
+    repo = repo.strip('.git')
 sub_folders = os.path.abspath(os.getcwd()).split(repo + '/')[-1] 
 
 # parse current branch

@@ -25,14 +25,22 @@ librarian_ant_metrics="${6}"
 fn1=`basename ${7}`
 sum_files="${@:7}"
 
+# get corresponding diff files
 diff_files=()
 for fn in ${sum_files[@]}; do
     diff_files+=( ${fn%.sum.uvh5}.diff.uvh5 )
 done
 
-# We only want to run ant metrics on sum files
-echo ant_metrics_run.py ${sum_files[@]} --diff_files ${diff_files[@]} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
-ant_metrics_run.py ${sum_files[@]} --diff_files ${diff_files[@]} --crossCut ${crossCut} --deadCut ${deadCut} --extension ${extension} --Nbls_per_load ${Nbls_per_load} --clobber
+# run ant_metrics
+cmd="ant_metrics_run.py ${sum_files[@]} \
+                        --diff_files ${diff_files[@]} \
+                        --crossCut ${crossCut} \
+                        --deadCut ${deadCut} \
+                        --extension ${extension} \
+                        --Nbls_per_load ${Nbls_per_load} \
+                        --clobber"
+echo $cmd
+$cmd
 
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
@@ -52,3 +60,10 @@ if [ "${upload_to_librarian}" == "True" ]; then
         done
     fi
 fi
+
+# add metrics to m&c
+for fn in ${sum_files[@]}; do
+    metrics_f=`echo ${fn%.uvh5}${extension}`
+    echo add_qm_metrics.py --type=ant ${metrics_f}
+    add_qm_metrics.py --type=ant ${metrics_f}
+done

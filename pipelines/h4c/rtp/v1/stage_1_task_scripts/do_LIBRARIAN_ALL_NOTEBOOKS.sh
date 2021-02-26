@@ -25,16 +25,19 @@ if [ "${upload_to_librarian}" == "True" ]; then
         declare -a nb_names=(
             "auto_metrics_inspect"
             "data_inspect_known_good"
-            "data_inspect_maybe_good"
             "data_inspect_all_ants"
-            # "redcal_inspect_known_good" TODO: add this back in
-            "redcal_inspect_maybe_good"
+            "redcal_inspect_known_good"
             "rfi_inspect"
             "delay_spectrum_inspect"
+            "rtp_summary"
         )
 
         for nb_name in ${nb_names[@]}; do
-            nb_outfile=${nb_output_repo}/${nb_name}/${nb_name}_${jd}.ipynb
+            if [[ ${nb_name} == "rtp_summary" ]]; then
+                nb_outfile=${nb_output_repo}/_${nb_name}_/${nb_name}_${jd}.ipynb
+            else
+                nb_outfile=${nb_output_repo}/${nb_name}/${nb_name}_${jd}.ipynb
+            fi
             # if the notebook doesn't exist, check to see whether there's an html file instead
             if [ ! -f "$nb_outfile" ]; then
                 nb_outfile=${nb_outfile%.ipynb}.html

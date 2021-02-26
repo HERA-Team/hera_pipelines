@@ -45,6 +45,7 @@ then
     # TODO: also commit html file
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
-    git commit -m "RTP delay spectrum inspection notebook commit for JD ${jd}"
+    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
+    git commit -m "RTP delay spectrum inspection notebook commit for JD ${jd}" -m ${lasturl}
     git push origin master
 fi
