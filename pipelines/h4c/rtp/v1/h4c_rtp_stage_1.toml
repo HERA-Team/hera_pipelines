@@ -144,12 +144,11 @@ args = ["{basename}",
 [AUTO_METRICS]
 prereqs = "EXTRACT_AUTOS"
 prereq_chunk_size = "all"
-chunk_size = 1
+chunk_size = "all"
 stride_length = "all"
 time_centered = false
 mem = 128000
-args = ["{basename}",
-        "${AUTO_METRICS_OPTS:median_round_modz_cut}",
+args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
         "${AUTO_METRICS_OPTS:mean_round_modz_cut}",
         "${AUTO_METRICS_OPTS:edge_cut}",
         "${XRFI_OPTS:kt_size}",
@@ -159,6 +158,7 @@ args = ["{basename}",
         "${AUTO_METRICS_OPTS:chan_thresh_frac}", 
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_auto_metrics}",
+        "{obsid_list}",
         ]
 
 ########## DATA/AUTO INSPECT NOTEBOOKS ##########
