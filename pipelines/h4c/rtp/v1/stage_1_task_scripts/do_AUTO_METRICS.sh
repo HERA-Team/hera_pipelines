@@ -30,10 +30,10 @@ sig_adj="${7}"
 chan_thresh_frac="${8}"
 upload_to_librarian="${9}"
 librarian_auto_metrics="${10}"
+fn0="${11}"
 data_files="${@:11}"
 
 # generate outfile
-fn0=${data_files[0]}
 metric_outfile=${fn0%.uvh5}.auto_metrics.h5
 
 # get all autos files
