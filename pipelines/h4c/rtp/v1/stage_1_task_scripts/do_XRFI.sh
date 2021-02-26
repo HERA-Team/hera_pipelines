@@ -19,20 +19,20 @@ source ${src_dir}/_common.sh
 # 7+ - filenames
 data_files="${@:7}"
 
-# get auto_metrics_file
+# get auto_metrics_file to exclude bad antennas
 jd=$(get_int_jd ${data_files[0]})
 decimal_jd=$(get_jd ${data_files[0]})
 pattern="${fn%${decimal_jd}.sum.uvh5}${jd}.?????.sum.auto_metrics.h5"
 pattern_files=( $pattern )
 auto_metrics_file=${pattern_files[0]}
 
-# get ant_metrics_files
+# get ant_metrics_files to exclude bad antennas
 ant_metrics_files=()
 for fn in ${data_files[@]}; do
     ant_metrics_files+=( ${fn%.uvh5}${6} )
 done
 
-
+# run XRFI
 cmd="xrfi_run_data_only.py --data_files ${data_files} \
                            --kt_size=${1} \
                            --kf_size=${2} \
