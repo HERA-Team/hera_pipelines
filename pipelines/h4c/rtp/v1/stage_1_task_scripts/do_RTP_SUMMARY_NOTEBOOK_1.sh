@@ -52,6 +52,7 @@ then
     git add ${nb_outdir}/rtp_summary_table_${jd}.csv
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
-    git commit -m "RTP summary notebook for JD ${jd}"
+    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
+    git commit -m "RTP summary notebook for JD ${jd}" -m ${lasturl}
     git push origin master
 fi
