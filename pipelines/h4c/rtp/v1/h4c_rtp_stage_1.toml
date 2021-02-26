@@ -255,12 +255,13 @@ args = ["{basename}",
 ########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
 
 [XRFI]
-prereqs = "LIBRARIAN_MAKE_SESSION"
+prereqs = ["ANT_METRICS", "AUTO_METRICS"]
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
         "${XRFI_OPTS:sig_init}",
         "${XRFI_OPTS:sig_adj}",
         "${XRFI_OPTS:Nwf_per_load}",
+        "${ANT_METRICS_OPTS:extension}",
         "{obsid_list}"
        ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in
