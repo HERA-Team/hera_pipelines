@@ -17,11 +17,17 @@ JD_flags = {2458041: [[0.50, 0.70]], # from Josh's inspecting notebooks on 2/9/2
             2458061: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
             2458065: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
             2458066: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
-            2458096: [[0.20, 0.40], 
-                      [0.45, 0.50]], # from Vignesh's by-hand analysis H1C IDR3.1
-            2458104: [[0.20, 0.27],
-                      [0.35, 0.45]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458085: [[0.56, 0.90]], # Broadband RFI in last hour or so. From Josh's inspecting notebooks on 2/25/21
+            2458088: [[0.52, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21
+            2458089: [[0.45, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21
+            2458090: [[0.50, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/26/21
+            2458095: [[0.10, 0.30],
+                      [0.49, 0.58]], # Broadband RFI in at start of night and late in the night. From Josh's inspecting notebooks on 2/26/21
+            2458096: [[0.10, 0.52]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh's notebook inspection on 2/26/21
+            2458104: [[0.10, 0.47]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded by Josh's notebook inspection on 2/26/21
+            2458105: [[0.10, 0.43]], # Broadband RFI for first half of the night. From Josh's inspecting notebooks on 2/26/21
             2458109: [[0.20, 0.46]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458110: [[0.47, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/26/21
             2458114: [[0.10, 0.32]], # flagged due to a broken X-engine 
             2458136: [[0.20, 0.36]], # from Vignesh's by-hand analysis H1C IDR3.1
             2458140: [[0.27, 0.33],
