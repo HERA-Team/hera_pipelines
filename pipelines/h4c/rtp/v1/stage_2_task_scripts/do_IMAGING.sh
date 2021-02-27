@@ -61,12 +61,6 @@ ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --
 echo python after CASA run
 echo `which python`
 
-source ~/.bashrc
-conda activate h4c
-
-echo python after resetting env
-echo `which python`
-
 # get model visibility files
 echo python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
 python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
@@ -88,8 +82,6 @@ if [ -f ${res_file} ]; then
     echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
     ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
 fi
-source ~/.bashrc
-conda activate h4c
 # collect stokpol FITS output
 shopt -s nullglob # skip loop if nothing is found, e.g. if the file is totally flagged
 for ff in *spw?.stokpol.image.fits
