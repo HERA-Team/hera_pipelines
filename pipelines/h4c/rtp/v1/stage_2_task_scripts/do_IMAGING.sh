@@ -55,6 +55,7 @@ ms_file="${uvfits_file%.uvfits}.ms"
 echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
+source ~/.bashrc
 conda activate h4c
 
 # get model visibility files
@@ -78,6 +79,7 @@ if [ -f ${res_file} ]; then
     echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
     ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
 fi
+source ~/.bashrc
 conda activate h4c
 # collect stokpol FITS output
 shopt -s nullglob # skip loop if nothing is found, e.g. if the file is totally flagged
