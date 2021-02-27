@@ -60,10 +60,11 @@ $cmd
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_auto_metrics}" == "True" ]; then
         # get the integer portion of the JD
-        jd=$(get_int_jd ${fn0})
-        mobn=`basename ${metric_outfile}`
+        bn=`basename ${fn0}`
+        jd=$(get_int_jd ${bn})
+        mo_bn=`basename ${metric_outfile}`
 
-        echo librarian upload local-rtp ${metric_outfile} ${jd}/${mobn}
-        librarian upload local-rtp ${metric_outfile} ${jd}/${mobn}
+        echo librarian upload local-rtp ${metric_outfile} ${jd}/${mo_bn}
+        librarian upload local-rtp ${metric_outfile} ${jd}/${mo_bn}
     fi
 fi
