@@ -51,16 +51,21 @@ renumber_ants.py ${uvfits_file} ${uvfits_file} --overwrite --verbose
 image_file="${uvfits_file%.uvfits}"
 ms_file="${uvfits_file%.uvfits}.ms"
 
-echo which python
+echo python before CASA run
+echo `which python`
 
 # call opm_imaging.py from CASA_IMAGING package
 echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
-echo which python
+echo python after CASA run
+echo `which python`
 
 source ~/.bashrc
 conda activate h4c
+
+echo python after resetting env
+echo `which python`
 
 # get model visibility files
 echo python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
