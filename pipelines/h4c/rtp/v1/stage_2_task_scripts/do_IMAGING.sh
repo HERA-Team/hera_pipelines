@@ -78,7 +78,7 @@ if [ -f ${res_file} ]; then
     echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
     ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
 fi
-
+conda activate h4c
 # collect stokpol FITS output
 shopt -s nullglob # skip loop if nothing is found, e.g. if the file is totally flagged
 for ff in *spw?.stokpol.image.fits
