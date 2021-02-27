@@ -51,9 +51,13 @@ renumber_ants.py ${uvfits_file} ${uvfits_file} --overwrite --verbose
 image_file="${uvfits_file%.uvfits}"
 ms_file="${uvfits_file%.uvfits}.ms"
 
+echo which python
+
 # call opm_imaging.py from CASA_IMAGING package
 echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
+
+echo which python
 
 source ~/.bashrc
 conda activate h4c
