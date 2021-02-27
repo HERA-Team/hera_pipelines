@@ -55,6 +55,8 @@ ms_file="${uvfits_file%.uvfits}.ms"
 echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
+conda activate h4c
+
 # get model visibility files
 echo python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
 python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
