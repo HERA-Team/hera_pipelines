@@ -53,6 +53,7 @@ then
         ic=$(sed -e 's/^"//' -e 's/"$//' <<< $df)
         ic=$(sed -e "s/^'//" -e "s/'$//" <<< $ic)
         # replace with calibration
+        ic=${ic/.diff./.sum.}
         ic=${ic/.autos./.}
         ic="'${ic%.uvh5*}.${calibration}'"
         # add brackets
