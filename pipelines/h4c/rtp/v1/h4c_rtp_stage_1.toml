@@ -55,7 +55,7 @@ flag_nchan_high = 0
 oc_maxiter = 5000
 min_bl_cut = 1.0 # TODO: restore this to 15.0 when we have more antennas
 max_bl_cut = 10000.0 # TODO: restore this to 100.0 when we have more antennas
-max_dims = 4 # TODO: knock this down to 2 when we have enough good antennas to calibrate with
+max_dims = 10 # TODO: knock this down to 2 or maybe 4 when we have enough good antennas to calibrate with
 
 [XRFI_OPTS]
 kt_size = 8
