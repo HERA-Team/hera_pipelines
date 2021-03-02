@@ -31,6 +31,7 @@ nb_outfile=${nb_outdir}/redcal_inspect_known_good_${jd}.ipynb
 export DATA_PATH=`pwd`
 export JULIANDATE=${jd}
 export ANT_METRICS_EXT=${ant_metrics_extension}
+export OMNI_PREFIX=.known_good
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
