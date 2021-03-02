@@ -55,9 +55,10 @@ ms_file="${uvfits_file%.uvfits}.ms"
 echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${uvfits_file} --image ${image_file} --spw ${spw}
 
+
 # get model visibility files
-echo python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
-python ${casa_imaging_scripts}/get_model_vis.py ${filename} "'${model_vis}'" "./"
+echo get_model_vis.py ${filename} "'${model_vis}'" "./"
+get_model_vis.py ${filename} "'${model_vis}'" "./"
 model_file=`basename ${filename%.uvh5}.model.uvfits`
 res_file=`basename ${filename%.uvh5}.res.uvfits`
 
@@ -76,22 +77,21 @@ if [ -f ${res_file} ]; then
     echo ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
     ${casa} -c ${casa_imaging_scripts}/opm_imaging.py --uvfitsname ${res_file} --image ${res_file%.uvfits} --spw ${spw}
 fi
-
 # collect stokpol FITS output
 shopt -s nullglob # skip loop if nothing is found, e.g. if the file is totally flagged
 for ff in *spw?.stokpol.image.fits
 do
     # stokes I, Q, U, V
-    echo python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
-    python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
+    echo plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
+    plot_fits.py ${ff} --cmap bone_r,coolwarm,coolwarm,coolwarm --vmin 0,-5,-3,-3 --vmax 10,5,3,3 --radius 20
 done
 # collect vispol FITS output
 shopt -s nullglob # skip loop if nothing is found, e.g. if the file is totally flagged
 for ff in *spw?.vispol.image.fits
 do
     # XX, YY
-    echo python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r --vmin 0 --vmax 10 --radius 20
-    python ${casa_imaging_scripts}/plot_fits.py ${ff} --cmap bone_r --vmin 0 --vmax 10 --radius 20
+    echo plot_fits.py ${ff} --cmap bone_r --vmin 0 --vmax 10 --radius 20
+    plot_fits.py ${ff} --cmap bone_r --vmin 0 --vmax 10 --radius 20
 done
 
 # erase uvfits file

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-
+export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
 # import common functions
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
@@ -53,6 +53,8 @@ then
         ic=$(sed -e 's/^"//' -e 's/"$//' <<< $df)
         ic=$(sed -e "s/^'//" -e "s/'$//" <<< $ic)
         # replace with calibration
+        ic=${ic/.diff./.sum.}
+        ic=${ic/.autos./.}
         ic="'${ic%.uvh5*}.${calibration}'"
         # add brackets
         input_cals+=("$ic")
