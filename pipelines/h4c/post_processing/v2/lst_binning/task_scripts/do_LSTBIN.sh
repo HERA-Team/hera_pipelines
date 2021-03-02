@@ -39,13 +39,14 @@ outdir=${12}
 Nbls_to_load=${13}
 flag_thresh=${14}
 average_redundant_baselines=${15}
-calibration=${16}
+yaml_dir=${16}
+calibration=${17}
 data_files=($@)
 # if calibration suffix is not empty, parse it and apply it
 if [ ! -z "${calibration}" ]
 then
     # if there's a calibration string, then the data files start at the 17th position
-    data_files=(${data_files[*]:17})
+    data_files=(${data_files[*]:18})
     # parse calibration suffix for each nested list in data_files
     input_cals=()
     for df in "${data_files[@]}"; do
@@ -63,7 +64,7 @@ then
 else
    input_cals=""
    # if there's no calibration string, then they start at the 16th position
-   data_files=(${data_files[*]:16})
+   data_files=(${data_files[*]:17})
 fi
 
 # set special kwargs
@@ -85,9 +86,22 @@ fi
 echo ${average_redundant_baselines}
 if [ "${average_redundant_baselines}" = "True" ]
 then
-  echo lstbin_run.py --flag_thresh ${flag_thresh} --average_redundant_baselines --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
-  lstbin_run.py --flag_thresh ${flag_thresh} --average_redundant_baselines --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+  red_arg=--average_redundant_baselines
 else
-  echo lstbin_run.py --flag_thresh ${flag_thresh} --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
-  lstbin_run.py --flag_thresh ${flag_thresh} --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+  red_arg=""
 fi
+
+if [ ${yaml_dir} == "none" ]
+then
+  yaml_arg=""
+else
+  yaml_arg="--ex_ant_yaml_files "
+  for df in data_files
+  do
+    jd=`echo ${fp} | grep -o '[0-9]\{7\}'`
+    yaml_arg="${yaml_arg} ${yaml_dir}/${jd}.yaml"
+  done
+fi
+
+echo lstbin_run.py --flag_thresh ${flag_thresh}  ${red_arg} --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+lstbin_run.py --flag_thresh ${flag_thresh} ${red_arg} --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}

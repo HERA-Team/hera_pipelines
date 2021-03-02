@@ -3,14 +3,14 @@ makeflow_type = "lstbin"
 path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/lst_binning/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "hera3dev"
-base_mem = 80000
-base_cpu = 4
+base_mem = 8000
+base_cpu = 1
 timeout = "48h"
 pbs_mail_user = "aewallwi+nrao@berkeley.edu"
 
 [LSTBIN_OPTS]
 sig_clip = "False"
-Nbls_to_load = 100
+Nbls_to_load = 50
 sigma = 5
 min_N = 5
 rephase = "True"
@@ -33,6 +33,7 @@ data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.diff.l
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459122/zen.*.diff.low-band-v2-wide-dly-h2cflags.auto.foreground_filled.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.diff.low-band-v2-wide-dly-h2cflags.auto.foreground_filled.uvh5",
               ]
+yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
 calibration = "''"
 flag_thresh = 0.8
 
@@ -43,4 +44,4 @@ actions = ["LSTBIN"]
 [LSTBIN]
 args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
         "fixed_lst_start", "dlst", "vis_units", "output_file_select", "file_ext",
-        "outdir", "Nbls_to_load", "flag_thresh", "average_redundant_baselines", "calibration"]
+        "outdir", "Nbls_to_load", "flag_thresh", "average_redundant_baselines", "yaml_dir", "calibration"]
