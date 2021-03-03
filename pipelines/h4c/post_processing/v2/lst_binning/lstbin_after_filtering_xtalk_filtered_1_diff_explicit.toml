@@ -35,7 +35,7 @@ data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.diff.l
               ]
 calibration = "''"
 flag_thresh = 0.8
-yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
+yaml_dir = "none"
 
 
 [WorkFlow]
