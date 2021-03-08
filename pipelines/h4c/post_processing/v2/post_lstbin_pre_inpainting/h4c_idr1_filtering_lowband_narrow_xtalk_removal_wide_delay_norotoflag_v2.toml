@@ -24,10 +24,8 @@ time_threshold = 0.02
 chunk_size=60
 nbl_per_load = "none"
 t_avg = 300.0
-#t_avg = "none"
-#n_avg = 32
-final_flag_ext = "total_threshold_and_a_priori_flags.h5"
-final_cal_ext = "smooth_abs.calfits"
+grpstr = "grp1.of1"
+
 
 [DELAY_OPTS]
 tol = 1e-9
@@ -67,87 +65,21 @@ clear_delay = false
 
 [WorkFlow]
 actions = [
-           "RED_AVERAGE_GROUP",
-           "PRE_CHUNK",
-           #"DELAY_ROUND1",
-           #"ROTOFLAG_METRIC",
-           #"ROTOFLAG_FLAG",
-           "CALIBRATE_AUTOS",
            "DELAY_ROUND2_INIT",
            "XTALK",
            "TIME_AVERAGE",
            "RECONSTITUTE",
-           "PSPEC",
-           "COMBINE_PSPEC"]#,
-	         #"FILTER_CLEANUP"]
-
-[RED_AVERAGE_GROUP]
-mem=16000
-chunk_size=1
-stride_length=4
-args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:data_ext}",
-      "${GLOBAL_OPTS:cal_ext}", "4",
-      "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}", "${GLOBAL_OPTS:yaml_dir}"]
-
-[PRE_CHUNK]
-mem=24000
-prereqs="RED_AVERAGE_GROUP"
-prereq_chunk_size="all"
-chunk_size=1
-stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:data_ext}",
-      "${GLOBAL_OPTS:cal_ext}", "${GLOBAL_OPTS:chunk_size}",
-      "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}"]
-
-[DELAY_ROUND1]
-#prereqs="PRE_CHUNK"
-prereq_chunk_size="all"
-mem = 16000
-chunk_size=1
-stride_length="${Options:chunk_size}"
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:flag_ext}",
-        "${GLOBAL_OPTS:label}",
-        "${DELAY_OPTS:tol}", "${DELAY_OPTS:standoff}", "${GLOBAL_OPTS:time_threshold}", "${GLOBAL_OPTS:cache_dir}",
-        "${GLOBAL_OPTS:yaml_dir}"]
-
-[ROTOFLAG_METRIC]
-prereqs = "DELAY_ROUND1"
-mem=16000
-chunk_size=1
-stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:data_ext}",
-      "${ROTOFLAG_OPTS:kf_size}", "${ROTOFLAG_OPTS:kt_size}"]
-
-[ROTOFLAG_FLAG]
-prereqs = "ROTOFLAG_METRIC"
-prereq_chunk_size="all"
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args=["{basename}", "${GLOBAL_OPTS:label}",
-      "${ROTOFLAG_OPTS:percentile_freq}", "${ROTOFLAG_OPTS:percentile_time}",
-      "${ROTOFLAG_OPTS:niters}", "${GLOBAL_OPTS:cal_ext}"]
-
-[CALIBRATE_AUTOS]
-prereqs = "PRE_CHUNK"
-prereq_chunk_size="all"
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args=["{basename}", "${GLOBAL_OPTS:labelin}", "${GLOBAL_OPTS:label}",
-      "${GLOBAL_OPTS:data_ext}",
-      "${GLOBAL_OPTS:nbl_per_load}", "${GLOBAL_OPTS:pols}", "${GLOBAL_OPTS:final_flag_ext}",
-      "${GLOBAL_OPTS:final_cal_ext}"]
+           "PSPEC"]
 
 [DELAY_ROUND2_INIT]
-prereqs = "CALIBRATE_AUTOS"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:final_flag_ext}", "${GLOBAL_OPTS:labelin}",
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:final_flag_ext}",
         "${GLOBAL_OPTS:label}", "${DELAY_OPTS:tol}",
         "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${GLOBAL_OPTS:cache_dir}",
-        "${DELAY_OPTS:filter_mode}", "${GLOBAL_OPTS:pols}"]
+        "${DELAY_OPTS:filter_mode}", "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}",
+        "${GLOBAL_OPTS:grpstr}" "${GLOBAL_OPTS:pols}"]
 
 [XTALK]
 prereqs = "DELAY_ROUND2_INIT"
@@ -157,7 +89,9 @@ stride_length="${Options:chunk_size}"
 mem = 32000
 args = ["{basename}", "${GLOBAL_OPTS:data_ext}",
         "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
-        "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}", "${XTALK_OPTS:frate_standoff}", "${GLOBAL_OPTS:cache_dir}"]
+        "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}",
+        "${XTALK_OPTS:frate_standoff}", "${GLOBAL_OPTS:cache_dir}",
+        "${GLOBAL_OPTS:grpstr}"]
 
 [TIME_AVERAGE]
 prereqs= "XTALK"
@@ -168,7 +102,8 @@ mem=16000
 args=["{basename}",
       "${GLOBAL_OPTS:data_ext}",
       "${GLOBAL_OPTS:label}",
-      "${GLOBAL_OPTS:t_avg}"]#, "${GLOBAL_OPTS:n_avg}"]
+      "${GLOBAL_OPTS:t_avg}",
+      "${GLOBAL_OPTS:grpstr}"]#, "${GLOBAL_OPTS:n_avg}"]
 
 
 [RECONSTITUTE]
@@ -177,7 +112,8 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
+args = ["{basename}", "${GLOBAL_OPTS:data_ext}",
+        "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
 
 [PSPEC]
 prereqs = "RECONSTITUTE"
@@ -187,20 +123,4 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
-      "${DELAY_OPTS:standoff}", "${DELAY_OPTS:tol}", "${GLOBAL_OPTS:final_flag_ext}"]
-
-[COMBINE_PSPEC]
-prereqs = "PSPEC"
-prereq_chunk_size="all"
-mem = 64000
-chunk_size=1
-stride_length="${Options:chunk_size}"
-args = ["{basename}", "${GLOBAL_OPTS:label}"]
-
-[FILTER_CLEANUP]
-prereqs = "COMBINE_PSPEC"
-prereq_chunk_size="all"
-mem = 16000
-chunk_size=1
-stride_length="${Options:chunk_size}"
-args = ["{basename}", "${GLOBAL_OPTS:data_ext}", "${GLOBAL_OPTS:label}"]
+      "${GLOBAL_OPTS:grpstr}"]

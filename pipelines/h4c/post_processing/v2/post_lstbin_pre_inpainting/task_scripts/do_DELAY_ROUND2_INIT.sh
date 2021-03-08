@@ -21,8 +21,10 @@ standoff="${7}"
 min_dly="${8}"
 cache_dir="${9}"
 filter_mode="${10}"
-grpstr="${11} "
-pols="${@:12}"
+spw0="${11}"
+spw1="${12}"
+grpstr="${13} "
+pols="${@:14}"
 # get julian day from file name
 lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
 
@@ -53,14 +55,14 @@ do
       --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly} --flag_rms_outliers
+      --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
 
 
     dpss_delay_filter_run.py ${auto_in} \
       --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly} --flag_rms_outliers
+      --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
 
   else
     echo "${auto_in} does not exist!"
@@ -76,25 +78,26 @@ do
           --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res}  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
           --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-          --min_dly ${min_dly} --flag_rms_outliers
+          --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
         dpss_delay_filter_run.py ${fn_in} \
           --filled_outfilename ${fn_out} --clobber --skip_flagged_edges  --res_outfilename ${fn_res} \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
           --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-          --min_dly ${min_dly} --flag_rms_outliers
+          --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
       elif [ "${filter_mode}" == "CLEAN" ]
       then
+        npad=$((${spw1}-${spw0}))
         echo delay_filter_run.py ${fn_in} \
         --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
         --tol ${tol} --standoff ${standoff} --verbose \
         --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-        --min_dly ${min_dly} --edgecut_low 136 --edgecut_hi 136 --zeropad 136
+        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --spw_range ${spw0} ${spw1}
 
         delay_filter_run.py ${fn_in} \
         --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
         --tol ${tol} --standoff ${standoff} --verbose \
         --external_flags ${flagfile} --polarizations ${pols} --overwrite_data_flags \
-        --min_dly ${min_dly} --edgecut_low 136 --edgecut_hi 128 --zeropad 136
+        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --spw_range ${spw0} ${spw1}
       fi
     else
       echo "${fn_in} does not exist!"
