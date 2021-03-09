@@ -1,6 +1,6 @@
 #! /bin/bash
 set -e
-export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
+#export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
 
 # import common functions
 src_dir="$(dirname "$0")"
@@ -25,7 +25,7 @@ beam_file="${4}"
 nspw="${5}"
 grpstr="${6}"
 
-lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
+lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
 
 # form power spectrum between even and odd data sets with offset times.

@@ -14,7 +14,7 @@ fn="${1}"
 label="${2}"
 grpstr="${3}"
 
-lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
+lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
 
 sumdiff=("sum" "diff")

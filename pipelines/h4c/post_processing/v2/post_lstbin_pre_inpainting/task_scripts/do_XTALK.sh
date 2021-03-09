@@ -1,6 +1,6 @@
 #! /bin/bash
 set -e
-export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
+#export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
 
 #import common functions
 src_dir="$(dirname "$0")"
@@ -27,7 +27,7 @@ frate_standoff="${7}"
 cache_dir="${8}"
 grpstr="${9}"
 
-lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
+lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
 # if cache directory does not exist, make it
 sumdiff=("sum" "diff")

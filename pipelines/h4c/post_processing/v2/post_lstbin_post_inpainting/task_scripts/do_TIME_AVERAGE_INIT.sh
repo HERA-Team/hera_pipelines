@@ -23,7 +23,7 @@ grpstr="${5}"
 t_avg_arg="--t_avg ${t_avg}"
 
 # exctract LST
-lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
+lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
 
 parities=("0" "1")

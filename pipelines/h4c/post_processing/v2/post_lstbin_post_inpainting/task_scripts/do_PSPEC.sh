@@ -27,7 +27,7 @@ suppression="${7}"
 flag_ext="${8}"
 grpstr="${9}"
 
-lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
+lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
 # form power spectrum between even and odd data sets with offset times.
 sumdiff=("sum" "diff")

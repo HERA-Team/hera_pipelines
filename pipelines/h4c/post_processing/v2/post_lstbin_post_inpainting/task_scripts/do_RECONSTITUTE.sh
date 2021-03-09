@@ -17,7 +17,7 @@ data_ext="${2}"
 label="${3}"
 grpstr="${4}"
 
-lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
+lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
 
 

@@ -1,6 +1,6 @@
 #! /bin/bash
 set -e
-export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
+#export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
 
 #import common functions
 src_dir="$(dirname "$0")"
@@ -18,7 +18,7 @@ data_ext="${2}"
 label="${3}"
 grpstr="${4}"
 
-lst=`echo ${fn} | sed -r 's/^.*LST.//' | sed -r 's/.sum.*//'`
+lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
   sumdiff=("sum" "diff")
 
