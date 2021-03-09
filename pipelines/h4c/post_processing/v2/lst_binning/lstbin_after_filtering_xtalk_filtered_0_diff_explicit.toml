@@ -35,6 +35,7 @@ data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.diff.l
               ]
 calibration = "''"
 flag_thresh = 0.8
+yaml_dir = "none"
 
 
 [WorkFlow]
@@ -43,4 +44,4 @@ actions = ["LSTBIN"]
 [LSTBIN]
 args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
         "fixed_lst_start", "dlst", "vis_units", "output_file_select", "file_ext",
-        "outdir", "Nbls_to_load", "flag_thresh", "average_redundant_baselines", "calibration"]
+        "outdir", "Nbls_to_load", "flag_thresh", "average_redundant_baselines", "yaml_dir", "calibration"]
