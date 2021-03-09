@@ -98,29 +98,47 @@ done
 if [ -f ${uvfits_file} ]; then
     echo rm -rf ${uvfits_file}
     rm -rf ${uvfits_file}
+else
+    echo Could not find ${uvfits_file} to delete.
 fi
+
 if [ -f ${uvfits_file%.uvfits}.ms ]; then
     echo rm -rf ${uvfits_file%.uvfits}.ms
     rm -rf ${uvfits_file%.uvfits}.ms
+else
+    echo Could not find ${uvfits_file%.uvfits}.ms to delete.
 fi
+
 if [ -f ${model_file} ]; then
     echo rm -rf ${model_file}
     rm -rf ${model_file}
+else
+    echo Could not find ${model_file} to delete.
 fi
+
 if [ -d ${model_file%.uvfits}.ms ]; then
     echo rm -rf ${model_file%.uvfits}.ms
     rm -rf ${model_file%.uvfits}.ms
+else
+    echo Could not find ${model_file%.uvfits}.ms to delete.
 fi
+
 if [ -f ${res_file} ]; then
     echo rm -rf ${res_file}
     rm -rf ${res_file}
+else
+    echo Could not find ${res_file} to delete.
 fi
+
 if [ -d ${res_file%.uvfits}.ms ]; then
     echo rm -rf ${res_file%.uvfits}.ms
     rm -rf ${res_file%.uvfits}.ms
+else
+    echo Could not find ${res_file%.uvfits}.ms to delete.
 fi
 
 # remove calibrated visibility
 if [ ! -z "${calibration}" ]; then
+    echo rm ${filename}
     rm ${filename}
 fi
