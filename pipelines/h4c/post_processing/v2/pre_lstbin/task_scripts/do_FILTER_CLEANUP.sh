@@ -22,15 +22,16 @@ data_ext="${2}"
 label="${3}"
 jd=$(get_jd $fn)
 # get rid of all the waterfall files associated with this JD.
-rm -rf zen.${jd}*${label}*waterfall*uvh5
-# get rid of all the non-chunked redundant averaged baseline group files.
+rm -rf zen.${jd}*${label}*waterfall*h5
+
 parities=("0" "1")
 sumdiff=("sum" "diff")
+# remove redundantly averaged non-chunked files.
 for sd in ${sumdiff[@]}
 do
   for parity in ${parities[@]}
   do
-    input_files=`echo zen.${int_jd}.*.${sd}.${data_extp}`
-    rm -rf input_files
+    data_extp=${data_ext/.uvh5/.${parity}.uvh5}
+    rm -rf zen.*.${sd}.${label}.${data_extp}
   done
 done

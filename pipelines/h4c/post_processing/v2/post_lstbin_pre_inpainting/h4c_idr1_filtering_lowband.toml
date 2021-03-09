@@ -12,7 +12,7 @@ chunk_size = 1
 [GLOBAL_OPTS]
 data_ext = 'smooth_avg_vis.uvh5'
 cal_ext = 'smooth_abs.calfits'
-spw0 = 48
+spw0 = 150
 spw1 = 320
 label = "low-band-v2-wide-dly-h2cflags"
 labelin="low-band-v2"
