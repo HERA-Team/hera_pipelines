@@ -24,10 +24,12 @@ if [ ! -d ${nb_outdir} ]; then
   mkdir -p ${nb_outdir}
 fi
 nb_outfile=${nb_outdir}/delay_spectrum_inspect_${jd}.ipynb
+html_outfile=${nb_outdir}/delay_spectrum_${jd}.html
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
 export JULIANDATE=${jd}
+export HTML_OUTFILE=${html_outfile}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
@@ -42,7 +44,7 @@ then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
-    # TODO: also commit html file
+    git add ${html_outfile}
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
