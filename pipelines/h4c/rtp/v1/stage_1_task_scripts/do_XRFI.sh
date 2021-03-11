@@ -20,7 +20,8 @@ source ${src_dir}/_common.sh
 data_files=(${@:7})
 
 # get auto_metrics_file to exclude bad antennas
-bn=`basename ${data_files[0]}`
+fn=${data_files[0]}
+bn=`basename ${fn}`
 jd=$(get_int_jd ${bn})
 decimal_jd=$(get_jd ${bn})
 pattern="${fn%${decimal_jd}.sum.uvh5}${jd}.?????.sum.auto_metrics.h5"
