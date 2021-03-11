@@ -17,11 +17,11 @@ source ${src_dir}/_common.sh
 # 5 - Nwf_per_load
 # 6 - ant_metrics_ext
 # 7+ - filenames
-data_files="${@:7}"
+data_files=(${@:7})
 
 # get auto_metrics_file to exclude bad antennas
-jd=$(get_int_jd ${data_files[0]})
 bn=`basename ${data_files[0]}`
+jd=$(get_int_jd ${bn})
 decimal_jd=$(get_jd ${bn})
 pattern="${fn%${decimal_jd}.sum.uvh5}${jd}.?????.sum.auto_metrics.h5"
 pattern_files=( $pattern )
