@@ -20,18 +20,19 @@ all_args=("$@")
 streak_sig=${1}
 other_sig=${2}
 tb_aggro=${3}
-fns=("${all_args[@]:3}")
-data_files="${@:5}"
+data_files=(${@:5})
 
-echo filenames are "${fns[@]}"
+echo filenames are "${data_files[@]}"
 
 # Get the first filename in the list (should work if only one file)
-first_file="${fns%" "*}"
+first_file="${data_files%" "*}"
 # Set the prefix based on the first filename
 prefix="${first_file%.uvh5}"
 
 # get auto_metrics_file to exclude bad antennas
-jd=$(get_int_jd ${data_files[0]})
+fn=${data_files[0]}
+bn=`basename ${fn}`
+jd=$(get_int_jd ${bn})
 decimal_jd=$(get_jd ${data_files[0]})
 pattern="${fn%${decimal_jd}.sum.uvh5}${jd}.?????.sum.auto_metrics.h5"
 pattern_files=( $pattern )
