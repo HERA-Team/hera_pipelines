@@ -17,11 +17,13 @@ source ${src_dir}/_common.sh
 # 5 - Nwf_per_load
 # 6 - ant_metrics_ext
 # 7+ - filenames
-data_files="${@:7}"
+data_files=(${@:7})
 
 # get auto_metrics_file to exclude bad antennas
-jd=$(get_int_jd ${data_files[0]})
-decimal_jd=$(get_jd ${data_files[0]})
+fn=${data_files[0]}
+bn=`basename ${fn}`
+jd=$(get_int_jd ${bn})
+decimal_jd=$(get_jd ${bn})
 pattern="${fn%${decimal_jd}.sum.uvh5}${jd}.?????.sum.auto_metrics.h5"
 pattern_files=( $pattern )
 auto_metrics_file=${pattern_files[0]}
@@ -33,7 +35,7 @@ for fn in ${data_files[@]}; do
 done
 
 # run XRFI
-cmd="xrfi_run_data_only.py --data_files ${data_files} \
+cmd="xrfi_run_data_only.py --data_files ${data_filess[@]} \
                            --kt_size=${1} \
                            --kf_size=${2} \
                            --sig_init=${3} \
