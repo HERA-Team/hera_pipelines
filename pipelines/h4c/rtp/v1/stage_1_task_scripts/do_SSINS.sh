@@ -44,8 +44,8 @@ for fn in ${data_files[@]}; do
     ant_metrics_files+=( ${fn%.uvh5}${4} )
 done
 
-echo Run_HERA_SSINS.py -f "${fns[@]}" -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro --metrics_files ${auto_metrics_file} ${ant_metrics_files[@]} -c
-Run_HERA_SSINS.py -f "${fns[@]}" -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro --metrics_files ${auto_metrics_file} ${ant_metrics_files[@]} -c
+echo Run_HERA_SSINS.py -f ${data_files[@]} -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro --metrics_files ${auto_metrics_file} ${ant_metrics_files[@]} -c
+Run_HERA_SSINS.py -f ${data_files[@]} -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro --metrics_files ${auto_metrics_file} ${ant_metrics_files[@]} -c
 
 # Move all outputs to folder
 echo rm -rf ${prefix}.SSINS
