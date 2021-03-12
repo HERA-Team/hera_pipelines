@@ -19,7 +19,7 @@ JD_flags = {2458041: [[0.50, 0.70]], # from Josh's inspecting notebooks on 2/9/2
             2458066: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
             2458085: [[0.56, 0.90]], # Broadband RFI in last hour or so. From Josh's inspecting notebooks on 2/25/21
             2458088: [[0.52, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21
-            2458089: [[0.45, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21
+            2458089: [[0.10, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21. Flagged completely due to smooth_cal issues discovered 3/11/21 by Josh
             2458090: [[0.50, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/26/21
             2458095: [[0.10, 0.30],
                       [0.49, 0.58]], # Broadband RFI in at start of night and late in the night. From Josh's inspecting notebooks on 2/26/21
