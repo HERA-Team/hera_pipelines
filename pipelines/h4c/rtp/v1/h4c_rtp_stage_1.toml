@@ -349,7 +349,7 @@ stride_length = "all"
 time_centered = false
 
 [SSINS]
-prereqs = ["LIBRARIAN_MAKE_SESSION","ANT_METRICS","AUTO_METRICS"]
+prereqs = ["ANT_METRICS", "AUTO_METRICS"]
 mem = 36000
 args = ["${SSINS_OPTS:streak_sig}",
         "${SSINS_OPTS:other_sig}",
