@@ -30,7 +30,6 @@ data_files = ["/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458081/zen.*.sum.smoot
               "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458086/zen.*.sum.smooth_calibrated.uvh5",
               "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458087/zen.*.sum.smooth_calibrated.uvh5",
               "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458088/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458089/zen.*.sum.smooth_calibrated.uvh5",
               "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458090/zen.*.sum.smooth_calibrated.uvh5",
               "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458091/zen.*.sum.smooth_calibrated.uvh5",
               "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458092/zen.*.sum.smooth_calibrated.uvh5",
