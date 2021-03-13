@@ -23,15 +23,15 @@ parallelize = "True"
 average_redundant_baselines = "False"
 parity = "1"
 sumdiff = "sum"
-label = "low-band-v2-wide-dly-h2cflags"
+label = "low-band-wide-dly-h2cflags"
 filetype= "xtalk_filtered.smooth_avg_vis"
-file_ext = "grp1.of1.{type}.{time:7.5f}.sum.low-band-v2-wide-dly-h2cflags.autos.foreground_filled.uvh5"
+file_ext = "grp1.of1.{type}.{time:7.5f}.sum.low-band-wide-dly-h2cflags.autos.foreground_filled.uvh5"
 outdir = "/lustre/aoc/projects/hera/H4C/lstbin/before_filtering"
 parent_dir = "/lustre/aoc/projects/hera/H4C/makeflow/lstbin_before_filtering_auto_sum"
-data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.sum.low-band-v2.autos.chunked.uvh5",
-              "/lustre/aoc/projects/hera/H4C/postprocessing/2459119/zen.*.sum.low-band-v2.autos.chunked.uvh5",
-              "/lustre/aoc/projects/hera/H4C/postprocessing/2459122/zen.*.sum.low-band-v2.autos.chunked.uvh5",
-              "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.sum.low-band-v2.autos.chunked.uvh5",
+data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.sum.low-band.autos.chunked.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459119/zen.*.sum.low-band.autos.chunked.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459122/zen.*.sum.low-band.autos.chunked.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.sum.low-band.autos.chunked.uvh5",
               ]
 calibration = "''"
 flag_thresh = 0.8

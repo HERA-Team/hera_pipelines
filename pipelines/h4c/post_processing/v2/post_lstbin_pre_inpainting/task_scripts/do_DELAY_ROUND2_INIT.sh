@@ -54,13 +54,13 @@ do
   then
     auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
     echo dpss_delay_filter_run.py ${auto_in} \
-      --clobber --skip_flagged_edges --partial_load_Nbls ${nbl_per_load}\
+      --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
       --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
 
 
-    dpss_delay_filter_run.py ${auto_in} --partial_load_Nbls ${nbl_per_load} \
+    dpss_delay_filter_run.py ${auto_in}  \
       --clobber --skip_flagged_edges \
       --filled_outfilename ${auto_out} --polarizations ${pols} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
@@ -76,29 +76,29 @@ do
     then
       if [ "${filter_mode}" == "DPSS" ]
       then
-        echo dpss_delay_filter_run.py ${fn_in}  --partial_load_Nbls ${nbl_per_load}\
+        echo dpss_delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res}  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-          --polarizations ${pols} --overwrite_data_flags \
+          --polarizations ${pols} \
           --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
-        dpss_delay_filter_run.py ${fn_in}  --partial_load_Nbls ${nbl_per_load}\
+        dpss_delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber --skip_flagged_edges  --res_outfilename ${fn_res} \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-          --polarizations ${pols} --overwrite_data_flags \
+          --polarizations ${pols} \
           --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
       elif [ "${filter_mode}" == "CLEAN" ]
       then
         npad=$((${spw1}-${spw0}))
-        echo delay_filter_run.py ${fn_in} --partial_load_Nbls ${nbl_per_load} \
+        echo delay_filter_run.py ${fn_in}  \
         --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
         --tol ${tol} --standoff ${standoff} --verbose \
-        --polarizations ${pols} --overwrite_data_flags \
+        --polarizations ${pols} \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --spw_range ${spw0} ${spw1}
 
-        delay_filter_run.py ${fn_in} --partial_load_Nbls ${nbl_per_load}\
+        delay_filter_run.py ${fn_in} \
         --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
         --tol ${tol} --standoff ${standoff} --verbose \
-        --polarizations ${pols} --overwrite_data_flags \
+        --polarizations ${pols} \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --spw_range ${spw0} ${spw1}
       fi
     else

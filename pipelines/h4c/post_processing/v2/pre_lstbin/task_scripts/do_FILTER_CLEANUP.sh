@@ -23,7 +23,8 @@ label="${3}"
 jd=$(get_jd $fn)
 # get rid of all the waterfall files associated with this JD.
 rm -rf zen.${jd}*${label}*waterfall*h5
-
+# remove uncalibrated chunked auto files.
+rm -rf zen.${jd}*.${label}.autos.chunked.uvh5
 parities=("0" "1")
 sumdiff=("sum" "diff")
 # remove redundantly averaged non-chunked files.
@@ -32,6 +33,6 @@ do
   for parity in ${parities[@]}
   do
     data_extp=${data_ext/.uvh5/.${parity}.uvh5}
-    rm -rf zen.*.${sd}.${label}.${data_extp}
+    rm -rf zen.${jd}.${sd}.${label}.${data_extp}
   done
 done

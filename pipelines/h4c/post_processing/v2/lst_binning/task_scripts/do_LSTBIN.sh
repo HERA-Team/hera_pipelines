@@ -46,7 +46,7 @@ data_files=($@)
 if [ ! -z "${calibration}" ]
 then
     # if there's a calibration string, then the data files start at the 17th position
-    data_files=(${data_files[*]:18})
+    data_files=(${data_files[*]:17})
     # parse calibration suffix for each nested list in data_files
     input_cals=()
     for df in "${data_files[@]}"; do
@@ -64,7 +64,7 @@ then
 else
    input_cals=""
    # if there's no calibration string, then they start at the 16th position
-   data_files=(${data_files[*]:17})
+   data_files=(${data_files[*]:16})
 fi
 
 # set special kwargs
@@ -91,7 +91,7 @@ else
   red_arg=""
 fi
 
-if [ ${yaml_dir} == "none" ]
+if [ "${yaml_dir}" == "none" ]
 then
   yaml_arg=""
 else
