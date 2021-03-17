@@ -19,7 +19,7 @@ JD_flags = {2458041: [[0.50, 0.70]], # from Josh's inspecting notebooks on 2/9/2
             2458066: [[0.10, 0.90]], # Broadband RFI issues. Excluded whole day. From Josh's inspecting notebooks on 2/9/21
             2458085: [[0.56, 0.90]], # Broadband RFI in last hour or so. From Josh's inspecting notebooks on 2/25/21
             2458088: [[0.52, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21
-            2458089: [[0.45, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21
+            2458089: [[0.10, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/25/21. Flagged completely due to smooth_cal issues discovered 3/11/21 by Josh
             2458090: [[0.50, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/26/21
             2458095: [[0.10, 0.30],
                       [0.49, 0.58]], # Broadband RFI in at start of night and late in the night. From Josh's inspecting notebooks on 2/26/21
@@ -29,15 +29,16 @@ JD_flags = {2458041: [[0.50, 0.70]], # from Josh's inspecting notebooks on 2/9/2
             2458109: [[0.20, 0.46]], # from Vignesh's by-hand analysis H1C IDR3.1
             2458110: [[0.47, 0.90]], # Narrowband RFI in last few hours. From Josh's inspecting notebooks on 2/26/21
             2458114: [[0.10, 0.32]], # flagged due to a broken X-engine 
-            2458136: [[0.20, 0.36]], # from Vignesh's by-hand analysis H1C IDR3.1
-            2458140: [[0.27, 0.33],
-                      [0.44, 0.47],
-                      [0.50, 0.58],
-                      [0.62, 0.70]], # added by Josh on 12/29/20
-            2458141: [[0.30, 0.49],
-                      [0.25, 0.29]], # from Vignesh's by-hand analysis H1C IDR3.1
-            2458148: [[0.20, 0.33]], # from Vignesh's by-hand analysis H1C IDR3.1
-            2458159: [[0.20, 0.50]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458135: [[0.10, 0.43]], # flagged due to excess broadband RFI. From Josh's inspecting notebooks on 3/9/21
+            2458136: [[0.20, 0.43]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded from Josh's inspecting notebooks on 3/9/21
+            2458139: [[0.10, 0.34]], # flagged due to excess broadband RFI. From Josh's inspecting notebooks on 3/9/21
+            2458140: [[0.10, 0.90]], # added by Josh on 12/29/20, expanded to full day flag from Josh's inspecting notebooks on 3/9/21
+            2458141: [[0.10, 0.52]], # from Vignesh's by-hand analysis H1C IDR3.1. Expanded from Josh's inspecting notebooks on 3/9/21
+            2458144: [[0.10, 0.31]], # flagged due to excess broadband RFI. From Josh's inspecting notebooks on 3/9/21
+            2458145: [[0.10, 0.38]], # flagged due to excess broadband RFI. From Josh's inspecting notebooks on 3/9/21
+            2458148: [[0.10, 0.37]], # from Vignesh's by-hand analysis H1C IDR3.1. Expanded from Josh's inspecting notebooks on 3/9/21
+            2458157: [[0.46, 0.90]], # Omnical issues, possibly non-convergence. From Josh's inspecting notebooks on 3/9/21
+            2458159: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1, expanded to full day flag from Josh's inspecting notebooks on 3/9/21
             2458161: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inpsectiing notebooks 2/18/21
             2458172: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inspecting notebooks 2/18/21
             2458173: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inspecting notebooks 2/18/21
