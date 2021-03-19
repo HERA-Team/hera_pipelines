@@ -250,6 +250,7 @@ args = ["{basename}",
 
 [SMOOTH_CAL_APPLY]
 prereqs = "CAL_SMOOTH"
+prereq_chunk_size = "all"
 mem = 32000
 args = ["{basename}"]
 
