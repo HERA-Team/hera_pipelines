@@ -4,13 +4,13 @@ path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_p
 source_script = "~/.bashrc"
 conda_env = "hera3dev"
 base_mem = 16000
-base_cpu = 4
+base_cpu = 1
 timeout = "48h"
 mail_user = "aewallwi+nrao@berkeley.edu"
 
 [LSTBIN_OPTS]
 sig_clip = "False"
-Nbls_to_load = 100
+Nbls_to_load = 50
 sigma = 5
 min_N = 5
 rephase = "True"
