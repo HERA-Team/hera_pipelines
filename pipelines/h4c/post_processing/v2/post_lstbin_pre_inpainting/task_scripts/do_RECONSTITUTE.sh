@@ -14,9 +14,8 @@ source ${src_dir}/_common.sh
 # 2 - output label for identifying file.
 
 fn="${1}"
-data_ext="${2}"
-label="${3}"
-grpstr="${4}"
+label="${2}"
+grpstr="${3}"
 
 lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 

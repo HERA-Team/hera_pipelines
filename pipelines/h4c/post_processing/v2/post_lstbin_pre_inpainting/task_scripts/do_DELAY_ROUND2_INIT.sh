@@ -15,23 +15,16 @@ source ${src_dir}/_common.sh
 # 6 - standoff delay standoff in ns for filtering window.
 # 7 - cache_dir, directory to store cache files in.
 fn="${1}"
-data_ext="${2}"
-label="${3}"
-tol="${4}"
-standoff="${5}"
-min_dly="${6}"
-cache_dir="${7}"
-filter_mode="${8}"
-spw0="${9}"
-spw1="${10}"
-grpstr="${11}"
-nbl_per_load="${12}"
-pols="${@:13}"
+label="${2}"
+tol="${3}"
+standoff="${4}"
+min_dly="${5}"
+cache_dir="${6}"
+filter_mode="${7}"
+grpstr="${8}"
+nbl_per_load="${9}"
 # get julian day from file name
 lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
-
-
-
 
 
 # if cache directory does not exist, make it
@@ -49,27 +42,27 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   # auto file
-  auto_in=zen.${grpstr}.LST.${lst}.${sd}.autos.uvh5
+  auto_in=zen.${grpstr}.LST.${lst}.${sd}.autos.chunked.uvh5
   if [ -e "${auto_in}" ]
   then
     auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
     echo dpss_delay_filter_run.py ${auto_in} \
       --clobber --skip_flagged_edges \
-      --filled_outfilename ${auto_out} --polarizations ${pols} \
+      --filled_outfilename ${auto_out} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
+      --min_dly ${min_dly} --flag_rms_outliers
 
 
     dpss_delay_filter_run.py ${auto_in}  \
       --clobber --skip_flagged_edges \
-      --filled_outfilename ${auto_out} --polarizations ${pols} \
+      --filled_outfilename ${auto_out} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
+      --min_dly ${min_dly} --flag_rms_outliers
 
   else
     echo "${auto_in} does not exist!"
   fi
-    fn_in=zen.${grpstr}.LST.${lst}.${sd}.uvh5
+    fn_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.chunked.uvh5
     fn_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.foreground_filled.uvh5
     fn_res=zen.${grpstr}.LST.${lst}.${sd}.${label}.foreground_res.uvh5
     if [ -e "${fn_in}" ]
@@ -79,27 +72,23 @@ do
         echo dpss_delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res}  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-          --polarizations ${pols} \
-          --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
+          --min_dly ${min_dly} --flag_rms_outliers
         dpss_delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber --skip_flagged_edges  --res_outfilename ${fn_res} \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-          --polarizations ${pols} \
-          --min_dly ${min_dly} --flag_rms_outliers --spw_range ${spw0} ${spw1}
+          --min_dly ${min_dly} --flag_rms_outliers
       elif [ "${filter_mode}" == "CLEAN" ]
       then
         npad=$((${spw1}-${spw0}))
         echo delay_filter_run.py ${fn_in}  \
         --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
         --tol ${tol} --standoff ${standoff} --verbose \
-        --polarizations ${pols} \
-        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --spw_range ${spw0} ${spw1}
+        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad}
 
         delay_filter_run.py ${fn_in} \
         --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
         --tol ${tol} --standoff ${standoff} --verbose \
-        --polarizations ${pols} \
-        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --spw_range ${spw0} ${spw1}
+        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad}
       fi
     else
       echo "${fn_in} does not exist!"

@@ -18,14 +18,13 @@ source ${src_dir}/_common.sh
 # 8 - if true, do no foregrounds file. This could run substantially slower if flags are not separable.
 
 fn="${1}"
-data_ext="${2}"
-label="${3}"
-tol="${4}"
-frc0="${5}"
-frc1="${6}"
-frate_standoff="${7}"
-cache_dir="${8}"
-grpstr="${9}"
+label="${2}"
+tol="${3}"
+frc0="${4}"
+frc1="${5}"
+frate_standoff="${6}"
+cache_dir="${7}"
+grpstr="${8}"
 
 lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 

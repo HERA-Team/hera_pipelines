@@ -15,10 +15,9 @@ source ${src_dir}/_common.sh
 # 3 - number of seconds to average in time.
 
 fn="${1}"
-data_ext="${2}"
-label="${3}"
-t_avg="${4}"
-grpstr="${5}"
+label="${2}"
+t_avg="${3}"
+grpstr="${4}"
 #n_avg="${5}"
 
 #if [ "${t_avg}" = "none" ]

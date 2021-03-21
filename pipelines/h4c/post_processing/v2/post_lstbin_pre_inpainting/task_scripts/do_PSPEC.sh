@@ -19,11 +19,10 @@ source ${src_dir}/_common.sh
 # large increase in runtime and memory use if flags not separable.
 # define input arguments
 fn="${1}"
-data_ext="${2}"
-label="${3}"
-beam_file="${4}"
-nspw="${5}"
-grpstr="${6}"
+label="${2}"
+beam_file="${3}"
+nspw="${4}"
+grpstr="${5}"
 
 lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
