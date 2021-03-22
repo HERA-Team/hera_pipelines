@@ -42,7 +42,7 @@ do
         --vis_units Jy --cov_model empirical_pspec --overwrite\
         --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
         --Jy2mK --beam ${beam_file} --sampling\
-        --file_type uvh5 --avg_redundant --exclude_auto_bls\
+        --file_type uvh5  --exclude_auto_bls\
         --taper bh --exclude_flagged_edge_channels
 
 
@@ -51,7 +51,7 @@ do
          --vis_units Jy --cov_model empirical_pspec --overwrite\
          --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
          --Jy2mK --beam ${beam_file} --sampling\
-         --file_type uvh5 --avg_redundant --exclude_auto_bls\
+         --file_type uvh5  --exclude_auto_bls\
          --taper bh --exclude_flagged_edge_channels
 
        # do subbands
@@ -61,7 +61,7 @@ do
          --vis_units Jy --cov_model empirical_pspec --overwrite\
          --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
          --Jy2mK --beam ${beam_file} --sampling\
-         --file_type uvh5 --Nspws ${nspw} --avg_redundant\
+         --file_type uvh5 --Nspws ${nspw} \
          --taper bh --exclude_flagged_edge_channels --exclude_auto_bls
 
 
@@ -70,7 +70,7 @@ do
           --vis_units Jy --cov_model empirical_pspec --overwrite\
           --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
           --Jy2mK --beam ${beam_file} --sampling\
-          --file_type uvh5 --Nspws ${nspw} --avg_redundant\
+          --file_type uvh5 --Nspws ${nspw} \
           --taper bh --exclude_flagged_edge_channels --exclude_auto_bls
     else
       echo "${even_file} does not exist!"
@@ -86,7 +86,7 @@ do
           --vis_units Jy --cov_model empirical_pspec --overwrite\
           --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
           --Jy2mK --beam ${beam_file} --sampling\
-          --file_type uvh5 --exclude_auto_bls --avg_redundant\
+          --file_type uvh5 --exclude_auto_bls \
           --taper bh --exclude_flagged_edge_channels
 
 
@@ -95,7 +95,7 @@ do
            --vis_units Jy --cov_model empirical_pspec --overwrite\
            --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
            --Jy2mK --beam ${beam_file} --sampling\
-           --file_type uvh5 --exclude_auto_bls --avg_redundant\
+           --file_type uvh5 --exclude_auto_bls \
            --taper bh --exclude_flagged_edge_channels
 
          # do subbands
@@ -105,7 +105,7 @@ do
            --vis_units Jy --cov_model empirical_pspec --overwrite\
            --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
            --Jy2mK --beam ${beam_file} --sampling\
-           --file_type uvh5 --Nspws ${nspw} --exclude_auto_bls --avg_redundant\
+           --file_type uvh5 --Nspws ${nspw} --exclude_auto_bls \
            --taper bh --exclude_flagged_edge_channels
 
 
@@ -114,7 +114,7 @@ do
             --vis_units Jy --cov_model empirical_pspec --overwrite\
             --dset_pairs '0 1' --pol_pairs 'ee ee, nn nn, pI pI, pQ pQ'\
             --Jy2mK --beam ${beam_file} --sampling\
-            --file_type uvh5 --Nspws ${nspw} --exclude_auto_bls --avg_redundant\
+            --file_type uvh5 --Nspws ${nspw} --exclude_auto_bls \
             --taper bh --exclude_flagged_edge_channels
 
   else
