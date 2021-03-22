@@ -37,8 +37,8 @@ do
     auto_list=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.foreground_filled.uvh5`
     auto_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
     auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.waterfall.tavg.uvh5
-    fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_waterfall.${data_extp}
-    fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_waterfall.tavg.${data_extp}
+    fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_waterfall.uvh5
+    fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_waterfall.tavg.uvh5
     tavg_flag=zen.${grpstr}.LST.${lst}.${label}.flags.tavg.h5
 
   # time-average autocorrs using waterfall averaging cornerturn.

@@ -42,7 +42,7 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   # auto file
-  auto_in=zen.${grpstr}.LST.${lst}.${sd}.autos.chunked.uvh5
+  auto_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.chunked.uvh5
   if [ -e "${auto_in}" ]
   then
     auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5

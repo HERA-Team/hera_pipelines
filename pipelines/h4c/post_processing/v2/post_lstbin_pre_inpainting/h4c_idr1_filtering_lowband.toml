@@ -39,22 +39,13 @@ tol = 1e-9
 # inpaint beyond frate limit by this much.
 frate_standoff = 1.0
 
-[ROTOFLAG_OPTS]
-percentile_freq = 99.0
-percentile_time = 99.0
-niters = 10
-kf_size = 8
-kt_size = 32
-
 [PSPEC_OPTS]
-nspws = 2
+pstokes="pI"
 beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
-
-[FILTER_CLEANUP_OPTS]
-clear_xtalk_cache = false
-clear_delay_cache = false
-clear_delay = false
-
+pol_pairs="ee~ee,nn~nn,pI~pI"
+spw_ranges="0~85,85~150"
+nsamples=100
+seed=10
 
 
 ############################################################################################################
@@ -66,7 +57,11 @@ actions = [
            "XTALK",
            "TIME_AVERAGE",
            "RECONSTITUTE",
-           "PSPEC"]
+           "PSTOKES",
+           "PSPEC",
+           "AUTOERRORS",
+           "BOOTSTRAPERRORS"
+           "CLEANUP"]
 
 [PRE_CHUNK]
 mem=8000
@@ -121,12 +116,48 @@ mem = 8000
 args = ["{basename}",
         "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
 
-[PSPEC]
-prereqs = "RECONSTITUTE"
+[PSTOKES]
+prereqs="RECONSTITUTE"
 prereq_chunk_size=1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
+args=["{basename}", "${GLOBAL_OPTS:grpstr}",
+      "${GLOBAL_OPTS:label}", "${PSPEC_OPTS:pstokes}"]
+
+[PSPEC]
+prereqs = "PSTOKES"
+prereq_chunk_size = 1
+mem=8000
+chunk_size=1
+stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:label}",
-      "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:nspws}",
-      "${GLOBAL_OPTS:grpstr}"]
+      "${GLOBAL_OPTS:grpstr}",
+      "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}",
+      "${PSPEC_OPTS:pol_pairs}"]
+
+[AUTOERRORS]
+prereqs = "PSPEC"
+prereq_chunk_size = 1
+mem=8000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${GLOBAL_OPTS:label}"]
+
+
+[BOOTSTRAPERRORS]
+prereqs = "AUTOERRORS"
+prereq_chunk_size = 1
+mem=8000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}", "${GLOBAL_OPTS:nsamples}"]
+
+
+[CLEANUP]
+prereqs= "BOOTSTRAPERRORS"
+prereq_chunk_size = 1
+mem=8000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
