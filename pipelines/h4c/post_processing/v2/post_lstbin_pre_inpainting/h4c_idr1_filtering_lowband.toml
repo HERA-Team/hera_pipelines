@@ -3,11 +3,11 @@ makeflow_type = "analysis"
 path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/post_lstbin_pre_inpainting/task_scripts/"
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
-base_mem = 16000
+base_mem = 8000
 base_cpu = 1
 timeout = "24h"
-pbs_mail_user = "aaronew+nrao@berkeley.edu"
-chunk_size = 1
+mail_user = "aaronew+nrao@berkeley.edu"
+chunk_size = 20
 
 [GLOBAL_OPTS]
 spw0 = 150
@@ -18,7 +18,6 @@ pols = "ee nn"
 yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
 flag_ext="og_flags1"
 time_threshold = 0.02
-chunk_size=15
 nbl_per_load = 100
 t_avg = 300.0
 grpstr = "grp1.of1"
@@ -70,19 +69,19 @@ actions = [
            "PSPEC"]
 
 [PRE_CHUNK]
-mem=16000
+mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:label}",
-     "${GLOBAL_OPTS:chunk_size}",
+     "${Options:chunk_size}",
      "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}", "${GLOBAL_OPTS:grpstr}"]
 
 [DELAY_ROUND2_INIT]
-prepreqs = "PRE_CHUNK"
+prereqs = "PRE_CHUNK"
 prereq_chunk_size = 1
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 16000
+mem = 8000
 args = ["{basename}",
         "${GLOBAL_OPTS:label}", "${DELAY_OPTS:tol}",
         "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${GLOBAL_OPTS:cache_dir}",
@@ -94,7 +93,7 @@ prereqs = "DELAY_ROUND2_INIT"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 16000
+mem = 8000
 args = ["{basename}",
         "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}",
@@ -103,10 +102,10 @@ args = ["{basename}",
 
 [TIME_AVERAGE]
 prereqs= "XTALK"
-prereq_chunk_size="all"
+prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem=16000
+mem=8000
 args=["{basename}",
       "${GLOBAL_OPTS:label}",
       "${GLOBAL_OPTS:t_avg}",
@@ -118,14 +117,14 @@ prereqs = "TIME_AVERAGE"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 16000
+mem = 8000
 args = ["{basename}",
         "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
 
 [PSPEC]
 prereqs = "RECONSTITUTE"
-prereq_chunk_size="all"
-mem=16000
+prereq_chunk_size=1
+mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${GLOBAL_OPTS:label}",

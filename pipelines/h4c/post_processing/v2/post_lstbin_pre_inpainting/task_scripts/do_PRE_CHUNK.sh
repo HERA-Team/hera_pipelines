@@ -37,5 +37,4 @@ do
   --clobber --polarizations ee nn --spw_range ${spw0} ${spw1}
   chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
   --clobber --polarizations ee nn --spw_range ${spw0} ${spw1}
-  done
 done
