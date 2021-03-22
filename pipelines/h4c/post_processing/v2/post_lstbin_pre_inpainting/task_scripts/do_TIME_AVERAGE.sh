@@ -46,9 +46,9 @@ do
   if [ -e "${auto_in}" ]
   then
     echo time_average_baseline_parallelized.py ${auto_in} ${auto_out} ${auto_list} \
-     --rephase --clobber --t_avg ${t_avg}
+     --rephase --clobber --t_avg ${t_avg} --dont_wgt_by_nsample
      time_average_baseline_parallelized.py ${auto_in} ${auto_out} ${auto_list} \
-      --rephase --clobber --t_avg ${t_avg}
+      --rephase --clobber --t_avg ${t_avg} --dont_wgt_by_nsample
   else
     echo "${auto_in} does not exist!"
   fi
@@ -58,9 +58,9 @@ do
   if [ -e "${fg_in}" ]
   then
     echo time_average.py ${fg_in} ${fg_out} --rephase --clobber \
-    --flag_output ${tavg_flag} --t_avg ${t_avg}
+    --flag_output ${tavg_flag} --t_avg ${t_avg} --dont_wgt_by_nsample
     time_average.py ${fg_in} ${fg_out} --rephase --clobber \
-    --flag_output ${tavg_flag} --t_avg ${t_avg}
+    --flag_output ${tavg_flag} --t_avg ${t_avg} --dont_wgt_by_nsample
   else
     echo "${fg_in} does not exist!"
   fi
@@ -71,9 +71,9 @@ do
   if [ -e "${fg_in}" ]
   then
     echo time_average.py ${fg_in} ${fg_out} --rephase --clobber \
-    --flag_output ${tavg_flag} --t_avg ${t_avg}
+    --flag_output ${tavg_flag} --t_avg ${t_avg} --dont_wgt_by_nsample
     time_average.py ${fg_in} ${fg_out} --rephase --clobber \
-    --flag_output ${tavg_flag} --t_avg ${t_avg}
+    --flag_output ${tavg_flag} --t_avg ${t_avg} --dont_wgt_by_nsample
   else
     echo "${fg_in} does not exist!"
   fi
