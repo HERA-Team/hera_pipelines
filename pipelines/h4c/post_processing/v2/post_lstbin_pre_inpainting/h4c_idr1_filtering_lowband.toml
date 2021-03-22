@@ -8,8 +8,6 @@ base_cpu = 1
 timeout = "24h"
 mail_user = "aaronew+nrao@berkeley.edu"
 chunk_size = 20
-
-[GLOBAL_OPTS]
 spw0 = 150
 spw1 = 320
 label = "low-band"
@@ -51,49 +49,48 @@ seed=10
 ############################################################################################################
 
 [WorkFlow]
-actions = [
-           "PRE_CHUNK",
-           "DELAY_ROUND2_INIT",
+actions = ["PRE_CHUNK",
+           "DELAY",
            "XTALK",
            "TIME_AVERAGE",
            "RECONSTITUTE",
            "PSTOKES",
            "PSPEC",
            "AUTOERRORS",
-           "BOOTSTRAPERRORS"
+           "BOOTSTRAPERRORS",
            "CLEANUP"]
 
 [PRE_CHUNK]
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:label}",
+args=["{basename}", "${Options:label}",
      "${Options:chunk_size}",
-     "${GLOBAL_OPTS:spw0}", "${GLOBAL_OPTS:spw1}", "${GLOBAL_OPTS:grpstr}"]
+     "${Options:spw0}", "${Options:spw1}", "${Options:grpstr}"]
 
-[DELAY_ROUND2_INIT]
+[DELAY]
 prereqs = "PRE_CHUNK"
 prereq_chunk_size = 1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
 args = ["{basename}",
-        "${GLOBAL_OPTS:label}", "${DELAY_OPTS:tol}",
-        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${GLOBAL_OPTS:cache_dir}",
+        "${Options:label}", "${DELAY_OPTS:tol}",
+        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
         "${DELAY_OPTS:filter_mode}",
-        "${GLOBAL_OPTS:grpstr}", "${GLOBAL_OPTS:nbl_per_load}"]
+        "${Options:grpstr}", "${Options:nbl_per_load}"]
 
 [XTALK]
-prereqs = "DELAY_ROUND2_INIT"
+prereqs = "DELAY"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
 args = ["{basename}",
-        "${GLOBAL_OPTS:label}", "${XTALK_OPTS:tol}",
+        "${Options:label}", "${XTALK_OPTS:tol}",
         "${XTALK_OPTS:frmax0}", "${XTALK_OPTS:frmax1}",
-        "${XTALK_OPTS:frate_standoff}", "${GLOBAL_OPTS:cache_dir}",
-        "${GLOBAL_OPTS:grpstr}"]
+        "${XTALK_OPTS:frate_standoff}", "${Options:cache_dir}",
+        "${Options:grpstr}"]
 
 [TIME_AVERAGE]
 prereqs= "XTALK"
@@ -102,9 +99,9 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem=8000
 args=["{basename}",
-      "${GLOBAL_OPTS:label}",
-      "${GLOBAL_OPTS:t_avg}",
-      "${GLOBAL_OPTS:grpstr}"]#, "${GLOBAL_OPTS:n_avg}"]
+      "${Options:label}",
+      "${Options:t_avg}",
+      "${Options:grpstr}"]#, "${Options:n_avg}"]
 
 
 [RECONSTITUTE]
@@ -114,7 +111,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
 args = ["{basename}",
-        "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
+        "${Options:label}", "${Options:grpstr}"]
 
 [PSTOKES]
 prereqs="RECONSTITUTE"
@@ -122,8 +119,8 @@ prereq_chunk_size=1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:grpstr}",
-      "${GLOBAL_OPTS:label}", "${PSPEC_OPTS:pstokes}"]
+args=["{basename}", "${Options:grpstr}",
+      "${Options:label}", "${PSPEC_OPTS:pstokes}"]
 
 [PSPEC]
 prereqs = "PSTOKES"
@@ -131,8 +128,8 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:label}",
-      "${GLOBAL_OPTS:grpstr}",
+args=["{basename}", "${Options:label}",
+      "${Options:grpstr}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}",
       "${PSPEC_OPTS:pol_pairs}"]
 
@@ -142,7 +139,7 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:label}"]
+args=["{basename}", "${Options:label}"]
 
 
 [BOOTSTRAPERRORS]
@@ -151,7 +148,7 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}", "${GLOBAL_OPTS:nsamples}"]
+args=["{basename}", "${Options:label}", "${Options:grpstr}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
 
 
 [CLEANUP]
@@ -160,4 +157,4 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${GLOBAL_OPTS:label}", "${GLOBAL_OPTS:grpstr}"]
+args=["{basename}", "${Options:label}", "${Options:grpstr}"]

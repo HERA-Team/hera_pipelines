@@ -16,6 +16,7 @@ fn="${1}"
 label="${2}"
 grpstr="${3}"
 nsamples="${4}"
+seed="${5}"
 
 
 
