@@ -64,29 +64,28 @@ do
   fi
     fn_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.chunked.uvh5
     fn_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.foreground_filled.uvh5
-    fn_res=zen.${grpstr}.LST.${lst}.${sd}.${label}.foreground_res.uvh5
     if [ -e "${fn_in}" ]
     then
       if [ "${filter_mode}" == "DPSS" ]
       then
         echo dpss_delay_filter_run.py ${fn_in}  \
-          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges --res_outfilename ${fn_res}  \
+          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
           --min_dly ${min_dly} --flag_rms_outliers
         dpss_delay_filter_run.py ${fn_in}  \
-          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges  --res_outfilename ${fn_res} \
+          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
           --min_dly ${min_dly} --flag_rms_outliers
       elif [ "${filter_mode}" == "CLEAN" ]
       then
         npad=$((${spw1}-${spw0}))
         echo delay_filter_run.py ${fn_in}  \
-        --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
+        --filled_outfilename ${fn_out} --clobber \
         --tol ${tol} --standoff ${standoff} --verbose \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad}
 
         delay_filter_run.py ${fn_in} \
-        --filled_outfilename ${fn_out} --clobber --res_outfilename ${fn_res}  \
+        --filled_outfilename ${fn_out} --clobber \
         --tol ${tol} --standoff ${standoff} --verbose \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad}
       fi
