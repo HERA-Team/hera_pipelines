@@ -40,7 +40,7 @@ frate_standoff = 1.0
 [PSPEC_OPTS]
 pstokes="pI"
 beam_file="/lustre/aoc/projects/hera/aewallwi/HERA-Beams/NicolasFagnoniBeams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
-pol_pairs="ee~ee,nn~nn,pI~pI"
+pol_pairs="XX~XX,YY~YY,pI~pI"
 spw_ranges="0~85,85~150"
 nsamples=100
 seed=10

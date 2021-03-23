@@ -12,8 +12,8 @@ source ${src_dir}/_common.sh
 # 4 - pstokes to calculate
 
 fn="${1}"
-label="${2}"
-grpstr="${3}"
+label="${3}"
+grpstr="${2}"
 pstokes="${@:4}"
 
 

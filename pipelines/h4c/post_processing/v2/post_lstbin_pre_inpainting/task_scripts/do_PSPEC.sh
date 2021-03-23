@@ -25,9 +25,16 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 spacer=" "
 tilde="~"
 #replace tilde with space character in spw_ranges and pol-pairs.
-spw_ranges=${spw_ranges/${tilde}/${spacer}}
-pol_pairs=${pol_pairs/${tilde}/${spacer}}
+echo ${spw_ranges}
+echo ${pol_pairs}
+#spw_ranges=${spw_ranges//${tilde}/${spacer}}
+#pol_pairs=${pol_pairs//${tilde}/${spacer}}
+#spw_ranges=${spw_ranges//,/, }
+#pol_pairs=${pol_pairs//,/, }
+#spw_ranges="'$spw_ranges'"
+#pol_pairs="'$pol_pairs'"
 # form power spectrum between even and odd data sets with offset times.
+pol_pairs="ee~ee,nn~nn"
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
@@ -39,43 +46,43 @@ do
       # average all times incoherently
       echo pspec_run.py ${input} ${output}\
         --overwrite\
-        --dset_pairs '0 1' --pol_pairs '${pol_pairs}'\
+        --pol_pairs ${pol_pairs} --verbose\
         --Jy2mK --beam ${beam_file} --exclude_permutations\
         --file_type uvh5  --exclude_auto_bls\
-        --taper bh --spw_ranges '${spw_ranges}' --broadcast_dset_flags
+        --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
         pspec_run.py ${input} ${output}\
           --overwrite\
-          --dset_pairs '0 1' --pol_pairs '${pol_pairs}'\
+          --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file} --exclude_permutations\
           --file_type uvh5  --exclude_auto_bls\
-          --taper bh --spw_ranges '${spw_ranges}' --broadcast_dset_flags
+          --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
     else
       echo "${even_file} does not exist!"
     fi
 
 
- auto_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.tavg.uvh5
+ auto_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
 
   if [ -e "${auto_file}" ]
   then
-   output=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.tavg.pspec.h5
+   output=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.pspec.h5
    echo pspec_run.py ${auto_file} ${output}\
      --overwrite\
-     --dset_pairs '0 1' --pol_pairs '${pol_pairs}'\
+     --pol_pairs ${pol_pairs} --verbose\
      --Jy2mK --beam ${beam_file}\
-     --file_type uvh5 --fullband_filter --include_autocorrs\
-     --taper bh --broadcast_dset_flags --spw_ranges '${spw_ranges}'\
+     --file_type uvh5 --include_autocorrs\
+     --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
      --exclude_cross_bls --interleave_times
 
 
    pspec_run.py ${auto_file} ${output}\
      --overwrite\
-     --dset_pairs '0 1' --pol_pairs '${pol_pairs}'\
+     --pol_pairs ${pol_pairs} --verbose\
      --Jy2mK --beam ${beam_file}\
-     --file_type uvh5 --fullband_filter --include_autocorrs\
-     --taper bh --broadcast_dset_flags --spw_ranges '${spw_ranges}'\
+     --file_type uvh5 --include_autocorrs\
+     --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
      --exclude_cross_bls --interleave_times
 
   else

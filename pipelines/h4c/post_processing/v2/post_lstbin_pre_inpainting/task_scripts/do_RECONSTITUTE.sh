@@ -25,7 +25,7 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
   do
     # time averaged auto data
     outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
-    baseline_chunk_files=`echo zen.${grpstr}.LST.${lst}.*.${sd}.${label}.autos.waterfall.tavg.uvh5`
+    baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.waterfall.tavg.uvh5`
     time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
 
     if [ -e "${time_chunk_template}" ]
@@ -61,31 +61,21 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
       time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
           --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-      #rm -rf ${baseline_chunk_files}
-
-      # reconstitute waterfall files.
-      outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.fg_filtered.uvh5
-      baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.waterfall.uvh5`
-      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
-
-      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
-      #rm -rf ${baseline_chunk_files}
 
 
       # time averaged data
-      outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.fg_filtered.tavg.uvh5
+      outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.foreground_filled.tavg.uvh5
       baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.waterfall.tavg.uvh5`
+      if [ -e "${outfilename}" ]
+      then
+        echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-
-      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
-      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
-
+        time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+            --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+      else
+        echo "${outfilename} does not exist!"
+      fi
       #rm -rf ${baseline_chunk_files}
     else
       echo "${time_chunk_template} does not exist!"
