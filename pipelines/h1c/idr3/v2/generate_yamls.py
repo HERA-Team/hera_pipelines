@@ -42,8 +42,18 @@ JD_flags = {2458041: [[0.50, 0.70]], # from Josh's inspecting notebooks on 2/9/2
             2458161: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inpsectiing notebooks 2/18/21
             2458172: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inspecting notebooks 2/18/21
             2458173: [[0.10, 0.90]], # from Vignesh's by-hand analysis H1C IDR3.1. Excluded by Josh on inspecting notebooks 2/18/21
-            2458185: [[0.10, 0.50]], # from Vignesh's by-hand analysis H1C IDR3.1. Expanded by Josh on inspecting notebooks 2/18/21
-            2458206: [[0.20, 0.28]], # from Vignesh's by-hand analysis H1C IDR3.1
+            2458185: [[0.10, 0.52]], # from Vignesh's by-hand analysis H1C IDR3.1. Expanded by Josh on inspecting notebooks 2/18/21. Further expanded to .52 on 3/23/21.
+            2458187: [[0.64, 0.90]], # Flag some galaxy to prevent smooth_cal issues found by Josh on inspecting notebooks on 3/23/21.
+            2458187: [[0.64, 0.90]], # Flag some galaxy to prevent smooth_cal issues found by Josh on inspecting notebooks on 3/23/21.
+            2458189: [[0.52, 0.90]], # Weak broadband RFI + flag some galaxy to prevent smooth_cal issues found by Josh on inspecting notebooks on 3/23/21.
+            2458190: [[0.63, 0.90]], # Flag some galaxy to prevent smooth_cal issues found by Josh on inspecting notebooks on 3/23/21.
+            2458192: [[0.10, 0.90]], # X-engine died, found by Josh on inspecting notebooks 3/23/21
+            2458196: [[0.64, 0.90]], # Flag some galaxy to prevent smooth_cal issues found by Josh on inspecting notebooks on 3/23/21.
+            2458199: [[0.10, 0.29]], # Broadband RFI early in night. Found by Josh on inspecting notebooks 3/23/21
+            2458200: [[0.10, 0.26]], # Broadband RFI early in night. Found by Josh on inspecting notebooks 3/23/21
+            2458201: [[0.64, 0.90]], # Flag some galaxy to prevent smooth_cal issues found by Josh on inspecting notebooks on 3/23/21.
+            2458205: [[0.10, 0.28]], # Broadband RFI early in night. Found by Josh on inspecting notebooks 3/23/21
+            2458206: [[0.10, 0.34]], # from Vignesh's by-hand analysis H1C IDR3.1. Expanded by Josh on inspecting notebooks 3/23/21
            }
 
 def driver():
