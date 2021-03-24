@@ -21,40 +21,28 @@ fixed_lst_start = "True"
 vis_units = "Jy"
 parallelize = "True"
 file_ext = "grp1.of1.{type}.{time:7.5f}.sum.uvh5"
-outdir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1"
-parent_dir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1"
-data_files = ["/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458081/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458083/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458084/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458085/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458086/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458087/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458088/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458090/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458091/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458092/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458094/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458095/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458096/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458097/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458098/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458099/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458101/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458102/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458103/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458104/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458105/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458106/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458107/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458108/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458109/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458110/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458111/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458112/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458113/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458114/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458115/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458116/zen.*.sum.smooth_calibrated.uvh5"]
+outdir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2"
+parent_dir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2"
+data_files = ["/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458134/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458135/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458136/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458139/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458141/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458142/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458143/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458144/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458145/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458146/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458147/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458148/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458149/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458150/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458151/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458153/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458154/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458155/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458157/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458158/zen.*.sum.smooth_calibrated.uvh5"]
 calibration = "''"
 
 
