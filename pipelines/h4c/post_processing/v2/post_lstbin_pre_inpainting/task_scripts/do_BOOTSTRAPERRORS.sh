@@ -28,6 +28,6 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   psc=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
-  echo bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --normal_std --robust_std
-  bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --normal_std --robust_std
+  echo bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True
+  bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True
 done

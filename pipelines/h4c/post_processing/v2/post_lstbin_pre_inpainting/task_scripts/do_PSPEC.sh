@@ -34,7 +34,7 @@ echo ${pol_pairs}
 #spw_ranges="'$spw_ranges'"
 #pol_pairs="'$pol_pairs'"
 # form power spectrum between even and odd data sets with offset times.
-pol_pairs="ee~ee,nn~nn"
+#pol_pairs="ee~ee,nn~nn"
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
@@ -48,14 +48,14 @@ do
         --overwrite\
         --pol_pairs ${pol_pairs} --verbose\
         --Jy2mK --beam ${beam_file} --exclude_permutations\
-        --file_type uvh5  --exclude_auto_bls\
+        --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.0\
         --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
         pspec_run.py ${input} ${output}\
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file} --exclude_permutations\
-          --file_type uvh5  --exclude_auto_bls\
+          --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.0\
           --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
     else
@@ -72,18 +72,18 @@ do
      --overwrite\
      --pol_pairs ${pol_pairs} --verbose\
      --Jy2mK --beam ${beam_file}\
-     --file_type uvh5 --include_autocorrs\
+     --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.0\
      --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-     --exclude_cross_bls --interleave_times
+     --exclude_cross_bls
 
 
    pspec_run.py ${auto_file} ${output}\
      --overwrite\
      --pol_pairs ${pol_pairs} --verbose\
      --Jy2mK --beam ${beam_file}\
-     --file_type uvh5 --include_autocorrs\
+     --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.0\
      --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-     --exclude_cross_bls --interleave_times
+     --exclude_cross_bls
 
   else
      echo "${auto_file} does not exist!"
