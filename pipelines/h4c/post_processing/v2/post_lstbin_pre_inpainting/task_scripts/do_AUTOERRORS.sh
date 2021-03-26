@@ -25,7 +25,13 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   psc=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
-  auto=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
-  echo auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
-  auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
+  if [ -e "${psc}" ]
+  then
+    if [ -e "${auto}" ]
+    then
+      auto=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
+      echo auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
+      auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
+    fi
+  fi
 done

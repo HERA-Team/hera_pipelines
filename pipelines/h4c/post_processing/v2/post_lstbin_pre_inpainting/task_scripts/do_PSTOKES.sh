@@ -24,11 +24,17 @@ for sd in ${sumdiff[@]}
 do
   # compute pstokes of autocorrelation
   auto=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
-  echo generate_pstokes_run.py ${auto} ${pstokes} --clobber
-  generate_pstokes_run.py ${auto} --pstokes ${pstokes} --clobber
+  if [ -e "${auto}" ]
+  then
+    echo generate_pstokes_run.py ${auto} ${pstokes} --clobber
+    generate_pstokes_run.py ${auto} --pstokes ${pstokes} --clobber
+  fi
 
   # compute pstokes of xtalk filtered files.
-  xcorr=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.uvh5
-  echo generate_pstokes_run.py ${xcorr} ${pstokes} --clobber
-  generate_pstokes_run.py ${xcorr} --pstokes ${pstokes} --clobber
+  if [ -e "${auto}" ]
+  then
+    xcorr=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.uvh5
+    echo generate_pstokes_run.py ${xcorr} ${pstokes} --clobber
+    generate_pstokes_run.py ${xcorr} --pstokes ${pstokes} --clobber
+  fi
 done
