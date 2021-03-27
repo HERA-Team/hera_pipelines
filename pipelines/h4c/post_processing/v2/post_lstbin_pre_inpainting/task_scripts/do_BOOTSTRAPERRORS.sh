@@ -30,7 +30,7 @@ do
   psc=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
   if [ -e "${psc}" ]
   then
-    echo bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True
-    bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True
+    echo bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
+    bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
   fi
 done

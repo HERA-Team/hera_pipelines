@@ -134,6 +134,7 @@ args=["{basename}", "${Options:label}",
       "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}",
       "${PSPEC_OPTS:pol_pairs}"]
 
+
 [AUTOERRORS]
 prereqs = "PSPEC"
 prereq_chunk_size = 1
@@ -142,15 +143,13 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}"]
 
-
 [BOOTSTRAPERRORS]
 prereqs = "AUTOERRORS"
 prereq_chunk_size = 1
-mem=8000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}", "${Options:grpstr}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
-
 
 [CLEANUP]
 prereqs= "BOOTSTRAPERRORS"

@@ -29,7 +29,7 @@ do
   then
     if [ -e "${auto}" ]
     then
-      auto=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
+      auto=zen.${grpstr}.LST.${lst}.sum.${label}.autos.foreground_filled.tavg.uvh5
       echo auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
       auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
     fi
