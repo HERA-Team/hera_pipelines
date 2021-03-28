@@ -16,7 +16,6 @@ label="${2}"
 beamfile="${3}"
 grpstr="${4}"
 
-
 lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
 
@@ -25,11 +24,13 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   psc=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
+  echo ${psc}
   if [ -e "${psc}" ]
   then
+    echo ${auto}
+    auto=zen.${grpstr}.LST.${lst}.sum.${label}.autos.foreground_filled.tavg.uvh5
     if [ -e "${auto}" ]
     then
-      auto=zen.${grpstr}.LST.${lst}.sum.${label}.autos.foreground_filled.tavg.uvh5
       echo auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
       auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
     fi
