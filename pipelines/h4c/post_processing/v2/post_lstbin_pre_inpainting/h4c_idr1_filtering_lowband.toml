@@ -146,7 +146,7 @@ args=["{basename}", "${Options:label}", "${PSPEC_OPTS:beam_file}", "${Options:gr
 [BOOTSTRAPERRORS]
 prereqs = "AUTOERRORS"
 prereq_chunk_size = 1
-mem=16000
+mem=24000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}", "${Options:grpstr}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
