@@ -1,6 +1,6 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v2/post_lstbin_pre_inpainting/task_scripts/"
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v3/pre_lstbin/task_scripts"
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
 base_mem = 8000
@@ -54,7 +54,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}",
      "${Options:chunk_size}",
-     "${Options:spw0}", "${Options:spw1}"]
+     "${Options:spw0}", "${Options:spw1}", "${Options:yaml_dir}"]
 
 [DELAY]
 prereqs = "PRE_CHUNK"
