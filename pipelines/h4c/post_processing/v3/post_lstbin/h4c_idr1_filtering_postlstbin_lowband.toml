@@ -7,7 +7,7 @@ base_mem = 8000
 base_cpu = 1
 timeout = "24h"
 mail_user = "aaronew+nrao@berkeley.edu"
-chunk_size = 15 # this number is to make sure that the branch cut does not occur inside of a single file.
+chunk_size = 1 # this number is to make sure that the branch cut does not occur inside of a single file.
                 # should be adjusted depending on where the cut is.
 spw0 = 150
 spw1 = 320

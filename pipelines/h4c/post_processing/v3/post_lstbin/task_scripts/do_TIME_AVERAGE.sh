@@ -36,11 +36,11 @@ for sd in ${sumdiff[@]}
 do
     auto_list=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.foreground_filled.uvh5`
     auto_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
-    auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.waterfall.tavg.uvh5
+    auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.waterfall.tavg.uvh5
 
-    fg_in=zen.${grpstr}.LST.${lst}.${sd}.xtalk_filtered_res.uvh5
-    fg_out=zen.${grpstr}.LST.${lst}.${sd}.xtalk_filtered_waterfall.tavg.uvh5
-    fg_files=`echo zen.${grpstr}.LST.*.${sd}.xtalk_filtered_res.uvh5`
+    fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.uvh5
+    fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_waterfall.tavg.uvh5
+    fg_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_res.uvh5`
   # time-average autocorrs using waterfall averaging cornerturn.
   # even
   if [ -e "${auto_in}" ]
@@ -57,9 +57,9 @@ do
   # even
   if [ -e "${fg_in}" ]
   then
-    echo time_average_baseline_parallelized ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
+    echo time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
     --t_avg ${t_avg} --dont_wgt_by_nsample
-    time_average_baseline_parallelized ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
+    time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
     --t_avg ${t_avg} --dont_wgt_by_nsample
   else
     echo "${fg_in} does not exist!"

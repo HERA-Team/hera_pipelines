@@ -28,6 +28,8 @@ do
   then
     echo generate_pstokes_run.py ${auto} ${pstokes} --clobber
     generate_pstokes_run.py ${auto} --pstokes ${pstokes} --clobber
+  else
+    echo "${auto} does not exist!"
   fi
 
   # compute pstokes of xtalk filtered files.
@@ -36,5 +38,7 @@ do
     xcorr=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.uvh5
     echo generate_pstokes_run.py ${xcorr} ${pstokes} --clobber
     generate_pstokes_run.py ${xcorr} --pstokes ${pstokes} --clobber
+  else
+    echo "${xcorr} does not exist!"
   fi
 done

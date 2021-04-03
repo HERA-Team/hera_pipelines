@@ -24,9 +24,9 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
   for sd in ${sumdiff[@]}
   do
     # time averaged auto data
-    outfilename=zen.${grpstr}.LST.${lst}.${sd}.autos.foreground_filled.tavg.uvh5
+    outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
     baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.waterfall.tavg.uvh5`
-    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
+    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.autos.uvh5
 
     if [ -e "${time_chunk_template}" ]
     then
@@ -38,7 +38,7 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
     else
       echo "${time_chunk_template} does not exist!"
     fi
-    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.xtalk_filtered_res.uvh5
+    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.uvh5
     if [ -e "${time_chunk_template}" ]
     then
 
