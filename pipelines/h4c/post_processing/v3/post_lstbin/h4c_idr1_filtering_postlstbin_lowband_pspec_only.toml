@@ -50,9 +50,9 @@ seed=10
 ############################################################################################################
 
 [WorkFlow]
-actions = ["TIME_AVERAGE",
-           "RECONSTITUTE",
-           "PSTOKES",
+actions = [#"TIME_AVERAGE",
+           #"RECONSTITUTE",
+           #"PSTOKES",
            "PSPEC",
            "AUTOERRORS",
            "BOOTSTRAPERRORS",
@@ -87,8 +87,8 @@ args=["{basename}", "${Options:grpstr}",
       "${Options:label}", "${PSPEC_OPTS:pstokes}"]
 
 [PSPEC]
-prereqs = "PSTOKES"
-prereq_chunk_size = 1
+#prereqs = "PSTOKES"
+#prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
@@ -109,7 +109,7 @@ args=["{basename}", "${Options:label}", "${PSPEC_OPTS:beam_file}", "${Options:gr
 [BOOTSTRAPERRORS]
 prereqs = "AUTOERRORS"
 prereq_chunk_size = 1
-mem=24000
+mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}", "${Options:grpstr}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]

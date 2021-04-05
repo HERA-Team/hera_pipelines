@@ -12,4 +12,8 @@ grpstr="${3}"
 
 lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 # get rid of all the waterfall files associated with this run.
-rm -rf zen.${grpstr}.LST.${lst}.${label}*waterfall*h5
+sumdiff=("sum" "diff")
+for sd in ${sumdiff[@]}
+do
+  rm -rf zen.${grpstr}.LST.${lst}.${sd}.${label}*waterfall*h5
+done

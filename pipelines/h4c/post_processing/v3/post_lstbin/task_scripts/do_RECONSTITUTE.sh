@@ -25,8 +25,8 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
   do
     # time averaged auto data
     outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
-    baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.waterfall.tavg.uvh5`
-    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.autos.uvh5
+    baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.foreground_filled.waterfall.tavg.uvh5`
+    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
 
     if [ -e "${time_chunk_template}" ]
     then
@@ -38,13 +38,13 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
     else
       echo "${time_chunk_template} does not exist!"
     fi
-    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.uvh5
+    time_chunk_template=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.uvh5
     if [ -e "${time_chunk_template}" ]
     then
 
       # time averaged data
       outfilename=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.tavg.uvh5
-      baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_waterfall.tavg.uvh5`
+      baseline_chunk_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5`
 
       echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
           --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds

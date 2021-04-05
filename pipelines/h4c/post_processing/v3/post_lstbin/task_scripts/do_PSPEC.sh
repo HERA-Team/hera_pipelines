@@ -48,14 +48,14 @@ do
         --overwrite\
         --pol_pairs ${pol_pairs} --verbose\
         --Jy2mK --beam ${beam_file} --exclude_permutations\
-        --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.0\
+        --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.1\
         --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
         pspec_run.py ${input} ${output}\
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file} --exclude_permutations\
-          --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.0\
+          --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.1\
           --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
     else

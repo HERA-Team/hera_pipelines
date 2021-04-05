@@ -39,16 +39,16 @@ do
     auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.waterfall.tavg.uvh5
 
     fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.uvh5
-    fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_waterfall.tavg.uvh5
+    fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5
     fg_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_res.uvh5`
   # time-average autocorrs using waterfall averaging cornerturn.
   # even
   if [ -e "${auto_in}" ]
   then
     echo time_average_baseline_parallelized.py ${auto_in} ${auto_out} ${auto_list} \
-     --rephase --clobber --t_avg ${t_avg} --dont_wgt_by_nsample
+     --rephase --clobber --t_avg ${t_avg}
      time_average_baseline_parallelized.py ${auto_in} ${auto_out} ${auto_list} \
-      --rephase --clobber --t_avg ${t_avg} --dont_wgt_by_nsample
+      --rephase --clobber --t_avg ${t_avg}
   else
     echo "${auto_in} does not exist!"
   fi
@@ -58,9 +58,9 @@ do
   if [ -e "${fg_in}" ]
   then
     echo time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
-    --t_avg ${t_avg} --dont_wgt_by_nsample
+    --t_avg ${t_avg}
     time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
-    --t_avg ${t_avg} --dont_wgt_by_nsample
+    --t_avg ${t_avg}
   else
     echo "${fg_in} does not exist!"
   fi
