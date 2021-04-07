@@ -9,9 +9,9 @@ timeout = "48h"
 pbs_mail_user = "jsdillon+nrao@berkeley.edu"
 
 [LSTBIN_OPTS]
-sig_clip = "True"
+sig_clip = "False"
 Nbls_to_load = 100
-sigma = 5
+sigma = 1e100
 min_N = 5
 rephase = "True"
 ntimes_per_file = 60
