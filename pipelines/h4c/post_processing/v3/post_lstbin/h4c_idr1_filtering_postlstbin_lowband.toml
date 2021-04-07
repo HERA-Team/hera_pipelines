@@ -7,7 +7,7 @@ base_mem = 8000
 base_cpu = 1
 timeout = "24h"
 mail_user = "aaronew+nrao@berkeley.edu"
-chunk_size = 1 # this number is to make sure that the branch cut does not occur inside of a single file.
+chunk_size = 15 # this number is to make sure that the branch cut does not occur inside of a single file.
                 # should be adjusted depending on where the cut is.
 spw0 = 150
 spw1 = 320
@@ -50,22 +50,34 @@ seed=10
 ############################################################################################################
 
 [WorkFlow]
-actions = ["TIME_AVERAGE",
+actions = ["PRE_CHUNK",
+           "TIME_AVERAGE",
            "RECONSTITUTE",
            "PSTOKES",
            "PSPEC",
            "AUTOERRORS",
-           "BOOTSTRAPERRORS",
-           "CLEANUP"]
+           "BOOTSTRAPERRORS",]
+           #"CLEANUP"]
+
+[PRE_CHUNK]
+mem=8000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:label}",
+      "${Options:chunk_size}",
+      "${Options:grpstr}"]
 
 [TIME_AVERAGE]
+prereqs = "PRE_CHUNK"
+prereq_chunk_size = "all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem=8000
 args=["{basename}",
-      "${Options:label}",
-      "${Options:t_avg}",
-      "${Options:grpstr}"]#, "${Options:n_avg}"]
+     "${Options:label}",
+     "${Options:t_avg}",
+     "${Options:grpstr}"]#, "${Options:n_avg}"]
+
 
 
 [RECONSTITUTE]

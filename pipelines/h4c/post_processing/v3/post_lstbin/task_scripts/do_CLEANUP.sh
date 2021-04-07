@@ -16,4 +16,6 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   rm -rf zen.${grpstr}.LST.${lst}.${sd}.${label}*waterfall*h5
+  rm -rf zen.${grpstr}.LST.${lst}.${sd}.${label}*chunked*h5
+
 done

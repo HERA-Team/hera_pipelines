@@ -34,13 +34,13 @@ lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
-    auto_list=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.foreground_filled.uvh5`
-    auto_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
+    auto_list=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.foreground_filled.chunked.uvh5`
+    auto_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.chunked.uvh5
     auto_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.waterfall.tavg.uvh5
 
-    fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.uvh5
+    fg_in=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.chunked.uvh5
     fg_out=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5
-    fg_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_res.uvh5`
+    fg_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered.chunked.uvh5`
   # time-average autocorrs using waterfall averaging cornerturn.
   # even
   if [ -e "${auto_in}" ]
