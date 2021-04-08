@@ -54,7 +54,9 @@ do
       apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file}
 
       # calibrate auto file.
+      # extract the auto file from staged data in case its missing.
       input_auto=zen.${jd_temp}.${sd}.autos.uvh5
+      extract_autos.py ${input_file} ${input_auto} --clobber
       output_auto=zen.${jd_temp}.${sd}.${label}.autos.calibrated.uvh5
       echo apply_cal.py ${input_auto} ${output_auto} --clobber --new_cal ${cal_file}
       apply_cal.py ${input_auto} ${output_auto} --clobber --new_cal ${cal_file}
