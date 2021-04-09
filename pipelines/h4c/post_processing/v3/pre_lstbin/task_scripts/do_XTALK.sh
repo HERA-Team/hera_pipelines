@@ -42,12 +42,12 @@ do
       echo dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
       --frate_standoff ${frate_standoff} \
-      --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose
+      --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose --skip_autos
 
       dpss_xtalk_filter_run_baseline_parallelized.py ${fn_in} --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
       --frate_standoff ${frate_standoff} \
-      --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose
+      --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose --skip_autos
     else
       echo "${fn_in} does not exist!"
     fi
