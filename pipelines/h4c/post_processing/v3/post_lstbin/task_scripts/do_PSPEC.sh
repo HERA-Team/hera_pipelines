@@ -59,7 +59,7 @@ do
           --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
     else
-      echo "${even_file} does not exist!"
+      echo "${input} does not exist!"
     fi
 
 
