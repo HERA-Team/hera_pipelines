@@ -19,7 +19,7 @@ flag_ext="og_flags1"
 time_threshold = 0.02
 nbl_per_load = 100
 t_avg = 300.0
-grpstr = "grp1.of1"
+grpstr = "grp1.of2"
 
 
 [DELAY_OPTS]
