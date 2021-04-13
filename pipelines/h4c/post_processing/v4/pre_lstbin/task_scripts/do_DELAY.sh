@@ -49,15 +49,15 @@ do
     echo delay_filter_run.py ${auto_in} \
       --clobber  \
       --filled_outfilename ${auto_out} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
+      --min_dly ${min_dly}  --mode dpss_leastsq
 
 
     delay_filter_run.py ${auto_in}  \
       --clobber  \
       --filled_outfilename ${auto_out} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-      --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
+      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
+      --min_dly ${min_dly}  --mode dpss_leastsq
 
   else
     echo "${auto_in} does not exist!"
@@ -70,23 +70,23 @@ do
       then
         echo delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber  \
-          --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-          --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
+          --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
+          --min_dly ${min_dly}  --mode dpss_leastsq
         delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber  \
-          --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
-          --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
+          --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
+          --min_dly ${min_dly}  --mode dpss_leastsq
       elif [ "${filter_mode}" == "CLEAN" ]
       then
         npad=$((${spw1}-${spw0}))
         echo delay_filter_run.py ${fn_in}  \
         --filled_outfilename ${fn_out} --clobber \
-        --tol ${tol} --standoff ${standoff} --verbose \
+        --tol ${tol} --standoff ${standoff}  \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean
 
         delay_filter_run.py ${fn_in} \
         --filled_outfilename ${fn_out} --clobber \
-        --tol ${tol} --standoff ${standoff} --verbose \
+        --tol ${tol} --standoff ${standoff}  \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean
       fi
     else
