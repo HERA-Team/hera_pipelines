@@ -41,12 +41,12 @@ do
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --min_frate ${min_frate} --frate_standoff ${frate_standoff} --filled_outfilename ${fn_out} \
       --cornerturnfile ${fin_in}\
-      --clobber --skip_flagged_edges --verbose dpss_leastsq
+      --clobber --verbose --mode dpss_leastsq
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --min_frate ${min_frate} --frate_standoff ${frate_standoff} --filled_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} \
-      --clobber --skip_flagged_edges --verbose dpss_leastsq
+      --clobber --verbose --mode dpss_leastsq
     else
       echo "${fn_in} does not exist!"
     fi
