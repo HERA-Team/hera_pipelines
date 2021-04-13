@@ -45,6 +45,28 @@ do
     time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
         --baseline_chunk_files ${baseline_chunk_files} --clobber
 
+
+    # reconstitute xtalk filtered files
+    outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
+    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5`
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+
+    # reconstitute fr inpainted files
+    outfilename=zen.${jd}.${sd}.${label}.time_inpainted.tavg.uvh5
+    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.time_inpainted.waterfall.tavg.uvh5`
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+
+
+
+
   else
     echo "${time_chunk_template} does not exist!"
   fi
