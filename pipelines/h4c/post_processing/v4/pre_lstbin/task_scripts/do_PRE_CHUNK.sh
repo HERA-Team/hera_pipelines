@@ -70,19 +70,19 @@ do
   # chunk staged input baseline files into a single file and throw away flagged antennas.
   input_file=${stage_dir}/${int_jd}/zen.${jd}.${sd}.uvh5
   output_file=zen.${jd}.${sd}.${label}.chunked.uvh5
-  echo chunk_data_files.py ${input_files} ${input_file} ${output_file}  ${chunk_size} --spw_range ${spw0} ${spw1} \
-  --clobber --polarizations ee nn --throw_away_flagged_bls --ant_flag_yaml ${ant_flag_yaml}
-  chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} --spw_range ${spw0} ${spw1} \
-  --clobber --polarizations ee nn --throw_away_flagged_bls --ant_flag_yaml ${ant_flag_yaml}
+  echo chunk_files.py ${input_files} ${input_file} ${output_file}  ${chunk_size} --spw_range ${spw0} ${spw1} \
+  --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
+  chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} --spw_range ${spw0} ${spw1} \
+  --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
   # chunk calibrated auto files into single file and throw away bad antennas
   input_auto=zen.${jd}.${sd}.${label}.autos.calibrated.uvh5
   output_auto=zen.${jd}.${sd}.${label}.autos.chunked.uvh5
-  echo chunk_data_files.py ${input_autos} ${input_auto} ${output_auto} ${chunk_size}\
+  echo chunk_files.py ${input_autos} ${input_auto} ${output_auto} ${chunk_size}\
     --spw_range ${spw0} ${spw1} --clobber --polarizations ee nn \
-    --throw_away_flagged_bls --ant_flag_yaml ${ant_flag_yaml}
-  chunk_data_files.py ${input_autos} ${input_auto} ${output_auto} ${chunk_size}\
+    --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
+  chunk_files.py ${input_autos} ${input_auto} ${output_auto} ${chunk_size}\
     --spw_range ${spw0} ${spw1} --clobber --polarizations ee nn \
-    --throw_away_flagged_bls --ant_flag_yaml ${ant_flag_yaml}
+    --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
   # remove calibrated autos that are not chunked.
   echo rm -rf ${input_autos}
   rm -rf ${input_autos}

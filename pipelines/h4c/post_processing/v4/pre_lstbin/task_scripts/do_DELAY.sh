@@ -47,14 +47,14 @@ do
   then
     auto_out=zen.${jd}.${sd}.${label}.autos.foreground_filled.uvh5
     echo delay_filter_run.py ${auto_in} \
-      --clobber --skip_flagged_edges \
+      --clobber  \
       --filled_outfilename ${auto_out} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
       --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
 
 
     delay_filter_run.py ${auto_in}  \
-      --clobber --skip_flagged_edges \
+      --clobber  \
       --filled_outfilename ${auto_out} \
       --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
       --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
@@ -69,11 +69,11 @@ do
       if [ "${filter_mode}" == "DPSS" ]
       then
         echo delay_filter_run.py ${fn_in}  \
-          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
+          --filled_outfilename ${fn_out} --clobber  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
           --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
         delay_filter_run.py ${fn_in}  \
-          --filled_outfilename ${fn_out} --clobber --skip_flagged_edges \
+          --filled_outfilename ${fn_out} --clobber  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff} --verbose \
           --min_dly ${min_dly} --flag_model_rms_outliers --mode dpss_leastsq
       elif [ "${filter_mode}" == "CLEAN" ]

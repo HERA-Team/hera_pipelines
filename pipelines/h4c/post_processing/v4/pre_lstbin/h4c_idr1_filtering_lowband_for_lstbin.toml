@@ -44,6 +44,7 @@ actions = ["PRE_CHUNK",
            "DELAY",
            "XTALK",
            "TIME_INPAINT",
+           "TIME_AVERAGE",
            "RECONSTITUTE",
            "CLEANUP"]
 
