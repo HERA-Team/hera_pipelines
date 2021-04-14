@@ -94,7 +94,7 @@ args = ["{basename}",
 
 [TIME_AVERAGE]
 prereqs = "TIME_INPAINT"
-prereq_chunk_size="all"
+prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
@@ -113,7 +113,7 @@ args = ["{basename}",
 
 [CLEANUP]
 prereqs= "RECONSTITUTE"
-prereq_chunk_size = 1
+prereq_chunk_size = "all"
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
