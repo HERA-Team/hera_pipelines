@@ -14,8 +14,8 @@ source ${src_dir}/_common.sh
 # 3 - number of seconds to average in time.
 
 fn="${1}"
-label="${3}"
-t_avg="${4}"
+label="${2}"
+t_avg="${3}"
 
 t_avg_arg="--t_avg ${t_avg}"
 
@@ -28,13 +28,23 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
 # time average time-inpainted files and xtalk-filtered files.
-  input_file=`echo zen.${jd}.${sd}.${label}.time_inpainted.waterfall.uvh5`
+  input_file=zen.${jd}.${sd}.${label}.time_inpainted.waterfall.uvh5
   output_file=zen.${jd}.${sd}.${label}.time_inpainted.waterfall.tavg.uvh5
-  echo time_average.py ${input_file} ${output_file} --tavg ${t_avg} --dont_wgt_by_nsample --clobber
-  time_average.py ${input_file} ${output_file} --tavg ${t_avg} --dont_wgt_by_nsample --clobber
+  if [ -e "${input_file}" ]
+  then
+    echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+    time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+  else
+    echo "${input_file} does not exist!"
+  fi
 
-  input_file=`echo zen.${jd}.${sd}.${label}.xtalk_filtered.waterfall.uvh5`
+  input_file=zen.${jd}.${sd}.${label}.xtalk_filtered.waterfall.uvh5
   output_file=zen.${jd}.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5
-  echo time_average.py ${input_file} ${output_file} --tavg ${t_avg} --dont_wgt_by_nsample --clobber
-  time_average.py ${input_file} ${output_file} --tavg ${t_avg} --dont_wgt_by_nsample --clobber
+  if [ -e "${input_file}" ]
+  then
+    echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+    time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+  else
+    echo "${input_file} does not exist!"
+  fi
 done
