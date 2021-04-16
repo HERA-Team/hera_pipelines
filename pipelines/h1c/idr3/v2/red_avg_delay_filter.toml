@@ -22,7 +22,8 @@ partial_load_Nbls=100
 ############################################################################################################
 
 [WorkFlow]
-actions = ["DELAY_FILTER_RED_AVG", 
+actions = ["RED_AVG",
+           "DELAY_FILTER_RED_AVG", 
           ]
 
 [RED_AVG]
