@@ -27,9 +27,8 @@ actions = ["RED_AVG",
           ]
 
 [RED_AVG]
-mem = 8000
-args = ["{basename}",
-        "${DELAY_FILTER_OPTS:partial_load_Nbls}"]
+mem = 32000
+args = ["{basename}"]
 
 [DELAY_FILTER_RED_AVG]
 mem = 8000
