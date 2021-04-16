@@ -16,5 +16,5 @@ nbl_per_load="${2}"
 # make outfile
 outfile=${fn%.uvh5}.red_avg.uvh5
 
-echo apply_cal.py ${uvh5_fn} ${outfile} --nbl_per_load ${nbl_per_load} --redundant_average --clobber
-apply_cal.py ${uvh5_fn} ${outfile} --nbl_per_load ${nbl_per_load} --redundant_average --clobber
+echo apply_cal.py ${fn} ${outfile} --nbl_per_load ${nbl_per_load} --redundant_average --clobber
+apply_cal.py ${fn} ${outfile} --nbl_per_load ${nbl_per_load} --redundant_average --clobber
