@@ -13,5 +13,5 @@ fn="${1}"
 # make outfile
 outfile=${fn%.uvh5}.red_avg.uvh5
 
-echo red_average.py ${fn} ${outfile} --redundant_average --clobber
-red_average.py ${fn} ${outfile} --redundant_average --clobber
+echo red_average.py ${fn} ${outfile} --clobber
+red_average.py ${fn} ${outfile} --clobber
