@@ -1,0 +1,46 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/task_scripts"
+conda_env = "h1c_idr3"
+source_script = "~/.bashrc"
+base_mem = 8000
+base_cpu = 1
+timeout = "24h"
+pbs_mail_user = "jsdillon+nrao@berkeley.edu"
+
+[DELAY_FILTER_OPTS]
+standoff = 2000
+horizon = 0
+tol = 1e-6
+window = "tukey"
+skip_wgt = 0.1
+maxiter = 100
+alpha = 0.1
+zeropad=256
+partial_load_Nbls=100
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["RED_AVG",
+           "DELAY_FILTER_RED_AVG", 
+          ]
+
+[RED_AVG]
+mem = 32000
+args = ["{basename}"]
+
+[DELAY_FILTER_RED_AVG]
+mem = 8000
+prereqs = "RED_AVG"
+args = ["{basename}",
+        "${DELAY_FILTER_OPTS:standoff}",
+        "${DELAY_FILTER_OPTS:horizon}",
+        "${DELAY_FILTER_OPTS:tol}",
+        "${DELAY_FILTER_OPTS:window}",
+        "${DELAY_FILTER_OPTS:skip_wgt}",
+        "${DELAY_FILTER_OPTS:maxiter}",
+        "${DELAY_FILTER_OPTS:alpha}",
+        "${DELAY_FILTER_OPTS:zeropad}",
+        "${DELAY_FILTER_OPTS:partial_load_Nbls}",
+       ]
