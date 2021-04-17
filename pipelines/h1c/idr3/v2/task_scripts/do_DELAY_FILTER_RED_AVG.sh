@@ -63,7 +63,7 @@ cmd="delay_filter_run.py ${infile} \
                          --maxiter ${maxiter} \
                          --alpha ${alpha} \
                          --zeropad ${zeropad} \
-                         --partial_load_Nbls ${partial_load_Nbls} \
+                         --Nbls_per_load ${partial_load_Nbls} \
                          --clobber"
 echo $cmd
 $cmd
