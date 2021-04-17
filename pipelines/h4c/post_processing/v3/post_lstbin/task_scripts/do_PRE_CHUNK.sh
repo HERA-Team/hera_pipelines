@@ -23,16 +23,16 @@ do
   input_auto=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.uvh5
   output_auto=zen.${grpstr}.LST.${lst}.${sd}.${label}.autos.foreground_filled.chunked.uvh5
   autofiles=`echo zen.${grpstr}.LST.*.${sd}.${label}.autos.foreground_filled.uvh5`
-  echo chunk_data_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
+  echo chunk_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
     --clobber
-  chunk_data_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
+  chunk_files.py ${autofiles} ${input_auto} ${output_auto} ${chunk_size}\
     --clobber
   # chunk full baseline files.
   input_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered_res.uvh5
   input_files=`echo zen.${grpstr}.LST.*.${sd}.${label}.xtalk_filtered_res.uvh5`
   output_file=zen.${grpstr}.LST.${lst}.${sd}.${label}.xtalk_filtered.chunked.uvh5
-  echo chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
+  echo chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
   --clobber
-  chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
+  chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
   --clobber
 done

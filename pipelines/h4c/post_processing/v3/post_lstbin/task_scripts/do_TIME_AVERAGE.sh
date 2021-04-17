@@ -45,9 +45,9 @@ do
   # even
   if [ -e "${auto_in}" ]
   then
-    echo time_average_baseline_parallelized.py ${auto_in} ${auto_out} ${auto_list} \
+    echo time_average.py ${auto_list} ${auto_out} --cornerturnfile ${auto_in} \
      --rephase --clobber --t_avg ${t_avg}
-     time_average_baseline_parallelized.py ${auto_in} ${auto_out} ${auto_list} \
+     time_average.py ${auto_list} ${auto_out} --cornerturnfile ${auto_in} \
       --rephase --clobber --t_avg ${t_avg}
   else
     echo "${auto_in} does not exist!"
@@ -57,10 +57,8 @@ do
   # even
   if [ -e "${fg_in}" ]
   then
-    echo time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
-    --t_avg ${t_avg}
-    time_average_baseline_parallelized.py ${fg_in} ${fg_out} ${fg_files} --rephase --clobber \
-    --t_avg ${t_avg}
+    echo time_average.py ${fg_files} ${fg_out} --cornerturnfile ${fg_in} --t_avg ${t_avg} --clobber
+    time_average.py ${fg_files} ${fg_out} --cornerturnfile ${fg_in} --t_avg ${t_avg} --clobber
   else
     echo "${fg_in} does not exist!"
   fi
