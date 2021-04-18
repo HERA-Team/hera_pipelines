@@ -30,13 +30,11 @@ do
     # reconstitute xtalk filtered files
     outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.uvh5
     baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered.waterfall.uvh5`
-    if [ -e "${time_chunk_template}" ]
-    then
-      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber
 
       # reconstitute fr inpainted files
       outfilename=zen.${jd}.${sd}.${label}.time_inpainted.uvh5
@@ -67,7 +65,7 @@ do
 
       time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
           --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-          
+
   else
     echo "${time_chunk_template} does not exist!"
   fi
