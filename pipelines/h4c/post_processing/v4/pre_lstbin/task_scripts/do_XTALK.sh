@@ -40,7 +40,7 @@ do
     then
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
-      --cornerturnfile ${fin_in}\
+      --cornerturnfile ${fn_in}\
       --clobber --verbose --mode dpss_leastsq
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \

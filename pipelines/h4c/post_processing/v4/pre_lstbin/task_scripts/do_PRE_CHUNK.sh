@@ -50,6 +50,26 @@ do
       cal_file=zen.${jd_temp}.sum.smooth_abs.calfits
       input_file=${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5
       output_file=${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5
+      # if the diff does not exist, spoof it with the sum file and set
+      # all data to zero and all flags to True.
+      if [ ! -e "${input_file}" ]
+      then
+        echo "${input_file} failed to stage. Attempting to rectify this by spoofing with the sum/diff complement."
+        if [ ${sd} = "diff" ]
+        then
+          json_string='{"name-matches": "zen.'"${jd_temp}.sum"'.uvh5"}'
+          echo librarian stage-files -w local ${stage_dir}  "$json_string"
+          librarian stage-files -w local ${stage_dir} "$json_string"
+          cp ${stage_dir}/${int_jd}/zen.${jd_temp}.sum.uvh5 ${input_file}
+        else
+          json_string='{"name-matches": "zen.'"${jd_temp}.diff"'.uvh5"}'
+          echo librarian stage-files -w local ${stage_dir}  "$json_string"
+          librarian stage-files -w local ${stage_dir} "$json_string"
+          cp ${stage_dir}/${int_jd}/zen.${jd_temp}.diff.uvh5 ${input_file}
+        fi
+        echo flag_all.py ${input_file} ${input_file}  --clobber --fill_data_with_zeros
+        flag_all.py ${input_file} ${input_file} --clobber --fill_data_with_zeros
+      fi
 
       # extract the auto file from staged data in case its missing.
       input_auto=zen.${jd_temp}.${sd}.autos.uvh5

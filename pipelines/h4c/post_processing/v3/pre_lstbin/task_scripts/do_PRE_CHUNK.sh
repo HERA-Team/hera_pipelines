@@ -74,6 +74,7 @@ do
   --clobber --polarizations ee nn --throw_away_flagged_bls --ant_flag_yaml ${ant_flag_yaml}
   chunk_data_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} --spw_range ${spw0} ${spw1} \
   --clobber --polarizations ee nn --throw_away_flagged_bls --ant_flag_yaml ${ant_flag_yaml}
+  
   # chunk calibrated auto files into single file and throw away bad antennas
   input_auto=zen.${jd}.${sd}.${label}.autos.calibrated.uvh5
   output_auto=zen.${jd}.${sd}.${label}.autos.chunked.uvh5
