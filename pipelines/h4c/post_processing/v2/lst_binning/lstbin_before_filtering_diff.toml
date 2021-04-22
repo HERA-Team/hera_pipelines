@@ -29,6 +29,9 @@ data_files = ["/lustre/aoc/projects/hera/H4C/2459118/zen.*.diff.uvh5",
               "/lustre/aoc/projects/hera/H4C/2459120/zen.*.diff.uvh5",
               "/lustre/aoc/projects/hera/H4C/2459121/zen.*.diff.uvh5",
               "/lustre/aoc/projects/hera/H4C/2459122/zen.*.diff.uvh5",
+              "/lustre/aoc/projects/hera/H4C/2459128/zen.*.diff.uvh5",
+              "/lustre/aoc/projects/hera/H4C/2459132/zen.*.diff.uvh5",
+              "/lustre/aoc/projects/hera/H4C/2459134/zen.*.diff.uvh5",
               "/lustre/aoc/projects/hera/H4C/2459139/zen.*.diff.uvh5",
               ]
 calibration = "'smooth_abs.calfits'"

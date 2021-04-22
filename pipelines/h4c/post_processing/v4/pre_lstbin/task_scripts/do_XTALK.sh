@@ -41,12 +41,12 @@ do
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
       --cornerturnfile ${fn_in}\
-      --clobber --verbose --mode dpss_leastsq
+      --clobber --verbose --mode dpss_leastsq --skip_autos
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
       --cornerturnfile ${fn_in} \
-      --clobber --verbose --mode dpss_leastsq
+      --clobber --verbose --mode dpss_leastsq --skip_autos
     else
       echo "${fn_in} does not exist!"
     fi

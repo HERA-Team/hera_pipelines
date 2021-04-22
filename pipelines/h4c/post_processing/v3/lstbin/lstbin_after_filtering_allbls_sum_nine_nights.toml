@@ -29,6 +29,7 @@ data_files = ["/lustre/aoc/projects/hera/H4C/postprocessing/2459118/zen.*.sum.lo
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459120/zen.*.sum.low-band-allbls.xtalk_filtered_res.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459121/zen.*.sum.low-band-allbls.xtalk_filtered_res.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459122/zen.*.sum.low-band-allbls.xtalk_filtered_res.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459128/zen.*.sum.low-band-allbls.xtalk_filtered.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459132/zen.*.sum.low-band-allbls.xtalk_filtered.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459133/zen.*.sum.low-band-allbls.xtalk_filtered.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.sum.low-band-allbls.xtalk_filtered_res.uvh5",
