@@ -26,9 +26,9 @@ sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
   # compute pstokes of xtalk filtered files.
-  if [ -e "${auto}" ]
+  xcorr=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
+  if [ -e "${xcorr}" ]
   then
-    xcorr=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
     echo generate_pstokes_run.py ${xcorr} ${pstokes} --clobber
     generate_pstokes_run.py ${xcorr} --pstokes ${pstokes} --clobber
   else

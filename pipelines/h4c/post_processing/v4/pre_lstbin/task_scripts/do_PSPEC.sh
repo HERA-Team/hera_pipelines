@@ -40,9 +40,9 @@ for sd in ${sumdiff[@]}
 do
   # power spectra of cross-talk filtered data.
   input=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
-  output=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
   if [ -e "${input}" ]
   then
+      output=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
       # average all times incoherently
       echo pspec_run.py ${input} ${output}\
         --overwrite\
@@ -60,7 +60,7 @@ do
 
         # auto power spectra
         output=zen.${jd}.${sd}.${label}.autos.foreground_filled.tavg.pspec.h5
-        echo pspec_run.py ${auto_file} ${output}\
+        echo pspec_run.py ${input} ${output}\
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file}\
@@ -69,7 +69,7 @@ do
           --exclude_cross_bls --exclude_crosscorrs
 
 
-        pspec_run.py ${auto_file} ${output}\
+        pspec_run.py ${input} ${output}\
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file}\
@@ -81,15 +81,4 @@ do
     else
       echo "${input} does not exist!"
     fi
-
-
- auto_file=zen.${jd}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
-
-  if [ -e "${auto_file}" ]
-  then
-
-
-  else
-     echo "${auto_file} does not exist!"
-  fi
 done

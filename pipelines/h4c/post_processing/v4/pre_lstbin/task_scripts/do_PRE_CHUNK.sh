@@ -71,8 +71,8 @@ do
         flag_all.py ${input_file} ${input_file} --clobber --fill_data_with_zeros
       fi
 
-      echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file}
-      apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file}
+      echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file} --vis_units Jy
+      apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file} --vis_units Jy
 
       # update counter
       counter=$((${counter} + 1))
