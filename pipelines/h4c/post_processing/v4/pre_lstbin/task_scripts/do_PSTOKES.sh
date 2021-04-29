@@ -25,16 +25,6 @@ int_jd=${jd:0:7}
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
-  # compute pstokes of autocorrelation
-  auto=zen.${jd}.${sd}.${label}.autos.foreground_filled.tavg.uvh5
-  if [ -e "${auto}" ]
-  then
-    echo generate_pstokes_run.py ${auto} ${pstokes} --clobber
-    generate_pstokes_run.py ${auto} --pstokes ${pstokes} --clobber
-  else
-    echo "${auto} does not exist!"
-  fi
-
   # compute pstokes of xtalk filtered files.
   if [ -e "${auto}" ]
   then

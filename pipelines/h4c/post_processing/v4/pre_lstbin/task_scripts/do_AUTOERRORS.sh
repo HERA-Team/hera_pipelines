@@ -27,12 +27,11 @@ do
   echo ${psc}
   if [ -e "${psc}" ]
   then
-    echo ${auto}
-    auto=zen.${jd}.sum.${label}.autos.foreground_filled.tavg.uvh5
-    if [ -e "${auto}" ]
+    dfile=zen.${jd}.sum.${label}.xtalk_filtered.tavg.uvh5
+    if [ -e "${dfile}" ]
     then
-      echo auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
-      auto_noise_run.py ${psc} ${auto} ${beamfile} --err_type 'P_N' 'P_SN'
+      echo auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
+      auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
     fi
   fi
 done

@@ -41,27 +41,6 @@ fi
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
 do
-  # auto file
-  auto_in=zen.${jd}.${sd}.${label}.autos.chunked.uvh5
-  if [ -e "${auto_in}" ]
-  then
-    auto_out=zen.${jd}.${sd}.${label}.autos.foreground_filled.uvh5
-    echo delay_filter_run.py ${auto_in} \
-      --clobber  \
-      --filled_outfilename ${auto_out} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
-      --min_dly ${min_dly}  --mode dpss_leastsq
-
-
-    delay_filter_run.py ${auto_in}  \
-      --clobber  \
-      --filled_outfilename ${auto_out} \
-      --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
-      --min_dly ${min_dly}  --mode dpss_leastsq
-
-  else
-    echo "${auto_in} does not exist!"
-  fi
     fn_in=zen.${jd}.${sd}.${label}.chunked.uvh5
     fn_out=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
     if [ -e "${fn_in}" ]

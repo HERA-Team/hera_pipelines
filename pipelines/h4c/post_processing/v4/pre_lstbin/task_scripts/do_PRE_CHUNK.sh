@@ -71,18 +71,9 @@ do
         flag_all.py ${input_file} ${input_file} --clobber --fill_data_with_zeros
       fi
 
-      # extract the auto file from staged data in case its missing.
-      input_auto=zen.${jd_temp}.${sd}.autos.uvh5
-      extract_autos.py ${input_file} ${input_auto} --clobber
-
       echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file}
       apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file}
 
-      # calibrate auto file.
-      output_auto=zen.${jd_temp}.${sd}.${label}.autos.calibrated.uvh5
-      echo apply_cal.py ${input_auto} ${output_auto} --clobber --new_cal ${cal_file}
-      apply_cal.py ${input_auto} ${output_auto} --clobber --new_cal ${cal_file}
-      input_autos=${input_autos}" ${output_auto}"
       # update counter
       counter=$((${counter} + 1))
     fi
@@ -94,18 +85,6 @@ do
   --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
   chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} --spw_range ${spw0} ${spw1} \
   --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
-  # chunk calibrated auto files into single file and throw away bad antennas
-  input_auto=zen.${jd}.${sd}.${label}.autos.calibrated.uvh5
-  output_auto=zen.${jd}.${sd}.${label}.autos.chunked.uvh5
-  echo chunk_files.py ${input_autos} ${input_auto} ${output_auto} ${chunk_size}\
-    --spw_range ${spw0} ${spw1} --clobber --polarizations ee nn \
-    --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
-  chunk_files.py ${input_autos} ${input_auto} ${output_auto} ${chunk_size}\
-    --spw_range ${spw0} ${spw1} --clobber --polarizations ee nn \
-    --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
-  # remove calibrated autos that are not chunked.
-  echo rm -rf ${input_autos}
-  rm -rf ${input_autos}
 done
 # remove staged files.
 rm -rf ${stage_dir}
