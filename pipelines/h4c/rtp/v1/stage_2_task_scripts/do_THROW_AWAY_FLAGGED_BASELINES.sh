@@ -14,7 +14,7 @@ yaml_dir="${2}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-yaml_file=${yaml_dir}/${jd_int}.yaml
+yaml_file=${yaml_dir}/${int_jd}.yaml
 
 sumdiff=("sum" "diff")
 for sd in ${sumdiff[@]}
