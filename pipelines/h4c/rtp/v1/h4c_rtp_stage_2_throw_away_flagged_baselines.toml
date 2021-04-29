@@ -78,8 +78,8 @@ framesize = "1280x720"
 
 [WorkFlow]
 actions = [
-          "THROW_AWAY_FLAGGED_BASELINES",
-          "REDCAL",
+           "THROW_AWAY_FLAGGED_BASELINES",
+           "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL",
            "ABSCAL_INSPECT_NOTEBOOK",
@@ -95,7 +95,7 @@ actions = [
           ]
 
 [THROW_AWAY_FLAGGED_BASELINES]
-args = ["${basename}", "${Options:path_to_a_priori_flags}"]
+args = ["{basename}", "${Options:path_to_a_priori_flags}"]
 
 [REDCAL]
 prereqs = "THROW_AWAY_FLAGGED_BASELINES"
