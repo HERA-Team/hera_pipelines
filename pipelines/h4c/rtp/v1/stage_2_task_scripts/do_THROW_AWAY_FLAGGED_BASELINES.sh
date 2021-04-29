@@ -8,11 +8,12 @@ src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
 
-fn=${1}
-yaml_dir=${2}
+fn="${1}"
+yaml_dir="${2}"
 
-jd=$(get_jd `${fn}`)
-jd_int=$(get_int_jd `${fn}`)
+jd=$(get_jd $fn)
+int_jd=${jd:0:7}
+
 yaml_file=${yaml_dir}/${jd_int}.yaml
 
 sumdiff=("sum" "diff")
