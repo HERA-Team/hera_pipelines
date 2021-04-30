@@ -64,7 +64,7 @@ do
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file}\
-          --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.0\
+          --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
           --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
           --exclude_cross_bls --exclude_crosscorrs
 
@@ -73,11 +73,9 @@ do
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file}\
-          --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.0\
+          --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
           --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
           --exclude_cross_bls --exclude_crosscorrs
-
-
     else
       echo "${input} does not exist!"
     fi
