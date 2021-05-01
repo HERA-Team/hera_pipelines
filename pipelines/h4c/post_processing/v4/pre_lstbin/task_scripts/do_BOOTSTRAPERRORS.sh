@@ -27,10 +27,12 @@ sumdiff=("sum" "diff")
 
 for sd in ${sumdiff[@]}
 do
-  psc=zen.${jd}.${label}.xtalk_filtered.tavg.pspec.h5
+  psc=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
   if [ -e "${psc}" ]
   then
     echo bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
     bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
+  else
+    echo "${psc} does not exist!"
   fi
 done
