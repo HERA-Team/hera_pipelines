@@ -51,7 +51,7 @@ data :
   # data baseline-type length range [meters] and angle range [degrees]
   bl_len_range : [0, 1000]  
   bl_deg_range : [0, 180]
-  # xants : [0,2,11,24,50,53,54,67,69,98,122,136,139]
+  xants : None #[0,2,11,24,50,53,54,67,69,98,122,136,139]
 
   # specify baselines as list of lists, overriding len, deg and xants choices
   bls : None
