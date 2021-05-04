@@ -7,8 +7,8 @@
 # IO Parameters
 #---------------------------------------------------------------
 io :
-  work_dir : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group'         # directory to work in
-  out_dir : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/data'  # directory to dump all output in
+  work_dir : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/preprocess' # directory to work in
+  out_dir : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/preprocess'  # directory to dump all output in
   logfile : 'preprocess_out.log'  # logfile   
   errfile : 'preprocess_err.log' # error file
   joinlog : True       # redirect error output into logfile
@@ -21,15 +21,15 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : False         # foreground filter, clean or data-inpaint
-  ref_cal : True         # reflection calibration
+  fg_filt : True         # foreground filter, clean or data-inpaint
+  ref_cal : False         # reflection calibration
   xtalk_sub : False       # xtalk subtraction
   time_avg : False        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : False    # form pseudo-Stokes visibilities
 
   multiproc : True    # use multiprocess module
-  nproc : 4               # number of processes to spawn
+  nproc : 8               # number of processes to spawn
   maxiter : 1        # number of attempts for each block
 
 #---------------------------------------------------------------
@@ -37,12 +37,10 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-#  data_root : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2/LSTBIN/one_group/grp1'
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/data'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/preprocess'
 
   # glob-parseable, data template for input data products
-#  data_template : 'zen.grp1.of1.LST.?.?????.HH.OCRSL.uvh5'
-  data_template : 'zen.grp1.of1.LST.?.?????.HH.OCRSLP2.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None #'allspws.refcal_smooth.calfits'
@@ -51,9 +49,9 @@ data :
   pols : ['xx', 'xy', 'yx', 'yy']
 
   # data baseline-type length range [meters] and angle range [degrees]
-  bl_len_range : [0, 150]  
+  bl_len_range : [0, 1000]  
   bl_deg_range : [0, 180]
-  xants : [0,2,11,24,50,53,54,67,69,98,122,136,139]
+  # xants : [0,2,11,24,50,53,54,67,69,98,122,136,139]
 
   # specify baselines as list of lists, overriding len, deg and xants choices
   bls : None
@@ -63,7 +61,7 @@ data :
 
   # select inclusive range in LST [radians] for globbed datafiles
   # file mean LST be within bounds, otherwise it is dropped
-  lst_range : [0, 3.5]  # e.g. [0, 6.28]
+  lst_range : [0, 6.284]
 
 #---------------------------------------------------------------
 # Algorithm Parameters
@@ -83,21 +81,21 @@ algorithm :
   fg_filt :
     # IO
     resid_ext : None
-    inpaint_ext : "P2"
+    inpaint_ext : "P"
     axis : 'freq'
     # Filtering params
     clean_params : 
-      standoff : 25.0
+      standoff : 50.0
       horizon : 1.0
-      min_dly : 0.0
-      tol : 0.000001
-      autotol : 0.001
+      min_dly : 2000.0
+      tol : 1e-05
+      autotol : 5e-07
       maxiter : 100
       window : 'tukey'
       alpha : 0.15
       skip_wgt : 0.2
       gain : 0.9
-      edgecut_low : 400
+      edgecut_low : 100
       edgecut_hi : 150
       zeropad : 256
       max_frate : 3.0
@@ -109,13 +107,13 @@ algorithm :
     polyfit_deg : 3
     # hand flagging before CLEANing
     flag_lsts : None #[[0.9, 1.0]]  # start stop radians
-    flag_chans :  # start stop channels
-        - [135, 136]
-        - [169, 171]
-        - [424, 425]
-        - [570, 573]
-        - [697, 698]
-        - [815, 816]
+    flag_chans :  None # start stop channels
+        # - [135, 136]
+        # - [169, 171]
+        # - [424, 425]
+        # - [570, 573]
+        # - [697, 698]
+        # - [815, 816]
     freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
 
   # Xtalk Subtraction
