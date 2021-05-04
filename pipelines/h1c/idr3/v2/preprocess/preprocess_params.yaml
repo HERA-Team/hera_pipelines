@@ -62,6 +62,10 @@ data :
   # select inclusive range in LST [radians] for globbed datafiles
   # file mean LST be within bounds, otherwise it is dropped
   lst_range : [0, 6.284]
+  # if True, sort files by LST of the first integration, using lst_branch_cut to decide where to wrap
+  lst_sort : True 
+  # value in radians for branchcut for how to order LSTs. Only used if lst_sort is True.
+  lst_branch_cut : 4.71
 
 #---------------------------------------------------------------
 # Algorithm Parameters
