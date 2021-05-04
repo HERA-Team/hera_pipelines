@@ -7,8 +7,8 @@
 # IO Parameters
 #---------------------------------------------------------------
 io :
-  work_dir : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/preprocess' # directory to work in
-  out_dir : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/preprocess'  # directory to dump all output in
+  work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess' # directory to work in
+  out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess'  # directory to dump all output in
   logfile : 'preprocess_out.log'  # logfile   
   errfile : 'preprocess_err.log' # error file
   joinlog : True       # redirect error output into logfile
@@ -37,7 +37,7 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2_pspec/v2/one_group/preprocess'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess'
 
   # glob-parseable, data template for input data products
   data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
