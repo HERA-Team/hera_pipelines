@@ -45,6 +45,9 @@ data :
   # file extension for calibration file to load and apply to data
   cal_ext : None #'allspws.refcal_smooth.calfits'
 
+  # file extension to replace .uvh5 in data template for by-hand UVFlag file
+  hand_flag_ext : .hand_flags.h5
+
   # list of polarizations to operate on from input file
   pols : ['xx', 'xy', 'yx', 'yy']
 
@@ -119,6 +122,7 @@ algorithm :
         # - [697, 698]
         # - [815, 816]
     freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
+    apply_hand_flag_files : True # applies flagging waterfalls before filteirng using hand_flag_ext above
 
   # Xtalk Subtraction
   xtalk_sub : 

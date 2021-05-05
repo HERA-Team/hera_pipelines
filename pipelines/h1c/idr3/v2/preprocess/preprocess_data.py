@@ -453,7 +453,9 @@ if params['fg_filt']:
                     freq_flags = np.all(np.isclose(F.nsamples[key], 0), axis=0)
                     navg = np.mean(F.nsamples[key][:, ~freq_flags], axis=1)
                     time_flags = navg < p['freq_avg_min_nsamp']
-                    F.flags[key] += time_flags[:, None] 
+                    F.flags[key] += time_flags[:, None]
+            if get(p['apply_hand_flag_files'], False):
+                F.apply_flags(df.replace('.uvh5', params['hand_flag_ext']))
 
             # CLEAN
             if p['axis'] in ['freq', 'time']:
