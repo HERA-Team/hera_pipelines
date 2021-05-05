@@ -181,7 +181,8 @@ prereqs="BOOTSTRAPERRORS"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
-stride_length="${Options:chunk_size}"
+stride_length="all"
+time_centered = false
 args=["{basename}", "${FILTERING_NOTEBOOK_OPTS:nb_template_dir}", "${FILTERING_NOTEBOOK_OPTS:nb_output_repo}",
       "${FILTERING_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTERING_NOTEBOOK_OPTS:nreds}",
       "${FILTERING_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTERING_NOTEBOOK_OPTS:nskip}"]
@@ -191,13 +192,14 @@ prereqs="FILTERING_NOTEBOOK"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
-stride_length="${Options:chunk_size}"
+stride_length="all"
+time_centered=false
 args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_output_repo}",
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:spws}",
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:lst_fields}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:grp_skip}",
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
-      
+
 [CLEANUP]
 prereqs= "POWER_SPECTRUM_NOTEBOOK"
 prereq_chunk_size = "all"
