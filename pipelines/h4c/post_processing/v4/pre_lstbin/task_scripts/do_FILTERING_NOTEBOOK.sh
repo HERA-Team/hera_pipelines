@@ -13,12 +13,18 @@ source ${src_dir}/_common.sh
 # 3 - nb_output_repo: repository for saving evaluated notebooks
 # 4 - git_push: boolean whether to push the results created in the nb_output_repo
 # 5 - identifier label.
+# 6 - number of redundant groups to show in plots
+# 7 - maximum number of baselines to show per redundant group.
+# 8 - number of redundant groups to skip over when plotting the number of redundant groups specified in $6.
 
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
 git_push=${4}
 label=${5}
+nreds=${6}
+max_bls_per_redgrp=${7}
+nskip=${8}
 
 
 # Get JD from filename
@@ -28,8 +34,10 @@ nb_outfile=${nb_output_repo}/filter_output_inspect/filter_output_inspect_${label
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
 export JULIANDATE=${jd}
-export ABSCAL_MODEL_GLOB=${model_files_glob}
-export LST_BLACKLIST_STRING=${lst_blacklists}
+export LABEL=${label}
+export NREDS=${nreds}
+export MAX_BLS_PER_REDGRP=${max_bls_per_redgrp}
+export NSKIP=${nskip}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
