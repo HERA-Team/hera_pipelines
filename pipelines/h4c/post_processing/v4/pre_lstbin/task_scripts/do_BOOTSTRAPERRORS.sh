@@ -24,15 +24,19 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 sumdiff=("sum" "diff")
+pol_label_list=("", "_pstokes")
 
 for sd in ${sumdiff[@]}
 do
-  psc=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
-  if [ -e "${psc}" ]
-  then
-    echo bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
-    bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
-  else
-    echo "${psc} does not exist!"
-  fi
+  for pol_label in ${pol_label_list[@]}
+    do
+    psc=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.pspec.h5
+    if [ -e "${psc}" ]
+    then
+      echo bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
+      bootstrap_run.py ${psc} --Nsamples ${nsamples} --seed ${seed} --robust_std True --overwrite
+    else
+      echo "${psc} does not exist!"
+    fi
+  done
 done
