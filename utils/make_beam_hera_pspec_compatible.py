@@ -5,8 +5,8 @@
 import sys
 from pyuvdata import pyuvbeam
 
-input = sys.argv[0] # name of input file.
-output = sys.argv[1] # name of output file sans .uvh5. Will output linpol and stokes I pol beam.
+input = sys.argv[1] # name of input file.
+output = sys.argv[2] # name of output file sans .uvh5. Will output linpol and stokes I pol beam.
 
 output_file = output + '.uvh5'
 pstokes_output_file = output + '_pstokes.uvh5'
