@@ -29,7 +29,7 @@ analysis :
   form_pstokes : False    # form pseudo-Stokes visibilities
 
   multiproc : True    # use multiprocess module
-  nproc : 8               # number of processes to spawn
+  nproc : 4               # number of processes to spawn
   maxiter : 1        # number of attempts for each block
 
 #---------------------------------------------------------------
