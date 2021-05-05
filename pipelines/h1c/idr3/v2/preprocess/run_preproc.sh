@@ -3,9 +3,9 @@
 #PBS -j oe
 #PBS -o preproc_pipe.out
 #PBS -N preproc_pipe
-#PBS -l nodes=1:ppn=16
+#PBS -l nodes=1:ppn=15
 #PBS -l walltime=64:00:00
-#PBS -l vmem=256GB,mem=256GB
+#PBS -l vmem=250GB,mem=250GB
 #PBS -M jsdillon+nrao@berkeley.edu
 
 source ~/.bashrc
