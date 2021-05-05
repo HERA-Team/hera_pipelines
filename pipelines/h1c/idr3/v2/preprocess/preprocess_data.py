@@ -51,11 +51,15 @@ pols = params['pols']
 data_template = os.path.join(params['data_root'], params['data_template'])
 cal_ext = params['cal_ext']
 
-# parse data files and calibration files and order by Julian Date
+# parse data files and calibration files and order by Julian Date or LST (with specified branch cut)
 datafiles = glob.glob(data_template)
 assert len(datafiles) > 0
 _, _, filelsts, filetimes = hc.io.get_file_times(datafiles, filetype='uvh5')
-timeorder = np.argsort([ft[0] for ft in filetimes])
+if params.get('lst_sort', False):
+    branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
+    timeorder = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts)], key=branch_sorter), dtype=int)[:, 0]
+else:
+    timeorder = np.argsort([ft[0] for ft in filetimes])
 datafiles = [datafiles[ti] for ti in timeorder]
 filetimes = [filetimes[ti] for ti in timeorder]
 filelsts = [filelsts[ti] for ti in timeorder]
