@@ -13,25 +13,30 @@ source ${src_dir}/_common.sh
 
 fn="${1}"
 label="${2}"
-beamfile="${3}"
+beamfile_stem="${3}"
 
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 sumdiff=("sum" "diff")
+pol_label_list=("", "_pstokes")
 
 for sd in ${sumdiff[@]}
 do
-  psc=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
-  echo ${psc}
-  if [ -e "${psc}" ]
-  then
-    dfile=zen.${jd}.sum.${label}.xtalk_filtered.tavg.uvh5
-    if [ -e "${dfile}" ]
+  for pol_label in ${pol_label_list[@]}
+  do
+    beamfile=${beamfile_stem}${pol_label}.fits
+    psc=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.pspec.h5
+    echo ${psc}
+    if [ -e "${psc}" ]
     then
-      echo auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
-      auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
+      dfile=zen.${jd}.sum.${label}.xtalk_filtered.tavg.uvh5
+      if [ -e "${dfile}" ]
+      then
+        echo auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
+        auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
+      fi
     fi
-  fi
+  done
 done

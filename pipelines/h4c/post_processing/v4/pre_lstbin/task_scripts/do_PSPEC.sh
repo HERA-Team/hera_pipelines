@@ -15,9 +15,8 @@ source ${src_dir}/_common.sh
 # 5 - polarizatios to calculate fed as comma separated list with tildes separating lower / uppper channels.
 fn="${1}"
 label="${2}"
-beam_file="${3}"
+beam_file_stem="${3}"
 spw_ranges="${4}"
-pol_pairs="${5}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -36,47 +35,55 @@ echo ${pol_pairs}
 # form power spectrum between even and odd data sets with offset times.
 #pol_pairs="ee~ee,nn~nn"
 sumdiff=("sum" "diff")
+pol_pair_list=("XX~XX,YY~YY" "pI~pI")
+pol_label_list=("", "_pstokes")
 for sd in ${sumdiff[@]}
 do
-  # power spectra of cross-talk filtered data.
-  input=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
-  if [ -e "${input}" ]
-  then
-      output=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.pspec.h5
-      # average all times incoherently
-      echo pspec_run.py ${input} ${output}\
-        --overwrite\
-        --pol_pairs ${pol_pairs} --verbose\
-        --Jy2mK --beam ${beam_file} --exclude_permutations\
-        --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.1\
-        --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
-
-        pspec_run.py ${input} ${output}\
+  for polnum in $(seq 0 2)
+  do
+    pol_pairs=${pol_pair_list[$polnum]}
+    pol_label=${pol_label_list[$polnum]}
+    beam_file=${beam_file_stem}${pol_label}.fits
+    # power spectra of cross-talk filtered data.
+    input=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
+    if [ -e "${input}" ]
+    then
+        output=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.pspec.h5
+        # average all times incoherently
+        echo pspec_run.py ${input} ${output}\
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file} --exclude_permutations\
           --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.1\
           --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
-        # auto power spectra
-        output=zen.${jd}.${sd}.${label}.autos.foreground_filled.tavg.pspec.h5
-        echo pspec_run.py ${input} ${output}\
-          --overwrite\
-          --pol_pairs ${pol_pairs} --verbose\
-          --Jy2mK --beam ${beam_file}\
-          --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
-          --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-          --exclude_cross_bls --exclude_crosscorrs
+          pspec_run.py ${input} ${output}\
+            --overwrite\
+            --pol_pairs ${pol_pairs} --verbose\
+            --Jy2mK --beam ${beam_file} --exclude_permutations\
+            --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.1\
+            --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
+
+          # auto power spectra
+          output=zen.${jd}.${sd}.${label}.autos.foreground_filled${pol_label}.tavg.pspec.h5
+          echo pspec_run.py ${input} ${output}\
+            --overwrite\
+            --pol_pairs ${pol_pairs} --verbose\
+            --Jy2mK --beam ${beam_file}\
+            --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
+            --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
+            --exclude_cross_bls --exclude_crosscorrs
 
 
-        pspec_run.py ${input} ${output}\
-          --overwrite\
-          --pol_pairs ${pol_pairs} --verbose\
-          --Jy2mK --beam ${beam_file}\
-          --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
-          --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-          --exclude_cross_bls --exclude_crosscorrs
-    else
-      echo "${input} does not exist!"
-    fi
+          pspec_run.py ${input} ${output}\
+            --overwrite\
+            --pol_pairs ${pol_pairs} --verbose\
+            --Jy2mK --beam ${beam_file}\
+            --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
+            --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
+            --exclude_cross_bls --exclude_crosscorrs
+      else
+        echo "${input} does not exist!"
+      fi
+    done
 done
