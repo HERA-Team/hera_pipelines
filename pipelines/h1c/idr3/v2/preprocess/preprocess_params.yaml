@@ -29,7 +29,7 @@ analysis :
   form_pstokes : False    # form pseudo-Stokes visibilities
 
   multiproc : True    # use multiprocess module
-  nproc : 2               # number of processes to spawn
+  nproc : 4               # number of processes to spawn
   maxiter : 1        # number of attempts for each block
 
 #---------------------------------------------------------------
@@ -54,7 +54,7 @@ data :
   # data baseline-type length range [meters] and angle range [degrees]
   bl_len_range : [0, 1000]  
   bl_deg_range : [0, 180]
-  xants : None #[0,2,11,24,50,53,54,67,69,98,122,136,139]
+  xants : [0,2,24,50,53,54,67,69,81,98,103,104,116,117,136,155,156,180,181,182,183,334,338]
 
   # specify baselines as list of lists, overriding len, deg and xants choices
   bls : None
