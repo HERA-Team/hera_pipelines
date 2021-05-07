@@ -20,8 +20,7 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 sumdiff=("sum" "diff")
-pol_label_list=("", "_pstokes")
-
+pol_label_list=("" "_pstokes")
 for sd in ${sumdiff[@]}
 do
   for pol_label in ${pol_label_list[@]}
@@ -31,7 +30,7 @@ do
     echo ${psc}
     if [ -e "${psc}" ]
     then
-      dfile=zen.${jd}.sum.${label}.xtalk_filtered.tavg.uvh5
+      dfile=zen.${jd}.sum.${label}.xtalk_filtered${pol_label}.tavg.uvh5
       if [ -e "${dfile}" ]
       then
         echo auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'

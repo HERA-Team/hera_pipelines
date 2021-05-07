@@ -74,7 +74,7 @@ actions = ["PRE_CHUNK",
            "PSTOKES",
            "PSPEC",
            "AUTOERRORS",
-           "BOOTSTRAPERRORS",
+           #BOOTSTRAPERRORS,
            "FILTERING_NOTEBOOK",
            "POWER_SPECTRUM_NOTEBOOK",
            "CLEANUP"]
@@ -177,7 +177,7 @@ stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
 
 [FILTERING_NOTEBOOK]
-prereqs="BOOTSTRAPERRORS"
+prereqs="AUTOERRORS"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
@@ -188,7 +188,7 @@ args=["{basename}", "${FILTERING_NOTEBOOK_OPTS:nb_template_dir}", "${FILTERING_N
       "${FILTERING_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTERING_NOTEBOOK_OPTS:nskip}"]
 
 [POWER_SPECTRUM_NOTEBOOK]
-prereqs="FILTERING_NOTEBOOK"
+prereqs="AUTOERRORS"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1

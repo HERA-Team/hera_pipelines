@@ -36,16 +36,17 @@ echo ${pol_pairs}
 #pol_pairs="ee~ee,nn~nn"
 sumdiff=("sum" "diff")
 pol_pair_list=("XX~XX,YY~YY" "pI~pI")
-pol_label_list=("", "_pstokes")
+pol_label_list=("" "_pstokes")
+polnums=(0 1)
 for sd in ${sumdiff[@]}
 do
-  for polnum in $(seq 0 2)
+  for polnum in ${polnums[@]}
   do
     pol_pairs=${pol_pair_list[$polnum]}
     pol_label=${pol_label_list[$polnum]}
     beam_file=${beam_file_stem}${pol_label}.fits
     # power spectra of cross-talk filtered data.
-    input=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
+    input=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.uvh5
     if [ -e "${input}" ]
     then
         output=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.pspec.h5
@@ -54,14 +55,14 @@ do
           --overwrite\
           --pol_pairs ${pol_pairs} --verbose\
           --Jy2mK --beam ${beam_file} --exclude_permutations\
-          --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.1\
+          --file_type uvh5 --xant_flag_thresh 1.1\
           --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
           pspec_run.py ${input} ${output}\
             --overwrite\
             --pol_pairs ${pol_pairs} --verbose\
             --Jy2mK --beam ${beam_file} --exclude_permutations\
-            --file_type uvh5  --exclude_auto_bls --xant_flag_thresh 1.1\
+            --file_type uvh5  --xant_flag_thresh 1.1\
             --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
           # auto power spectra

@@ -29,7 +29,7 @@ nskip=${8}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/filter_output_inspect/filter_output_inspect_${label}_${jd}.ipynb
+nb_outfile=${nb_output_repo}/filter_output_inspect/filter_inspect_${label}_${jd}.ipynb
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
@@ -44,7 +44,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --to notebook \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/filter_output_inspect.ipynb
+--execute ${nb_template_dir}filter_inspect.ipynb
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
