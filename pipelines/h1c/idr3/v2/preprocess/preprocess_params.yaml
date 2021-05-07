@@ -21,8 +21,8 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : True         # foreground filter, clean or data-inpaint
-  ref_cal : False         # reflection calibration
+  fg_filt : False         # foreground filter, clean or data-inpaint
+  ref_cal : True         # reflection calibration
   xtalk_sub : False       # xtalk subtraction
   time_avg : False        # time average data
   red_avg : False         # redundant averaging
@@ -37,16 +37,17 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
+  # data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None #'allspws.refcal_smooth.calfits'
 
   # file extension to replace .uvh5 in data template for by-hand UVFlag file
-  hand_flag_ext : .hand_flags.h5
+  # hand_flag_ext : .hand_flags.h5
 
   # list of polarizations to operate on from input file
   pols : ['xx', 'xy', 'yx', 'yy']
@@ -162,7 +163,7 @@ algorithm :
 
   # Reflection Calibration
   ref_cal :
-    cal_ext : 'refcal2.calfits'
+    cal_ext : 'refcal.calfits'
     time_avg : True
     expand_times : True   # if time_avg, inflate gains to full time range of file
     wgt_by_nsample : False
@@ -176,12 +177,12 @@ algorithm :
     # initial guess parameters
     window : 'bh'
     alpha : 0.1
-    edgecut_low : [100, 400] 
-    edgecut_hi : [524, 174]
+    edgecut_low : [117, 537] 
+    edgecut_hi : [661, 327]
     combine_spws : True
-    spw_boundaries :
-      - [100, 400]
-      - [400, 850]  # channel boundaries when combining multispw. default is to use edgecuts.
+    spw_boundaries : None
+      # - [117, 362]
+      # - [537, 696]  # channel boundaries when combining multispw. default is to use edgecuts.
     zeropad : 256
     Nphs : 100
     fthin : None
