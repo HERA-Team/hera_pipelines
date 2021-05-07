@@ -23,17 +23,17 @@ nb_outdir=${nb_output_repo}/delay_spectrum_inspect
 if [ ! -d ${nb_outdir} ]; then
   mkdir -p ${nb_outdir}
 fi
-nb_outfile=${nb_outdir}/delay_spectrum_inspect_${jd}.ipynb
-html_outfile=${nb_outdir}/delay_spectrum_${jd}.html
+nb_outfile=${nb_outdir}/delay_spectrum_inspect_${jd}.html
+csv_outfile=${nb_outdir}/ds_noise_ratio_${jd}.csv
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
 export JULIANDATE=${jd}
-export HTML_OUTFILE=${html_outfile}
+export NB_OUTDIR=${nb_outdir}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
---to notebook \
+--to html \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/delay_spectrum_inspect.ipynb
@@ -44,7 +44,7 @@ then
     cd ${nb_output_repo}
     git pull origin main
     git add ${nb_outfile}
-    git add ${html_outfile}
+    git add ${csv_outfile}
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
