@@ -29,7 +29,7 @@ nskip=${8}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/filter_output_inspect/filter_inspect_${label}_${jd}.ipynb
+nb_outfile=${nb_output_repo}/filter_inspect/filter_inspect_${label}_${jd}.ipynb
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
