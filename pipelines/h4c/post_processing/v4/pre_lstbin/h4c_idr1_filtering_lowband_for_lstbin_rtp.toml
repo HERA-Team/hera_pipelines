@@ -39,7 +39,6 @@ min_frate = 0.5
 [PSPEC_OPTS]
 pstokes="pI"
 beam_file="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix"
-pol_pairs="XX~XX,YY~YY,pI~pI"
 spw_ranges="0~85,85~170"
 nsamples=100
 seed=10
@@ -158,8 +157,7 @@ mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}",
-     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}",
-     "${PSPEC_OPTS:pol_pairs}"]
+     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
 
 [AUTOERRORS]
 prereqs = "PSPEC"

@@ -157,8 +157,7 @@ mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}",
-     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}",
-     "${PSPEC_OPTS:pol_pairs}"]
+     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
 
 [AUTOERRORS]
 prereqs = "PSPEC"
