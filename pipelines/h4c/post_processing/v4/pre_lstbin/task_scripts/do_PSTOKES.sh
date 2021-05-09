@@ -12,9 +12,10 @@ source ${src_dir}/_common.sh
 # 4 - pstokes to calculate
 
 fn="${1}"
-label="${2}"
-grpstr="${3}"
-pstokes="${@:3}"
+include_diffs="${2}"
+label="${3}"
+grpstr="${4}"
+pstokes="${@:4}"
 
 
 
@@ -22,7 +23,13 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 
-sumdiff=("sum" "diff")
+if [ "${include_diffs}" = "true" ]
+then
+  sumdiff=("sum" "diff")
+else
+  sumdiff=("sum")
+fi
+
 for sd in ${sumdiff[@]}
 do
   # compute pstokes of xtalk filtered files.

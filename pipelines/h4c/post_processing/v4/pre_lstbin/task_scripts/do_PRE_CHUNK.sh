@@ -7,11 +7,12 @@ source ${src_dir}/_common.sh
 
 
 fn="${1}"
-label="${2}"
-chunk_size="${3}"
-spw0="${4}"
-spw1="${5}"
-yaml_dir="${6}"
+include_diffs="${2}"
+label="${3}"
+chunk_size="${4}"
+spw0="${5}"
+spw1="${6}"
+yaml_dir="${7}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -21,7 +22,13 @@ rm -rf ${stage_dir}
 mkdir ${stage_dir}
 ant_flag_yaml=${yaml_dir}/${int_jd}.yaml
 
-sumdiff=("sum" "diff")
+if [ "${include_diffs}" = "true" ]
+then
+  sumdiff=("sum" "diff")
+else
+  sumdiff=("sum")
+fi
+
 for sd in ${sumdiff[@]}
 do
   # stage full baseline files.

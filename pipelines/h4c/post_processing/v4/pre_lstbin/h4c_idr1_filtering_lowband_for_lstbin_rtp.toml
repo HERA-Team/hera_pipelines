@@ -16,8 +16,7 @@ pols = "ee nn"
 yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
 nbl_per_load = 100
 t_avg = 300.0
-grpstr = "grp1.of2"
-
+include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
@@ -83,7 +82,7 @@ actions = ["PRE_CHUNK",
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}",
+args=["{basename}", "${Options:include_diffs}", "${Options:label}",
     "${Options:chunk_size}",
     "${Options:spw0}", "${Options:spw1}", "${Options:yaml_dir}"]
 
@@ -94,7 +93,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
 args = ["{basename}",
-       "${Options:label}", "${DELAY_OPTS:tol}",
+       "${Options:label}", "${Options:include_diffs}", "${DELAY_OPTS:tol}",
        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
        "${DELAY_OPTS:filter_mode}",
        "${Options:nbl_per_load}"]
@@ -105,7 +104,7 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
+args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
        "${Options:cache_dir}"]
@@ -117,7 +116,7 @@ prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
+args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
        "${Options:cache_dir}"]
@@ -129,7 +128,7 @@ prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
+args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${Options:t_avg}"]
 
 [RECONSTITUTE]
@@ -138,7 +137,7 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
+args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}"]
 
 [PSTOKES]
@@ -147,7 +146,7 @@ prereq_chunk_size=1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}",
+args=["{basename}", "${Options:include_diffs}",
      "${Options:label}", "${PSPEC_OPTS:pstokes}"]
 
 [PSPEC]
@@ -156,7 +155,7 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}",
+args=["{basename}", "${Options:include_diffs}", "${Options:label}",
      "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
 
 [AUTOERRORS]
@@ -165,7 +164,7 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}", "${PSPEC_OPTS:beam_file}"]
+args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:beam_file}"]
 
 [BOOTSTRAPERRORS]
 prereqs = "AUTOERRORS"
@@ -173,7 +172,7 @@ prereq_chunk_size = 1
 mem=24000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
+args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
 
 [FILTER_NOTEBOOK]
 prereqs="AUTOERRORS"

@@ -14,27 +14,23 @@ source ${src_dir}/_common.sh
 # 4 - spw-ranges to use fed as comma separated list with tildes separating upper / lower channels.
 # 5 - polarizatios to calculate fed as comma separated list with tildes separating lower / uppper channels.
 fn="${1}"
-label="${2}"
-beam_file_stem="${3}"
-spw_ranges="${4}"
+include_diffs="${2}"
+label="${3}"
+beam_file_stem="${4}"
+spw_ranges="${5}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-spacer=" "
-tilde="~"
-#replace tilde with space character in spw_ranges and pol-pairs.
-echo ${spw_ranges}
-echo ${pol_pairs}
-#spw_ranges=${spw_ranges//${tilde}/${spacer}}
-#pol_pairs=${pol_pairs//${tilde}/${spacer}}
-#spw_ranges=${spw_ranges//,/, }
-#pol_pairs=${pol_pairs//,/, }
-#spw_ranges="'$spw_ranges'"
-#pol_pairs="'$pol_pairs'"
-# form power spectrum between even and odd data sets with offset times.
-#pol_pairs="ee~ee,nn~nn"
-sumdiff=("sum" "diff")
+
+if [ "${include_diffs}" = "true" ]
+then
+  sumdiff=("sum" "diff")
+else
+  sumdiff=("sum")
+fi
+
+
 pol_pair_list=("XX~XX,YY~YY" "pI~pI")
 pol_label_list=("" "_pstokes")
 polnums=(0 1)

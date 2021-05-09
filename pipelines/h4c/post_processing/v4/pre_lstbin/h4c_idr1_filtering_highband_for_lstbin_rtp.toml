@@ -16,8 +16,7 @@ pols = "ee nn"
 yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
 nbl_per_load = 100
 t_avg = 300.0
-grpstr = "grp1.of2"
-
+include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
@@ -83,9 +82,9 @@ actions = ["PRE_CHUNK",
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}",
-    "${Options:chunk_size}",
-    "${Options:spw0}", "${Options:spw1}", "${Options:yaml_dir}"]
+args=["{basename}", "${Options:include_diffs}", "${Options:label}",
+   "${Options:chunk_size}",
+   "${Options:spw0}", "${Options:spw1}", "${Options:yaml_dir}"]
 
 [DELAY]
 prereqs = "PRE_CHUNK"
@@ -94,10 +93,10 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
 args = ["{basename}",
-       "${Options:label}", "${DELAY_OPTS:tol}",
-       "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
-       "${DELAY_OPTS:filter_mode}",
-       "${Options:nbl_per_load}"]
+      "${Options:label}", "${Options:include_diffs}", "${DELAY_OPTS:tol}",
+      "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
+      "${DELAY_OPTS:filter_mode}",
+      "${Options:nbl_per_load}"]
 
 [XTALK]
 prereqs = "DELAY"
@@ -105,10 +104,10 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
-       "${Options:label}", "${FR_OPTS:tol}",
-       "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
-       "${Options:cache_dir}"]
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}", "${FR_OPTS:tol}",
+      "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
+      "${Options:cache_dir}"]
 
 
 [TIME_INPAINT]
@@ -117,10 +116,10 @@ prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
-       "${Options:label}", "${FR_OPTS:tol}",
-       "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
-       "${Options:cache_dir}"]
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}", "${FR_OPTS:tol}",
+      "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
+      "${Options:cache_dir}"]
 
 
 [TIME_AVERAGE]
@@ -129,8 +128,8 @@ prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
-       "${Options:label}", "${Options:t_avg}"]
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}", "${Options:t_avg}"]
 
 [RECONSTITUTE]
 prereqs = "TIME_AVERAGE"
@@ -138,8 +137,8 @@ prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
-args = ["{basename}",
-       "${Options:label}"]
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}"]
 
 [PSTOKES]
 prereqs="RECONSTITUTE"
@@ -147,8 +146,8 @@ prereq_chunk_size=1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}",
-     "${Options:label}", "${PSPEC_OPTS:pstokes}"]
+args=["{basename}", "${Options:include_diffs}",
+    "${Options:label}", "${PSPEC_OPTS:pstokes}"]
 
 [PSPEC]
 prereqs = "PSTOKES"
@@ -156,8 +155,8 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}",
-     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
+args=["{basename}", "${Options:include_diffs}", "${Options:label}",
+    "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
 
 [AUTOERRORS]
 prereqs = "PSPEC"
@@ -165,7 +164,7 @@ prereq_chunk_size = 1
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}", "${PSPEC_OPTS:beam_file}"]
+args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:beam_file}"]
 
 [BOOTSTRAPERRORS]
 prereqs = "AUTOERRORS"
@@ -173,7 +172,7 @@ prereq_chunk_size = 1
 mem=24000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
+args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
 
 [FILTER_NOTEBOOK]
 prereqs="AUTOERRORS"
@@ -183,8 +182,8 @@ chunk_size=1
 stride_length="all"
 time_centered = false
 args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOOK_OPTS:nb_output_repo}",
-      "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
-      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}"]
+     "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
+     "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}"]
 
 [POWER_SPECTRUM_NOTEBOOK]
 prereqs="AUTOERRORS"
@@ -192,12 +191,12 @@ prereq_chunk_size="all"
 mem=128000
 chunk_size=1
 stride_length="all"
-time_centered = false
+time_centered=false
 args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_output_repo}",
-      "${POWER_SPECTRUM_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:spws}",
-      "${POWER_SPECTRUM_NOTEBOOK_OPTS:lst_fields}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:grp_skip}",
-      "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
-      "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
+     "${POWER_SPECTRUM_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:spws}",
+     "${POWER_SPECTRUM_NOTEBOOK_OPTS:lst_fields}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:grp_skip}",
+     "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
+     "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
 
 [CLEANUP]
 prereqs= "POWER_SPECTRUM_NOTEBOOK"

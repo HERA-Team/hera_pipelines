@@ -12,8 +12,9 @@ source ${src_dir}/_common.sh
 # 4 - group string identifier
 
 fn="${1}"
-label="${2}"
-beamfile_stem="${3}"
+include_diffs="${2}"
+label="${3}"
+beamfile_stem="${4}"
 
 
 jd=$(get_jd $fn)

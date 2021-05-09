@@ -13,9 +13,10 @@ source ${src_dir}/_common.sh
 # 5 - bootstrap seed.
 
 fn="${1}"
-label="${2}"
-nsamples="${3}"
-seed="${4}"
+include_diffs="${2}"
+label="${3}"
+nsamples="${4}"
+seed="${5}"
 
 
 
@@ -23,7 +24,15 @@ seed="${4}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-sumdiff=("sum" "diff")
+
+if [ "${include_diffs}" = "true" ]
+then
+  sumdiff=("sum" "diff")
+else
+  sumdiff=("sum")
+fi
+
+
 pol_label_list=("", "_pstokes")
 
 for sd in ${sumdiff[@]}

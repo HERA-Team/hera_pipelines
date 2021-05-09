@@ -18,18 +18,25 @@ source ${src_dir}/_common.sh
 # 8 - if true, do no foregrounds file. This could run substantially slower if flags are not separable.
 
 fn="${1}"
-label="${2}"
-tol="${3}"
-frc0="${4}"
-frc1="${5}"
-cache_dir="${6}"
+include_diffs="${2}"
+label="${3}"
+tol="${4}"
+frc0="${5}"
+frc1="${6}"
+cache_dir="${7}"
 
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 # if cache directory does not exist, make it
-sumdiff=("sum" "diff")
+if [ "${include_diffs}" = "true" ]
+then
+  sumdiff=("sum" "diff")
+else
+  sumdiff=("sum")
+fi
+
 for sd in ${sumdiff[@]}
 do
     fn_in=zen.${jd}.${sd}.${label}.foreground_filled.uvh5

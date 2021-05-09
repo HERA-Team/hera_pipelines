@@ -15,13 +15,14 @@ source ${src_dir}/_common.sh
 # 6 - standoff delay standoff in ns for filtering window.
 # 7 - cache_dir, directory to store cache files in.
 fn="${1}"
-label="${2}"
-tol="${3}"
-standoff="${4}"
-min_dly="${5}"
-cache_dir="${6}"
-filter_mode="${7}"
-nbl_per_load="${8}"
+include_diffs="${2}"
+label="${3}"
+tol="${4}"
+standoff="${5}"
+min_dly="${6}"
+cache_dir="${7}"
+filter_mode="${8}"
+nbl_per_load="${9}"
 # get julian day from file name
 
 jd=$(get_jd $fn)
@@ -38,7 +39,15 @@ then
 else
   calfile="none"
 fi
-sumdiff=("sum" "diff")
+
+if [ "${include_diffs}" = "true" ]
+then
+  sumdiff=("sum" "diff")
+else
+  sumdiff=("sum")
+fi
+
+
 for sd in ${sumdiff[@]}
 do
     fn_in=zen.${jd}.${sd}.${label}.chunked.uvh5
