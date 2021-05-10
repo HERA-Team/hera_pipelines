@@ -10,9 +10,8 @@ fn="${1}"
 include_diffs="${2}"
 label="${3}"
 chunk_size="${4}"
-spw0="${5}"
-spw1="${6}"
-yaml_dir="${7}"
+spw_ranges="${5}"
+yaml_dir="${6}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -78,8 +77,8 @@ do
         flag_all.py ${input_file} ${input_file} --clobber --fill_data_with_zeros
       fi
 
-      echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file} --vis_units Jy
-      apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file} --vis_units Jy
+      echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file} --vis_units Jy --spw_ranges ${spw_ranges}
+      apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file} --vis_units Jy --spw_ranges ${spw_ranges}
 
       # update counter
       counter=$((${counter} + 1))
@@ -88,9 +87,9 @@ do
   # chunk staged input baseline files into a single file and throw away flagged antennas.
   input_file=${stage_dir}/${int_jd}/zen.${jd}.${sd}.uvh5
   output_file=zen.${jd}.${sd}.${label}.chunked.uvh5
-  echo chunk_files.py ${input_files} ${input_file} ${output_file}  ${chunk_size} --spw_range ${spw0} ${spw1} \
+  echo chunk_files.py ${input_files} ${input_file} ${output_file}  ${chunk_size} \
   --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
-  chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} --spw_range ${spw0} ${spw1} \
+  chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} \
   --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
 done
 # remove staged files.

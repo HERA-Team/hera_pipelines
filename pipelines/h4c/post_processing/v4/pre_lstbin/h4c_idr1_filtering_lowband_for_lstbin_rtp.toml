@@ -8,8 +8,7 @@ base_cpu = 1
 timeout = "24h"
 mail_user = "aaronew+nrao@berkeley.edu"
 chunk_size = 15 # this number is to make sure that the branch cut does not occur inside of a single file.                # should be adjusted depending on where the cut is.
-spw0 = 150
-spw1 = 320
+spw_ranges='150~320'
 label = "low-band-allbls"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
@@ -84,7 +83,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}",
     "${Options:chunk_size}",
-    "${Options:spw0}", "${Options:spw1}", "${Options:yaml_dir}"]
+    "${Options:spw_ranges}", "${Options:yaml_dir}"]
 
 [DELAY]
 prereqs = "PRE_CHUNK"
