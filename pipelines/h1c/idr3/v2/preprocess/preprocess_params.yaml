@@ -21,9 +21,9 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : False         # foreground filter, clean or data-inpaint
+  fg_filt : True         # foreground filter, clean or data-inpaint
   ref_cal : True         # reflection calibration
-  xtalk_sub : False       # xtalk subtraction
+  xtalk_sub : True       # xtalk subtraction
   time_avg : False        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : False    # form pseudo-Stokes visibilities
@@ -141,8 +141,8 @@ algorithm :
     standoff : 0
     window : 'bh'
     alpha : 0.1
-    edgecut_low : [100, 400]
-    edgecut_hi : [624, 150]
+    edgecut_low : [117, 537]
+    edgecut_hi : [661, 327]
     gp_frate_degrade : 0.0
     gp_Nmirror : 200
     Nkeep : 30
@@ -150,7 +150,7 @@ algorithm :
     project_vmodes : False
     frate_thresh : 0.06  # if max_frate [mHz] is below this, don't filter it
     rm_intermediate_files : False
-    tol : 0.00000001
+    tol : 1.0e-8
 
   # Time Averaging
   time_avg : 
@@ -177,7 +177,7 @@ algorithm :
     # initial guess parameters
     window : 'bh'
     alpha : 0.1
-    edgecut_low : [117, 537] 
+    edgecut_low : [117, 537]
     edgecut_hi : [661, 327]
     combine_spws : True
     spw_boundaries : None
