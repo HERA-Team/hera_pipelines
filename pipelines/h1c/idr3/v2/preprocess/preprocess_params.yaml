@@ -48,7 +48,7 @@ data :
   cal_ext : None #'allspws.refcal_smooth.calfits'
 
   # file extension to replace .uvh5 in data template for by-hand UVFlag file
-  # hand_flag_ext : .hand_flags.h5
+  hand_flag_ext : .hand_flags.h5
 
   # list of polarizations to operate on from input file
   pols : ['xx', 'xy', 'yx', 'yy']
