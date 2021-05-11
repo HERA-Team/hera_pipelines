@@ -21,7 +21,7 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : False         # foreground filter, clean or data-inpaint
+  fg_filt : True         # foreground filter, clean or data-inpaint
   ref_cal : True         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
   time_avg : False        # time average data
