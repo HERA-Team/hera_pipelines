@@ -20,7 +20,7 @@ include_diffs = "true"
 [DELAY_OPTS]
 tol = 1e-9
 standoff = 100
-min_dly = 1000
+min_dly = 350
 calibration = "none"
 filter_mode = "DPSS"
 # we may want to consider another flagging round after delay filtering.
@@ -92,7 +92,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 8000
 args = ["{basename}",
-       "${Options:label}", "${Options:include_diffs}", "${DELAY_OPTS:tol}",
+       "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
        "${DELAY_OPTS:filter_mode}",
        "${Options:nbl_per_load}"]
