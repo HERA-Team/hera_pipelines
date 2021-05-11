@@ -25,7 +25,7 @@ label=${5}
 nreds=${6}
 max_bls_per_redgrp=${7}
 nskip=${8}
-
+spws=${9}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -38,7 +38,7 @@ export LABEL=${label}
 export NREDS=${nreds}
 export MAX_BLS_PER_REDGRP=${max_bls_per_redgrp}
 export NSKIP=${nskip}
-
+export SPWS=${spws}
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
 --to notebook \

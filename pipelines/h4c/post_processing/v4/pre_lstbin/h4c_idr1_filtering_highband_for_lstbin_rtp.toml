@@ -181,8 +181,8 @@ chunk_size=1
 stride_length="all"
 time_centered = false
 args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOOK_OPTS:nb_output_repo}",
-     "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
-     "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}"]
+      "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
+      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${Options:spw_ranges}"]
 
 [POWER_SPECTRUM_NOTEBOOK]
 prereqs="AUTOERRORS"
