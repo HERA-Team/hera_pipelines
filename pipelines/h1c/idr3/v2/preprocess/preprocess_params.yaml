@@ -178,12 +178,12 @@ algorithm :
     # initial guess parameters
     window : 'bh'
     alpha : 0.1
-    edgecut_low : [117, 537]
-    edgecut_hi : [661, 327]
+    edgecut_low : [113, 409]
+    edgecut_hi : [536, 176]
     combine_spws : True
-    spw_boundaries : None
-      # - [117, 362]
-      # - [537, 696]  # channel boundaries when combining multispw. default is to use edgecuts.
+    spw_boundaries :
+      - [0, 384]
+      - [385, 1023]  # channel boundaries when combining multispw. default is to use edgecuts.
     zeropad : 256
     Nphs : 100
     fthin : None
