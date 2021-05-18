@@ -167,6 +167,7 @@ algorithm :
     cal_ext : 'refcal.calfits'
     time_avg : True
     expand_times : True   # if time_avg, inflate gains to full time range of file
+    full_day_avg_round : True # first perform reflection calibration on a full-day autos averaged down, then refine per-file
     wgt_by_nsample : False
     dly_ranges :
       - [75, 800, 3]
