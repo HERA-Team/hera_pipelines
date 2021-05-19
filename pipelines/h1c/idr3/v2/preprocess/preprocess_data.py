@@ -584,11 +584,13 @@ if params['ref_cal']:
 
     # Setup calibration function
     def run_refcal(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
-                   bls=bls, pols=pols, full_day_avg=False):
+                   bls=bls, pols=pols):
         try:
-            # only run i == 0 if we're saving a single average reflection over all files
-            if full_day_avg and i > 0:
-                return
+            # treat i == -1 as a special index for running the full day average
+            full_day_avg = False
+            if i == -1:
+                full_day_avg = True
+
             if full_day_avg:
                 if not p['time_avg']:
                     raise NotImplementedError('full_day_avg option is only available if time_avg is also True.')
@@ -768,22 +770,17 @@ if params['ref_cal']:
 
     # Launch jobs, first a single whole-night solution, then one per file
     if cf['algorithm']['ref_cal'].get('full_day_avg_round', False):
-        def run_refcal_day_avg(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
-                               bls=bls, pols=pols, full_day_avg=False):
-            return run_refcal(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
-                              bls=bls, pols=pols, full_day_avg=True)
-        failures = hp.utils.job_monitor(run_refcal_day_avg, range(len(datafiles)), 
+        failures = hp.utils.job_monitor(run_refcal, [-1],  # -1 is a special index for running just full_day_avg mode
                                         "AVG_REFCAL", M=M, lf=lf, 
                                         maxiter=params['maxiter'], 
                                         verbose=verbose)
-        _update_inp_cal_with_reflections(full_day_avg=full_day_avg)
+        _update_inp_cal_with_reflections(full_day_avg=True)
 
-    full_day_avg = False
     failures = hp.utils.job_monitor(run_refcal, range(len(datafiles)), 
                                 "REFCAL", M=M, lf=lf, 
                                 maxiter=params['maxiter'], 
                                 verbose=verbose)
-    _update_inp_cal_with_reflections(full_day_avg=full_day_avg)
+    _update_inp_cal_with_reflections(full_day_avg=False)
 
 
     # setup reflection smoothcal function
