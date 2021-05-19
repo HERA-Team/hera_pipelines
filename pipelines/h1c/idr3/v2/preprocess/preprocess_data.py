@@ -584,14 +584,23 @@ if params['ref_cal']:
 
     # Setup calibration function
     def run_refcal(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
-                   bls=bls, pols=pols):
+                   bls=bls, pols=pols, full_day_avg=full_day_avg):
         try:
-            # run reflection fitter
-            df = datafiles[i]
+            # only run i == 0 if we're saving a single average reflection over all files
+            if full_day_avg and i > 0:
+                return
+            if full_day_avg:
+                if not p['time_avg']:
+                    raise NotImplementedError('full_day_avg option is only available if time_avg is also True.')
+                df = datafiles
+                cal_ext = 'day_avg.' + cf['algorithm']['ref_cal']['cal_ext']
+            else:
+                df = datafiles[i]
+                cal_ext =  p['cal_ext']
+
             autokeys = [bl for bl in bls if bl[0] == bl[1]]
             assert len(autokeys) > 0
             autopols = [pol for pol in pols if pol[0] == pol[1]]
-            add_to_history = append_history("REF_CAL", p, get_template(datafiles, force_other=True), inp_cal=inp_cals[i])
 
             # load reflection fitter
             R = hc.reflections.ReflectionFitter(df, filetype='uvh5', input_cal=inp_cals[i])
@@ -620,6 +629,16 @@ if params['ref_cal']:
             if isinstance(p['edgecut_hi'], (float, int)):
                 p['edgecut_hi'] = [p['edgecut_hi']]
             assert len(p['edgecut_hi']) == len(p['edgecut_low']), "edgecut_low and edgecut_hi must match in len"
+
+            # if full_day_avg, produce one calibration file for each data file
+            if full_day_avg:
+                corresponding_data_files = datafiles
+                corresponding_inp_cals = inp_cals
+                corresponding_times = [R.hd.times[cdf] for cdf in corresponding_data_files]
+            else:
+                corresponding_data_files = [df]
+                corresponding_inp_cals = [inp_cals[i]]
+                corresponding_times = [times]
 
             # iterate over spectral windows
             for spwi, spw in enumerate(zip(p['edgecut_low'], p['edgecut_hi'])):
@@ -654,93 +673,115 @@ if params['ref_cal']:
                     sig.append(r.ref_significance)
                     gains.append(r.ref_gains)
 
-                # if running multiple spws then differentiate them in outname
-                outname = os.path.join(params['out_dir'], os.path.splitext(os.path.basename(df))[0])
-                if len(p['edgecut_low']) > 1:
-                    outname = "{}.spw{:d}.{}".format(outname, spwi, p['cal_ext'])
-                else:
-                    outname = "{}.{}".format(outname, p['cal_ext'])
+                # write per-spw calfits files, looping over all files if full_day_avg is True
+                for cdf, cic, ct in zip(corresponding_data_files, corresponding_inp_cals, corresponding_times):
+                    outname = os.path.join(params['out_dir'], os.path.splitext(os.path.basename(cdf))[0])
+                    # if running multiple spws then differentiate them in outname        
+                    if len(p['edgecut_low']) > 1:
+                        outname = "{}.spw{:d}.{}".format(outname, spwi, cal_ext)
+                    else:
+                        outname = "{}.{}".format(outname, cal_ext)
 
-                # replace edgecuts in param dict with this iteration's params for file history
-                ref_params = copy.deepcopy(p)
-                ref_params['edgecut_low'] = p['edgecut_low'][spwi]
-                ref_params['edgecut_hi'] = p['edgecut_hi'][spwi]
-                add_to_history = append_history("reflection calibration", ref_params, get_template(datafiles, force_other=True),
-                                                inp_cal=inp_cals[i])
+                    # replace edgecuts in param dict with this iteration's params for file history
+                    ref_params = copy.deepcopy(p)
+                    ref_params['edgecut_low'] = p['edgecut_low'][spwi]
+                    ref_params['edgecut_hi'] = p['edgecut_hi'][spwi]
+                    add_to_history = append_history("reflection calibration", ref_params, get_template(datafiles, force_other=True),
+                                                    inp_cal=cic)
 
-                # overwrite ref_amp, ref_dly, ref_phs with list of dicts for output npz file,
-                # even though a list is an invalid type for these attributes
-                r.ref_amp, r.ref_dly, r.ref_phs, r.ref_significance = amp, dly, phs, sig
+                    # overwrite ref_amp, ref_dly, ref_phs with list of dicts for output npz file,
+                    # even though a list is an invalid type for these attributes
+                    r.ref_amp, r.ref_dly, r.ref_phs, r.ref_significance = amp, dly, phs, sig
 
-                # merge and write gains
-                r.ref_gains = hc.abscal.merge_gains(gains, merge_shared=False)
-                r.write_auto_reflections(outname, input_calfits=inp_cals[i], overwrite=overwrite,
-                                         time_array=times, add_to_history=add_to_history, verbose=verbose,
-                                         write_npz=True)
-
-            # combine spws if desired
+                    # merge and write gains
+                    r.ref_gains = hc.abscal.merge_gains(gains, merge_shared=False)
+                    r.write_auto_reflections(outname, input_calfits=cic, overwrite=overwrite,
+                                             time_array=ct, add_to_history=add_to_history, verbose=verbose,
+                                             write_npz=True)
+                    
+            # combine spws if desired, looping over all files if full_day_avg is True
             if p['combine_spws'] and len(p['edgecut_low']) > 1:
-                # get spw files
-                outname = os.path.join(params['out_dir'], os.path.splitext(os.path.basename(df))[0])
-                spwfiles = sorted(glob.glob("{}.{}.{}".format(outname, '????', p['cal_ext'])))
-                outname = "{}.{}.{}".format(outname, 'allspws', p['cal_ext'])
-                # iterate over each spwfile: truncate gains within edgecut bounds
-                for ii, sf in enumerate(spwfiles):
-                    if ii == 0:
-                        uvc = UVCal()
-                        uvc.read_calfits(sf)
-                        _uvc = uvc
-                    else:
-                        _uvc = UVCal()
-                        _uvc.read_calfits(sf)
-                    # set gain outside spw boundaries to one
-                    if p['spw_boundaries'] is None or p['spw_boundaries'][ii] is None:
-                        s = (np.arange(_uvc.Nfreqs) < p['edgecut_low'][ii]) | (np.arange(_uvc.Nfreqs) > (_uvc.Nfreqs - p['edgecut_hi'][ii]))
-                    else:
-                        s = np.ones(_uvc.Nfreqs, dtype=np.bool)
-                        s[slice(p['spw_boundaries'][ii][0], p['spw_boundaries'][ii][1])] = False
-                    _uvc.gain_array[:, :, s] = 1.0
-                    if ii != 0:
-                        # combine gains
-                        uvc.gain_array *= _uvc.gain_array
-                        uvc.flag_array += _uvc.flag_array
+                for cdf, cic in zip(corresponding_data_files, corresponding_inp_cals):
+                    # get spw files
+                    outname = os.path.join(params['out_dir'], os.path.splitext(os.path.basename(cdf))[0])
+                    spwfiles = sorted(glob.glob("{}.{}.{}".format(outname, '????', cal_ext)))
+                    outname = "{}.{}.{}".format(outname, 'allspws', cal_ext)
+                    # iterate over each spwfile: truncate gains within edgecut bounds
+                    for ii, sf in enumerate(spwfiles):
+                        if ii == 0:
+                            uvc = UVCal()
+                            uvc.read_calfits(sf)
+                            _uvc = uvc
+                        else:
+                            _uvc = UVCal()
+                            _uvc.read_calfits(sf)
+                        # set gain outside spw boundaries to one
+                        if p['spw_boundaries'] is None or p['spw_boundaries'][ii] is None:
+                            s = (np.arange(_uvc.Nfreqs) < p['edgecut_low'][ii]) | (np.arange(_uvc.Nfreqs) > (_uvc.Nfreqs - p['edgecut_hi'][ii]))
+                        else:
+                            s = np.ones(_uvc.Nfreqs, dtype=np.bool)
+                            s[slice(p['spw_boundaries'][ii][0], p['spw_boundaries'][ii][1])] = False
+                        _uvc.gain_array[:, :, s] = 1.0
+                        if ii != 0:
+                            # combine gains
+                            uvc.gain_array *= _uvc.gain_array
+                            uvc.flag_array += _uvc.flag_array
 
-                # write to disk
-                uvc.history = append_history('reflection calibration', p, get_template(datafiles, force_other=True), inp_cals[i])
-                uvc.write_calfits(outname, clobber=overwrite)
+                    # write to disk
+                    uvc.history = append_history('reflection calibration', p, get_template(datafiles, force_other=True), cic)
+                    uvc.write_calfits(outname, clobber=overwrite)
 
         except:
             hp.utils.log("\njob {} threw exception:".format(i), 
                          f=ef, tb=sys.exc_info(), verbose=verbose)
             return 1
         return 0
- 
-    # Launch jobs
-    failures = hp.utils.job_monitor(run_refcal, range(len(datafiles)), 
-                                    "REFCAL", M=M, lf=lf, 
-                                    maxiter=params['maxiter'], 
-                                    verbose=verbose)
 
-    # update calibration files: if multiple spws computed, inp_cals will be empty unless combine_spws
-    if isinstance(cf['algorithm']['ref_cal']['edgecut_low'], (tuple, list)):
-        if cf['algorithm']['ref_cal']['combine_spws']:
-            inp_cals = []
+    def _update_inp_cal_with_reflections(full_day_avg=False):
+        '''Create a list of input calibrations depending on the current step in refleciton calibration.'''
+        if full_day_avg:
+            cal_ext = 'day_avg.' + cf['algorithm']['ref_cal']['cal_ext']
+        else:
+            cal_ext = cf['algorithm']['ref_cal']['cal_ext']        
+
+        # update calibration files: if multiple spws computed, inp_cals will be empty unless combine_spws
+        if isinstance(cf['algorithm']['ref_cal']['edgecut_low'], (tuple, list)):
+            if cf['algorithm']['ref_cal']['combine_spws']:
+                ics = []
+                for df in datafiles:
+                    cfile = os.path.join(params['out_dir'], os.path.splitext(os.path.basename(df))[0])
+                    cfile = "{}.{}.{}".format(cfile, 'allspws', cal_ext)
+                    ics.append(cfile)
+            else:
+                if verbose:
+                    print("Multiple ref_cal spectral windows computed but not combine_spws," \
+                          "therefore downstream pipeline calibration will be None")
+                ics = [None for df in datafiles]
+        else:
+            ics = []
             for df in datafiles:
                 cfile = os.path.join(params['out_dir'], os.path.splitext(os.path.basename(df))[0])
-                cfile = "{}.{}.{}".format(cfile, 'allspws', cf['algorithm']['ref_cal']['cal_ext'])
-                inp_cals.append(cfile)
+                cfile = "{}.{}.{}".format(cfile, cal_ext)
+                ics.append(cfile)
+                
+        return ics
 
-        else:
-            if verbose:
-                print("Multiple ref_cal spectral windows computed but not combine_spws," \
-                      "therefore downstream pipeline calibration will be None")
-            inp_cals = [None for df in datafiles]
-    else:
-        inp_cals = []
-        for df in datafiles:
-            cfile = os.path.join(params['out_dir'], os.path.splitext(os.path.basename(df))[0])
-            cfile = "{}.{}.{}".format(cfile, cf['algorithm']['ref_cal']['cal_ext'])
-            inp_cals.append(cfile)
+    # Launch jobs, first a single whole-night solution, then one per file
+    if cf['algorithm']['ref_cal'].get('full_day_avg_round', False):
+        full_day_avg = True
+        failures = hp.utils.job_monitor(run_refcal, range(len(datafiles)), 
+                                        "AVG_REFCAL", M=M, lf=lf, 
+                                        maxiter=params['maxiter'], 
+                                        verbose=verbose)
+        _update_inp_cal_with_reflections(full_day_avg=full_day_avg)
+
+    full_day_avg = False
+    failures = hp.utils.job_monitor(run_refcal, range(len(datafiles)), 
+                                "REFCAL", M=M, lf=lf, 
+                                maxiter=params['maxiter'], 
+                                verbose=verbose)
+    _update_inp_cal_with_reflections(full_day_avg=full_day_avg)
+
 
     # setup reflection smoothcal function
     def run_refsmoothcal(inp_cals, p=cf['algorithm']['ref_cal'], params=params):
