@@ -584,7 +584,7 @@ if params['ref_cal']:
 
     # Setup calibration function
     def run_refcal(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
-                   bls=bls, pols=pols):
+                   bls=bls, pols=pols, full_day_avg=False):
         try:
             # only run i == 0 if we're saving a single average reflection over all files
             if full_day_avg and i > 0:
@@ -768,8 +768,11 @@ if params['ref_cal']:
 
     # Launch jobs, first a single whole-night solution, then one per file
     if cf['algorithm']['ref_cal'].get('full_day_avg_round', False):
-        full_day_avg = True
-        failures = hp.utils.job_monitor(run_refcal, range(len(datafiles)), 
+        def run_refcal_day_avg(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
+                               bls=bls, pols=pols, full_day_avg=False):
+            return run_refcal(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
+                              bls=bls, pols=pols, full_day_avg=True)
+        failures = hp.utils.job_monitor(run_refcal_day_avg, range(len(datafiles)), 
                                         "AVG_REFCAL", M=M, lf=lf, 
                                         maxiter=params['maxiter'], 
                                         verbose=verbose)
