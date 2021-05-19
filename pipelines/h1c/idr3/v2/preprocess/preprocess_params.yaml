@@ -179,8 +179,8 @@ algorithm :
     # initial guess parameters
     window : 'bh'
     alpha : 0.1
-    edgecut_low : [113, 409]
-    edgecut_hi : [536, 176]
+    edgecut_low : [116, 534]
+    edgecut_hi : [660, 189]
     combine_spws : True
     spw_boundaries :
       - [0, 384]
