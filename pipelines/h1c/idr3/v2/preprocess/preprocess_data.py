@@ -774,13 +774,13 @@ if params['ref_cal']:
                                         "AVG_REFCAL", M=M, lf=lf, 
                                         maxiter=params['maxiter'], 
                                         verbose=verbose)
-        _update_inp_cal_with_reflections(full_day_avg=True)
+        inp_cals = _update_inp_cal_with_reflections(full_day_avg=True)
 
     failures = hp.utils.job_monitor(run_refcal, range(len(datafiles)), 
                                 "REFCAL", M=M, lf=lf, 
                                 maxiter=params['maxiter'], 
                                 verbose=verbose)
-    _update_inp_cal_with_reflections(full_day_avg=False)
+    inp_cals = _update_inp_cal_with_reflections(full_day_avg=False)
 
 
     # setup reflection smoothcal function
