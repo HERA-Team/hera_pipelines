@@ -584,7 +584,7 @@ if params['ref_cal']:
 
     # Setup calibration function
     def run_refcal(i, datafiles=datafiles, p=cf['algorithm']['ref_cal'], params=params, inp_cals=inp_cals,
-                   bls=bls, pols=pols, full_day_avg=full_day_avg):
+                   bls=bls, pols=pols):
         try:
             # only run i == 0 if we're saving a single average reflection over all files
             if full_day_avg and i > 0:
