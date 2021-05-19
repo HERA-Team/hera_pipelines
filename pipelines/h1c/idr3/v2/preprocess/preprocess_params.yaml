@@ -21,7 +21,7 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : True         # foreground filter, clean or data-inpaint
+  fg_filt : False         # foreground filter, clean or data-inpaint
   ref_cal : True         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
   time_avg : False        # time average data
@@ -37,12 +37,12 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
-  # data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess'
+  # data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
-  # data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
+  # data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None #'allspws.refcal_smooth.calfits'
