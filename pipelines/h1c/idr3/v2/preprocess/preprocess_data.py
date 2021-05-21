@@ -888,6 +888,9 @@ if params['xtalk_sub']:
         params : dict, global job parameters
         inp_cal : str or UVCal, input calibration to apply to data on-the-fly
         """
+        if (i < 24) or (i > 31):  # TODO: remove this block
+            hp.utils.log(f"Not re-running run_xtalk_sub job number {i}.", f=lf, verbose=verbose)
+            return 0
         try:
             # Setup reflection fitter class as container
             if isinstance(inp_cals, list) and None in inp_cals:
