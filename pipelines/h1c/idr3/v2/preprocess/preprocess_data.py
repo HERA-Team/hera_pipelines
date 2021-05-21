@@ -903,7 +903,7 @@ if params['xtalk_sub']:
             history = R.hd.history
 
             # read data into HERAData
-            R.read(bls=blgroups[i], polarizations=pols)
+            R.read(bls=blgroups[i], polarizations=pols, axis='blt')
             R.hd.history = history
 
             # set max frates
