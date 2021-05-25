@@ -893,7 +893,7 @@ if params['time_avg']:
             # use history of zeroth data file
             # we don't like pyuvdata history lengthening upon read-in
             history = F.hd.history
-            F.read(bls=blgroups[i], polarizations=pols)
+            F.read(bls=blgroups[i], polarizations=pols, axis='blt')
             F.hd.history = history
 
             # get keys
