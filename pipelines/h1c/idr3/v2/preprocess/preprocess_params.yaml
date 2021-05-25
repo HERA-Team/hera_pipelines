@@ -23,13 +23,13 @@ analysis :
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
   ref_cal : False         # reflection calibration
-  xtalk_sub : True       # xtalk subtraction
   time_avg : True        # time average data
+  xtalk_sub : True       # xtalk subtraction
   red_avg : False         # redundant averaging
-  form_pstokes : False    # form pseudo-Stokes visibilities
+  form_pstokes : True    # form pseudo-Stokes visibilities
 
   multiproc : True    # use multiprocess module
-  nproc : 4               # number of processes to spawn
+  nproc : 6               # number of processes to spawn
   maxiter : 1        # number of attempts for each block
 
 #---------------------------------------------------------------
