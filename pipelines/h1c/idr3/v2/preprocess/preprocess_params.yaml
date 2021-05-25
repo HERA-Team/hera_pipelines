@@ -161,6 +161,7 @@ algorithm :
     t_window : 214.0      # width of averaging window in seconds
     file_Ntimes : 20        # output file Ntimes
     wgt_by_nsample : False
+    wgt_by_favg_nsample : True
     rm_intermediate_files : True
 
   # Reflection Calibration

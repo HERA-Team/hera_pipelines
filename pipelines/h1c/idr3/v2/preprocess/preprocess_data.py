@@ -1129,8 +1129,8 @@ if params['time_avg']:
 
             # timeaverage with rephasing
             F.timeavg_data(F.data, F.times, F.lsts, p['t_window'], flags=F.flags, nsamples=F.nsamples,
-                           wgt_by_nsample=p['wgt_by_nsample'], rephase=True, verbose=params['verbose'],
-                           keys=keys, overwrite=True)
+                           wgt_by_nsample=p['wgt_by_nsample'], wgt_by_favg_nsample=p['wgt_by_favg_nsample'],
+                           rephase=True, verbose=params['verbose'], keys=keys, overwrite=True)
 
             # configure output name
             outfname = fill_template(data_template, F.hd)
