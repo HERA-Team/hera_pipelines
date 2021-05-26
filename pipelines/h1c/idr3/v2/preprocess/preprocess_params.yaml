@@ -21,12 +21,12 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : True         # foreground filter, clean or data-inpaint
-  ref_cal : True         # reflection calibration
+  fg_filt : False         # foreground filter, clean or data-inpaint
+  ref_cal : False         # reflection calibration
+  time_avg : True        # time average data
   xtalk_sub : True       # xtalk subtraction
-  time_avg : False        # time average data
   red_avg : False         # redundant averaging
-  form_pstokes : False    # form pseudo-Stokes visibilities
+  form_pstokes : True    # form pseudo-Stokes visibilities
 
   multiproc : True    # use multiprocess module
   nproc : 4               # number of processes to spawn
@@ -37,15 +37,16 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
-  # data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess'
+  # data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
-  # data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
+  # data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
 
   # file extension for calibration file to load and apply to data
-  cal_ext : None #'allspws.refcal_smooth.calfits'
+  # cal_ext : None 
+  cal_ext : 'allspws.refcal_smooth.calfits'
 
   # file extension to replace .uvh5 in data template for by-hand UVFlag file
   hand_flag_ext : .hand_flags.h5
@@ -143,7 +144,7 @@ algorithm :
     window : 'bh'
     alpha : 0.1
     edgecut_low : [117, 537]
-    edgecut_hi : [661, 327]
+    edgecut_hi : [662, 278]
     gp_frate_degrade : 0.0
     gp_Nmirror : 200
     Nkeep : 30
@@ -160,6 +161,7 @@ algorithm :
     t_window : 214.0      # width of averaging window in seconds
     file_Ntimes : 20        # output file Ntimes
     wgt_by_nsample : False
+    wgt_by_favg_nsample : True
     rm_intermediate_files : True
 
   # Reflection Calibration
@@ -167,6 +169,7 @@ algorithm :
     cal_ext : 'refcal.calfits'
     time_avg : True
     expand_times : True   # if time_avg, inflate gains to full time range of file
+    full_day_avg_round : True # first perform reflection calibration on a full-day autos averaged down, then refine per-file
     wgt_by_nsample : False
     dly_ranges :
       - [75, 800, 3]
@@ -178,12 +181,12 @@ algorithm :
     # initial guess parameters
     window : 'bh'
     alpha : 0.1
-    edgecut_low : [117, 537]
-    edgecut_hi : [661, 327]
+    edgecut_low : [116, 534]
+    edgecut_hi : [660, 189]
     combine_spws : True
-    spw_boundaries : None
-      # - [117, 362]
-      # - [537, 696]  # channel boundaries when combining multispw. default is to use edgecuts.
+    spw_boundaries :
+      - [0, 384]
+      - [385, 1023]  # channel boundaries when combining multispw. default is to use edgecuts.
     zeropad : 256
     Nphs : 100
     fthin : None
