@@ -19,7 +19,7 @@ include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 100
+standoff = 200
 min_dly = 350
 calibration = "none"
 filter_mode = "DPSS"
@@ -53,7 +53,7 @@ nskip = 3
 nb_template_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks/"
 nb_output_repo = "/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/"
 git_push = "False"
-spws = "0,1,2,3"
+spws = "0,1,2,3,4,5,6,7"
 lst_fields="1~3,4.2~6.2"
 grp_skip = 10
 blp_skip = 2
@@ -182,7 +182,7 @@ stride_length="all"
 time_centered = false
 args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOOK_OPTS:nb_output_repo}",
       "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
-      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${Options:spw_ranges}"]
+      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${PSPEC_OPTS:spw_ranges}"]
 
 [POWER_SPECTRUM_NOTEBOOK]
 prereqs="AUTOERRORS"

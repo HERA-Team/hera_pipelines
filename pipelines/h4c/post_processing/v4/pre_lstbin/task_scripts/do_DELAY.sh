@@ -52,16 +52,20 @@ for sd in ${sumdiff[@]}
 do
     fn_in=zen.${jd}.${sd}.${label}.chunked.uvh5
     fn_out=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
+    fn_cln=zen.${jd}.${sd}.${label}.foreground_model.uvh5
+    fn_res=zen.${jd}.${sd}.${label}.foreground_res.uvh5
     if [ -e "${fn_in}" ]
     then
       if [ "${filter_mode}" == "DPSS" ]
       then
         echo delay_filter_run.py ${fn_in}  \
-          --filled_outfilename ${fn_out} --clobber  \
+          --filled_outfilename ${fn_out} --clobber \
+          --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
           --min_dly ${min_dly}  --mode dpss_leastsq
         delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber  \
+          --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
           --min_dly ${min_dly}  --mode dpss_leastsq
       elif [ "${filter_mode}" == "CLEAN" ]
@@ -69,11 +73,13 @@ do
         npad=$((${spw1}-${spw0}))
         echo delay_filter_run.py ${fn_in}  \
         --filled_outfilename ${fn_out} --clobber \
+        --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}
         --tol ${tol} --standoff ${standoff}  \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean
 
         delay_filter_run.py ${fn_in} \
         --filled_outfilename ${fn_out} --clobber \
+        --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}l
         --tol ${tol} --standoff ${standoff}  \
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean
       fi
