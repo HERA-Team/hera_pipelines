@@ -36,25 +36,30 @@ then
 else
   sumdiff=("sum")
 fi
-
+exts=("foreground_filled" "foreground_res" "foreground_model")
 for sd in ${sumdiff[@]}
 do
-    fn_in=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
-    fg_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.uvh5`
-    fn_res=zen.${jd}.${sd}.${label}.xtalk_filtered.waterfall.uvh5
-    #fn_filled=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.uvh5
-    if [ -e "${fn_in}" ]
-    then
-      echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
-      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
-      --cornerturnfile ${fn_in}\
-      --clobber --verbose --mode dpss_leastsq --skip_autos
+    # do res files, model files, and filled files.
+    for ext in ${exts[@]}
+    do
+      fn_in=zen.${jd}.${sd}.${label}.${ext}.uvh5
+      fg_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.uvh5`
+      fn_res=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.uvh5
+      if [ -e "${fn_in}" ]
+      then
+        echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
+        --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
+        --cornerturnfile ${fn_in}\
+        --clobber --verbose --mode dpss_leastsq --skip_autos
 
-      tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
-      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
-      --cornerturnfile ${fn_in} \
-      --clobber --verbose --mode dpss_leastsq --skip_autos
-    else
-      echo "${fn_in} does not exist!"
-    fi
+        tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
+        --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
+        --cornerturnfile ${fn_in} \
+        --clobber --verbose --mode dpss_leastsq --skip_autos
+      else
+        echo "${fn_in} does not exist!"
+      fi
+    done
+    # cross-talk filter the model files.
+    # cross-talke filter the
   done

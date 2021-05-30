@@ -22,8 +22,13 @@ do
   input=zen.${jd}.${sd}.uvh5
   output=zen.${jd}.${sd}.uvh5
   output_autos=zen.${jd}.${sd}.autos.uvh5
-  echo throw_away_flagged_antennas.py ${input} ${output} --yaml_file ${yaml_file} --clobber
-  throw_away_flagged_antennas.py ${input} ${output} --yaml_file ${yaml_file} --clobber
-  # extract autos
-  echo extract_autos.py ${output} ${output_autos} --clobber
+  if [ -e "${input}" ]
+  then
+    echo throw_away_flagged_antennas.py ${input} ${output} --yaml_file ${yaml_file} --clobber
+    throw_away_flagged_antennas.py ${input} ${output} --yaml_file ${yaml_file} --clobber
+    # extract autos
+    echo extract_autos.py ${output} ${output_autos} --clobber
+  else
+    echo "${input} does not exist!"
+  fi
 done

@@ -1,4 +1,6 @@
 #! /bin/bash
+
+# this cleanup script will only leaave
 set -e
 
 # import common functions
@@ -15,3 +17,10 @@ int_jd=${jd:0:7}
 rm -rf zen.${jd}.*.${label}*waterfall*h5
 # also get rid of the chunked files.
 rm -rf zen.${jd}.*.${label}*chunked*h5
+# the following should be commented for devel mode.
+
+# remove power spectra
+rm -rf *.pspec.h4
+# remove tavg files
+rm -rf *.tavg.*
+# remove time inpainted files.

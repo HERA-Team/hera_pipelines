@@ -27,50 +27,53 @@ then
 else
   sumdiff=("sum")
 fi
-
+exts=("foreground_filled" "foreground_res" "foreground_model")
 for sd in ${sumdiff[@]}
 do
   time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
   if [ -e "${time_chunk_template}" ]
   then
-    # reconstitute xtalk filtered files
-    outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.uvh5
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered.waterfall.uvh5`
+    for ext in ${exts[@]}
+    do
+      # reconstitute xtalk filtered files
+      outfilename=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.uvh5
+      baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.xtalk_filtered.waterfall.uvh5`
+      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber
+      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber
+    done
+    # reconstitute fr inpainted files
+    
+    outfilename=zen.${jd}.${sd}.${label}.time_inpainted.uvh5
+    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.time_inpainted.waterfall.uvh5`
+
     echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
         --baseline_chunk_files ${baseline_chunk_files} --clobber
 
     time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
         --baseline_chunk_files ${baseline_chunk_files} --clobber
+    # rec
 
-      # reconstitute fr inpainted files
-      outfilename=zen.${jd}.${sd}.${label}.time_inpainted.uvh5
-      baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.time_inpainted.waterfall.uvh5`
+    # reconstitute xtalk filtered files
+    outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
+    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5`
 
-      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-      # reconstitute xtalk filtered files
-      outfilename=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
-      baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5`
+    # reconstitute fr inpainted files
+    outfilename=zen.${jd}.${sd}.${label}.time_inpainted.tavg.uvh5
+    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.time_inpainted.waterfall.tavg.uvh5`
 
-      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
-      # reconstitute fr inpainted files
-      outfilename=zen.${jd}.${sd}.${label}.time_inpainted.tavg.uvh5
-      baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.time_inpainted.waterfall.tavg.uvh5`
-
-      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
-      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
   else
     echo "${time_chunk_template} does not exist!"

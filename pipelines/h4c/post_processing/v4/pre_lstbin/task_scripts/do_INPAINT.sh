@@ -37,22 +37,21 @@ then
 else
   sumdiff=("sum")
 fi
-
 for sd in ${sumdiff[@]}
 do
     fn_in=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
     fg_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.uvh5`
-    fn_res=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.uvh5
-    #fn_filled=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.uvh5
+    #fn_res=zen.${jd}.${sd}.${label}.xtalk_filtered_waterfall.uvh5
+    fn_filled=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.uvh5
     if [ -e "${fn_in}" ]
     then
       echo tophat_frfilter_run.py ${fn_in} --tol ${tol} \
-      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
+      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_filled} \
       --frate_standoff ${frate_standoff} \
       --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose dpss_leastsq
 
       tophat_frfilter_run.py ${fn_in} --tol ${tol} \
-      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
+      --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_filled} \
       --frate_standoff ${frate_standoff} \
       --clobber --datafilelist ${fg_files} --skip_flagged_edges --verbose dpss_leastsq
     else
