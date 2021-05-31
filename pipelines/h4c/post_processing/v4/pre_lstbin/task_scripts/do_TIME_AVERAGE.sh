@@ -32,8 +32,8 @@ fi
 for sd in ${sumdiff[@]}
 do
 # time average time-inpainted files and xtalk-filtered files.
-  input_file=zen.${jd}.${sd}.${label}.time_inpainted.waterfall.uvh5
-  output_file=zen.${jd}.${sd}.${label}.time_inpainted.waterfall.tavg.uvh5
+  input_file=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5
+  output_file=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.tavg.uvh5
   if [ -e "${input_file}" ]
   then
     echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
@@ -42,8 +42,8 @@ do
     echo "${input_file} does not exist!"
   fi
 
-  input_file=zen.${jd}.${sd}.${label}.xtalk_filtered.waterfall.uvh5
-  output_file=zen.${jd}.${sd}.${label}.xtalk_filtered.waterfall.tavg.uvh5
+  input_file=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.waterfall.uvh5
+  output_file=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.waterfall.tavg.uvh5
   if [ -e "${input_file}" ]
   then
     echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber

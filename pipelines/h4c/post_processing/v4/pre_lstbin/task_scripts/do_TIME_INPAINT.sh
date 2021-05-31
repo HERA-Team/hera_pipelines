@@ -41,7 +41,7 @@ for sd in ${sumdiff[@]}
 do
     fn_in=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
     fg_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.uvh5`
-    fn_out=zen.${jd}.${sd}.${label}.time_inpainted.waterfall.uvh5
+    fn_out=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5
     #fn_filled=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.uvh5
     if [ -e "${fn_in}" ]
     then

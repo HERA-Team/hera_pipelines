@@ -42,10 +42,10 @@ do
     pol_label=${pol_label_list[$polnum]}
     beam_file=${beam_file_stem}${pol_label}.fits
     # power spectra of cross-talk filtered data.
-    input=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.uvh5
+    input=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered${pol_label}.tavg.uvh5
     if [ -e "${input}" ]
     then
-        output=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.pspec.h5
+        output=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered${pol_label}.tavg.pspec.h5
         # average all times incoherently
         echo pspec_run.py ${input} ${output}\
           --overwrite\

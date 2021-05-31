@@ -20,7 +20,14 @@ rm -rf zen.${jd}.*.${label}*chunked*h5
 # the following should be commented for devel mode.
 
 # remove power spectra
-rm -rf *.pspec.h4
+rm -rf zen.${jd}.*.${label}*pspec.*
 # remove tavg files
-rm -rf *.tavg.*
+rm -rf zen.${jd}.*.${label}*tavg.*
 # remove time inpainted files.
+rm -rf zen.${jd}.*.${label}*time_inpainted.*
+# remove foreground model files.
+rm -rf zen.${jd}.*.${label}*foreground_model.uvh5
+# remove foreground res files.
+rm -rf zen.${jd}.*.${label}*foreground_res.uvh5
+# rmeove foreground filled files.
+rm -rf zen.${jd}.*.${label}*foreground_filled.uvh5

@@ -33,8 +33,8 @@ fi
 for sd in ${sumdiff[@]}
 do
   # compute pstokes of xtalk filtered files.
-  input=zen.${jd}.${sd}.${label}.xtalk_filtered.tavg.uvh5
-  output=zen.${jd}.${sd}.${label}.xtalk_filtered_pstokes.tavg.uvh5
+  input=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.tavg.uvh5
+  output=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered_pstokes.tavg.uvh5
   if [ -e "${input}" ]
   then
     echo generate_pstokes_run.py ${input} ${pstokes} --clobber --outputdata ${output}
