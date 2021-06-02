@@ -162,6 +162,7 @@ algorithm :
     file_Ntimes : 20        # output file Ntimes
     wgt_by_nsample : False
     wgt_by_favg_nsample : True
+    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
     rm_intermediate_files : True
 
   # Reflection Calibration

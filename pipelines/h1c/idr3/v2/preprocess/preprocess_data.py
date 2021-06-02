@@ -904,6 +904,14 @@ if params['time_avg']:
                            wgt_by_nsample=p['wgt_by_nsample'], wgt_by_favg_nsample=p['wgt_by_favg_nsample'],
                            rephase=True, verbose=params['verbose'], keys=keys, overwrite=True)
 
+            # flag integrations with too few average nsamples
+            if p['freq_avg_min_nsamp'] is not None:
+                for key in F.avg_nsamples:
+                    freq_flags = np.all(np.isclose(F.avg_nsamples[key], 0), axis=0)
+                    navg = np.mean(F.avg_nsamples[key][:, ~freq_flags], axis=1)
+                    time_flags = navg < p['freq_avg_min_nsamp']
+                    F.avg_flags[key] += time_flags[:, None]
+
             # configure output name
             outfname = fill_template(data_template, F.hd)
             outfname = add_file_ext(outfname, p['file_ext'], outdir=params['out_dir'])
