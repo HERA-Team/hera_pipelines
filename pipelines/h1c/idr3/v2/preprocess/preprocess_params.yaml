@@ -153,6 +153,8 @@ algorithm :
     frate_thresh : 0.06  # if max_frate [mHz] is below this, don't filter it
     rm_intermediate_files : False
     tol : 1.0e-8
+    excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
+      - [4.0, 4.71]
 
   # Time Averaging
   time_avg : 

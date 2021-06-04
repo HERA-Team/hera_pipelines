@@ -935,6 +935,8 @@ if params['xtalk_sub']:
                             if len(unflagged_ints) > 0:
                                 svd_wgts[key][:unflagged_ints[0], :] = 0
                                 svd_wgts[key][(unflagged_ints[-1] + 1):, :] = 0
+                            for xlsts in p.get('excluded_lsts', []):
+                                svd_wgts[key][(R.lsts >= xlsts[0]) & (R.lsts <= xlsts[1]), :] = 0
 
                         # take SVD
                         R.sv_decomp(R.dfft, wgts=svd_wgts, flags=R.flags, overwrite=True, Nkeep=p['Nkeep'], sparse_svd=True)
