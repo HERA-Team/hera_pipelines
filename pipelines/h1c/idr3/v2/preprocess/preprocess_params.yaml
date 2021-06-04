@@ -23,8 +23,8 @@ analysis :
   rfi_flag : False        # RFI-Flag data
   fg_filt : True         # foreground filter, clean or data-inpaint
   ref_cal : True         # reflection calibration
-  time_avg : False        # time average data
   xtalk_sub : False       # xtalk subtraction
+  time_avg : False        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : False    # form pseudo-Stokes visibilities
 
@@ -147,7 +147,7 @@ algorithm :
     edgecut_hi : [662, 278]
     gp_frate_degrade : 0.0
     gp_Nmirror : 200
-    Nkeep : 30
+    Nkeep : 50
     xthin : None
     project_vmodes : False
     frate_thresh : 0.06  # if max_frate [mHz] is below this, don't filter it
