@@ -927,9 +927,16 @@ if params['xtalk_sub']:
                         R.fft_data(data=R.data, flags=R.flags, assign='dfft', window=p['window'], alpha=p['alpha'], keys=keys,
                                    edgecut_low=el, edgecut_hi=eh, overwrite=True, ax='freq')
 
-                        # take SVD
+                        # generate weights for svd, assinging 0 weight to excluded lsts and to flags at the beginning or end
                         svd_wgts = R.svd_weights(R.dfft, R.delays, side='both', horizon=p['horizon'], standoff=p['standoff'], 
                                                  min_dly=p['min_dly'], max_dly=p['max_dly'])
+                        for key in svd_wgts:
+                            unflagged_ints = np.argwhere(~np.all(R.flags[bl], axis=1))[:, 0]
+                            if len(unflagged_ints) > 0:
+                                svd_wgts[key][:unflagged_ints[0], :] = 0
+                                svd_wgts[key][(unflagged_ints[-1] + 1):, :] = 0
+
+                        # take SVD
                         R.sv_decomp(R.dfft, wgts=svd_wgts, flags=R.flags, overwrite=True, Nkeep=p['Nkeep'], sparse_svd=True)
 
                         # now decide how to smooth them
