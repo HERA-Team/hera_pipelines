@@ -130,7 +130,7 @@ algorithm :
   # Xtalk Subtraction
   xtalk_sub : 
     # IO
-    file_ext : "XH1.3"
+    file_ext : "X"
     Nbl_per_task : 10
     # algorithm parameters
     method : "svd-gp"  # options = ['frfilter', 'svd-gp', 'linear_filter']
@@ -139,12 +139,12 @@ algorithm :
     # svd method parameters
     min_dly : 100
     max_dly : 4000
-    horizon : 1.3
+    horizon : .8
     standoff : 0
     window : 'bh'
     alpha : 0.1
-    edgecut_low : [117, 537]
-    edgecut_hi : [662, 278]
+    edgecut_low : [100, 400]
+    edgecut_hi : [624, 150]
     gp_frate_degrade : 0.0
     gp_Nmirror : 200
     Nkeep : 50
