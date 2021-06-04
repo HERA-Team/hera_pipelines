@@ -931,7 +931,7 @@ if params['xtalk_sub']:
                         svd_wgts = R.svd_weights(R.dfft, R.delays, side='both', horizon=p['horizon'], standoff=p['standoff'], 
                                                  min_dly=p['min_dly'], max_dly=p['max_dly'])
                         for key in svd_wgts:
-                            unflagged_ints = np.argwhere(~np.all(R.flags[bl], axis=1))[:, 0]
+                            unflagged_ints = np.argwhere(~np.all(R.flags[key], axis=1))[:, 0]
                             if len(unflagged_ints) > 0:
                                 svd_wgts[key][:unflagged_ints[0], :] = 0
                                 svd_wgts[key][(unflagged_ints[-1] + 1):, :] = 0
