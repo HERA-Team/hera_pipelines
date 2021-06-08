@@ -19,6 +19,7 @@ rm -rf zen.${jd}.*.${label}*waterfall*h5
 rm -rf zen.${jd}.*.${label}*chunked*h5
 # the following should be commented for devel mode.
 
+
 # remove power spectra
 rm -rf zen.${jd}.*.${label}*pspec.*
 # remove tavg files

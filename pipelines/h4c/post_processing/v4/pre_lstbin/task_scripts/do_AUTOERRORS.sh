@@ -27,11 +27,11 @@ do
   for pol_label in ${pol_label_list[@]}
   do
     beamfile=${beamfile_stem}${pol_label}.fits
-    psc=zen.${jd}.${sd}.${label}.xtalk_filtered${pol_label}.tavg.pspec.h5
+    psc=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered${pol_label}.tavg.pspec.h5
     echo ${psc}
     if [ -e "${psc}" ]
     then
-      dfile=zen.${jd}.sum.${label}.xtalk_filtered${pol_label}.tavg.uvh5
+      dfile=zen.${jd}.sum.${label}.foreground_filled.xtalk_filtered${pol_label}.tavg.uvh5
       if [ -e "${dfile}" ]
       then
         echo auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
