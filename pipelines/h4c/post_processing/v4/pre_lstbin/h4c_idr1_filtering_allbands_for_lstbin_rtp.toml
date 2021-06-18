@@ -8,7 +8,7 @@ base_cpu = 1
 timeout = "24h"
 mail_user = "aaronew+nrao@berkeley.edu"
 chunk_size = 8
-spw_ranges='10~105,150~320,515~615,665~730,750~1090'
+spw_ranges='10~105,150~320,515~615,665~717,770~1090'
 label = "all-bands-allbls"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
@@ -37,7 +37,9 @@ min_frate = 0.5
 [PSPEC_OPTS]
 pstokes="pI"
 beam_file="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix"
-spw_ranges="0~95,95~180,180~265,265~365,365~430,430~515,515~600,600~685"
+#spw_ranges="0~95,95~180,180~265,265~365,365~430,430~515,515~600,600~685"
+spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
+
 nsamples=100
 seed=10
 
