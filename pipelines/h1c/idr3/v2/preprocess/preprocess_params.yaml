@@ -22,9 +22,9 @@ io :
 analysis : 
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
+  time_avg : True        # time average data
   ref_cal : False         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
-  time_avg : True        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
 
@@ -127,41 +127,12 @@ algorithm :
     freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
     apply_hand_flag_files : True # applies flagging waterfalls before filteirng using hand_flag_ext above
 
-  # Xtalk Subtraction
-  xtalk_sub : 
-    # IO
-    file_ext : "X"
-    Nbl_per_task : 10
-    # algorithm parameters
-    method : "svd-gp"  # options = ['frfilter', 'svd-gp', 'linear_filter']
-    max_frate_coeffs : [0.024, -0.28]  # max_frate [mHz] = x1 * EW_bl_len [m] + x2
-    max_frate : 0.75
-    # svd method parameters
-    min_dly : 100
-    max_dly : 4000
-    horizon : .8
-    standoff : 0
-    window : 'bh'
-    alpha : 0.1
-    edgecut_low : [100, 400]
-    edgecut_hi : [624, 150]
-    gp_frate_degrade : 0.0
-    gp_Nmirror : 200
-    Nkeep : 50
-    xthin : None
-    project_vmodes : False
-    frate_thresh : 0.06  # if max_frate [mHz] is below this, don't filter it
-    rm_intermediate_files : False
-    tol : 1.0e-8
-    excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
-      - [4.0, 4.71]
-
   # Time Averaging
   time_avg : 
     file_ext : "T"        # file extension of time-averaged data
     Nbl_per_task : 10
     t_window : 214.0      # width of averaging window in seconds
-    file_Ntimes : 20        # output file Ntimes
+    file_Ntimes : 60        # output file Ntimes
     wgt_by_nsample : False
     wgt_by_favg_nsample : True
     freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
@@ -204,6 +175,35 @@ algorithm :
     time_scale : 14400  # FWHM of Gaussian in seconds
     Nmirror : 0  # number of times to mirror time axis
     smooth_cal_ext : '_smooth'  # extension to ...{}.calfits field
+
+  # Xtalk Subtraction
+  xtalk_sub : 
+    # IO
+    file_ext : "X"
+    Nbl_per_task : 10
+    # algorithm parameters
+    method : "svd-gp"  # options = ['frfilter', 'svd-gp', 'linear_filter']
+    max_frate_coeffs : [0.024, -0.28]  # max_frate [mHz] = x1 * EW_bl_len [m] + x2
+    max_frate : 0.75
+    # svd method parameters
+    min_dly : 100
+    max_dly : 4000
+    horizon : .8
+    standoff : 0
+    window : 'bh'
+    alpha : 0.1
+    edgecut_low : [100, 400]
+    edgecut_hi : [624, 150]
+    gp_frate_degrade : 0.0
+    gp_Nmirror : 200
+    Nkeep : 50
+    xthin : None
+    project_vmodes : False
+    frate_thresh : 0.06  # if max_frate [mHz] is below this, don't filter it
+    rm_intermediate_files : False
+    tol : 1.0e-8
+    excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
+      - [4.0, 4.71]
 
   # Redundant Averaging
   red_avg :
