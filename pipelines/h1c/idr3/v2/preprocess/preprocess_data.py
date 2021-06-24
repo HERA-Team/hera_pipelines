@@ -775,7 +775,8 @@ if params['ref_cal']:
 
             # time average
             if p['time_avg']:
-                R.timeavg_data(R.data, R.times, R.lsts, 1e10, flags=R.flags, nsamples=R.nsamples, rephase=False, wgt_by_nsample=p['wgt_by_nsample'])
+                R.timeavg_data(R.data, R.times, R.lsts, 1e10, flags=R.flags, nsamples=R.nsamples, rephase=False, 
+                               wgt_by_nsample=p['wgt_by_nsample'], wgt_by_favg_nsample=p['wgt_by_favg_nsample'])
                 R.data = R.avg_data
                 R.flags = R.avg_flags
                 R.nsamples = R.avg_nsamples

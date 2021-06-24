@@ -145,6 +145,7 @@ algorithm :
     expand_times : True   # if time_avg, inflate gains to full time range of file
     full_day_avg_round : True # first perform reflection calibration on a full-day autos averaged down, then refine per-file
     wgt_by_nsample : False
+    wgt_by_favg_nsample : True
     dly_ranges :
       - [25, 800, 5]
       - [100, 800, 5]
