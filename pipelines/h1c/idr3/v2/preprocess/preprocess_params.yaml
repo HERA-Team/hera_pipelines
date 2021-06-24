@@ -23,7 +23,7 @@ analysis :
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
   time_avg : True        # time average data
-  ref_cal : False         # reflection calibration
+  ref_cal : True         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
