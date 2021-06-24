@@ -132,7 +132,7 @@ algorithm :
     file_ext : "T"        # file extension of time-averaged data
     Nbl_per_task : 10
     t_window : 214.0      # width of averaging window in seconds
-    file_Ntimes : 60        # output file Ntimes
+    file_Ntimes : 20        # output file Ntimes
     wgt_by_nsample : False
     wgt_by_favg_nsample : True
     freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
