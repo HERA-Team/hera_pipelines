@@ -146,12 +146,14 @@ algorithm :
     full_day_avg_round : True # first perform reflection calibration on a full-day autos averaged down, then refine per-file
     wgt_by_nsample : False
     dly_ranges :
-      - [75, 800, 3]
+      - [25, 800, 5]
       - [100, 800, 5]
       - [200, 800, 5]
       - [250, 800, 5]
       - [300, 800, 5]
+      - [500, 1200, 5]
       - [700, 1500, 5]
+      - [1100, 2500, 5]
     # initial guess parameters
     window : 'bh'
     alpha : 0.1
