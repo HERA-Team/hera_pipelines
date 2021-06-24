@@ -672,8 +672,7 @@ if params['time_avg']:
     # configure output file times
     hd = hc.io.HERAData(datafiles[0])
     times = hd.times
-    output_times = [times[i*file_Ntimes:(i+1)*file_Ntimes] for i in range(len(times)//file_Ntimes + 1)]
-    output_times = [ot for ot in output_times if len(ot) > 0]
+    output_times = np.array_split(times, len(times) // file_Ntimes)
     del hd
 
     # merge all outputs into single files
