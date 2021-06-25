@@ -761,7 +761,7 @@ if params['ref_cal']:
 
             # load reflection fitter
             R = hc.reflections.ReflectionFitter(df, filetype='uvh5', input_cal=inp_cals[i])
-            R.read(bls=autokeys, polarizations=autopols)
+            R.read(bls=autokeys, polarizations=autopols, axis='blt')
             times = R.times
 
             # configure delay ranges
