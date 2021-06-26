@@ -13,6 +13,7 @@ freq_flags: [[87.5e6, 109e6],
              [137e6, 138e6],
              [187e6, 198e6],
              [220e6, 250e6],
+             [85e6, 86e6], # Added ad-hoc to make filtering behave.
              ]
 # FM band, ORBCOMM, digital TV band
 
