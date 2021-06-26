@@ -22,9 +22,9 @@ io :
 analysis : 
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
-  ref_cal : False         # reflection calibration
+  time_avg : False        # time average data
+  ref_cal : True         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
-  time_avg : True        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
 
@@ -42,11 +42,11 @@ data :
 
   # glob-parseable, data template for input data products
   # data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.PT.uvh5'
 
   # file extension for calibration file to load and apply to data
-  # cal_ext : None 
-  cal_ext : 'allspws.refcal_smooth.calfits'
+  cal_ext : None 
+  # cal_ext : 'allspws.refcal_smooth.calfits'
 
   # file extension to replace .uvh5 in data template for by-hand UVFlag file
   hand_flag_ext : .hand_flags.h5
@@ -127,6 +127,58 @@ algorithm :
     freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
     apply_hand_flag_files : True # applies flagging waterfalls before filteirng using hand_flag_ext above
 
+  # Time Averaging
+  time_avg : 
+    file_ext : "T"        # file extension of time-averaged data
+    Nbl_per_task : 10
+    t_window : 214.0      # width of averaging window in seconds
+    file_Ntimes : 20      # output file Ntimes (this is a minimum, might be 1 more if it doesn't divide evenly)
+    wgt_by_nsample : False
+    wgt_by_favg_nsample : True
+    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
+    rm_intermediate_files : True
+
+  # Reflection Calibration
+  ref_cal :
+    cal_ext : 'refcal.calfits'
+    time_avg : True
+    expand_times : True   # if time_avg, inflate gains to full time range of file
+    full_day_avg_round : True # first perform reflection calibration on a full-day autos averaged down, then refine per-file
+    wgt_by_nsample : False
+    wgt_by_favg_nsample : True
+    dly_ranges :
+      - [25, 800, 5]
+      - [100, 800, 5]
+      - [200, 800, 5]
+      - [250, 800, 5]
+      - [300, 800, 5]
+      - [500, 1200, 5]
+      - [700, 1500, 5]
+      - [1100, 2500, 5]
+    # initial guess parameters
+    window : 'bh'
+    alpha : 0.1
+    edgecut_low : [116, 534]
+    edgecut_hi : [660, 189]
+    combine_spws : True
+    spw_boundaries :
+      - [0, 384]
+      - [385, 1023]  # channel boundaries when combining multispw. default is to use edgecuts.
+    zeropad : 256
+    Nphs : 100
+    fthin : None
+    ref_sig_cut : 1.0
+    # refinement parameters
+    opt_maxiter : 0
+    opt_buffer : [15, 30]
+    opt_method : 'BFGS'
+    opt_tol : 0.001
+    # time smoothcal parameters
+    smooth_ref : True  # smooth calibration across time
+    time_scale : 14400  # FWHM of Gaussian in seconds
+    Nmirror : 0  # number of times to mirror time axis
+    smooth_cal_ext : '_smooth'  # extension to ...{}.calfits field
+
   # Xtalk Subtraction
   xtalk_sub : 
     # IO
@@ -155,55 +207,6 @@ algorithm :
     tol : 1.0e-8
     excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
       - [4.0, 4.71]
-
-  # Time Averaging
-  time_avg : 
-    file_ext : "T"        # file extension of time-averaged data
-    Nbl_per_task : 10
-    t_window : 214.0      # width of averaging window in seconds
-    file_Ntimes : 20        # output file Ntimes
-    wgt_by_nsample : False
-    wgt_by_favg_nsample : True
-    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
-    rm_intermediate_files : True
-
-  # Reflection Calibration
-  ref_cal :
-    cal_ext : 'refcal.calfits'
-    time_avg : True
-    expand_times : True   # if time_avg, inflate gains to full time range of file
-    full_day_avg_round : True # first perform reflection calibration on a full-day autos averaged down, then refine per-file
-    wgt_by_nsample : False
-    dly_ranges :
-      - [75, 800, 3]
-      - [100, 800, 5]
-      - [200, 800, 5]
-      - [250, 800, 5]
-      - [300, 800, 5]
-      - [700, 1500, 5]
-    # initial guess parameters
-    window : 'bh'
-    alpha : 0.1
-    edgecut_low : [116, 534]
-    edgecut_hi : [660, 189]
-    combine_spws : True
-    spw_boundaries :
-      - [0, 384]
-      - [385, 1023]  # channel boundaries when combining multispw. default is to use edgecuts.
-    zeropad : 256
-    Nphs : 100
-    fthin : None
-    ref_sig_cut : 1.0
-    # refinement parameters
-    opt_maxiter : 0
-    opt_buffer : [15, 30]
-    opt_method : 'BFGS'
-    opt_tol : 0.001
-    # time smoothcal parameters
-    smooth_ref : True  # smooth calibration across time
-    time_scale : 14400  # FWHM of Gaussian in seconds
-    Nmirror : 0  # number of times to mirror time axis
-    smooth_cal_ext : '_smooth'  # extension to ...{}.calfits field
 
   # Redundant Averaging
   red_avg :
