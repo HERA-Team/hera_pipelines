@@ -21,6 +21,7 @@ pstokes="${@:4}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
+exts=("foreground_filled" "foreground_res" "foreground_model")
 
 
 if [ "${include_diffs}" = "true" ]
@@ -32,14 +33,17 @@ fi
 
 for sd in ${sumdiff[@]}
 do
-  # compute pstokes of xtalk filtered files.
-  input=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.tavg.uvh5
-  output=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered_pstokes.tavg.uvh5
-  if [ -e "${input}" ]
-  then
-    echo generate_pstokes_run.py ${input} ${pstokes} --clobber --outputdata ${output}
-    generate_pstokes_run.py ${input} --pstokes ${pstokes} --clobber --outputdata ${output}
-  else
-    echo "${input} does not exist!"
-  fi
+  for ext in ${exts[@]}
+  do
+    # compute pstokes of xtalk filtered files.
+    input=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.tavg.uvh5
+    output=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered_pstokes.tavg.uvh5
+    if [ -e "${input}" ]
+    then
+      echo generate_pstokes_run.py ${input} ${pstokes} --clobber --outputdata ${output}
+      generate_pstokes_run.py ${input} --pstokes ${pstokes} --clobber --outputdata ${output}
+    else
+      echo "${input} does not exist!"
+    fi
+  done
 done

@@ -28,6 +28,7 @@ then
 else
   sumdiff=("sum")
 fi
+exts=("foreground_filled" "foreground_res" "foreground_model")
 
 for sd in ${sumdiff[@]}
 do
@@ -41,14 +42,15 @@ do
   else
     echo "${input_file} does not exist!"
   fi
-
-  input_file=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.waterfall.uvh5
-  output_file=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.waterfall.tavg.uvh5
-  if [ -e "${input_file}" ]
-  then
-    echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-    time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-  else
-    echo "${input_file} does not exist!"
-  fi
+  for ext in ${exts[@]}
+  do
+    input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.uvh5
+    output_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.tavg.uvh5
+    if [ -e "${input_file}" ]
+    then
+      echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+      time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+    else
+      echo "${input_file} does not exist!"
+    fi
 done

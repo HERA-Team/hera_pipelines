@@ -61,17 +61,18 @@ do
     time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
         --baseline_chunk_files ${baseline_chunk_files} --clobber
 
+    for ext in ${exts[@]}
+    do
+      # reconstitute xtalk filtered time-averaged files.
+      outfilename=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.tavg.uvh5
+      baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.xtalk_filtered.waterfall.tavg.uvh5`
 
-    # reconstitute xtalk filtered time-averaged files (only do foreround_filled xtalk filtered files).
-    outfilename=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.tavg.uvh5
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.xtalk_filtered.waterfall.tavg.uvh5`
+      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
 
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
+      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
+    done
     # reconstitute fr-inpainted time-averaged files
     outfilename=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.tavg.uvh5
     baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.time_inpainted.waterfall.tavg.uvh5`

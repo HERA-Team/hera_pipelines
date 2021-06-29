@@ -93,9 +93,9 @@ do
   input_file=${stage_dir}/${int_jd}/zen.${jd}.${sd}.uvh5
   output_file=zen.${jd}.${sd}.${label}.chunked.uvh5
   echo chunk_files.py ${input_files} ${input_file} ${output_file}  ${chunk_size} \
-  --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
+  --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml} --apply_yaml_flags
   chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} \
-  --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
+  --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml} --apply_yaml_flags
 done
 # remove staged files.
 rm -rf ${stage_dir}
