@@ -32,24 +32,15 @@ exts=("foreground_filled" "foreground_res" "foreground_model")
 
 for sd in ${sumdiff[@]}
 do
-# time average time-inpainted files and xtalk-filtered files.
-  input_file=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5
-  output_file=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.tavg.uvh5
-  if [ -e "${input_file}" ]
-  then
-    echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-    time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-  else
-    echo "${input_file} does not exist!"
-  fi
   for ext in ${exts[@]}
   do
-    input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.uvh5
+    input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.uvh5
     output_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.tavg.uvh5
+    filelist=`echo zen.*.${sd}.${label}.${ext}.xtalk_filtered.uvh5`
     if [ -e "${input_file}" ]
     then
-      echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-      time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+      echo time_average.py ${filelist} ${output_file} --cornerturnfile ${intput_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+      time_average.py ${filelist} ${output_file} --cornerturnfile ${intput_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
     else
       echo "${input_file} does not exist!"
     fi
