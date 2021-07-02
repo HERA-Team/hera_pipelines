@@ -82,45 +82,9 @@ args=["{basename}", "${Options:include_diffs}", "${Options:label}",
     "${Options:chunk_size}",
     "${Options:spw_ranges}", "${Options:yaml_dir}"]
 
-[DELAY]
-prereqs = "PRE_CHUNK"
-prereq_chunk_size = 1
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args = ["{basename}",
-       "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
-       "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
-       "${DELAY_OPTS:filter_mode}",
-       "${Options:nbl_per_load}"]
-
-[XTALK]
-prereqs = "DELAY"
-prereq_chunk_size="all"
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}", "${FR_OPTS:tol}",
-       "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
-       "${Options:cache_dir}"]
-
-
-[TIME_INPAINT]
-prereqs = "XTALK"
-prereq_chunk_size=1
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}", "${FR_OPTS:tol}",
-       "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
-       "${Options:cache_dir}"]
-
-
 [TIME_AVERAGE]
-prereqs = "TIME_INPAINT"
-prereq_chunk_size=1
+#prereqs = "TIME_INPAINT"
+#prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
