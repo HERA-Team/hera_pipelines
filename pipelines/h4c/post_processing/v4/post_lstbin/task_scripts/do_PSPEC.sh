@@ -55,14 +55,14 @@ do
             --pol_pairs ${pol_pairs} --verbose\
             --Jy2mK --beam ${beam_file} --exclude_permutations\
             --file_type uvh5 --xant_flag_thresh 1.1\
-            --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
+            --taper bh --spw_ranges ${spw_ranges}
 
             pspec_run.py ${input} ${output}\
               --overwrite\
               --pol_pairs ${pol_pairs} --verbose\
               --Jy2mK --beam ${beam_file} --exclude_permutations\
               --file_type uvh5  --xant_flag_thresh 1.1\
-              --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
+              --taper bh --spw_ranges ${spw_ranges}
 
             # auto power spectra
             output=zen.${jd}.${sd}.${label}.autos.${ext}.${pol_label}.tavg.pspec.h5
