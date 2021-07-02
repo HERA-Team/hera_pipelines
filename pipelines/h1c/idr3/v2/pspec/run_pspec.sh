@@ -13,7 +13,7 @@ conda activate h1c_idr3
 cd /lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/pspec
 
 echo "start: $(date)"
-preprocess_dir=/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/pspec/
-${preprocess_dir}/pspec_pipe.py ${preprocess_dir}/pspec_params.yaml 
+pspec_dir=/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/pspec/
+${pspec_dir}/pspec_pipe.py ${pspec_dir}/pspec_params.yaml 
 
 echo "end: $(date)"
