@@ -42,13 +42,6 @@ do
           --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
       time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
           --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds
-
-      if [ "${ext}" = "foreground_model" ]
-      then
-        # transfer flags from res file to model file.
-        echo transfer_flags.py zen.${jd}.${sd}.${label}.foreground_res.xtalk_filtered.uvh5 ${outfilename} ${outfilename} --clobber
-        transfer_flags.py zen.${jd}.${sd}.${label}.foreground_res.xtalk_filtered.uvh5 ${outfilename} ${outfilename} --clobber
-      fi
     done
   else
     echo "${time_chunk_template} does not exist!"
