@@ -30,7 +30,7 @@ analysis :
   run_noise_err   : True        # Run P_N errorbars given Tsys
   run_bootstrap   : False        # Run bootstrapping for errorbars
   multiproc       : True        # use multiprocess module
-  nproc           : 6           # number of processes to spawn
+  nproc           : 10           # number of processes to spawn
   maxiter         : 1 
 
 #---------------------------------------------------------------
