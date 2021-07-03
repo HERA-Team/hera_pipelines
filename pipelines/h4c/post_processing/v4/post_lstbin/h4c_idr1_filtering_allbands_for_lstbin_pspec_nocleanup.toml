@@ -66,6 +66,7 @@ max_plots_per_row = 10
 
 [WorkFlow]
 actions = [
+           "TRANSFER_FLAGS",
            "TIME_AVERAGE",
            "RECONSTITUTE",
            "PSTOKES",
@@ -74,17 +75,19 @@ actions = [
            #"POWER_SPECTRUM_NOTEBOOK",
            #"CLEANUP"]
 
-[PRE_CHUNK]
-mem=16000
-chunk_size=1
-stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:include_diffs}", "${Options:label}",
-    "${Options:chunk_size}",
-    "${Options:spw_ranges}", "${Options:yaml_dir}"]
 
-[TIME_AVERAGE]
+[TRANSFER_FLAGS]
 #prereqs = "TIME_INPAINT"
 #prereq_chunk_size=1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}"]
+
+[TIME_AVERAGE]
+prereqs = "TRANSFER_FLAGS"
+prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000

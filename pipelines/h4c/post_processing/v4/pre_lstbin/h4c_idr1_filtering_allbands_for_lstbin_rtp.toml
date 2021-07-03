@@ -69,8 +69,10 @@ actions = ["PRE_CHUNK",
            "DELAY",
            "XTALK",
            "TIME_INPAINT",
-           "TIME_AVERAGE",
            "RECONSTITUTE",
+           "TRANSFER_FLAGS",
+           "TIME_AVERAGE",
+           "RECONSTITUTE_TAVG",
            "PSTOKES",
            "PSPEC",
            "AUTOERRORS",
@@ -123,17 +125,9 @@ args = ["{basename}", "${Options:include_diffs}",
        "${Options:cache_dir}"]
 
 
-[TIME_AVERAGE]
-prereqs = "TIME_INPAINT"
-prereq_chunk_size=1
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}", "${Options:t_avg}"]
 
 [RECONSTITUTE]
-prereqs = "TIME_AVERAGE"
+prereqs = "TIME_INPAINT"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
@@ -141,8 +135,37 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}"]
 
+
+[TRANSFER_FLAGS]
+prereqs = "RECONSTITUTE"
+prereq_chunk_size=1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}"]
+
+
+[TIME_AVERAGE]
+prereqs = "TRANSFER_FLAGS"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}", "${Options:t_avg}"]
+
+[RECONSTITUTE_TAVG]
+prereqs = "TIME_AVERAGE"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}"]
+
 [PSTOKES]
-prereqs="RECONSTITUTE"
+prereqs="RECONSTITUTE_TAVG"
 prereq_chunk_size=1
 mem=16000
 chunk_size=1

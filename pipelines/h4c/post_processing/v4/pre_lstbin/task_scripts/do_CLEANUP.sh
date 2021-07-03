@@ -32,3 +32,5 @@ rm -rf zen.${jd}.*.${label}*foreground_model.uvh5
 rm -rf zen.${jd}.*.${label}*foreground_res.uvh5
 # rmeove foreground filled files.
 rm -rf zen.${jd}.*.${label}*foreground_filled.uvh5
+# remove filled flag files.
+rm -rf zen.${jd}.*.${label}*filled_flags*.uvh5
