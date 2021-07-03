@@ -30,7 +30,7 @@ else
   sumdiff=("sum")
 fi
 
-exts=("foreground_filled" "foreground_res" "foreground_model")
+exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 
 pol_pair_list=("XX~XX,YY~YY" "pI~pI")
 pol_label_list=("" "_pstokes")

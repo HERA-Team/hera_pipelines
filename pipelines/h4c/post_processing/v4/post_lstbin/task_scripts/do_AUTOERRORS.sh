@@ -19,7 +19,7 @@ beamfile_stem="${4}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
-exts=("foreground_filled" "foreground_res" "foreground_model")
+exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 sumdiff=("sum" "diff")
 pol_label_list=("" "_pstokes")
 for sd in ${sumdiff[@]}

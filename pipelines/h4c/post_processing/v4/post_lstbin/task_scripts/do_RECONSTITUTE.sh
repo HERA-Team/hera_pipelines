@@ -27,7 +27,7 @@ then
 else
   sumdiff=("sum")
 fi
-exts=("foreground_filled" "foreground_res" "foreground_model")
+exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 for sd in ${sumdiff[@]}
 do
   time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.uvh5

@@ -30,5 +30,7 @@ rm -rf zen.${jd}.*.${label}*time_inpainted.*
 rm -rf zen.${jd}.*.${label}*foreground_model.uvh5
 # remove foreground res files.
 rm -rf zen.${jd}.*.${label}*foreground_res.uvh5
-# rmeove foreground filled files.
+# remove foreground filled files.
 rm -rf zen.${jd}.*.${label}*foreground_filled.uvh5
+# remove filled flag files.
+rm -rf zen.${jd}.*.${label}*filled_flags*.uvh5
