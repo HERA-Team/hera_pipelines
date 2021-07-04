@@ -34,7 +34,7 @@ do
   for ext in ${exts[@]}
   do
     input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.uvh5
-    output_file=zen.${jd}.${sd}.${label}.${ext}.filled_flags.xtalk_filtered.tavg.uvh5
+    output_file=zen.${jd}.${sd}.${label}.${ext}.filled_flags.xtalk_filtered.uvh5
     if [ -e "${input_file}" ]
     then
         # transfer flags from res file to model file.
