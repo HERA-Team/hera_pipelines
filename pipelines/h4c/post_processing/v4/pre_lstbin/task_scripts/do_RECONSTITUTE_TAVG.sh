@@ -30,7 +30,7 @@ fi
 exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 for sd in ${sumdiff[@]}
 do
-  time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
+  time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.uvh5
   if [ -e "${time_chunk_template}" ]
   then
     for ext in ${exts[@]}
