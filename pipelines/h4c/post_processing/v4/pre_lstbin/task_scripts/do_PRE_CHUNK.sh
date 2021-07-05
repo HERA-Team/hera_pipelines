@@ -46,10 +46,17 @@ do
     # If we visited the input filename and the counter is less then chunk size.
     if [[ "${visited_fname}" = "true" && "${counter}" -lt "${chunk_size}" ]]
     then
-      # stage data for the JD.
-      json_string='{"name-matches": "zen.'"${jd_temp}.${sd}"'.uvh5"}'
-      echo librarian stage-files -w local ${stage_dir}  "$json_string"
-      librarian stage-files -w local ${stage_dir} "$json_string"
+      #check if file already exists locally. If it does, move it to staging dir
+      if [ -e "zen.${jd_temp}.${sd}.uvh5" ]
+      then
+        cp "zen.${jd_temp}.${sd}.uvh5 ${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5"
+      else
+        # otherwise, download via librarian.
+        # stage data for the JD.
+        json_string='{"name-matches": "zen.'"${jd_temp}.${sd}"'.uvh5"}'
+        echo librarian stage-files -w local ${stage_dir}  "$json_string"
+        librarian stage-files -w local ${stage_dir} "$json_string"
+      fi
       # concatenate name of staged file to list of files to be fed to file chunker.
       input_files=${input_files}" ${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5"
       # calibrate file
