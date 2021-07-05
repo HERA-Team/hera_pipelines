@@ -19,8 +19,8 @@ include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 200
-min_dly = 350
+standoff = 50
+min_dly = 250
 calibration = "none"
 filter_mode = "DPSS"
 # we may want to consider another flagging round after delay filtering.
@@ -71,8 +71,8 @@ actions = [
            "RECONSTITUTE",
            "PSTOKES",
            "PSPEC",
-           "AUTOERRORS",]
-           #"POWER_SPECTRUM_NOTEBOOK",
+           "AUTOERRORS",
+           "POWER_SPECTRUM_SUMMARY_NOTEBOOK",]
            #"CLEANUP"]
 
 
@@ -148,7 +148,7 @@ args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOO
       "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
       "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${PSPEC_OPTS:spw_ranges}"]
 
-[POWER_SPECTRUM_NOTEBOOK]
+[POWER_SPECTRUM_SUMMARY_NOTEBOOK]
 prereqs="AUTOERRORS"
 prereq_chunk_size="all"
 mem=128000

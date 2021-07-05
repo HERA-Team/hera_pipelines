@@ -19,8 +19,8 @@ include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 200
-min_dly = 350
+standoff = 50
+min_dly = 250
 calibration = "none"
 filter_mode = "DPSS"
 # we may want to consider another flagging round after delay filtering.
@@ -222,8 +222,21 @@ args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
 
+[POWER_SPECTRUM_SUMMARY_NOTEBOOK]
+prereqs="AUTOERRORS"
+prereq_chunk_size="all"
+mem=128000
+chunk_size=1
+stride_length="all"
+time_centered=false
+args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_output_repo}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:spws}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:lst_fields}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:grp_skip}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
+
 [CLEANUP]
-prereqs= "POWER_SPECTRUM_NOTEBOOK"
+prereqs= "POWER_SPECTRUM_SUMMARY_NOTEBOOK"
 prereq_chunk_size = "all"
 mem=8000
 chunk_size=1
