@@ -19,8 +19,8 @@ include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 50
-min_dly = 250
+standoff = 0
+min_dly = 200
 calibration = "none"
 filter_mode = "DPSS"
 # we may want to consider another flagging round after delay filtering.

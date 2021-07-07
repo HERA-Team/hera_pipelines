@@ -36,7 +36,7 @@ max_plots_per_row=${11}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/power_spectrum_inspect/power_spectrum_summary_${label}_${jd}.ipynb
+nb_outfile=${nb_output_repo}/power_spectrum_summary/power_spectrum_summary_${label}_${jd}.ipynb
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
