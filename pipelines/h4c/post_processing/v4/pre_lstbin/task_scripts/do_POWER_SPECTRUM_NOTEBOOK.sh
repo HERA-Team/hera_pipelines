@@ -36,32 +36,36 @@ max_plots_per_row=${11}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/power_spectrum_inspect/power_spectrum_inspect_${label}_${jd}.ipynb
+exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 
-# Export variables used by the notebook
-export DATA_PATH=`pwd`
-export JULIANDATE=${jd}
-export LABEL=${label}
-export SPWS=${spws}
-export LST_FIELDS=${lst_fields}
-export GRP_SKIP=${grp_skip}
-export BLP_SKIP=${blp_skip}
-export FIELD_LABELS=${field_labels}
-export MAX_PLOTS_PER_ROW=${max_plots_per_row}
+for ext in ${exts[@]}
+do
+  nb_outfile=${nb_output_repo}/power_spectrum_inspect/power_spectrum_inspect_${label}_${jd}_${ext}.ipynb
+  # Export variables used by the notebook
+  export DATA_PATH=`pwd`
+  export JULIANDATE=${jd}
+  export LABEL=${label}
+  export SPWS=${spws}
+  export LST_FIELDS=${lst_fields}
+  export GRP_SKIP=${grp_skip}
+  export BLP_SKIP=${blp_skip}
+  export FIELD_LABELS=${field_labels}
+  export MAX_PLOTS_PER_ROW=${max_plots_per_row}
+  export EXT=${ext}
 
-# Execute jupyter notebook
-jupyter nbconvert --output=${nb_outfile} \
---to notebook \
---ExecutePreprocessor.allow_errors=True \
---ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/power_spectrum_inspect.ipynb
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin master
-    git add ${nb_outfile}
-    git commit -m "H4C RTP Filtering notebook for JD ${jd} ${label}"
-    git push origin master
-fi
+  # Execute jupyter notebook
+  jupyter nbconvert --output=${nb_outfile} \
+  --to notebook \
+  --ExecutePreprocessor.allow_errors=True \
+  --ExecutePreprocessor.timeout=-1 \
+  --execute ${nb_template_dir}/power_spectrum_inspect.ipynb
+  # If desired, push results to github
+  if [ "${git_push}" == "True" ]
+  then
+      cd ${nb_output_repo}
+      git pull origin master
+      git add ${nb_outfile}
+      git commit -m "H4C RTP Filtering notebook for JD ${jd} ${label}"
+      git push origin master
+  fi
+done
