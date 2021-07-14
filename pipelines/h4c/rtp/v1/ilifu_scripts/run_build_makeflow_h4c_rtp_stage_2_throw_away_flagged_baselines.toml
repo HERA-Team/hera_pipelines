@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source $CONDA_INIT_SCRIPT
+conda activate h4c
+cd /disc/ilifu/astro/projects/hera/aewallwi/makeflow/H4C/2459122/
+build_makeflow_from_config.py -c /ilifu/astro/projects/aewallwi/hera_pipelines/pipelines/h4c/rtp/v1/h4c_rtp_stage_2_throw_away_flagged_baselines_ilifu.toml /ilifu/astro/projects/hera/H4C/2459122/zen.2459122*.sum.uvh5
