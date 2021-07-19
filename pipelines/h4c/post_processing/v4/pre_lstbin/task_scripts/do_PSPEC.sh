@@ -65,7 +65,7 @@ do
               --taper bh --spw_ranges ${spw_ranges} --broadcast_dset_flags
 
             # auto power spectra
-            output=zen.${jd}.${sd}.${label}.autos.${ext}.${pol_label}.tavg.pspec.h5
+            output=zen.${jd}.${sd}.${label}.autos.${ext}${pol_label}.tavg.pspec.h5
             echo pspec_run.py ${input} ${output}\
               --overwrite\
               --pol_pairs ${pol_pairs} --verbose\
