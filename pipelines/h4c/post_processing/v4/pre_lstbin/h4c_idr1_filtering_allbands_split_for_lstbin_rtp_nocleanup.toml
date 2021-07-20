@@ -112,7 +112,7 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
-       "${Options:cache_dir}"]
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}"]
 
 
 [TIME_INPAINT]
@@ -124,7 +124,7 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
-       "${Options:cache_dir}"]
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}"]
 
 
 

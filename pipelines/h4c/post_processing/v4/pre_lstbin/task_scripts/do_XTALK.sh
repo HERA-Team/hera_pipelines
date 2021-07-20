@@ -24,6 +24,7 @@ tol="${4}"
 frc0="${5}"
 frc1="${6}"
 cache_dir="${7}"
+spw_ranges="${8}"
 
 
 jd=$(get_jd $fn)
@@ -50,12 +51,12 @@ do
         echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
         --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
         --cornerturnfile ${fn_in}\
-        --clobber --verbose --mode dpss_leastsq --skip_autos
+        --clobber --verbose --mode dpss_leastsq --skip_autos --filter_spw_ranges ${spw_ranges}
 
         tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
         --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
         --cornerturnfile ${fn_in} \
-        --clobber --verbose --mode dpss_leastsq --skip_autos
+        --clobber --verbose --mode dpss_leastsq --skip_autos --filter_spw_ranges ${spw_ranges}
       else
         echo "${fn_in} does not exist!"
       fi
