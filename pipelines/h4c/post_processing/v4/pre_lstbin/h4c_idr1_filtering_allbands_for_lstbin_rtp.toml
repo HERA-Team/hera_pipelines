@@ -23,6 +23,8 @@ standoff = 0
 min_dly = 200
 calibration = "none"
 filter_mode = "DPSS"
+spw_ranges = "0~737"
+
 # we may want to consider another flagging round after delay filtering.
 
 [FR_OPTS]
@@ -100,7 +102,7 @@ args = ["{basename}",
        "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
        "${DELAY_OPTS:filter_mode}",
-       "${Options:nbl_per_load}"]
+       "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}"]
 
 [XTALK]
 prereqs = "DELAY"

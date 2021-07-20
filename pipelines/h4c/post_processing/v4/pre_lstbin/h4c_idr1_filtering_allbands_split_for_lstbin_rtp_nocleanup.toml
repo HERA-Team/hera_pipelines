@@ -7,9 +7,9 @@ base_mem = 8000
 base_cpu = 1
 timeout = "24h"
 mail_user = "aaronew+nrao@berkeley.edu"
-chunk_size = 15 # this number is to make sure that the branch cut does not occur inside of a single file.                # should be adjusted depending on where the cut is.
-spw_ranges='150~320'
-label = "low-band-allbls"
+chunk_size = 8
+spw_ranges='10~105,150~320,515~615,665~717,770~1090'
+label = "all-bands-split-allbls"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
 yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
@@ -19,10 +19,11 @@ include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 100
-min_dly = 1000
+standoff = 50
+min_dly = 300
 calibration = "none"
 filter_mode = "DPSS"
+spw_ranges = "0~265,265~737"
 # we may want to consider another flagging round after delay filtering.
 
 [FR_OPTS]
@@ -37,7 +38,9 @@ min_frate = 0.5
 [PSPEC_OPTS]
 pstokes="pI"
 beam_file="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix"
-spw_ranges="0~85,85~170"
+#spw_ranges="0~95,95~180,180~265,265~365,365~430,430~515,515~600,600~685"
+spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
+
 nsamples=100
 seed=10
 
@@ -53,7 +56,7 @@ nskip = 3
 nb_template_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks/"
 nb_output_repo = "/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/"
 git_push = "False"
-spws = "0,1"
+spws = "0,1,2,3,4,5,6,7"
 lst_fields="1~3,4.2~6.2"
 grp_skip = 10
 blp_skip = 2
@@ -67,18 +70,21 @@ actions = ["PRE_CHUNK",
            "DELAY",
            "XTALK",
            "TIME_INPAINT",
-           "TIME_AVERAGE",
            "RECONSTITUTE",
+           "TRANSFER_FLAGS",
+           "TIME_AVERAGE",
+           "RECONSTITUTE_TAVG",
            "PSTOKES",
            "PSPEC",
            "AUTOERRORS",
            #BOOTSTRAPERRORS,
            "FILTER_NOTEBOOK",
            "POWER_SPECTRUM_NOTEBOOK",
-           "CLEANUP"]
+           "POWER_SPECTRUM_SUMMARY_NOTEBOOK"]
+           #"CLEANUP"]
 
 [PRE_CHUNK]
-mem=8000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}",
@@ -90,19 +96,19 @@ prereqs = "PRE_CHUNK"
 prereq_chunk_size = 1
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 8000
+mem = 16000
 args = ["{basename}",
        "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
        "${DELAY_OPTS:filter_mode}",
-       "${Options:nbl_per_load}"]
+       "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}"]
 
 [XTALK]
 prereqs = "DELAY"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 8000
+mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
@@ -114,35 +120,56 @@ prereqs = "XTALK"
 prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 8000
+mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
        "${Options:cache_dir}"]
 
 
-[TIME_AVERAGE]
+
+[RECONSTITUTE]
 prereqs = "TIME_INPAINT"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}"]
+
+
+[TRANSFER_FLAGS]
+prereqs = "RECONSTITUTE"
 prereq_chunk_size=1
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 8000
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}"]
+
+
+[TIME_AVERAGE]
+prereqs = "TRANSFER_FLAGS"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${Options:t_avg}"]
 
-[RECONSTITUTE]
+[RECONSTITUTE_TAVG]
 prereqs = "TIME_AVERAGE"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 8000
+mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}"]
+      "${Options:label}"]
 
 [PSTOKES]
-prereqs="RECONSTITUTE"
+prereqs="RECONSTITUTE_TAVG"
 prereq_chunk_size=1
-mem=8000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
@@ -151,7 +178,7 @@ args=["{basename}", "${Options:include_diffs}",
 [PSPEC]
 prereqs = "PSTOKES"
 prereq_chunk_size = 1
-mem=8000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}",
@@ -160,7 +187,7 @@ args=["{basename}", "${Options:include_diffs}", "${Options:label}",
 [AUTOERRORS]
 prereqs = "PSPEC"
 prereq_chunk_size = 1
-mem=8000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:beam_file}"]
@@ -168,7 +195,7 @@ args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPT
 [BOOTSTRAPERRORS]
 prereqs = "AUTOERRORS"
 prereq_chunk_size = 1
-mem=24000
+mem=32000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
@@ -197,8 +224,21 @@ args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
 
+[POWER_SPECTRUM_SUMMARY_NOTEBOOK]
+prereqs="AUTOERRORS"
+prereq_chunk_size="all"
+mem=128000
+chunk_size=1
+stride_length="all"
+time_centered=false
+args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_output_repo}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:spws}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:lst_fields}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:grp_skip}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
+
 [CLEANUP]
-prereqs= "POWER_SPECTRUM_NOTEBOOK"
+prereqs= "POWER_SPECTRUM_SUMMARY_NOTEBOOK"
 prereq_chunk_size = "all"
 mem=8000
 chunk_size=1
