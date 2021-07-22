@@ -49,7 +49,7 @@ do
       #check if file already exists locally. If it does, move it to staging dir
       if [ -e "zen.${jd_temp}.${sd}.uvh5" ]
       then
-        cp "zen.${jd_temp}.${sd}.uvh5 ${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5"
+        cp zen.${jd_temp}.${sd}.uvh5 ${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5
       else
         # otherwise, download via librarian.
         # stage data for the JD.
