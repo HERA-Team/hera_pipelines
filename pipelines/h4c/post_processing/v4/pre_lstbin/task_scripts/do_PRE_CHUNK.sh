@@ -19,6 +19,7 @@ int_jd=${jd:0:7}
 stage_dir=staging.${label}.${jd}
 rm -rf ${stage_dir}
 mkdir ${stage_dir}
+mkdir ${stage_dir}/${int_jd}
 ant_flag_yaml=${yaml_dir}/${int_jd}.yaml
 
 if [ "${include_diffs}" = "true" ]
