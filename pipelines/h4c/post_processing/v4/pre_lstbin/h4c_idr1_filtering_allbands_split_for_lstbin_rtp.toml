@@ -225,7 +225,7 @@ args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
 
 [POWER_SPECTRUM_SUMMARY_NOTEBOOK]
-prereqs="AUTOERRORS"
+prereqs="POWER_SPECTRUM_NOTEBOOK"
 prereq_chunk_size="all"
 mem=128000
 chunk_size=1
