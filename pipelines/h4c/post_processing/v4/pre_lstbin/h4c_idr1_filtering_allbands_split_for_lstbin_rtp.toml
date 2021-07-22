@@ -23,8 +23,7 @@ standoff = 0
 min_dly = 200
 calibration = "none"
 filter_mode = "DPSS"
-spw_ranges = "0~737"
-
+spw_ranges = "0~265,265~737"
 # we may want to consider another flagging round after delay filtering.
 
 [FR_OPTS]
