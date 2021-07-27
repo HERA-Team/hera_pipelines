@@ -41,7 +41,7 @@ data :
   data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/pspec'
 
   # data template basename: optionally with {group} and/or {pol} fields
-  data_template : 'zen.grp1.of1.LST.*.sum.PTXK.uvh5'
+  data_template : 'zen.grp1.of1.LST.*.sum.PTX.uvh5'
   
   # std template basename: optionally with {grup} and/or {pol} fields
   std_template : None
@@ -87,14 +87,14 @@ algorithm :
 
   # pspec pipeline
   pspec : 
-    outfname : "pspec.grp1.of1.LPTXK.h5"
-    groupname : "stokespol"
+    outfname : "pspec.grp1.of1.LPTX.h5"
+    groupname : "linpol"
     output_by_red : True
     input_data_weight : "identity"
     norm : "I"
     taper : "bh"
-#    beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_power_beam_healpix128.fits"  # full_path
-    beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
+    beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_power_beam_healpix128.fits"  # full_path
+    # beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
     cosmo : None
     spw_ranges :
       - [176, 340]
@@ -117,15 +117,16 @@ algorithm :
 
   # P_N calculation
   noise_err :
-    psc_name : "pspec.grp1.of1.LPTXK.h5"  # a PSpecContainer file
+    psc_name : "pspec.grp1.of1.LPTX.h5"  # a PSpecContainer file
     error_type : ["P_N", "P_SN"]
     precomp_P_N : None
-    group_name : 'stokespol'  # group name in psc to operate on
+    group_name : 'linpol'  # group name in psc to operate on
     spectra_names : None  # list of spectra names within group to operate on, None is all
-    beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
-    auto_file : "zen.grp1.of1.LST.*.sum.PTXK.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
+    # beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
+    beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_power_beam_healpix128.fits"  # full_path
+    auto_file : "zen.grp1.of1.LST.*.sum.PTX.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
     cal_ext : None  # same function as cal_ext in "data"
-    output_Tsys_file : "zen.grp1.of1.autos.Tsys.uvh5"  # output file for antenna Tsys, if None don't write output
+    output_Tsys_file : "zen.grp1.of1.autos.Tsys.LPTX.uvh5"  # output file for antenna Tsys, if None don't write output
 
   # bootstrap pipeline
   bootstrap :
