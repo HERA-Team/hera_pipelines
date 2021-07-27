@@ -23,6 +23,7 @@ standoff = 0
 min_dly = 200
 calibration = "none"
 filter_mode = "DPSS"
+spw_ranges = "0~737"
 # we may want to consider another flagging round after delay filtering.
 
 [FR_OPTS]
@@ -78,7 +79,8 @@ actions = ["PRE_CHUNK",
            "AUTOERRORS",
            #BOOTSTRAPERRORS,
            "FILTER_NOTEBOOK",
-           "POWER_SPECTRUM_NOTEBOOK",]
+           "POWER_SPECTRUM_NOTEBOOK",
+           "POWER_SPECTRUM_SUMMARY_NOTEBOOK"]
            #"CLEANUP"]
 
 [PRE_CHUNK]
@@ -99,7 +101,7 @@ args = ["{basename}",
        "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
        "${DELAY_OPTS:filter_mode}",
-       "${Options:nbl_per_load}"]
+       "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}"]
 
 [XTALK]
 prereqs = "DELAY"
@@ -110,7 +112,7 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
-       "${Options:cache_dir}"]
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}"]
 
 
 [TIME_INPAINT]
@@ -122,7 +124,7 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
-       "${Options:cache_dir}"]
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}"]
 
 
 

@@ -29,29 +29,35 @@ spws=${9}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outfile=${nb_output_repo}/filter_inspect/filter_inspect_${label}_${jd}.ipynb
+exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 
-# Export variables used by the notebook
-export DATA_PATH=`pwd`
-export JULIANDATE=${jd}
-export LABEL=${label}
-export NREDS=${nreds}
-export MAX_BLS_PER_REDGRP=${max_bls_per_redgrp}
-export NSKIP=${nskip}
-export SPWS=${spws}
-# Execute jupyter notebook
-jupyter nbconvert --output=${nb_outfile} \
---to notebook \
---ExecutePreprocessor.allow_errors=True \
---ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}filter_inspect.ipynb
+for ext in ${exts[@]}
+do
+  nb_outfile=${nb_output_repo}/filter_inspect/filter_inspect_${label}_${jd}_${ext}.ipynb
 
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin master
-    git add ${nb_outfile}
-    git commit -m "H4C RTP Filtering notebook for JD ${jd} ${label}"
-    git push origin master
-fi
+  # Export variables used by the notebook
+  export DATA_PATH=`pwd`
+  export JULIANDATE=${jd}
+  export LABEL=${label}
+  export NREDS=${nreds}
+  export MAX_BLS_PER_REDGRP=${max_bls_per_redgrp}
+  export NSKIP=${nskip}
+  export SPWS=${spws}
+  export EXT=${ext}
+  # Execute jupyter notebook
+  jupyter nbconvert --output=${nb_outfile} \
+  --to notebook \
+  --ExecutePreprocessor.allow_errors=True \
+  --ExecutePreprocessor.timeout=-1 \
+  --execute ${nb_template_dir}filter_inspect.ipynb
+
+  # If desired, push results to github
+  if [ "${git_push}" == "True" ]
+  then
+      cd ${nb_output_repo}
+      git pull origin master
+      git add ${nb_outfile}
+      git commit -m "H4C RTP Filtering notebook for JD ${jd} ${label}"
+      git push origin master
+  fi
+done
