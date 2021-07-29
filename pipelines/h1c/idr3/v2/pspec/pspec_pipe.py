@@ -80,7 +80,7 @@ print("dset1 = {} files and dset2 = {} files".format(d1_Nfiles, d2_Nfiles))
 
 # sort datafiles in time, taking into account the branch cut in LST
 _, _, filelsts1, filetimes1 = hc.io.get_file_times(dset1, filetype='uvh5')
-_, _, filelsts1, filetimes1 = hc.io.get_file_times(dset2, filetype='uvh5')
+_, _, filelsts2, filetimes2 = hc.io.get_file_times(dset2, filetype='uvh5')
 if params.get('lst_sort', False):
     branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
     timeorder1 = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts1)], key=branch_sorter), dtype=int)[:, 0]
