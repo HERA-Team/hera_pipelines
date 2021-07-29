@@ -130,7 +130,7 @@ algorithm :
     beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
     auto_file : "zen.grp1.of1.LST.*.sum.PTXK.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
     cal_ext : None  # same function as cal_ext in "data"
-    output_Tsys_file : "zen.grp1.of1.autos.Tsys.uvh5"  # output file for antenna Tsys, if None don't write output
+    output_Tsys_file : "zen.grp1.of1.autos.Tsys.LPTXK.uvh5"  # output file for antenna Tsys, if None don't write output
 
   # bootstrap pipeline
   bootstrap :
