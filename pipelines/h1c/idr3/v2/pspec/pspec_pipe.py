@@ -381,8 +381,18 @@ if params['run_noise_err']:
                     alg['spectra_names'] = [alg['spectra_names']]
                 spectra = [sp for sp in alg['spectra_names'] if sp in spectra]
 
-            # load autocorrelation file and its metadata
+            # sort data in time to before loading autocorrelations
             dfiles = sorted(glob.glob(os.path.join(params['data_root'], alg['auto_file'])))
+            assert len(dfiles) > 0
+            _, _, filelsts, filetimes = hc.io.get_file_times(dfiles, filetype='uvh5')
+            if params.get('lst_sort', False):
+                branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
+                timeorder = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts)], key=branch_sorter), dtype=int)[:, 0]
+            else:
+                timeorder = np.argsort([ft[0] for ft in filetimes])
+            dfiles = [dfiles[ti] for ti in timeorder]
+
+            # load autocorrelation file and its metadata
             uvd = UVData()
             uvd.read(dfiles[0], read_data=False)
             bls = [bl for bl in uvd.get_antpairs() if bl[0] == bl[1]]
