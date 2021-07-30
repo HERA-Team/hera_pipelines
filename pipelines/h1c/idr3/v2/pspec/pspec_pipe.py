@@ -431,7 +431,7 @@ if params['run_noise_err']:
 
         return 0
 
-    # launch bootstrap jobs
+    # launch noise calculation jobs
     failures = hp.utils.job_monitor(noise_err, [psc_fname], "NOISE_ERR", lf=lf, maxiter=params['maxiter'], verbose=params['verbose'])
 
     # print to log
