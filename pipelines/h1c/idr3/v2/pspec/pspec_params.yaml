@@ -54,7 +54,8 @@ data :
 
   # Polarizations to cross multiply
   pol_pairs :
-    - ['pI', 'pI']
+    - ['ee', 'ee']
+    - ['nn', 'nn']
 
   # file type
   filetype : 'uvh5'
@@ -75,6 +76,11 @@ data :
 
   # denote bad antennas
   xants : [0,2,24,50,53,54,67,69,81,98,103,104,116,117,136,155,156,180,181,182,183,334,338]
+
+  # if True, sort files by LST of the first integration, using lst_branch_cut to decide where to wrap
+  lst_sort : True 
+  # value in radians for branchcut for how to order LSTs. Only used if lst_sort is True. Default 0.0.
+  lst_branch_cut : 4.71
 
 #---------------------------------------------------------------
 # Algorithm Parameters
@@ -123,8 +129,8 @@ algorithm :
     group_name : 'linpol'  # group name in psc to operate on
     spectra_names : None  # list of spectra names within group to operate on, None is all
     # beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
-    beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_power_beam_healpix128.fits"  # full_path
-    auto_file : "zen.grp1.of1.LST.*.sum.PTX.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
+    beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_power_beam_healpix128.fits"
+    auto_file : "zen.grp1.of1.LST.*.sum.PTK.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
     cal_ext : None  # same function as cal_ext in "data"
     output_Tsys_file : "zen.grp1.of1.autos.Tsys.LPTX.uvh5"  # output file for antenna Tsys, if None don't write output
 

@@ -11,6 +11,7 @@ See pspec_pipe.yaml for relevant parameter selections.
 """
 import multiprocess
 import numpy as np
+import hera_cal as hc
 import hera_pspec as hp
 from pyuvdata import UVData, UVBeam, UVCal
 import pyuvdata.utils as uvutils
@@ -77,7 +78,23 @@ if exclude_patterns not in [[], '', None, 'None']:
 d1_Nfiles, d2_Nfiles = len(dset1), len(dset2)
 print("dset1 = {} files and dset2 = {} files".format(d1_Nfiles, d2_Nfiles))
 
-# get calibration filess
+# sort datafiles in time, taking into account the branch cut in LST
+_, _, filelsts1, filetimes1 = hc.io.get_file_times(dset1, filetype='uvh5')
+_, _, filelsts2, filetimes2 = hc.io.get_file_times(dset2, filetype='uvh5')
+if params.get('lst_sort', False):
+    branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
+    timeorder1 = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts1)], key=branch_sorter), dtype=int)[:, 0]
+    timeorder2 = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts2)], key=branch_sorter), dtype=int)[:, 0]
+else:
+    timeorder1 = np.argsort([ft[0] for ft in filetimes1])
+    timeorder2 = np.argsort([ft[0] for ft in filetimes2])
+dset1 = [dset1[ti] for ti in timeorder1]
+dset2 = [dset2[ti] for ti in timeorder2]
+if std_template is not None:
+    std1 = [dset1[ti] for ti in timeorder1]
+    std2 = [dset2[ti] for ti in timeorder2]
+
+# get calibration files
 cals1, cals2 = None, None
 if cal_ext not in ['', None, 'None']:
     # try to use cal_ext as a full path to a single calibration
@@ -364,8 +381,18 @@ if params['run_noise_err']:
                     alg['spectra_names'] = [alg['spectra_names']]
                 spectra = [sp for sp in alg['spectra_names'] if sp in spectra]
 
-            # load autocorrelation file and its metadata
+            # sort data in time to before loading autocorrelations
             dfiles = sorted(glob.glob(os.path.join(params['data_root'], alg['auto_file'])))
+            assert len(dfiles) > 0
+            _, _, filelsts, filetimes = hc.io.get_file_times(dfiles, filetype='uvh5')
+            if params.get('lst_sort', False):
+                branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
+                timeorder = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts)], key=branch_sorter), dtype=int)[:, 0]
+            else:
+                timeorder = np.argsort([ft[0] for ft in filetimes])
+            dfiles = [dfiles[ti] for ti in timeorder]
+
+            # load autocorrelation file and its metadata
             uvd = UVData()
             uvd.read(dfiles[0], read_data=False)
             bls = [bl for bl in uvd.get_antpairs() if bl[0] == bl[1]]
@@ -404,7 +431,7 @@ if params['run_noise_err']:
 
         return 0
 
-    # launch bootstrap jobs
+    # launch noise calculation jobs
     failures = hp.utils.job_monitor(noise_err, [psc_fname], "NOISE_ERR", lf=lf, maxiter=params['maxiter'], verbose=params['verbose'])
 
     # print to log
