@@ -21,6 +21,12 @@ pstokes="${@:4}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
+if [[ "$int_jd" == *"."* ]]; then
+  jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
+  jd="LST.${jd}"
+fi
+
+
 exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 
 

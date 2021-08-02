@@ -13,6 +13,11 @@ label="${2}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
+if [[ "$int_jd" == *"."* ]]; then
+  jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
+  jd="LST.${jd}"
+fi
+
 # get rid of all the waterfall files associated with this run.
 rm -rf zen.${jd}.*.${label}*waterfall*h5
 # also get rid of the chunked files.

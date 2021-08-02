@@ -19,6 +19,11 @@ label="${3}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
+if [[ "$int_jd" == *"."* ]]; then
+  jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
+  int_jd="LST"
+fi
+
 
 
 if [ "${include_diffs}" = "true" ]

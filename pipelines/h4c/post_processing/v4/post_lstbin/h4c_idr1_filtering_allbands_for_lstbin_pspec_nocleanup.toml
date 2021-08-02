@@ -72,8 +72,8 @@ actions = [
            "PSTOKES",
            "PSPEC",
            "AUTOERRORS",
-           "POWER_SPECTRUM_SUMMARY_NOTEBOOK",]
-           #"CLEANUP"]
+           "POWER_SPECTRUM_SUMMARY_NOTEBOOK",
+           "CLEANUP"]
 
 
 [TRANSFER_FLAGS]
@@ -162,7 +162,7 @@ args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_
       "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
 
 [CLEANUP]
-prereqs= "POWER_SPECTRUM_NOTEBOOK"
+prereqs= "POWER_SPECTRUM_SUMMARY_NOTEBOOK"
 prereq_chunk_size = "all"
 mem=8000
 chunk_size=1
