@@ -72,8 +72,8 @@ actions = [
            "PSTOKES",
            "PSPEC",
            "AUTOERRORS",
-           "POWER_SPECTRUM_SUMMARY_NOTEBOOK",
-           "CLEANUP"]
+           "POWER_SPECTRUM_SUMMARY_NOTEBOOK"]#,
+           #"CLEANUP"]
 
 
 [TRANSFER_FLAGS]
