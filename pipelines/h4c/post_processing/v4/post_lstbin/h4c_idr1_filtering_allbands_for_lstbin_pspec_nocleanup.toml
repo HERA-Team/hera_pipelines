@@ -7,7 +7,7 @@ base_mem = 8000
 base_cpu = 1
 timeout = "24h"
 mail_user = "aaronew+nrao@berkeley.edu"
-chunk_size = 8
+chunk_size = 15
 spw_ranges='10~105,150~320,515~615,665~717,770~1090'
 label = "all-bands-allbls"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
@@ -66,8 +66,8 @@ max_plots_per_row = 10
 
 [WorkFlow]
 actions = [
-           "TRANSFER_FLAGS",
            "PRE_CHUNK",
+           "TRANSFER_FLAGS",
            "TIME_AVERAGE",
            "RECONSTITUTE",
            "PSTOKES",
@@ -77,16 +77,6 @@ actions = [
            #"CLEANUP"]
 
 
-[TRANSFER_FLAGS]
-#prereqs = "TIME_INPAINT"
-#prereq_chunk_size=1
-chunk_size=1
-stride_length="${Options:chunk_size}"
-mem = 16000
-args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}"]
-
-
 [PRE_CHUNK]
 prereqs = "TRANSFER_FLAGS"
 prereq_chunk_size="all"
@@ -94,7 +84,18 @@ mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}",
-     "${Options:chunk_size}"]
+    "${Options:chunk_size}"]
+
+
+[TRANSFER_FLAGS]
+prereqs = "PRE_CHUNK"
+prereq_chunk_size=1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}"]
+
 
 
 [TIME_AVERAGE]
@@ -140,25 +141,6 @@ mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:beam_file}"]
-
-[BOOTSTRAPERRORS]
-prereqs = "AUTOERRORS"
-prereq_chunk_size = 1
-mem=32000
-chunk_size=1
-stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
-
-[FILTER_NOTEBOOK]
-prereqs="AUTOERRORS"
-prereq_chunk_size="all"
-mem=128000
-chunk_size=1
-stride_length="all"
-time_centered = false
-args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOOK_OPTS:nb_output_repo}",
-      "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
-      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${PSPEC_OPTS:spw_ranges}"]
 
 [POWER_SPECTRUM_SUMMARY_NOTEBOOK]
 prereqs="AUTOERRORS"

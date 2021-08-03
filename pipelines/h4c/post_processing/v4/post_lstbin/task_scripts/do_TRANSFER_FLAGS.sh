@@ -39,13 +39,13 @@ for sd in ${sumdiff[@]}
 do
   for ext in ${exts[@]}
   do
-    input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.uvh5
+    input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.chunked.uvh5
     output_file=zen.${jd}.${sd}.${label}.${ext}.filled_flags.xtalk_filtered.uvh5
     if [ -e "${input_file}" ]
     then
         # transfer flags from res file to model file.
-        echo transfer_flags.py zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.uvh5 ${input_file} ${output_file} --clobber
-        transfer_flags.py zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.uvh5 ${input_file} ${output_file} --clobber
+        echo transfer_flags.py zen.${jd}.${sd}.${label}.foreground_filled.chunked.xtalk_filtered.uvh5 ${input_file} ${output_file} --clobber
+        transfer_flags.py zen.${jd}.${sd}.${label}.foreground_filled.chunked.xtalk_filtered.uvh5 ${input_file} ${output_file} --clobber
     else
       echo "${input_file} does not exist!"
     fi
