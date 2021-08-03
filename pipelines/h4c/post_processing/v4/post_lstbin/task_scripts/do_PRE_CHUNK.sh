@@ -36,4 +36,5 @@ do
     --clobber
     chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
     --clobber
+  done
 done
