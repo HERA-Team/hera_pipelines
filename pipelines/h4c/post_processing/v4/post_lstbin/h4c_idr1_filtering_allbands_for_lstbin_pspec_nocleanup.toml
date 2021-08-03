@@ -78,9 +78,7 @@ actions = [
 
 
 [PRE_CHUNK]
-prereqs = "TRANSFER_FLAGS"
-prereq_chunk_size="all"
-mem=8000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}",
