@@ -151,7 +151,7 @@ args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOO
 [POWER_SPECTRUM_SUMMARY_NOTEBOOK]
 prereqs="AUTOERRORS"
 prereq_chunk_size="all"
-mem=128000
+mem=256000
 chunk_size=1
 stride_length="all"
 time_centered=false
