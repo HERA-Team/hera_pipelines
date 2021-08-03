@@ -67,6 +67,7 @@ max_plots_per_row = 10
 [WorkFlow]
 actions = [
            "TRANSFER_FLAGS",
+           "PRE_CHUNK",
            "TIME_AVERAGE",
            "RECONSTITUTE",
            "PSTOKES",
@@ -85,8 +86,20 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}"]
 
-[TIME_AVERAGE]
+
+[PRE_CHUNK]
 prereqs = "TRANSFER_FLAGS"
+prepreq_chunk_size="all"
+mem=8000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:label}",
+     "${Options:chunk_size}",
+     "${Options:grpstr}"]
+
+
+[TIME_AVERAGE]
+prereqs = "PRE_CHUNK"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"

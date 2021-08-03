@@ -39,9 +39,9 @@ for sd in ${sumdiff[@]}
 do
   for ext in ${exts[@]}
   do
-    input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.uvh5
+    input_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.chunked.uvh5
     output_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.tavg.uvh5
-    filelist=`echo zen.*.${sd}.${label}.${ext}.xtalk_filtered.uvh5`
+    filelist=`echo zen.*.${sd}.${label}.${ext}.xtalk_filtered.chunked.uvh5`
     if [ -e "${input_file}" ]
     then
       echo time_average.py ${filelist} ${output_file} --cornerturnfile ${input_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
