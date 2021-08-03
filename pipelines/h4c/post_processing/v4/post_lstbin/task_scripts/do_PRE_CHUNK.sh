@@ -30,8 +30,8 @@ do
   do
     # chunk full baseline files.
     input_file=zen.${jd}.${sd}.${label}.${ext}.filled_flags.xtalk_filtered.uvh5
-    input_files=`echo zen.${int_jd}.*.${sd}.${label}.xtalk_filtered_res.uvh5`
-    output_file=zen.${jd}.${sd}.${label}.${ext}.filled_flags.xtalk_filtered.uvh5
+    input_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.xtalk_filtered_res.uvh5`
+    output_file=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.uvh5
     echo chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
     --clobber
     chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size}\
