@@ -94,8 +94,7 @@ mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}",
-     "${Options:chunk_size}",
-     "${Options:grpstr}"]
+     "${Options:chunk_size}"]
 
 
 [TIME_AVERAGE]
