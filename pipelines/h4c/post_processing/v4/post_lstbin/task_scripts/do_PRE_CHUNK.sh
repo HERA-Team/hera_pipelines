@@ -23,7 +23,7 @@ fi
 
 
 sumdiff=("sum" "diff")
-exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
+exts=("foreground_filled" "foreground_res" "foreground_model")
 
 for sd in ${sumdiff[@]}
 do
