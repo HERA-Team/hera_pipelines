@@ -89,7 +89,7 @@ args = ["{basename}", "${Options:include_diffs}",
 
 [PRE_CHUNK]
 prereqs = "TRANSFER_FLAGS"
-prepreq_chunk_size="all"
+prereq_chunk_size="all"
 mem=8000
 chunk_size=1
 stride_length="${Options:chunk_size}"
