@@ -95,9 +95,8 @@ args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}"]
 
 
-
 [TIME_AVERAGE]
-prereqs = "PRE_CHUNK"
+prereqs = "TRANSFER_FLAGS"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
