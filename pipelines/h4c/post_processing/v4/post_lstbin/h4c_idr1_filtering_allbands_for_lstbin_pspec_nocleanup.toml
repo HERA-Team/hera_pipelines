@@ -25,6 +25,8 @@ standoff = 0
 min_dly = 750
 calibration = "none"
 filter_mode = "DPSS"
+spw_ranges = "0~265,265~737"
+
 # we may want to consider another flagging round after delay filtering.
 
 [FR_OPTS]
@@ -124,8 +126,8 @@ mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
-     "${Options:label}", "${PSPEC_OPTS:pstokes}",
-     "${Options:transfer_filled_flags}", "${Options:transfer_res_flags}"]
+     "${Options:label}", "${Options:transfer_filled_flags}",
+     "${Options:transfer_res_flags}", "${PSPEC_OPTS:pstokes}"]
 
 [PSPEC]
 prereqs = "PSTOKES"
