@@ -28,6 +28,10 @@ spw_ranges="${10}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
+if [[ "$int_jd" == *"."* ]]; then
+  jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
+  jd="LST.${jd}"
+fi
 
 # if cache directory does not exist, make it
 if [ ! -d "${cache_dir}" ]; then
@@ -54,7 +58,7 @@ do
   for ext in ${exts[@]}
   do
     fn_in=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.chunked.uvh5
-    fn_out=zen.${jd}.${sd}.${label}.${ext}.filled.xtalk-filtered.uvh5
+    fn_out=zen.${jd}.${sd}.${label}.${ext}.filled.xtalk_filtered.uvh5
     #fn_cln=zen.${jd}.${sd}.${label}.${ext}.model.xtalk-filtered.uvh5
     #fn_res=zen.${jd}.${sd}.${label}.${ext}.res.xtalk-filtered.uvh5
     if [ -e "${fn_in}" ]

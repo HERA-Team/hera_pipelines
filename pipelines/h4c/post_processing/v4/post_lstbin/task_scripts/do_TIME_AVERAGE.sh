@@ -17,6 +17,8 @@ fn="${1}"
 include_diffs="${2}"
 label="${3}"
 t_avg="${4}"
+transfer_filled_flags="${5}"
+transfer_res_flags="${6}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}

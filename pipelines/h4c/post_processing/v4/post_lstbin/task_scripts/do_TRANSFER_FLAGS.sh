@@ -16,8 +16,8 @@ source ${src_dir}/_common.sh
 fn="${1}"
 include_diffs="${2}"
 label="${3}"
-transfer_res_flags="${4}"
-transfer_filled_flags="${5}"
+transfer_filled_flags="${4}"
+transfer_res_flags="${5}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -44,7 +44,7 @@ then
 fi
 if [ "${transfer_filled_flags}" = "true" ]
 then
-  exts=("foreground_filled.${flag_label}" "foreground_res" "foreground_model.${flag_label}")
+  exts=("foreground_res" "foreground_model")
   template_ext="foreground_filled"
   flag_label="filled_flags"
 fi
