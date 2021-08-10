@@ -16,8 +16,9 @@ yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a
 nbl_per_load = 100
 t_avg = 300.0
 include_diffs = "true"
-transfer_filled_flags = "false"
-transfer_res_flags = "true"
+transfer_filled_flags = "true"
+transfer_res_flags = "false"
+
 
 [DELAY_OPTS]
 tol = 1e-9
