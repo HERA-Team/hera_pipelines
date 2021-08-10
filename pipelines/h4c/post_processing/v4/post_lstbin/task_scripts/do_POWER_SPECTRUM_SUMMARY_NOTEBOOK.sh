@@ -32,7 +32,8 @@ grp_skip=${8}
 blp_skip=${9}
 field_labels=${10}
 max_plots_per_row=${11}
-
+transfer_filled_flags="${12}"
+transfer_res_flags="${13}"
 
 # Get JD from filename
 jd=$(get_jd $fn)
@@ -42,8 +43,17 @@ if [[ "$int_jd" == *"."* ]]; then
   jd="LST.${jd}"
 fi
 
-
 nb_outfile=${nb_output_repo}/power_spectrum_summary/power_spectrum_summary_${label}_${jd}.ipynb
+
+
+if transfer_res_flags
+then
+  exts="foreground_filled.res_flags.filled~foreground_res.filled~foreground_model.res_flags.filled"
+fi
+if transfer_filled_flags
+then
+  exts="foreground_filled~foreground_res.filled_flags~foreground_model.filled_flags"
+fi
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
@@ -55,6 +65,7 @@ export GRP_SKIP=${grp_skip}
 export BLP_SKIP=${blp_skip}
 export FIELD_LABELS=${field_labels}
 export MAX_PLOTS_PER_ROW=${max_plots_per_row}
+export EXTS=${exts}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \

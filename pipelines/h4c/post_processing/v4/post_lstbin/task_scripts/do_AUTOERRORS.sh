@@ -15,6 +15,17 @@ fn="${1}"
 include_diffs="${2}"
 label="${3}"
 beamfile_stem="${4}"
+transfer_filled_flags="${5}"
+transfer_res_flags="${6}"
+
+if transfer_res_flags
+then
+  exts=("foreground_filled.res_flags" "foreground_res" "foreground_model.res_flags")
+fi
+if transfer_filled_flags
+then
+  exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
+fi
 
 
 jd=$(get_jd $fn)
@@ -25,7 +36,6 @@ if [[ "$int_jd" == *"."* ]]; then
 fi
 
 
-exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 sumdiff=("sum" "diff")
 pol_label_list=("" "_pstokes")
 for sd in ${sumdiff[@]}

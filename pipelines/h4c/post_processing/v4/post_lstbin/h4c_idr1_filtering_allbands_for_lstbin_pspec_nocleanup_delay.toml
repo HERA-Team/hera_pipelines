@@ -70,6 +70,7 @@ max_plots_per_row = 10
 actions = [
            "PRE_CHUNK",
            "TRANSFER_FLAGS",
+           "DELAY",
            "TIME_AVERAGE",
            "RECONSTITUTE",
            "PSTOKES",
@@ -86,6 +87,7 @@ stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}",
     "${Options:chunk_size}"]
 
+
 [TRANSFER_FLAGS]
 prereqs = "PRE_CHUNK"
 prereq_chunk_size=1
@@ -93,13 +95,22 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}", "${Options:transfer_filled_flags}", "${Options:transfer_res_flags}",
-       "${Options:transfer_filled_flags}", "${Options:transfer_res_flags}"]
+       "${Options:label}", "${Options:transfer_filled_flags}", "${Options:transfer_res_flags}"]
 
-
+[DELAY]
+prereqs = "PRE_CHUNK"
+prereq_chunk_size = 1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}",
+      "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
+      "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
+      "${DELAY_OPTS:filter_mode}",
+      "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}"]
 
 [TIME_AVERAGE]
-prereqs = "TRANSFER_FLAGS"
+prereqs = "DELAY"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
@@ -115,7 +126,8 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}", "${Options:transfer_filled_flags}", "${Options:transfer_res_flags}"]
+       "${Options:label}",
+       "${Options:transfer_filled_flags}", "${Options:transfer_res_flags}"]
 
 [PSTOKES]
 prereqs="RECONSTITUTE"

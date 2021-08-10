@@ -15,7 +15,9 @@ fn="${1}"
 include_diffs="${2}"
 label="${3}"
 grpstr="${4}"
-pstokes="${@:4}"
+transfer_filled_flags="${5}"
+transfer_res_flags="${6}"
+pstokes="${@:6}"
 
 
 
@@ -26,9 +28,14 @@ if [[ "$int_jd" == *"."* ]]; then
   jd="LST.${jd}"
 fi
 
-
-exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
-
+if transfer_res_flags
+then
+  exts=("foreground_filled.res_flags.filled" "foreground_res.filled" "foreground_model.res_flags.filled")
+fi
+if transfer_filled_flags
+then
+  exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
+fi
 
 if [ "${include_diffs}" = "true" ]
 then

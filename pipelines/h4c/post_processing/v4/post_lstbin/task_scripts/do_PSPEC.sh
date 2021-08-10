@@ -18,6 +18,8 @@ include_diffs="${2}"
 label="${3}"
 beam_file_stem="${4}"
 spw_ranges="${5}"
+transfer_filled_flags="${6}"
+transfer_res_flags="${7}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -35,7 +37,15 @@ else
   sumdiff=("sum")
 fi
 
-exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
+
+if transfer_res_flags
+then
+  exts=("foreground_filled.res_flags.filled" "foreground_res.filled" "foreground_model.res_flags.filled")
+fi
+if transfer_filled_flags
+then
+  exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
+fi
 
 pol_pair_list=("XX~XX,YY~YY" "pI~pI")
 pol_label_list=("" "_pstokes")
