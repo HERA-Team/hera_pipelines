@@ -46,11 +46,10 @@ fi
 nb_outfile=${nb_output_repo}/power_spectrum_summary/power_spectrum_summary_${label}_${jd}.ipynb
 
 
-if transfer_res_flags
+if [ "${transfer_res_flags}" == "true" ]
 then
   exts="foreground_filled.res_flags.filled~foreground_res.filled~foreground_model.res_flags.filled"
-fi
-if transfer_filled_flags
+elif [ "${transfer_filled_flags}" == "true" ]
 then
   exts="foreground_filled~foreground_res.filled_flags~foreground_model.filled_flags"
 fi

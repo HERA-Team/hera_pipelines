@@ -67,14 +67,14 @@ do
       then
         echo delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber \
-          #--res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln} \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
-          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
+          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges} \
+          --Nbls_per_load 100
         delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber  \
-          #--res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln} \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
-          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
+          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges} \
+          --Nbls_per_load 100
       elif [ "${filter_mode}" == "CLEAN" ]
       then
         npad=$((${spw1}-${spw0}))

@@ -18,11 +18,10 @@ beamfile_stem="${4}"
 transfer_filled_flags="${5}"
 transfer_res_flags="${6}"
 
-if transfer_res_flags
+if [ "${transfer_res_flags}" == "true" ]
 then
   exts=("foreground_filled.res_flags" "foreground_res" "foreground_model.res_flags")
-fi
-if transfer_filled_flags
+elif [ "${transfer_filled_flags}" == "true" ]
 then
   exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 fi
