@@ -58,7 +58,7 @@ do
   for ext in ${exts[@]}
   do
     fn_in=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.chunked.uvh5
-    fn_out=zen.${jd}.${sd}.${label}.${ext}.filled.xtalk_filtered.uvh5
+    fn_out=zen.${jd}.${sd}.${label}.${ext}.filled.xtalk_filtered.chunked.uvh5
     #fn_cln=zen.${jd}.${sd}.${label}.${ext}.model.xtalk-filtered.uvh5
     #fn_res=zen.${jd}.${sd}.${label}.${ext}.res.xtalk-filtered.uvh5
     if [ -e "${fn_in}" ]
