@@ -52,7 +52,7 @@ else
   sumdiff=("sum")
 fi
 
-exts=("foreground_filled.res_flags" "foreground_model.res_flags", "foreground_res")
+exts=("foreground_filled.res_flags" "foreground_model.res_flags" "foreground_res")
 for sd in ${sumdiff[@]}
 do
   for ext in ${exts[@]}
