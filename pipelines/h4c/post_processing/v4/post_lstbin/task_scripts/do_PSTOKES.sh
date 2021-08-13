@@ -14,9 +14,8 @@ source ${src_dir}/_common.sh
 fn="${1}"
 include_diffs="${2}"
 label="${3}"
-grpstr="${4}"
-transfer_filled_flags="${5}"
-transfer_res_flags="${6}"
+transfer_filled_flags="${4}"
+transfer_res_flags="${5}"
 pstokes="${@:6}"
 
 

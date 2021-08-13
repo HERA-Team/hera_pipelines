@@ -20,7 +20,7 @@ transfer_res_flags="${6}"
 
 if [ "${transfer_res_flags}" == "true" ]
 then
-  exts=("foreground_filled.res_flags" "foreground_res" "foreground_model.res_flags")
+  exts=("foreground_filled.res_flags.filled" "foreground_res.filled" "foreground_model.res_flags.filled")
 elif [ "${transfer_filled_flags}" == "true" ]
 then
   exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
