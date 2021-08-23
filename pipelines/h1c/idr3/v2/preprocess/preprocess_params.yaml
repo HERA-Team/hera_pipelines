@@ -22,7 +22,7 @@ io :
 analysis : 
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
-  ref_cal : True         # reflection calibration
+  ref_cal : False         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
   time_avg : True        # time average data
   red_avg : False         # redundant averaging
