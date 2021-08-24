@@ -26,7 +26,7 @@ io :
 #---------------------------------------------------------------
 analysis : 
   run_diff        : False       # Run visibility data difference
-  run_pspec       : True        # Run power spectrum estimation
+  run_pspec       : False        # Run power spectrum estimation
   run_noise_err   : True        # Run P_N errorbars given Tsys
   run_bootstrap   : False        # Run bootstrapping for errorbars
   multiproc       : True        # use multiprocess module
@@ -128,7 +128,7 @@ algorithm :
     group_name : 'stokespol'  # group name in psc to operate on
     spectra_names : None  # list of spectra names within group to operate on, None is all
     beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
-    auto_file : "zen.grp1.of1.LST.*.sum.PTXK_no_intleav.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
+    auto_file : "zen.grp1.of1.LST.*.sum.PTXK.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
     cal_ext : None  # same function as cal_ext in "data"
     output_Tsys_file : "zen.grp1.of1.autos.Tsys.LPTXK_no_intleav.uvh5"  # output file for antenna Tsys, if None don't write output
 
