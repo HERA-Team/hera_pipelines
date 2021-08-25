@@ -19,7 +19,7 @@ include_diffs = "true"
 
 [DELAY_OPTS]
 tol = 1e-9
-standoff = 50.
+standoff = 50.0
 min_dly = 750.0
 calibration = "none"
 filter_mode = "DPSS"
