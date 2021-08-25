@@ -22,9 +22,9 @@ io :
 analysis : 
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
-  time_avg : False        # time average data
-  ref_cal : True         # reflection calibration
+  ref_cal : False         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
+  time_avg : True        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
 
@@ -42,7 +42,7 @@ data :
 
   # glob-parseable, data template for input data products
   # data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.PT.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
@@ -127,17 +127,6 @@ algorithm :
     freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
     apply_hand_flag_files : True # applies flagging waterfalls before filteirng using hand_flag_ext above
 
-  # Time Averaging
-  time_avg : 
-    file_ext : "T"        # file extension of time-averaged data
-    Nbl_per_task : 10
-    t_window : 214.0      # width of averaging window in seconds
-    file_Ntimes : 20      # output file Ntimes (this is a minimum, might be 1 more if it doesn't divide evenly)
-    wgt_by_nsample : False
-    wgt_by_favg_nsample : True
-    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
-    rm_intermediate_files : True
-
   # Reflection Calibration
   ref_cal :
     cal_ext : 'refcal.calfits'
@@ -182,7 +171,7 @@ algorithm :
   # Xtalk Subtraction
   xtalk_sub : 
     # IO
-    file_ext : "X"
+    file_ext : "X" # "X"
     Nbl_per_task : 10
     # algorithm parameters
     method : "svd-gp"  # options = ['frfilter', 'svd-gp', 'linear_filter']
@@ -207,6 +196,17 @@ algorithm :
     tol : 1.0e-8
     excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
       - [4.0, 4.71]
+
+  # Time Averaging
+  time_avg : 
+    file_ext : "T"        # file extension of time-averaged data
+    Nbl_per_task : 10
+    t_window : 214.0      # width of averaging window in seconds
+    file_Ntimes : 20      # output file Ntimes (this is a minimum, might be 1 more if it doesn't divide evenly)
+    wgt_by_nsample : False
+    wgt_by_favg_nsample : True
+    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
+    rm_intermediate_files : True
 
   # Redundant Averaging
   red_avg :
