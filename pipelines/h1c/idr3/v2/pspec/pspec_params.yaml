@@ -107,7 +107,7 @@ algorithm :
     n_dlys : None
     cov_model : None #'foreground_dependent'
     Jy2mK : True
-    interleave_times : False
+    interleave_times : True
     rephase_to_dset : 0
     trim_dset_lsts : False
     broadcast_dset_flags : False
@@ -115,7 +115,7 @@ algorithm :
     Nblps_per_job : 30
     exclude_auto_bls : False
     exclude_cross_bls : False
-    exclude_permutations : True
+    exclude_permutations : False
     store_window : False
     tsleep : 10.0
     maxiter : 10
