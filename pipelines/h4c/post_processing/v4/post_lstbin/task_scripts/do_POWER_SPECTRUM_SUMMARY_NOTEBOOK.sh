@@ -39,8 +39,8 @@ transfer_res_flags="${13}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 if [[ "$int_jd" == *"."* ]]; then
-  jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
-  jd="LST.${jd}"
+  int_jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
+  int_jd="LST.${jd}"
 fi
 
 nb_outfile=${nb_output_repo}/power_spectrum_summary/power_spectrum_summary_${label}_${jd}.ipynb
@@ -56,7 +56,7 @@ fi
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
-export JULIANDATE=${jd}
+export JULIANDATE=${int_jd}
 export LABEL=${label}
 export SPWS=${spws}
 export LST_FIELDS=${lst_fields}

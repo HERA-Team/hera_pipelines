@@ -35,7 +35,9 @@ max_plots_per_row=${11}
 
 
 # Get JD from filename
-jd=$(get_int_jd ${fn})
+# Get JD from filename
+jd=$(get_jd $fn)
+int_jd=${jd:0:7}
 exts=("foreground_filled" "foreground_res.filled_flags" "foreground_model.filled_flags")
 
 for ext in ${exts[@]}
@@ -43,7 +45,7 @@ do
   nb_outfile=${nb_output_repo}/power_spectrum_inspect/power_spectrum_inspect_${label}_${jd}_${ext}.ipynb
   # Export variables used by the notebook
   export DATA_PATH=`pwd`
-  export JULIANDATE=${jd}
+  export JULIANDATE=${int_jd}
   export LABEL=${label}
   export SPWS=${spws}
   export LST_FIELDS=${lst_fields}
