@@ -81,7 +81,7 @@ actions = ["PRE_CHUNK",
            #"FILTER_NOTEBOOK",
            #"POWER_SPECTRUM_NOTEBOOK",
            #"POWER_SPECTRUM_SUMMARY_NOTEBOOK",
-           "CLEANUP"]
+           "CLEANUP_KEEP_FGFILLED"]
 
 [PRE_CHUNK]
 mem=16000
