@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-preprocess_data.py
+preprocess_epoch_data.py
 -----------------------------------------
 Copyright (c) 2019 The HERA Collaboration
 
