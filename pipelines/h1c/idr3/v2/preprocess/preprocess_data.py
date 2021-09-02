@@ -1072,9 +1072,17 @@ if params['xtalk_sub']:
             if os.path.exists(df):
                 os.remove(df)
 
-    # Update datafiles and inp_cals
+    # Update datafiles (maintaining proper order) and inp_cals
     datafiles = sorted(glob.glob(outfname.replace(".xtsub*", "")))
     datafiles = [df for df in datafiles if 'xtsub' not in df]
+    _, _, filelsts, filetimes = hc.io.get_file_times(datafiles, filetype='uvh5')
+    if params.get('lst_sort', False):
+        branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
+        timeorder = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts)], key=branch_sorter), dtype=int)[:, 0]
+    else:
+        timeorder = np.argsort([ft[0] for ft in filetimes])
+    datafiles = [datafiles[ti] for ti in timeorder]
+
     inp_cals = [None for df in datafiles]
 
     # Finish block
@@ -1227,9 +1235,16 @@ if params['time_avg']:
             if os.path.exists(df):
                 os.remove(df)
 
-    # Update datafiles and inp_cals
+    # Update datafiles and re-order and inp_cals
     datafiles = sorted(glob.glob(outfname.replace(".tavg*", "")))
     datafiles = [df for df in datafiles if 'tavg' not in df]
+    _, _, filelsts, filetimes = hc.io.get_file_times(datafiles, filetype='uvh5')
+    if params.get('lst_sort', False):
+        branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
+        timeorder = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts)], key=branch_sorter), dtype=int)[:, 0]
+    else:
+        timeorder = np.argsort([ft[0] for ft in filetimes])
+    datafiles = [datafiles[ti] for ti in timeorder]
     inp_cals = [None for df in datafiles]
 
     # Finish block
