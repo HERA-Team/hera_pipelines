@@ -1,0 +1,32 @@
+[Options]
+data_folder = '19KTJjXlZTz_o4lKpgyzp21Ae13Xupw_b'
+cal_folder = '1xOkUndpubolT7R66fFggnH6ZpE_Gnqgq'
+secrets_dir = '/users/aewallwi/'
+base_mem = 14000
+base_cpu = 1
+timeout = "24h"
+pbs_mail_user = "aaronew+nrao@berkeley.edu"
+conda_env = "calamity"
+
+[WorkFlow]
+actions = ["DOWNLOAD",
+           "PREPROCESS",
+           "CLEANUP"]
+
+[DOWNLOAD]
+mem = 14000
+args = ["{basename}",
+       "${Options:data_folder}",
+       "${Options:cal_folder}",
+       "${Options:secrets_dir}"
+      ]
+[PREPROCESS]
+prereqs = "DOWNLOAD"
+prereq_chunk_size = 1
+mem = 58000
+args = ["{basename}"]
+
+[CLEANUP]
+prereqs = "PREPROCESS"
+prereq_chunk_size = 1
+args = ["{basename}"]
