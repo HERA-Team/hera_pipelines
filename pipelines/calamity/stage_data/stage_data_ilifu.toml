@@ -1,6 +1,6 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/lustre/aoc/projects/hera/aewallwi/hera_pipelines/pipelines/calamity/task_scripts"
+path_to_do_scripts = "/usr/local/hera/hera_pipelines/pipelines/calamity/task_scripts"
 data_folder = '19KTJjXlZTz_o4lKpgyzp21Ae13Xupw_b'
 cal_folder = '1xOkUndpubolT7R66fFggnH6ZpE_Gnqgq'
 secrets_dir = '/users/aewallwi/'
@@ -8,6 +8,7 @@ base_mem = 14000
 base_cpu = 1
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
+source_script = "/usr/local/miniconda3/etc/profile.d/conda.sh"
 conda_env = "calamity"
 
 [WorkFlow]
