@@ -1,6 +1,6 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/lustre/aoc/projects/hera/aewallwi/hera_pipelines/pipelines/calamity/task_scripts"
+path_to_do_scripts = "/lustre/aoc/projects/hera/aewallwi/hera_pipelines/pipelines/calamity/stage_data/task_scripts"
 data_folder = '19KTJjXlZTz_o4lKpgyzp21Ae13Xupw_b'
 cal_folder = '1xOkUndpubolT7R66fFggnH6ZpE_Gnqgq'
 secrets_dir = '/users/aewallwi/'
