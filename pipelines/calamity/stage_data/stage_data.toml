@@ -17,7 +17,7 @@ actions = ["DOWNLOAD",
            "CLEANUP"]
 
 [DOWNLOAD]
-mem = 16000
+mem = 32000
 args = ["{basename}",
        "${Options:data_folder}",
        "${Options:cal_folder}",
