@@ -9,3 +9,7 @@ gps=$(get_gps $fn)
 
 echo mwa_preprocess.py ${gps}.uvfits ${gps}_cal.npz --phase_zenith --clobber
 mwa_preprocess.py ${gps}.uvfits ${gps}_cal.npz --phase_zenith --clobber
+
+
+rm -rf ${gps}.uvfits
+rm -rf ${gps}_cal.npz

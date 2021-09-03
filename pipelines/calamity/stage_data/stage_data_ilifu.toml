@@ -4,7 +4,7 @@ path_to_do_scripts = "/usr/local/hera/hera_pipelines/pipelines/calamity/task_scr
 data_folder = '19KTJjXlZTz_o4lKpgyzp21Ae13Xupw_b'
 cal_folder = '1xOkUndpubolT7R66fFggnH6ZpE_Gnqgq'
 secrets_dir = '/users/aewallwi/'
-base_mem = 14000
+base_mem = 14500
 base_cpu = 1
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
@@ -17,7 +17,7 @@ actions = ["DOWNLOAD",
            "CLEANUP"]
 
 [DOWNLOAD]
-mem = 14000
+mem = 14500
 args = ["{basename}",
        "${Options:data_folder}",
        "${Options:cal_folder}",
@@ -31,5 +31,5 @@ args = ["{basename}"]
 
 [CLEANUP]
 prereqs = "PREPROCESS"
-prereq_chunk_size = 1
+prereq_chunk_size = "all"
 args = ["{basename}"]

@@ -7,5 +7,7 @@ fn="${1}"
 
 gps=$(get_gps $fn)
 
-rm -rf ${gps}.uvfits
-rm -rf ${gps}_cal.npz
+
+# remove secrets and settings.
+rm -rf client_secrets.json
+rm -rf settings.yaml
