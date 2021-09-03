@@ -8,7 +8,7 @@ base_mem = 14000
 base_cpu = 1
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
-conda_env = "calamity"
+conda_env = "hera3"
 
 [WorkFlow]
 actions = ["DOWNLOAD",
