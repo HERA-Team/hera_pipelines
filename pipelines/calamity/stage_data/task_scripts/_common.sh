@@ -71,7 +71,7 @@ function get_jd ()
 function get_gps ()
 # function for extracting GPS time from filename
 {
-    local gps=$(echo $1 | sed -E 's/zen\.([0-9]{10})\..*$/\1/')
+    local gps=$(echo $1 | sed -E 's/([0-9]{10})\..*$/\1/')
     echo "$gps"
 }
 

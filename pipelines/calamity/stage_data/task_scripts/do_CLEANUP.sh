@@ -1,5 +1,6 @@
 #! /bin/bash
 set -e
+src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
 fn="${1}"

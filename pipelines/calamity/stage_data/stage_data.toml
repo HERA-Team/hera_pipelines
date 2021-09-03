@@ -9,6 +9,7 @@ base_cpu = 1
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
 conda_env = "hera3"
+source_script = "~/.bashrc"
 
 [WorkFlow]
 actions = ["DOWNLOAD",
