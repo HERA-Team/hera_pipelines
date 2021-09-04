@@ -1,16 +1,16 @@
-# preprocess_params_epoch_2.yaml
+# reprocess_params.yaml
 #
-# hera_pspec H1C IDR3.2 preprocessing pipelines
+# hera_pspec H1C IDR3.2 preprocessing pipeline for data that's been per-epoch preprocessed
 # configuration file
 
 #---------------------------------------------------------------
 # IO Parameters
 #---------------------------------------------------------------
 io :
-  work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/preprocess' # directory to work in
-  out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/preprocess'  # directory to dump all output in
-  logfile : 'preprocess_out_epoch_2.log'  # logfile   
-  errfile : 'preprocess_err_epoch_2.log' # error file
+  work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess' # directory to work in
+  out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess'  # directory to dump all output in
+  logfile : 'reprocess_out.log'  # logfile   
+  errfile : 'reprocess_err.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -22,9 +22,9 @@ io :
 analysis : 
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
-  time_avg : False        # time average data  
-  ref_cal : False         # reflection calibration
-  xtalk_sub : False       # xtalk subtraction
+  ref_cal : True         # reflection calibration
+  xtalk_sub : True       # xtalk subtraction
+  time_avg : False        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
 
@@ -37,10 +37,12 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/preprocess'
+  # data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.PTX.uvh5'
+  # data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.LPTXL.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
@@ -96,8 +98,8 @@ algorithm :
       standoff : 50.0
       horizon : 1.0
       min_dly : 2000.0
-      tol : 1.0e-05
-      autotol : 5.0e-07
+      tol : 1.0e-06
+      autotol : 5.0e-08
       maxiter : 100
       window : 'tukey'
       alpha : 0.15
@@ -124,17 +126,6 @@ algorithm :
         # - [815, 816]
     freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
     apply_hand_flag_files : True # applies flagging waterfalls before filteirng using hand_flag_ext above
-
-  # Time Averaging
-  time_avg : 
-    file_ext : "T"        # file extension of time-averaged data
-    Nbl_per_task : 10
-    t_window : 214.0      # width of averaging window in seconds
-    file_Ntimes : 20      # output file Ntimes (this is a minimum, might be 1 more if it doesn't divide evenly)
-    wgt_by_nsample : False
-    wgt_by_favg_nsample : True
-    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
-    rm_intermediate_files : True
 
   # Reflection Calibration
   ref_cal :
@@ -205,6 +196,17 @@ algorithm :
     tol : 1.0e-8
     excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
       - [4.0, 4.71]
+
+  # Time Averaging
+  time_avg : 
+    file_ext : "T"        # file extension of time-averaged data
+    Nbl_per_task : 10
+    t_window : 214.0      # width of averaging window in seconds
+    file_Ntimes : 20      # output file Ntimes (this is a minimum, might be 1 more if it doesn't divide evenly)
+    wgt_by_nsample : False
+    wgt_by_favg_nsample : True
+    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
+    rm_intermediate_files : True
 
   # Redundant Averaging
   red_avg :
