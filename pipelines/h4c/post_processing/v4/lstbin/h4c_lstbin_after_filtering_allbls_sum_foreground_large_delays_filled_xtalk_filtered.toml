@@ -35,7 +35,7 @@ data_files = [
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459128/zen.*.sum.all-bands-allbls-long-delay-clean.foreground_filled.xtalk_filtered.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459132/zen.*.sum.all-bands-allbls-long-delay-clean.foreground_filled.xtalk_filtered.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459133/zen.*.sum.all-bands-allbls-long-delay-clean.foreground_filled.xtalk_filtered.uvh5",
-              "/lustre/aoc/projects/hera/H4C/postprocessing/2459136/zen.*.sum.all-bands-allbls-long-delay-clean.foreground_filled.xtalk_filtered.uvh5",
+              "/lustre/aoc/projects/hera/H4C/postprocessing/2459138/zen.*.sum.all-bands-allbls-long-delay-clean.foreground_filled.xtalk_filtered.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459139/zen.*.sum.all-bands-allbls-long-delay-clean.foreground_filled.xtalk_filtered.uvh5",
               ]
 calibration = "''"

@@ -16,14 +16,14 @@ min_N = 1
 rephase = "True"
 ntimes_per_file = 2
 dlst = 0.00014589433857192802
-lst_start = 6.2217 # this is before the first LST on 2459114 and after the last LST on 2459139
+lst_start = 6.2190 # this is before the first LST on 2459114 and after the last LST on 2459139
 fixed_lst_start = "True"
 vis_units = "Jy"
 parallelize = "True"
 average_redundant_baselines = "False"
 file_ext = "{type}.{time:7.5f}.uvh5"
-outdir = "/lustre/aoc/projects/hera/aewallwi/calamity/mwadata/lstbin/epoch_1/"
-parent_dir = "/lustre/aoc/projects/hera/aewallwi/calamity/makeflow/lstbin_epoch_1/"
+outdir = "/lustre/aoc/projects/hera/aewallwi/calamity/mwadata/lstbin/epoch_2/"
+parent_dir = "/lustre/aoc/projects/hera/aewallwi/calamity/makeflow/lstbin_epoch_2/"
 data_files = [
                "/users/aewallwi/lustre/calamity/mwadata/epoch_2/2457708/zen.*.uvh5",
                "/users/aewallwi/lustre/calamity/mwadata/epoch_2/2457710/zen.*.uvh5",
