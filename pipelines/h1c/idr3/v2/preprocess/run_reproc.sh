@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -q hera
 #PBS -j oe
-#PBS -o preproc_pipe.out
-#PBS -N preproc_pipe
+#PBS -o reproc_pipe.out
+#PBS -N reproc_pipe
 #PBS -l nodes=1:ppn=15
 #PBS -l walltime=256:00:00
 #PBS -l vmem=250GB,mem=250GB
