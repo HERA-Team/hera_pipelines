@@ -8,9 +8,15 @@ pbs_mail_user = "aaronew+nrao@berkeley.edu"
 conda_env = "hera3"
 source_script = "~/.bashrc"
 
+[DELAY_OPTS]
+horizon=1.0
+offset=25.0
+min_dly=100.0
+
 [WorkFlow]
 actions = ["DPSS_CALIBRATE"]
 
 [DPSS_CALIBRATE]
 mem = 16000
-args = ["{basename}"]
+args = ["{basename}", "${DELAY_OPTS:horizon}",
+        "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}"]
