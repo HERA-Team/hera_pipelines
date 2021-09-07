@@ -13,10 +13,16 @@ horizon=1.0
 offset=25.0
 min_dly=100.0
 
+[SELECT_OPTS]
+bllen_min=0.0
+bllen_max=250.0
+bl_ew_min=0.0
+
 [WorkFlow]
 actions = ["DPSS_CALIBRATE"]
 
 [DPSS_CALIBRATE]
 mem = 32000
 args = ["{basename}", "${DELAY_OPTS:horizon}",
-        "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}"]
+        "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}", "${SELECT_OPTS:bllen_min}",
+        "${SELECT_OPTS:bllen_max}", "${SELECT_OPTS:bl_ew_min}"]
