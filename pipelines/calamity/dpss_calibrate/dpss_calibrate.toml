@@ -2,7 +2,7 @@
 makeflow_type = "analysis"
 path_to_do_scripts = "/lustre/aoc/projects/hera/aewallwi/hera_pipelines/pipelines/calamity/dpss_calibrate/task_scripts"
 base_mem = 16000
-base_cpu = 1
+base_cpu = 2
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
 conda_env = "hera3"
@@ -17,6 +17,6 @@ min_dly=100.0
 actions = ["DPSS_CALIBRATE"]
 
 [DPSS_CALIBRATE]
-mem = 16000
+mem = 32000
 args = ["{basename}", "${DELAY_OPTS:horizon}",
         "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}"]
