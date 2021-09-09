@@ -1,8 +1,8 @@
 [Options]
 makeflow_type = "analysis"
 path_to_do_scripts = "/lustre/aoc/projects/hera/aewallwi/hera_pipelines/pipelines/calamity/dpss_calibrate/task_scripts"
-base_mem = 64000
-base_cpu = 4
+base_mem = 256000
+base_cpu = 16
 timeout = "24h"
 pbs_mail_user = "aaronew+nrao@berkeley.edu"
 conda_env = "hera3gpu"
@@ -21,11 +21,11 @@ bl_ew_min=0.0
 ex_ants="46,47,40,54,55,41,53,49,48"
 
 [WorkFlow]
-actions = ["DPSS_CALIBRATE"]
+actions = ["DPSS_CALIBRATE_NRAO_GPU_NODE"]
 
-[DPSS_CALIBRATE]
-chunk_size=8
-stride_length=8
-mem = 64000
+[DPSS_CALIBRATE_NRAO_GPU_NODE]
+chunk_size=32
+stride_length=32
+mem = 256000
 args = ["${DELAY_OPTS:horizon}", "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}", "${SELECT_OPTS:bllen_min}",
         "${SELECT_OPTS:bllen_max}", "${SELECT_OPTS:bl_ew_min}", "${SELECT_OPTS:ex_ants}", "{obsid_list}"]
