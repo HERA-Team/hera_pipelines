@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# script that uploads observations from a google drive associated with a user specified jd.
+# script that uploads a list of files to a google drive folder.
 
 import argparse
 import os
