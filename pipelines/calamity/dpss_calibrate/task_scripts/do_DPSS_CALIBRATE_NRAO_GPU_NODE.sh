@@ -14,39 +14,46 @@ data_files="${@:8}"
 
 ex_ants="${ex_ants//,/$' '}"
 
-jd=$(get_jd $fn)
-int_jd=${jd:0:7}
-if [[ "$int_jd" == *"."* ]]; then
-  jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
-  jd="LST.${jd}"
-fi
+read -a data_files_arr <<< ${data_files}
 
-fn_resid=zen.${jd}.resid_fit.uvh5
-fn_model=zen.${jd}.model_fit.uvh5
-fn_gain=zen.${jd}.gain_fit.calfits
+nfiles=${#data_files_arr[@]}
+files_per_chunk=$(( ${nfiles} / 2 ))
 
-
-nfiles=${#data_files[@]}
-files_per_chunk=$(( ${nfiles} / 4 + 1))
-
-start=0
-end=files_per_chunk
+startind=0
+stopind=$files_per_chunk
 pids=()
-for i in $(seq 0 3)
+echo ${nfiles}
+echo ${startind}
+echo ${data_files_arr[$startind]}
+for i in $(seq 0 1)
 do
   gpu_index=$(( i % 2 ))
-  if [ "${start}" -lt "${nfiles}" ]
+  echo ${startind}
+  echo ${nfiles}
+  if [ "${startind}" -lt "${nfiles}" ]
   then
-    echo calibrate_and_model_dpss.py --input_data_files ${data_files[@]:start:end} --model_outfilename\
+
+    fn=${data_files_arr[$startind]}
+
+
+    fn_resid=${fn/.uvh5/.resid_fit.uvh5}
+    fn_model=${fn/.uvh5/.model_fit.uvh5}
+    fn_gain=${fn/.uvh5/.gain_fit.calfits}
+
+    echo ${fn_resid}
+    echo calibrate_and_model_dpss.py --input_data_files ${data_files_arr[@]:$startind:$stopind} --model_outfilename\
      ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain}\
       --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset}\
       --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min}\
-      --ex_ants ${ex_ants} --gpu_memory_limit 8 --gpu_index ${gpu}
-    calibrate_and_model_dpss.py --input_data_files ${data_files[@]:start:end} --model_outfilename\
+      --ex_ants ${ex_ants} --gpu_index ${gpu_index}
+    calibrate_and_model_dpss.py --input_data_files ${data_files_arr[@]:$startind:$stopind} --model_outfilename\
      ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain}\
       --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset}\
       --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min}\
-      --ex_ants ${ex_ants} --gpu_memory_limit 8 --gpu_index ${gpu} & pids+=($!)
+      --ex_ants ${ex_ants} --gpu_index ${gpu_index} & pids+=($!)
+
+      startind=$(( ${startind} + ${files_per_chunk} ))
+      stopind=$(( ${stopind} + ${files_per_chunk} ))
   fi
 done
 wait "${pids[@]}"
