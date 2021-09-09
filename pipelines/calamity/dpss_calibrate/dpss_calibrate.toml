@@ -8,6 +8,7 @@ pbs_mail_user = "aaronew+nrao@berkeley.edu"
 conda_env = "hera3gpu"
 source_script = "~/.bashrc"
 gres = "gpu"
+batch_system = "pbs"
 
 [DELAY_OPTS]
 horizon=1.0
@@ -29,3 +30,4 @@ stride_length=2
 mem = 256000
 args = ["${DELAY_OPTS:horizon}", "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}", "${SELECT_OPTS:bllen_min}",
         "${SELECT_OPTS:bllen_max}", "${SELECT_OPTS:bl_ew_min}", "${SELECT_OPTS:ex_ants}", "{obsid_list}"]
+extra_batch_options = "-l feature=gpu"
