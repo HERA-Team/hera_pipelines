@@ -12,8 +12,8 @@ batch_system = "pbs"
 
 [DELAY_OPTS]
 horizon=1.0
-offset=100.0
-min_dly=0.0
+offset=1.3333333333333
+min_dly=100.
 
 [SELECT_OPTS]
 bllen_min=0.0
