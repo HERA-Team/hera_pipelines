@@ -15,10 +15,11 @@ sigma = 5
 min_N = 1
 rephase = "True"
 ntimes_per_file = 2
-dlst = 0.0007272205217
+dlst = 0.001090830782
 lst_start = 6.2190 # this is before the first LST on 2459114 and after the last LST on 2459139
 #lst_start =
 fixed_lst_start = "True"
+lst_stop = 6.36
 vis_units = "Jy"
 parallelize = "True"
 average_redundant_baselines = "False"
@@ -38,6 +39,6 @@ flag_thresh = 0.8
 actions = ["LSTBIN"]
 
 [LSTBIN]
-args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
+args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start", "lst_stop",
         "fixed_lst_start", "dlst", "vis_units", "output_file_select", "file_ext",
         "outdir", "Nbls_to_load", "flag_thresh", "average_redundant_baselines"]

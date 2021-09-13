@@ -29,18 +29,19 @@ min_N=${3}
 rephase=${4}
 ntimes_per_file=${5}
 lst_start=${6}
-fixed_lst_start=${7}
-dlst=${8}
-vis_units=${9}
-output_file_select=${10}
-file_ext=${11}
-outdir=${12}
-Nbls_to_load=${13}
-flag_thresh=${14}
-average_redundant_baselines=${15}
+lst_stop=${7}
+fixed_lst_start=${8}
+dlst=${9}
+vis_units=${10}
+output_file_select=${11}
+file_ext=${12}
+outdir=${13}
+Nbls_to_load=${14}
+flag_thresh=${15}
+average_redundant_baselines=${16}
 data_files=($@)
 
-data_files=(${data_files[*]:15})
+data_files=(${data_files[*]:16})
 
 # set special kwargs
 if [ $sig_clip == True ]; then
@@ -70,9 +71,9 @@ fi
 
 echo lstbin_run.py --flag_thresh ${flag_thresh}  ${red_arg} --dlst ${dlst} --file_ext ${file_ext}\
  --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma}\
- --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units}\
+ --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --lst_stop ${lst_stop}\
  --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} --overwrite ${data_files[@]}
 lstbin_run.py --flag_thresh ${flag_thresh}  ${red_arg} --dlst ${dlst} --file_ext ${file_ext}\
  --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma}\
- --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units}\
+ --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --lst_stop ${lst_stop}\
  --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} --overwrite ${data_files[@]}

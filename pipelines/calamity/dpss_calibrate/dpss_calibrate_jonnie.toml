@@ -13,8 +13,8 @@ batch_system = "pbs"
 [DELAY_OPTS]
 horizon=1.0
 offset=1.33333333333
-min_dly=450.0
-model_regularization="sum"
+min_dly=100.0
+model_regularization="post_hoc"
 
 [SELECT_OPTS]
 bllen_min=0.0

@@ -9,19 +9,20 @@ conda_env = "hera3gpu"
 source_script = "~/.bashrc"
 gres = "gpu"
 batch_system = "pbs"
+label="hex2"
 
 [DELAY_OPTS]
 horizon=1.0
 offset=1.33333333333
-min_dly=450.0
+min_dly=100.0
 model_regularization="sum"
 
 [SELECT_OPTS]
 bllen_min=0.0
 bllen_max=250.0
 bl_ew_min=0.0
-ex_ants="46,47,40,54,55,41,53,49,48"
-
+ex_ants="none"
+select_ants="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36"
 [WorkFlow]
 actions = ["DPSS_CALIBRATE_NRAO_GPU_NODE"]
 
@@ -31,5 +32,5 @@ stride_length=2
 mem = 256000
 args = ["${DELAY_OPTS:horizon}", "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}", "${SELECT_OPTS:bllen_min}",
         "${SELECT_OPTS:bllen_max}", "${SELECT_OPTS:bl_ew_min}", "${DELAY_OPTS:model_regularization}",
-        "${SELECT_OPTS:ex_ants}", "{obsid_list}"]
+        "${SELECT_OPTS:ex_ants}", "${SELECT_OPTS:select_ants}", "${Options:label}", "{obsid_list}"]
 extra_batch_options = "-l feature=gpu"

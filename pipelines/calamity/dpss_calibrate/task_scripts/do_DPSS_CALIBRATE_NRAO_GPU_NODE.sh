@@ -9,10 +9,27 @@ min_dly="${3}"
 bllen_min="${4}"
 bllen_max="${5}"
 bl_ew_min="${6}"
-ex_ants="${7}"
-data_files="${@:8}"
+model_regularization="${7}"
+ex_ants="${8}"
+select_ants="${9}"
+label="${10}"
+data_files="${@:11}"
 
-ex_ants="${ex_ants//,/$' '}"
+if [ "${ex_ants}" = "none" ]
+then
+  ex_ant_arg=""
+else
+  ex_ants="${ex_ants//,/$' '}"
+  ex_ant_arg="--ex_ants ${ex_ants}"
+fi
+
+if [ "${select_ants}" = "none" ]
+then
+  select_ant_arg=""
+else
+  select_ants="${select_ants//,/$' '}"
+  select_ant_arg="--select_ants ${select_ants}"
+fi
 
 read -a data_files_arr <<< ${data_files}
 
@@ -36,21 +53,21 @@ do
     fn=${data_files_arr[$startind]}
 
 
-    fn_resid=${fn/.uvh5/.resid_fit.uvh5}
-    fn_model=${fn/.uvh5/.model_fit.uvh5}
-    fn_gain=${fn/.uvh5/.gain_fit.calfits}
+    fn_resid=${fn/.uvh5/.${labe}.resid_fit.uvh5}
+    fn_model=${fn/.uvh5/.${labe}.model_fit.uvh5}
+    fn_gain=${fn/.uvh5/.${label}.gain_fit.calfits}
 
     echo ${fn_resid}
     echo calibrate_and_model_dpss.py --input_data_files ${data_files_arr[@]:$startind:$stopind} --model_outfilename\
      ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain}\
-      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset}\
+      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset} ${select_ant_arg}\
       --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min}\
-      --ex_ants ${ex_ants} --gpu_index ${gpu_index}
+      ${ex_ant_arg} --gpu_index ${gpu_index} --learning_rate 0.01 --model_regularization "${model_regularization}"
     calibrate_and_model_dpss.py --input_data_files ${data_files_arr[@]:$startind:$stopind} --model_outfilename\
      ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain}\
-      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset}\
+      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset} ${select_ant_arg}\
       --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min}\
-      --ex_ants ${ex_ants} --gpu_index ${gpu_index} & pids+=($!)
+      ${ex_ant_arg} --gpu_index ${gpu_index} --learning_rate 0.01 --model_regularization "${model_regularization}" & pids+=($!)
 
       startind=$(( ${startind} + ${files_per_chunk} ))
       stopind=$(( ${stopind} + ${files_per_chunk} ))
