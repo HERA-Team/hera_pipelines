@@ -69,6 +69,8 @@ args=["{basename}", "${Options:label}",
     "${Options:chunk_size}"]
 
 [FR_FILTER]
+prereqs = "PRE_CHUNK"
+prereq_chunk_size="all"
 mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
