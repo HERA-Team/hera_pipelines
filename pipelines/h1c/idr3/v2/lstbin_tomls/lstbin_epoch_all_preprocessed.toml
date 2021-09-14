@@ -37,3 +37,13 @@ actions = ["LSTBIN"]
 args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
         "fixed_lst_start", "dlst", "vis_units", "output_file_select", "file_ext",
         "outdir", "Nbls_to_load", "calibration"]
+
+# code for making files in order
+# import os
+# import numpy as np
+# for link in links:
+#     lst = float(link.split('.LST.')[-1].split('.sum.')[0])
+#     if lst < 4.71:
+#         lst += 2*np.pi
+#     new_link = link.split('.LST.')[0] + '.LST.' +f'{lst:.5f}' + '.sum.' + link.split('.sum.')[-1]
+#     os.rename(link, new_link)
