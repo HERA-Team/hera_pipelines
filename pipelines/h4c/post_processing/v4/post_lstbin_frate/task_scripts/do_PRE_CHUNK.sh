@@ -23,7 +23,7 @@ fi
 
 
 sumdiff=("sum" "diff")
-exts=( "xtalk_filtered" "foreground_filled" )
+exts=( "foreground_filled.xtalk_filtered" "foreground_filled" )
 
 for sd in ${sumdiff[@]}
 do

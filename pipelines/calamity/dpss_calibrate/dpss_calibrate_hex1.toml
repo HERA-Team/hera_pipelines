@@ -10,12 +10,14 @@ source_script = "~/.bashrc"
 gres = "gpu"
 batch_system = "pbs"
 label="hex1"
+tol=1e-16
+precision=64
 
 [DELAY_OPTS]
 horizon=1.0
 offset=1.33333333333
 min_dly=100.0
-model_regularization="sum"
+model_regularization="pos_hoc"
 
 [SELECT_OPTS]
 bllen_min=0.0
@@ -32,5 +34,5 @@ stride_length=2
 mem = 256000
 args = ["${DELAY_OPTS:horizon}", "${DELAY_OPTS:offset}", "${DELAY_OPTS:min_dly}", "${SELECT_OPTS:bllen_min}",
         "${SELECT_OPTS:bllen_max}", "${SELECT_OPTS:bl_ew_min}", "${DELAY_OPTS:model_regularization}",
-        "${SELECT_OPTS:ex_ants}", "${SELECT_OPTS:select_ants}", "${Options:label}", "{obsid_list}"]
+        "${SELECT_OPTS:ex_ants}", "${SELECT_OPTS:select_ants}", "${Options:label}", "${Options:tol}", "${Options:precision}", "{obsid_list}"]
 extra_batch_options = "-l feature=gpu"

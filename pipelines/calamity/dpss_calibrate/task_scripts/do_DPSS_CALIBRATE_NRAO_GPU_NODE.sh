@@ -13,7 +13,9 @@ model_regularization="${7}"
 ex_ants="${8}"
 select_ants="${9}"
 label="${10}"
-data_files="${@:11}"
+tol="${11}"
+precision="${12}"
+data_files="${@:13}"
 
 if [ "${ex_ants}" = "none" ]
 then
@@ -53,20 +55,20 @@ do
     fn=${data_files_arr[$startind]}
 
 
-    fn_resid=${fn/.uvh5/.${labe}.resid_fit.uvh5}
-    fn_model=${fn/.uvh5/.${labe}.model_fit.uvh5}
+    fn_resid=${fn/.uvh5/.${label}.resid_fit.uvh5}
+    fn_model=${fn/.uvh5/.${label}.model_fit.uvh5}
     fn_gain=${fn/.uvh5/.${label}.gain_fit.calfits}
 
     echo ${fn_resid}
     echo calibrate_and_model_dpss.py --input_data_files ${data_files_arr[@]:$startind:$stopind} --model_outfilename\
-     ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain}\
-      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset} ${select_ant_arg}\
-      --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min}\
+     ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain} --precision ${precision}\
+      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset} ${select_ant_arg} --tol ${tol}\
+      --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min} --maxsteps 12000\
       ${ex_ant_arg} --gpu_index ${gpu_index} --learning_rate 0.01 --model_regularization "${model_regularization}"
     calibrate_and_model_dpss.py --input_data_files ${data_files_arr[@]:$startind:$stopind} --model_outfilename\
-     ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain}\
-      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset} ${select_ant_arg}\
-      --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min}\
+     ${fn_model} --resid_outfilename ${fn_resid} --gain_outfilename ${fn_gain} --precision ${precision}\
+      --verbose --red_tol 0.3 --horizon ${horizon} --offset ${offset} ${select_ant_arg} --tol ${tol}\
+      --min_dly ${min_dly} --bllen_max ${bllen_max} --bllen_min ${bllen_min} --bl_ew_min ${bl_ew_min} --maxsteps 12000\
       ${ex_ant_arg} --gpu_index ${gpu_index} --learning_rate 0.01 --model_regularization "${model_regularization}" & pids+=($!)
 
       startind=$(( ${startind} + ${files_per_chunk} ))
