@@ -57,8 +57,8 @@ then
     input_cals="--input_cals ${input_cals[@]}"
 else
    input_cals=""
-   # if there's no calibration string, then they start at the 14th position
-   data_files=(${data_files[*]:13})
+   # if there's no calibration string, then they start at the 13th position
+   data_files=(${data_files[*]:12})
 fi
 
 # set special kwargs
