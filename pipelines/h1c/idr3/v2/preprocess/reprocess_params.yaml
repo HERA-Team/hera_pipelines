@@ -71,7 +71,7 @@ data :
   # if True, sort files by LST of the first integration, using lst_branch_cut to decide where to wrap
   lst_sort : True 
   # value in radians for branchcut for how to order LSTs. Only used if lst_sort is True. Default 0.0.
-  lst_branch_cut : 4.71
+  lst_branch_cut : 4.70
 
 #---------------------------------------------------------------
 # Algorithm Parameters
