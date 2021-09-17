@@ -9,8 +9,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess'  # directory to dump all output in
-  logfile : 'reprocess_out_LPTXLK.log'  # logfile   
-  errfile : 'reprocess_err_LPTXLK.log' # error file
+  logfile : 'reprocess_out_LPTXLXK.log'  # logfile   
+  errfile : 'reprocess_err_LPTXLXK.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -22,8 +22,8 @@ io :
 analysis : 
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
-  ref_cal : False         # reflection calibration
-  xtalk_sub : False       # xtalk subtraction
+  ref_cal : True         # reflection calibration
+  xtalk_sub : True       # xtalk subtraction
   time_avg : False        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
