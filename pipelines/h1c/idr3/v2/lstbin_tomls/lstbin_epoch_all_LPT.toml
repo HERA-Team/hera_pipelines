@@ -1,0 +1,48 @@
+[Options]
+makeflow_type = "lstbin"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/task_scripts"
+source_script = "~/.bashrc"
+conda_env = "h1c_idr3"
+base_mem = 64000
+base_cpu = 4
+timeout = "48h"
+pbs_mail_user = "jsdillon+nrao@berkeley.edu"
+
+[LSTBIN_OPTS]
+sig_clip = "False"
+Nbls_to_load = 100
+sigma = 1e100
+min_N = 5
+rephase = "True"
+ntimes_per_file = 20
+dlst = 0.015660980326970275
+lst_start = 4.711094445 # this is before the first LST on 2458041 and after the last LST on 2458208
+vis_units = "Jy"
+parallelize = "True"
+file_ext = "grp1.of1.{type}.{time:7.5f}.sum.PTL.uvh5"
+outdir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed"
+parent_dir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed"
+data_files = ["/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/zen.grp1.of1.LST.*.sum.PT.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/zen.grp1.of1.LST.*.sum.PT.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/zen.grp1.of1.LST.*.sum.PT.uvh5",
+              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/zen.grp1.of1.LST.*.sum.PT.uvh5"]
+calibration = "allspws.refcal_smooth.calfits"
+
+
+[WorkFlow]
+actions = ["LSTBIN"]
+
+[LSTBIN]
+args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
+        "dlst", "vis_units", "output_file_select", "file_ext",
+        "outdir", "Nbls_to_load", "calibration"]
+
+# code for making files in order
+# import os
+# import numpy as np
+# for link in links:
+#     lst = float(link.split('.LST.')[-1].split('.sum.')[0])
+#     if lst < 4.71:
+#         lst += 2*np.pi
+#     new_link = link.split('.LST.')[0] + '.LST.' +f'{lst:.5f}' + '.sum.' + link.split('.sum.')[-1]
+#     os.rename(link, new_link)
