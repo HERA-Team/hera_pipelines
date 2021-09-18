@@ -9,8 +9,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess'  # directory to dump all output in
-  logfile : 'reprocess_out.log'  # logfile   
-  errfile : 'reprocess_err.log' # error file
+  logfile : 'reprocess_out_LPTXLXK.log'  # logfile   
+  errfile : 'reprocess_err_LPTXLXK.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -71,7 +71,7 @@ data :
   # if True, sort files by LST of the first integration, using lst_branch_cut to decide where to wrap
   lst_sort : True 
   # value in radians for branchcut for how to order LSTs. Only used if lst_sort is True. Default 0.0.
-  lst_branch_cut : 4.71
+  lst_branch_cut : 4.70
 
 #---------------------------------------------------------------
 # Algorithm Parameters
