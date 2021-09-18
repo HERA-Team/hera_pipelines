@@ -50,13 +50,13 @@ do
       spw_range="${spw_range/\~/ }"
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
-      --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high}\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_width 0.15
+      --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
+      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
-      --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high}\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_width 0.15
+      --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
+      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15
     else
       echo "${fn_in} does not exist!"
     fi
