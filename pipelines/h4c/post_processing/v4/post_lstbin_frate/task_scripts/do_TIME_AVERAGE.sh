@@ -60,6 +60,6 @@ do
       else
         echo "${input_file} does not exist!"
       fi
-
+    fi
   done
 done
