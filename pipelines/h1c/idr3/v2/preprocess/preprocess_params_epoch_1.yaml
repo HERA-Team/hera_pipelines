@@ -37,10 +37,10 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
