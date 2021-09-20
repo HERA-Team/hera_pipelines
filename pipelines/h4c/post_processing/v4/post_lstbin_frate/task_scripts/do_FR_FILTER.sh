@@ -16,6 +16,8 @@ percentile_low="${6}"
 percentile_high="${7}"
 spw_ranges="${8}"
 
+#clobber="true"
+
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 if [[ "$int_jd" == *"."* ]]; then
@@ -48,6 +50,8 @@ do
     then
       # split up spw_range
       spw_range="${spw_range/\~/ }"
+      #if [ "${clobber}" = "true" ] && [ ! -e "${CLEAN_outfilename}" ]
+      #  then
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
@@ -57,6 +61,7 @@ do
       --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
       --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15
+      #fi
     else
       echo "${fn_in} does not exist!"
     fi

@@ -15,7 +15,7 @@ pols = "ee nn"
 yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags/"
 nbl_per_load = 100
 t_avg = 300.0
-include_diffs = "true"
+include_diffs = "false"
 transfer_filled_flags = "false"
 transfer_res_flags = "true"
 
@@ -65,13 +65,13 @@ actions = [
 mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
-args=["{basename}", "${Options:label}",
+args=["{basename}", "${Options:include_diffs}", "${Options:label}",
     "${Options:chunk_size}"]
 
 [FR_FILTER]
 prereqs = "PRE_CHUNK"
 prereq_chunk_size="all"
-mem=16000
+mem=24000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
