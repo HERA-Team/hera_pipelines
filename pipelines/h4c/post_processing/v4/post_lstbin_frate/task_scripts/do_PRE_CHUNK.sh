@@ -7,8 +7,9 @@ source ${src_dir}/_common.sh
 
 
 fn="${1}"
-label="${2}"
-chunk_size="${3}"
+include_diffs="${2}"
+label="${3}"
+chunk_size="${4}"
 
 lst=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
 
@@ -22,7 +23,16 @@ if [[ "$int_jd" == *"."* ]]; then
 fi
 
 
-sumdiff=("sum" "diff")
+
+if [ "${include_diffs}" = "true" ]
+then
+  sumdiff=("sum" "diff")
+else
+  sumdiff=("sum")
+fi
+
+
+
 exts=( "foreground_filled.xtalk_filtered" "foreground_filled" )
 
 for sd in ${sumdiff[@]}
