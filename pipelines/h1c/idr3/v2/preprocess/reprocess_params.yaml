@@ -9,8 +9,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess'  # directory to dump all output in
-  logfile : 'reprocess_out_LPTXLXK.log'  # logfile   
-  errfile : 'reprocess_err_LPTXLXK.log' # error file
+  logfile : 'reprocess_out_LPXLPXTK.log'  # logfile   
+  errfile : 'reprocess_err_LPXLPXTK.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -21,10 +21,10 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : False         # foreground filter, clean or data-inpaint
+  fg_filt : True         # foreground filter, clean or data-inpaint
   ref_cal : True         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
-  time_avg : False        # time average data
+  time_avg : True        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
 
@@ -42,7 +42,7 @@ data :
 
   # glob-parseable, data template for input data products
   # data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.LPTXL.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.LPXL.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
@@ -91,15 +91,15 @@ algorithm :
   fg_filt :
     # IO
     resid_ext : None
-    inpaint_ext : ".P"
+    inpaint_ext : "P"
     axis : 'freq'
     # Filtering params
     clean_params : 
       standoff : 50.0
       horizon : 1.0
       min_dly : 2000.0
-      tol : 1.0e-06
-      autotol : 5.0e-08
+      tol : 1.0e-07
+      autotol : 5.0e-09
       maxiter : 100
       window : 'tukey'
       alpha : 0.15
@@ -196,6 +196,7 @@ algorithm :
     tol : 1.0e-8
     excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
       - [4.0, 4.71]
+      - [4.71, 5.5]
 
   # Time Averaging
   time_avg : 
