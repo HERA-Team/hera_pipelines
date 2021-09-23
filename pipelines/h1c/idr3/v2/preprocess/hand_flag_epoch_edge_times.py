@@ -35,4 +35,5 @@ for epoch in range(4):
                 flags[bl][to_flag, :] = True
             hd.update(flags=flags)
             print('    Flags updated.')
+            hd.history += '\n\nEpoch edge flags added by hand.\n\n'
             hd.write_uvh5(df, clobber=True)
