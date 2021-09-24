@@ -4,7 +4,7 @@ hand_flag_epoch_edge_times.py
 -----------------------------------------
 Copyright (c) 2021 The HERA Collaboration
 
-This hacky script hand-flags epoch edge times for H1C IDR3 which often exhibit failures 
+This hacky script hand-flags epoch edge times for H1C IDR3 which often exhibit failures
 in crosstalk subtraction.
 """
 
@@ -24,9 +24,13 @@ for epoch in range(4):
         to_flag = np.zeros(len(lsts), dtype=bool)
         for flag_region in epoch_flag_regions[epoch]:
             to_flag |= ((lsts >= flag_region[0]) & (lsts <= flag_region[1]))
+            to_flag |= ((lsts - 2*np.pi >= flag_region[0]) & (lsts - 2*np.pi <= flag_region[1]))
         if np.any(to_flag):
             print(f'\nNow loading {df}')
             hd = io.HERAData(df)
+            if "Epoch edge flags added by hand" in hd.history:
+               print('    File already hand-flagged. Moving on.')
+               continue
             _, flags, _ = hd.read()
             if np.all(hd.flag_array):
                 print('    File totally flagged. Moving on.')
