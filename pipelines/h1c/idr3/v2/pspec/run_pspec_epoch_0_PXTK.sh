@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -q hera
 #PBS -j oe
-#PBS -o pspec_pipe_PTXK_e0.out
-#PBS -N pspec_pipe_PTXK_e0
+#PBS -o pspec_pipe_PXTK_e0.out
+#PBS -N pspec_pipe_PXTK_e0
 #PBS -l nodes=1:ppn=15
 #PBS -l walltime=96:00:00
 #PBS -l vmem=250GB,mem=250GB
@@ -14,6 +14,6 @@ cd /lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/pspec
 
 echo "start: $(date)"
 pspec_dir=/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/pspec/
-${pspec_dir}/pspec_pipe.py ${pspec_dir}/pspec_params_epoch_0_PTXK.yaml 
+${pspec_dir}/pspec_pipe.py ${pspec_dir}/pspec_params_epoch_0_PXTK.yaml 
 
 echo "end: $(date)"

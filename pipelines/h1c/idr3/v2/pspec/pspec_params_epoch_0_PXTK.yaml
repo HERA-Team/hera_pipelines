@@ -15,8 +15,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/pspec' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/pspec' # directory for output; root is work_dir
-  logfile : 'pspipe_out_PTXK.log'  # logfile; root is work_dir
-  errfile : 'pspipe_err_PTXK.log' # error file; root is work_dir
+  logfile : 'pspipe_out_PXTK.log'  # logfile; root is work_dir
+  errfile : 'pspipe_err_PXTK.log' # error file; root is work_dir
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -41,7 +41,7 @@ data :
   data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/pspec'
 
   # data template basename: optionally with {group} and/or {pol} fields
-  data_template : 'zen.grp1.of1.LST.*.sum.PTXK.uvh5'
+  data_template : 'zen.grp1.of1.LST.*.sum.PXTK.uvh5'
   
   # std template basename: optionally with {grup} and/or {pol} fields
   std_template : None
@@ -92,7 +92,7 @@ algorithm :
 
   # pspec pipeline
   pspec : 
-    outfname : "pspec.grp1.of1.PTXK.h5"
+    outfname : "pspec.grp1.of1.PXTK.h5"
     groupname : "stokespol"
     output_by_red : True
     input_data_weight : "identity"
@@ -122,15 +122,15 @@ algorithm :
 
   # P_N calculation
   noise_err :
-    psc_name : "pspec.grp1.of1.PTXK.h5"  # a PSpecContainer file
+    psc_name : "pspec.grp1.of1.PXTK.h5"  # a PSpecContainer file
     error_type : ["P_N", "P_SN"]
     precomp_P_N : None
     group_name : 'stokespol'  # group name in psc to operate on
     spectra_names : None  # list of spectra names within group to operate on, None is all
     beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
-    auto_file : "zen.grp1.of1.LST.*.sum.PTXK.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
+    auto_file : "zen.grp1.of1.LST.*.sum.PXTK.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
     cal_ext : None  # same function as cal_ext in "data"
-    output_Tsys_file : "zen.grp1.of1.autos.Tsys.PTXK.uvh5"  # output file for antenna Tsys, if None don't write output
+    output_Tsys_file : "zen.grp1.of1.autos.Tsys.PXTK.uvh5"  # output file for antenna Tsys, if None don't write output
 
   # bootstrap pipeline
   bootstrap :
