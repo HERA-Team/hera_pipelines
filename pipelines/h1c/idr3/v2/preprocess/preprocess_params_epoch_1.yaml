@@ -9,8 +9,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess'  # directory to dump all output in
-  logfile : 'preprocess_out_epoch_1.log'  # logfile   
-  errfile : 'preprocess_err_epoch_1.log' # error file
+  logfile : 'preprocess_TK_out_epoch_1.log'  # logfile
+  errfile : 'preprocess_TK_err_epoch_1.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -22,11 +22,11 @@ io :
 analysis : 
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
-  ref_cal : True         # reflection calibration
-  xtalk_sub : True       # xtalk subtraction
-  time_avg : False        # time average data
+  ref_cal : False         # reflection calibration
+  xtalk_sub : False       # xtalk subtraction
+  time_avg : True        # time average data
   red_avg : False         # redundant averaging
-  form_pstokes : False    # form pseudo-Stokes visibilities
+  form_pstokes : True    # form pseudo-Stokes visibilities
 
   multiproc : True    # use multiprocess module
   nproc : 4               # number of processes to spawn
@@ -40,7 +40,7 @@ data :
   data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.PX.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
