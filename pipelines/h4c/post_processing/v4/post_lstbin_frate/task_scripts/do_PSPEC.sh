@@ -29,7 +29,7 @@ else
   sumdiff=("sum")
 fi
 
-exts=( "foreground_filled.chunked" "frf" )
+exts=( "foreground_filled.chunked" "frf" "foreground_filled.xtalk_filtered.chunked" )
 
 pol_pair_list=("XX~XX,YY~YY" "pI~pI")
 pol_label_list=("" "_pstokes")
@@ -64,24 +64,27 @@ do
               --file_type uvh5  --xant_flag_thresh 1.1\
               --taper bh --spw_ranges ${spw_ranges}
 
-            # auto power spectra
-            output=zen.${jd}.${sd}.${label}.autos.${ext}${pol_label}.tavg.pspec.h5
-            echo pspec_run.py ${input} ${output}\
-              --overwrite\
-              --pol_pairs ${pol_pairs} --verbose\
-              --Jy2mK --beam ${beam_file}\
-              --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
-              --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-              --exclude_cross_bls --exclude_crosscorrs
+            if [ "${ext}" = "foreground_filled.chunked" ]
+            then
+              # auto power spectra
+              output=zen.${jd}.${sd}.${label}.autos.${ext}${pol_label}.tavg.pspec.h5
+              echo pspec_run.py ${input} ${output}\
+                --overwrite\
+                --pol_pairs ${pol_pairs} --verbose\
+                --Jy2mK --beam ${beam_file}\
+                --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
+                --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
+                --exclude_cross_bls --exclude_crosscorrs
 
 
-            pspec_run.py ${input} ${output}\
-              --overwrite\
-              --pol_pairs ${pol_pairs} --verbose\
-              --Jy2mK --beam ${beam_file}\
-              --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
-              --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-              --exclude_cross_bls --exclude_crosscorrs
+              pspec_run.py ${input} ${output}\
+                --overwrite\
+                --pol_pairs ${pol_pairs} --verbose\
+                --Jy2mK --beam ${beam_file}\
+                --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
+                --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
+                --exclude_cross_bls --exclude_crosscorrs
+          fi
       else
         echo "${input} does not exist!"
       fi

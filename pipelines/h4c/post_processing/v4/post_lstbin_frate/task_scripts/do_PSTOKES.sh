@@ -35,7 +35,7 @@ fi
 
 for sd in ${sumdiff[@]}
 do
-  exts=( "foreground_filled.chunked" "frf" )
+  exts=( "foreground_filled.chunked" "frf" "foreground_filled.xtalk_filtered.chunked" )
   for ext in ${exts[@]}
   do
     # compute pstokes of fr filtered files.

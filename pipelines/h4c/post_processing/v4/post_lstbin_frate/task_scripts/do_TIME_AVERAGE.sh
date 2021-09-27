@@ -35,7 +35,7 @@ else
 fi
 
 
-exts=( "foreground_filled.chunked" "frf" )
+exts=( "frf" "foreground_filled.chunked" "foreground_filled.xtalk_filtered.chunked" )
 for sd in ${sumdiff[@]}
 do
   for ext in ${exts[@]}
@@ -44,14 +44,19 @@ do
     then
       # frf files are already in waterfalls.
       filelist=`echo zen.${jd}.${sd}.${label}.${ext}.*.waterfall.uvh5`
-      output_file=zen.${jd}.${sd}.${label}.${ext}.${ext}.waterfall.tavg.uvh5
+      output_file=zen.${jd}.${sd}.${label}.${ext}.waterfall.tavg.uvh5
       # reconstitute spw_ranges in this step as well.
-      echo time_average.py ${filelist} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-      time_average.py ${filelist} ${output_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+      # check if the list actually gave you a list.
+      if echo x"$filelist" | grep '*' > /dev/null; then
+        echo "No waterfall files exist with ${jd}. This is probably because there are more times then baseline groups."
+      else
+        echo time_average.py ${filelist} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+        time_average.py ${filelist} ${output_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+      fi
     else
       # need to do cornerturn for fgfilled files.
       input_file=zen.${jd}.${sd}.${label}.${ext}.uvh5
-      output_file=zen.${jd}.${sd}.${label}.${ext}.tavg.uvh5
+      output_file=zen.${jd}.${sd}.${label}.${ext}.waterfall.tavg.uvh5
       filelist=`echo zen.*.${sd}.${label}.${ext}.uvh5`
       if [ -e "${input_file}" ]
       then
