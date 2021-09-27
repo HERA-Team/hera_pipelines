@@ -574,6 +574,168 @@ if params['fg_filt']:
                  f=lf, verbose=verbose)
 
 #-------------------------------------------------------------------------------
+# Time Averaging
+#-------------------------------------------------------------------------------
+if params['time_avg']:
+    
+    # Start block
+    tnow = datetime.utcnow()
+    hp.utils.log("\n{}\nstarting time averaging: {}\n".format("-"*60, tnow), 
+                 f=lf, verbose=verbose)
+    file_Ntimes = cf['algorithm']['time_avg']['file_Ntimes']
+
+    # setup blgroups for parallelization
+    Nbl_per_task = cf['algorithm']['time_avg']['Nbl_per_task']
+    if Nbl_per_task is None:
+        blgroups = bls
+    else:
+        blgroups = [bls[i*Nbl_per_task:(i+1)*Nbl_per_task] for i in range(len(bls)//Nbl_per_task + 1)]
+    blgroups = [blg for blg in blgroups if len(blg) > 0]
+
+    # get glob-parseable data template
+    data_template = os.path.basename(get_template(datafiles, force_other=False, jd='{jd:.5f}',
+                                                  lst='{lst:.5f}', pol='*', other='*'))
+
+    # setup time avg function
+    def run_time_avg(i, blgroups=blgroups, datafiles=datafiles, p=cf['algorithm']['time_avg'], 
+                     params=params, inp_cals=inp_cals, data_template=data_template, pols=pols):
+        """
+        time avg
+
+        i : integer, index of blgroups to run for this task
+        blgroups : list, list of baseline groups to operate on
+        p : dict, tavg sub algorithm parameters
+        params : dict, global job parameters
+        """
+        try:
+            # Setup frfilter class as container
+            if isinstance(inp_cals, list) and None in inp_cals:
+                inp_cals = None
+            elif isinstance(inp_cals, list):
+                # condense calibrations to unique files, in case repetitions exist
+                inp_cals = list(np.unique(inp_cals))
+
+            F = hc.frf.FRFilter(datafiles, filetype='uvh5', input_cal=inp_cals)
+            # use history of zeroth data file
+            # we don't like pyuvdata history lengthening upon read-in
+            history = F.hd.history
+            F.read(bls=blgroups[i], polarizations=pols, axis='blt')
+            F.hd.history = history
+
+            # get keys
+            keys = list(F.data.keys())
+
+            # timeaverage with rephasing
+            F.timeavg_data(F.data, F.times, F.lsts, p['t_window'], flags=F.flags, nsamples=F.nsamples,
+                           wgt_by_nsample=p['wgt_by_nsample'], wgt_by_favg_nsample=p['wgt_by_favg_nsample'],
+                           rephase=True, verbose=params['verbose'], keys=keys, overwrite=True)
+
+            # flag integrations with too few average nsamples
+            if p['freq_avg_min_nsamp'] is not None:
+                for key in F.avg_nsamples:
+                    freq_flags = np.all(np.isclose(F.avg_nsamples[key], 0), axis=0)
+                    navg = np.mean(F.avg_nsamples[key][:, ~freq_flags], axis=1)
+                    time_flags = navg < p['freq_avg_min_nsamp']
+                    F.avg_flags[key] += time_flags[:, None]
+
+            # configure output name
+            outfname = fill_template(data_template, F.hd)
+            outfname = add_file_ext(outfname, p['file_ext'], outdir=params['out_dir'])
+            fext = get_file_ext(outfname)
+            outfname = '.'.join(outfname.split('.')[:-2]) + '.tavg{:03d}.{}.uvh5'.format(i, fext)
+
+            # Write to file
+            add_to_history = append_history("time averaging", p, get_template(datafiles, force_other=True), inp_cal=inp_cals)
+            F.write_data(F.avg_data, outfname, flags=F.avg_flags, nsamples=F.avg_nsamples,
+                         times=F.avg_times, lsts=F.avg_lsts, add_to_history=add_to_history,
+                         overwrite=overwrite, filetype='uvh5')
+ 
+        except:
+            hp.utils.log("\njob {} threw exception:".format(i), 
+                         f=ef, tb=sys.exc_info(), verbose=verbose)
+            return 1
+        return 0
+
+    # Launch jobs
+    failures = hp.utils.job_monitor(run_time_avg, range(len(blgroups)), 
+                                    "TAVG", M=M, lf=lf, 
+                                    maxiter=params['maxiter'], 
+                                    verbose=verbose)
+
+    # collect output files
+    outfname = os.path.basename(get_template(datafiles, force_other=True, other='*'))
+    outfname = add_file_ext(outfname, cf['algorithm']['time_avg']['file_ext'], outdir=params['out_dir'])
+    fext = get_file_ext(outfname)
+    outfname = '.'.join(outfname.split('.')[:-2]) + '.tavg*.{}.uvh5'.format(fext)
+    datafiles = sorted(glob.glob(outfname))
+
+    # configure output file times
+    hd = hc.io.HERAData(datafiles[0])
+    times = hd.times
+    output_times = np.array_split(times, len(times) // file_Ntimes)
+    del hd
+
+    # merge all outputs into single files
+    def tavg_merge(i, output_times=output_times, p=cf['algorithm']['time_avg'], params=params,
+                   data_template=data_template, datafiles=datafiles):
+        """
+        merge separate baseline files into full-baseline, time-chunked files
+
+        i : int, task integer
+        output_times : list of JD ndarrays for each output file
+        p : dict, 'time_avg' step parameters
+        params : dict, global parameters
+        """
+        try:
+            # read select times
+            hd = hc.io.HERAData(datafiles, filetype='uvh5')
+            history = hd.history
+            hd.read(times=output_times[i], return_data=False)
+            hd.history = history
+
+            # get output name
+            outfname = fill_template(data_template, hd)
+            outfname = add_file_ext(outfname, p['file_ext'], outdir=params['out_dir'])
+
+            # write to file
+            hd.write_uvh5(outfname, clobber=overwrite)
+
+        except:
+            hp.utils.log("\njob {} threw exception:".format(i), 
+                         f=ef, tb=sys.exc_info(), verbose=verbose)
+            return 1
+        return 0
+
+    # Launch jobs
+    failures = hp.utils.job_monitor(tavg_merge, range(len(output_times)),
+                                    "TAVG MERGE", M=map, lf=lf, 
+                                    maxiter=params['maxiter'], 
+                                    verbose=verbose)
+
+    # clean up intermediate files
+    if cf['algorithm']['time_avg']['rm_intermediate_files']:
+        for df in datafiles:
+            if os.path.exists(df):
+                os.remove(df)
+
+    # Update datafiles and re-order and inp_cals
+    datafiles = sorted(glob.glob(outfname.replace(".tavg*", "")))
+    datafiles = [df for df in datafiles if 'tavg' not in df]
+    _, _, filelsts, filetimes = hc.io.get_file_times(datafiles, filetype='uvh5')
+    if params.get('lst_sort', False):
+        branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
+        timeorder = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts)], key=branch_sorter), dtype=int)[:, 0]
+    else:
+        timeorder = np.argsort([ft[0] for ft in filetimes])
+    datafiles = [datafiles[ti] for ti in timeorder]
+    inp_cals = [None for df in datafiles]
+
+    # Finish block
+    tnow = datetime.utcnow()
+    hp.utils.log("\nfinished time averaging: {}\n{}".format(tnow, "-"*60), 
+                 f=lf, verbose=verbose)
+
+#-------------------------------------------------------------------------------
 # Reflection Calibration
 #-------------------------------------------------------------------------------
 if params['ref_cal']:
@@ -1088,168 +1250,6 @@ if params['xtalk_sub']:
     # Finish block
     tnow = datetime.utcnow()
     hp.utils.log("\nfinished xtalk subtraction: {}\n{}".format(tnow, "-"*60), 
-                 f=lf, verbose=verbose)
-
-#-------------------------------------------------------------------------------
-# Time Averaging
-#-------------------------------------------------------------------------------
-if params['time_avg']:
-    
-    # Start block
-    tnow = datetime.utcnow()
-    hp.utils.log("\n{}\nstarting time averaging: {}\n".format("-"*60, tnow), 
-                 f=lf, verbose=verbose)
-    file_Ntimes = cf['algorithm']['time_avg']['file_Ntimes']
-
-    # setup blgroups for parallelization
-    Nbl_per_task = cf['algorithm']['time_avg']['Nbl_per_task']
-    if Nbl_per_task is None:
-        blgroups = bls
-    else:
-        blgroups = [bls[i*Nbl_per_task:(i+1)*Nbl_per_task] for i in range(len(bls)//Nbl_per_task + 1)]
-    blgroups = [blg for blg in blgroups if len(blg) > 0]
-
-    # get glob-parseable data template
-    data_template = os.path.basename(get_template(datafiles, force_other=False, jd='{jd:.5f}',
-                                                  lst='{lst:.5f}', pol='*', other='*'))
-
-    # setup time avg function
-    def run_time_avg(i, blgroups=blgroups, datafiles=datafiles, p=cf['algorithm']['time_avg'], 
-                     params=params, inp_cals=inp_cals, data_template=data_template, pols=pols):
-        """
-        time avg
-
-        i : integer, index of blgroups to run for this task
-        blgroups : list, list of baseline groups to operate on
-        p : dict, tavg sub algorithm parameters
-        params : dict, global job parameters
-        """
-        try:
-            # Setup frfilter class as container
-            if isinstance(inp_cals, list) and None in inp_cals:
-                inp_cals = None
-            elif isinstance(inp_cals, list):
-                # condense calibrations to unique files, in case repetitions exist
-                inp_cals = list(np.unique(inp_cals))
-
-            F = hc.frf.FRFilter(datafiles, filetype='uvh5', input_cal=inp_cals)
-            # use history of zeroth data file
-            # we don't like pyuvdata history lengthening upon read-in
-            history = F.hd.history
-            F.read(bls=blgroups[i], polarizations=pols, axis='blt')
-            F.hd.history = history
-
-            # get keys
-            keys = list(F.data.keys())
-
-            # timeaverage with rephasing
-            F.timeavg_data(F.data, F.times, F.lsts, p['t_window'], flags=F.flags, nsamples=F.nsamples,
-                           wgt_by_nsample=p['wgt_by_nsample'], wgt_by_favg_nsample=p['wgt_by_favg_nsample'],
-                           rephase=True, verbose=params['verbose'], keys=keys, overwrite=True)
-
-            # flag integrations with too few average nsamples
-            if p['freq_avg_min_nsamp'] is not None:
-                for key in F.avg_nsamples:
-                    freq_flags = np.all(np.isclose(F.avg_nsamples[key], 0), axis=0)
-                    navg = np.mean(F.avg_nsamples[key][:, ~freq_flags], axis=1)
-                    time_flags = navg < p['freq_avg_min_nsamp']
-                    F.avg_flags[key] += time_flags[:, None]
-
-            # configure output name
-            outfname = fill_template(data_template, F.hd)
-            outfname = add_file_ext(outfname, p['file_ext'], outdir=params['out_dir'])
-            fext = get_file_ext(outfname)
-            outfname = '.'.join(outfname.split('.')[:-2]) + '.tavg{:03d}.{}.uvh5'.format(i, fext)
-
-            # Write to file
-            add_to_history = append_history("time averaging", p, get_template(datafiles, force_other=True), inp_cal=inp_cals)
-            F.write_data(F.avg_data, outfname, flags=F.avg_flags, nsamples=F.avg_nsamples,
-                         times=F.avg_times, lsts=F.avg_lsts, add_to_history=add_to_history,
-                         overwrite=overwrite, filetype='uvh5')
- 
-        except:
-            hp.utils.log("\njob {} threw exception:".format(i), 
-                         f=ef, tb=sys.exc_info(), verbose=verbose)
-            return 1
-        return 0
-
-    # Launch jobs
-    failures = hp.utils.job_monitor(run_time_avg, range(len(blgroups)), 
-                                    "TAVG", M=M, lf=lf, 
-                                    maxiter=params['maxiter'], 
-                                    verbose=verbose)
-
-    # collect output files
-    outfname = os.path.basename(get_template(datafiles, force_other=True, other='*'))
-    outfname = add_file_ext(outfname, cf['algorithm']['time_avg']['file_ext'], outdir=params['out_dir'])
-    fext = get_file_ext(outfname)
-    outfname = '.'.join(outfname.split('.')[:-2]) + '.tavg*.{}.uvh5'.format(fext)
-    datafiles = sorted(glob.glob(outfname))
-
-    # configure output file times
-    hd = hc.io.HERAData(datafiles[0])
-    times = hd.times
-    output_times = np.array_split(times, len(times) // file_Ntimes)
-    del hd
-
-    # merge all outputs into single files
-    def tavg_merge(i, output_times=output_times, p=cf['algorithm']['time_avg'], params=params,
-                   data_template=data_template, datafiles=datafiles):
-        """
-        merge separate baseline files into full-baseline, time-chunked files
-
-        i : int, task integer
-        output_times : list of JD ndarrays for each output file
-        p : dict, 'time_avg' step parameters
-        params : dict, global parameters
-        """
-        try:
-            # read select times
-            hd = hc.io.HERAData(datafiles, filetype='uvh5')
-            history = hd.history
-            hd.read(times=output_times[i], return_data=False)
-            hd.history = history
-
-            # get output name
-            outfname = fill_template(data_template, hd)
-            outfname = add_file_ext(outfname, p['file_ext'], outdir=params['out_dir'])
-
-            # write to file
-            hd.write_uvh5(outfname, clobber=overwrite)
-
-        except:
-            hp.utils.log("\njob {} threw exception:".format(i), 
-                         f=ef, tb=sys.exc_info(), verbose=verbose)
-            return 1
-        return 0
-
-    # Launch jobs
-    failures = hp.utils.job_monitor(tavg_merge, range(len(output_times)),
-                                    "TAVG MERGE", M=map, lf=lf, 
-                                    maxiter=params['maxiter'], 
-                                    verbose=verbose)
-
-    # clean up intermediate files
-    if cf['algorithm']['time_avg']['rm_intermediate_files']:
-        for df in datafiles:
-            if os.path.exists(df):
-                os.remove(df)
-
-    # Update datafiles and re-order and inp_cals
-    datafiles = sorted(glob.glob(outfname.replace(".tavg*", "")))
-    datafiles = [df for df in datafiles if 'tavg' not in df]
-    _, _, filelsts, filetimes = hc.io.get_file_times(datafiles, filetype='uvh5')
-    if params.get('lst_sort', False):
-        branch_sorter = lambda x: (x[1] - params.get('lst_branch_cut', 0) + 2 * np.pi) % (2 * np.pi)
-        timeorder = np.array(sorted([(i, fl[0]) for i, fl in enumerate(filelsts)], key=branch_sorter), dtype=int)[:, 0]
-    else:
-        timeorder = np.argsort([ft[0] for ft in filetimes])
-    datafiles = [datafiles[ti] for ti in timeorder]
-    inp_cals = [None for df in datafiles]
-
-    # Finish block
-    tnow = datetime.utcnow()
-    hp.utils.log("\nfinished time averaging: {}\n{}".format(tnow, "-"*60), 
                  f=lf, verbose=verbose)
 
 #-------------------------------------------------------------------------------
