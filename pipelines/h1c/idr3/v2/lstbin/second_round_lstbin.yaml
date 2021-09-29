@@ -19,3 +19,5 @@ epoch_globs :
   - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
   - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
   - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+vis_units : 'Jy'
+file_ext : 'grp1.of1.LST.{time:7.5f}.sum.uvh5'
