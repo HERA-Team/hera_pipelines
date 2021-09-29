@@ -1,0 +1,21 @@
+# second_round_lstbin.yaml
+#
+# hera_pspec IDR3.2 pipeline
+# configuration file for lstbinning together epochs
+#
+# Note: only strings, booleans, integers, floats,
+# lists, and lists of lists may be specified here.
+# When PSpecData parameters have required type None
+# use 'None' here, and for list of tuples,
+# use list of lists here.
+
+#---------------------------------------------------------------
+# Parameters
+#---------------------------------------------------------------
+
+out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed'
+epoch_data : 
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
