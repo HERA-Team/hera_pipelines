@@ -33,7 +33,7 @@ percentile_high=95.0
 [PSPEC_OPTS]
 pstokes="pI"
 beam_file="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix"
-spw_ranges="0~95,95~180,180~265,265~365,365~430,430~515,515~600,600~685"
+spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
 nsamples=100
 seed=10
 
