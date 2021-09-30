@@ -61,6 +61,15 @@ kwargs['start_jd'] = int(np.floor(epoch_times[-1][0][0]))
 # pick first lst as the branch cuta
 kwargs['lst_branch_cut'] = epoch_lsts[0][0][0]
 
+# get baselines and antpos from last file in each epoch, combining appropriately
+last_hds = [hc.io.HERAData(efiles[-1]) for efiles in epoch_files]
+all_bls = sorted(set([bl for hd in last_hds for bl in hd.bls]))
+antpos = last_hds[-1].antpos
+for hd in last_hds[-2::-1]:
+    for ant in hd.antpos:
+        if ant not in antpos:
+            antpos[ant] = hd.antpos[ant]
+
 # assign files to groups (i.e. jobs)
 groups_to_bin = {}
 for files, file_lst_arrays in zip(epoch_files, epoch_lsts):
@@ -91,7 +100,6 @@ except(IndexError):
 hds = [hc.io.HERAData(file) for file in files_to_bin]
 
 # pick antpos, freqs, x_orientation, and integration_time from last epoch
-antpos = copy.deepcopy(hds[-1].antpos)
 freq_array = copy.deepcopy(hds[-1].freqs)
 kwargs['x_orientation'] = copy.deepcopy(hds[-1].x_orientation)
 integration_time = np.median(hds[-1].integration_time)
@@ -113,7 +121,6 @@ for i, hd in enumerate(hds):
 # Perform lstbinning/averaging
 #-------------------------------------------------------------------------------
 # initialize empty data containers
-all_bls = set([bl for data in all_data for bl in data])
 binned_data = hc.datacontainer.DataContainer({bl: np.zeros((len(lst_array), len(freq_array)), dtype=list(all_data[0].values())[0].dtype) for bl in all_bls})
 binned_flags = hc.datacontainer.DataContainer({bl: np.ones((len(lst_array), len(freq_array)), dtype=list(all_flags[0].values())[0].dtype) for bl in all_bls})
 binned_nsamples = hc.datacontainer.DataContainer({bl: np.zeros((len(lst_array), len(freq_array)), dtype=list(all_nsamples[0].values())[0].dtype) for bl in all_bls})
