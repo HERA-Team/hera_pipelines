@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -q hera
 #PBS -j oe
-#PBS -o reproc_pipe.out
-#PBS -N reproc_pipe
+#PBS -o second_round_lstbin.out
+#PBS -N second_round_lstbin
 #PBS -l nodes=1:ppn=1
 #PBS -l walltime=24:00:00
 #PBS -l vmem=32GB,mem=32GB
