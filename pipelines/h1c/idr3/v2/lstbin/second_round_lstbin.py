@@ -79,8 +79,11 @@ for start_lst_1 in groups_to_bin:
                                   "This function assumes LST bins must have already been perfectly aligned.")
 
 # pick out files to LST-bin for this job
-files_to_bin = list(groups_to_bin.values())[job_index]
-
+try:
+    files_to_bin = list(groups_to_bin.values())[job_index]
+except(IndexError):
+    print(f'No file group matching job_index {job_index}. Quitting.')
+    sys.exit()
 
 #-------------------------------------------------------------------------------
 # Load matching data
