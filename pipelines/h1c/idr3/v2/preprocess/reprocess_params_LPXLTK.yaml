@@ -7,10 +7,10 @@
 # IO Parameters
 #---------------------------------------------------------------
 io :
-  work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess' # directory to work in
-  out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess'  # directory to dump all output in
-  logfile : 'reprocess_out_LPXLPTK.log'  # logfile   
-  errfile : 'reprocess_err_LPXLPTK.log' # error file
+  work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/preprocess' # directory to work in
+  out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/preprocess'  # directory to dump all output in
+  logfile : 'reprocess_out_LPXLTK.log'  # logfile   
+  errfile : 'reprocess_err_LPXLTK.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -38,11 +38,10 @@ analysis :
 data :
   # data root directory
   # data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs'
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/reprocess'
+  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/preprocess'
 
   # glob-parseable, data template for input data products
-  # data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.LPXLP.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.LPXL.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
