@@ -5,9 +5,9 @@
 #PBS -N second_round_lstbin
 #PBS -l nodes=1:ppn=1
 #PBS -l walltime=24:00:00
-#PBS -l vmem=32GB,mem=32GB
+#PBS -l vmem=64GB,mem=64GB
 #PBS -M jsdillon+nrao@berkeley.edu
-#PBS -t 1-67%24
+#PBS -t 1-67%16
 
 source ~/.bashrc
 conda activate h1c_idr3
