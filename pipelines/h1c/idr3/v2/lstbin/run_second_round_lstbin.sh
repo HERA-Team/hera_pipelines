@@ -14,6 +14,6 @@ conda activate h1c_idr3
 
 echo "start: $(date)"
 lstbin_src_dir=/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/lstbin
-${lstbin_src_dir}/second_round_lstbin.py ${lstbin_src_dir}/second_round_lstbin.yaml ${PBS_JOBID}
+${lstbin_src_dir}/second_round_lstbin.py ${lstbin_src_dir}/second_round_lstbin.yaml ${PBS_ARRAYID}
 
 echo "end: $(date)"
