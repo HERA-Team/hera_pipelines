@@ -9,8 +9,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/preprocess' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/preprocess'  # directory to dump all output in
-  logfile : 'reprocess_out_LPXLTK.log'  # logfile   
-  errfile : 'reprocess_err_LPXLTK.log' # error file
+  logfile : 'preprocess_out_LPXLTK.log'  # logfile   
+  errfile : 'preprocess_err_LPXLTK.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
