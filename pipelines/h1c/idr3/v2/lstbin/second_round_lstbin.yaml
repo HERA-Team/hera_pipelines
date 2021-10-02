@@ -15,10 +15,10 @@
 
 outdir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed'
 epoch_globs : 
-  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
-  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
-  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
-  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/preprocess/zen.grp1.of1.LST*sum.P.uvh5'
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess/zen.grp1.of1.LST*sum.P.uvh5'
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_2/preprocess/zen.grp1.of1.LST*sum.P.uvh5'
+  - '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess/zen.grp1.of1.LST*sum.P.uvh5'
 # calfile_replace : 'None'
 calfile_replace : 'PX.uvh5~P.allspws.refcal_smooth.calfits' # replaces text in filename before ~ with text after ~ for form calfits. Use 'None' for no calibration
 # file_ext : 'zen.grp1.of1.LST.{time:7.5f}.sum.LPXL.uvh5'
