@@ -115,7 +115,7 @@ for i, hd in enumerate(hds):
     all_data[i], all_flags[i], all_nsamples[i] = hd.read()
     if cf['calfile_replace'] is not None:
         calfits_file = hd.filepaths[0].replace(*cf['calfile_replace'].split('~'))
-        if verbose:
+        if cf['verbose']:
             print(f'Applying calibration from {calfits_file}')
         cal = hc.io.HERACal(calfits_file)
         gains, cal_flags, _, _ = cal.read()
