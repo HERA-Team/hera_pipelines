@@ -113,6 +113,11 @@ for i, hd in enumerate(hds):
     if cf['verbose']:
         print(f'Now loading data from {hd.filepaths[0]}')
     all_data[i], all_flags[i], all_nsamples[i] = hd.read()
+    if cf['calfile_replace'] is not None:
+        cal = hc.io.HERACal(hd.filepaths[0].replace(*cf['calfile_replace'].split('~')))
+        gains, cal_flags, _, _ = cal.read()
+        hc.apply_cal.calibrate_in_place(all_data[i], gains, data_flags=all_flags[i], cal_flags=cal_flags, gain_convention=cal.gain_convention)
+        del gains, cal_flags, cal
     # reduce memory footprint
     hds[i] = None
     del hd
