@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -q hera
 #PBS -j oe
-#PBS -o preproc_LPLTK.out
-#PBS -N preproc_LPLTK
+#PBS -o preproc_LPXLTK.out
+#PBS -N preproc_LPXLTK
 #PBS -l nodes=1:ppn=15
 #PBS -l walltime=256:00:00
 #PBS -l vmem=250GB,mem=250GB
