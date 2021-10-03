@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -q hera
 #PBS -j oe
-#PBS -o pspec_pipe_LPLTK.out
-#PBS -N pspec_pipe_LPLTK
+#PBS -o pspec_pipe_LPXLTK.out
+#PBS -N pspec_pipe_LPXLTK
 #PBS -l nodes=1:ppn=15
 #PBS -l walltime=96:00:00
 #PBS -l vmem=250GB,mem=250GB
