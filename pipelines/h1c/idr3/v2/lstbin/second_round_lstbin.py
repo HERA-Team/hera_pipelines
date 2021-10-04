@@ -147,7 +147,7 @@ for bl in list(all_bls):
     for data, flags, nsamples in zip(all_data, all_flags, all_nsamples):
         if bl in data:
             # add nsamples, taking into account the possibility that it's a truncated file
-            binned_nsamples[bl][0:len(nsamples[bl]), :] += nsamples[bl]
+            binned_nsamples[bl][0:len(nsamples[bl]), :] += nsamples[bl] * (~flags[bl])
             
             # figure out weights
             if cf['weighting'] == 'equal': # all unflagged data is given equal weight
