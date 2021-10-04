@@ -122,7 +122,7 @@ algorithm :
         # - [570, 573]
         # - [697, 698]
         # - [815, 816]
-    freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
+    freq_avg_min_nsamp : 5  # freq-averaged min nsample flag cut for each time bin
     apply_hand_flag_files : True # applies flagging waterfalls before filteirng using hand_flag_ext above
 
   # Time Averaging
