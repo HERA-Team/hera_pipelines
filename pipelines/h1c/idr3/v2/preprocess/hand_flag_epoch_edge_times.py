@@ -12,10 +12,10 @@ import numpy as np
 import glob
 from hera_cal import io
 
-epoch_flag_regions = {0: [np.array([12, 20.55]) * np.pi / 12],
-                      1: [np.array([0, .284]) * np.pi / 12,  np.array([11.32, 24]) * np.pi / 12],
-                      2: [np.array([0, 3.75]) * np.pi / 12,  np.array([14.51, 24]) * np.pi / 12],
-                      3: [np.array([0, 6.175]) * np.pi / 12, np.array([17.09, 24]) * np.pi / 12]}
+epoch_flag_regions = {0: [np.array([12, 20.54]) * np.pi / 12],
+                      1: [np.array([11.32, 24]) * np.pi / 12],
+                      2: [np.array([0, 3.935]) * np.pi / 12,  np.array([14.51, 24]) * np.pi / 12],
+                      3: [np.array([0, 6.085]) * np.pi / 12]}
 
 for epoch in range(4):
     data_files = sorted(glob.glob(f'/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_{epoch}/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'))
