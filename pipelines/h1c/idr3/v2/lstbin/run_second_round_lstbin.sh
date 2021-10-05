@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -q hera
 #PBS -j oe
-#PBS -o second_round_lstbin_LPL.out
-#PBS -N second_round_lstbin_LPL
+#PBS -o second_round_lstbin_LPXL.out
+#PBS -N second_round_lstbin_LPXL
 #PBS -l nodes=1:ppn=1
 #PBS -l walltime=24:00:00
 #PBS -l vmem=64GB,mem=64GB
