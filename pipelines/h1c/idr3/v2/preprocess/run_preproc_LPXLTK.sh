@@ -10,10 +10,10 @@
 
 source ~/.bashrc
 conda activate h1c_idr3
-cd /lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs/preprocess
+cd /lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/preprocess
 
 echo "start: $(date)"
 preprocess_dir=/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/preprocess
-${preprocess_dir}/preprocess_data.py ${preprocess_dir}/reprocess_params_LPXLTK.yaml
+${preprocess_dir}/preprocess_data.py ${preprocess_dir}/preprocess_params_LPXLTK.yaml
 
 echo "end: $(date)"
