@@ -26,4 +26,3 @@ file_ext : 'zen.grp1.of1.LST.{time:7.5f}.sum.LPL.uvh5'
 weighting : 'freq_avg_nsamples'  # can be 'equal' for equal weighting, 'nsamples' for per-pixel nsamples weighting, or 'freq_avg_nsamples' for frequency-averaged nsamples weighting
 vis_units : 'Jy'
 verbose : True
-

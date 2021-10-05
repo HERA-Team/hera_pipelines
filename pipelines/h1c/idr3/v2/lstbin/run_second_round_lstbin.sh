@@ -1,13 +1,13 @@
 #!/bin/bash
 #PBS -q hera
 #PBS -j oe
-#PBS -o second_round_lstbin.out
-#PBS -N second_round_lstbin
+#PBS -o second_round_lstbin_LPL.out
+#PBS -N second_round_lstbin_LPL
 #PBS -l nodes=1:ppn=1
 #PBS -l walltime=24:00:00
 #PBS -l vmem=64GB,mem=64GB
 #PBS -M jsdillon+nrao@berkeley.edu
-#PBS -t 1-67%16
+#PBS -t 1-67%8
 
 source ~/.bashrc
 conda activate h1c_idr3
