@@ -9,8 +9,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess'  # directory to dump all output in
-  logfile : 'preprocess_RTK_out_epoch_1.log'  # logfile
-  errfile : 'preprocess_RTK_err_epoch_1.log' # error file
+  logfile : 'preprocess_K_out_epoch_1.log'  # logfile
+  errfile : 'preprocess_K_err_epoch_1.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -24,7 +24,7 @@ analysis :
   fg_filt : False         # foreground filter, clean or data-inpaint
   ref_cal : False         # reflection calibration
   xtalk_sub : False       # xtalk subtraction
-  time_avg : True        # time average data
+  time_avg : False        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
 
@@ -40,7 +40,7 @@ data :
   data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_1/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.PT.uvh5'
 
   # file extension for calibration file to load and apply to data
   # cal_ext : None 
