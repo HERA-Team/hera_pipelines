@@ -178,6 +178,9 @@ for bl in list(all_bls):
     # flag bins with no weight and make sure completely flagged cells are flagged
     binned_flags[bl] = (~np.isfinite(binned_data[bl])) | every_epoch_flagged
 
+    # set nans and infs to 0
+    binned_data[bl][~np.isfinite(binned_data[bl])] = 0
+
 #-------------------------------------------------------------------------------
 # Create lst-binned file
 #-------------------------------------------------------------------------------
