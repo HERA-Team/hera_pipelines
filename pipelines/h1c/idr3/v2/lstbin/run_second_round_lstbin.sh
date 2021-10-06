@@ -7,7 +7,7 @@
 #PBS -l walltime=24:00:00
 #PBS -l vmem=64GB,mem=64GB
 #PBS -M jsdillon+nrao@berkeley.edu
-#PBS -t 1-67%8
+#PBS -t 1-67%16
 
 source ~/.bashrc
 conda activate h1c_idr3
