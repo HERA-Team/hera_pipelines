@@ -40,11 +40,11 @@ jupyter nbconvert --output=${nb_outfile} \
 if [ "${git_push}" == "True" ]
 then
     cd ${nb_output_repo}
-    git pull origin main
+    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
     git add ${nb_outfile}
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
     git commit -m "RTP RFI inspection notebook commit for JD ${jd}" -m ${lasturl}
-    git push origin main
+    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi
