@@ -9,8 +9,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/preprocess' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_0/preprocess'  # directory to dump all output in
-  logfile : 'preprocess_XTK_out_epoch_0.log'  # logfile
-  errfile : 'preprocess_XTK_err_epoch_0.log' # error file
+  logfile : 'preprocess_RTK_out_epoch_0.log'  # logfile
+  errfile : 'preprocess_RTK_err_epoch_0.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -23,7 +23,7 @@ analysis :
   rfi_flag : False        # RFI-Flag data
   fg_filt : False         # foreground filter, clean or data-inpaint
   ref_cal : False         # reflection calibration
-  xtalk_sub : True       # xtalk subtraction
+  xtalk_sub : False       # xtalk subtraction
   time_avg : True        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
