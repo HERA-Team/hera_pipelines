@@ -43,8 +43,8 @@ data :
   data_template : 'zen.grp1.of1.LST.?.?????.sum.PT.uvh5'
 
   # file extension for calibration file to load and apply to data
-  # cal_ext : None 
-  cal_ext : 'allspws.refcal_smooth.calfits'
+  cal_ext : None 
+  # cal_ext : 'allspws.refcal_smooth.calfits'
 
   # file extension to replace .uvh5 in data template for by-hand UVFlag file
   hand_flag_ext : .hand_flags.h5
