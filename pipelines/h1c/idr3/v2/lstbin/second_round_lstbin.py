@@ -34,7 +34,6 @@ if cf['verbose']:
 #-------------------------------------------------------------------------------
 # Load information about all epochs to figure out which files to load
 #-------------------------------------------------------------------------------
-config = sys.argv[1]
 # load file JDS and lsts
 epoch_files = []
 epoch_times = []
@@ -146,6 +145,10 @@ for bl in list(all_bls):
     
     for data, flags, nsamples in zip(all_data, all_flags, all_nsamples):
         if bl in data:
+            # handle non-finite data
+            flags[bl] |= (~np.isfinite(data[bl]))
+            data[bl][~np.isfinite(data[bl])] = 0
+
             # add nsamples, taking into account the possibility that it's a truncated file
             binned_nsamples[bl][0:len(nsamples[bl]), :] += nsamples[bl] * (~flags[bl])
             
