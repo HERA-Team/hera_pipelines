@@ -15,8 +15,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/pspec' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/all_epochs_preprocessed/pspec' # directory for output; root is work_dir
-  logfile : 'pspipe_out_LPXLTK.log'  # logfile; root is work_dir
-  errfile : 'pspipe_err_LPXLTK.log' # error file; root is work_dir
+  logfile : 'pspipe_out_LPXLTK_no_interleave.log'  # logfile; root is work_dir
+  errfile : 'pspipe_err_LPXLTK_no_interleave.log' # error file; root is work_dir
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -92,7 +92,7 @@ algorithm :
 
   # pspec pipeline
   pspec : 
-    outfname : "pspec.grp1.of1.LPXLTK.h5"
+    outfname : "pspec.grp1.of1.LPXLTK_no_interleave.h5"
     groupname : "stokespol"
     output_by_red : True
     input_data_weight : "identity"
@@ -107,7 +107,7 @@ algorithm :
     n_dlys : None
     cov_model : None #'foreground_dependent'
     Jy2mK : True
-    interleave_times : True
+    interleave_times : False
     rephase_to_dset : 0
     trim_dset_lsts : False
     broadcast_dset_flags : False
@@ -115,14 +115,14 @@ algorithm :
     Nblps_per_job : 30
     exclude_auto_bls : False
     exclude_cross_bls : False
-    exclude_permutations : False
+    exclude_permutations : True
     store_window : False
     tsleep : 10.0
     maxiter : 10
 
   # P_N calculation
   noise_err :
-    psc_name : "pspec.grp1.of1.LPXLTK.h5"  # a PSpecContainer file
+    psc_name : "pspec.grp1.of1.LPXLTK_no_interleave.h5"  # a PSpecContainer file
     error_type : ["P_N", "P_SN"]
     precomp_P_N : None
     group_name : 'stokespol'  # group name in psc to operate on
@@ -130,7 +130,7 @@ algorithm :
     beam : "/lustre/aoc/projects/hera/nkern/beams/NF_HERA_IQ_power_beam_healpix128.fits"
     auto_file : "zen.grp1.of1.LST.*.sum.LPXLTK.uvh5"  # a uvh5 file or wildcard path holding autocorrelations with data_root
     cal_ext : None  # same function as cal_ext in "data"
-    output_Tsys_file : "zen.grp1.of1.autos.Tsys.LPXLTK.uvh5"  # output file for antenna Tsys, if None don't write output
+    output_Tsys_file : "zen.grp1.of1.autos.Tsys.LPXLTK_no_interleave.uvh5"  # output file for antenna Tsys, if None don't write output
 
   # bootstrap pipeline
   bootstrap :
