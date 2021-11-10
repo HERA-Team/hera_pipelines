@@ -1,0 +1,237 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/task_scripts" # TODO
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/a_priori_flags" # TODO
+conda_env = "h1c_idr3_validation"
+source_script = "~/.bashrc"
+base_mem = 8000
+base_cpu = 1
+timeout = "24h"
+pbs_mail_user = "jsdillon+nrao@berkeley.edu"
+
+[NOTEBOOK_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_notebook_templates/notebooks'  # TODO
+nb_output_repo = '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/H1C_IDR3_Notebooks'  # TODO
+git_push = false
+
+[REDCAL_OPTS]
+ant_z_thresh = 1e100
+solar_horizon = 0.0
+nInt_to_load = 10
+flag_nchan_low = 50
+flag_nchan_high = 50
+oc_maxiter = 10000
+min_bl_cut = 15
+max_bl_cut = 90
+max_dims = 2
+check_every = 50
+check_after = 500
+
+[ABSCAL_OPTS]
+model_files_glob = "'/lustre/aoc/projects/hera/H1C_IDR3/abscal_model/zen.245804*.HH.uvRXLS.uvh5'" # TODO
+nInt_to_load = 6
+min_bl_cut = 1.0
+max_bl_cut = 140.0
+phs_max_iter = 100
+phs_conv_crit = 1e-6
+edge_cut = 100
+
+[CAL_SMOOTH_OPTS]
+freq_scale = 10
+time_scale = 21600
+tol = 1e-6
+filter_mode = "rect"
+window = "tukey"
+maxiter = 100
+alpha = 0.3
+freq_threshold = 1.0
+time_threshold = 1.0
+ant_threshold = 0.5
+lst_blacklists = ""
+
+[APPLY_CAL_REDUNDANT_AVERAGE_OPTS]
+nbl_per_load = 100
+
+[IMAGING_OPTS]
+casa = "/home/casa/packages/RHEL7/release/casa-release-5.1.0-68/bin/casa"
+casa_imaging_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/casa_imaging/scripts" # TODO update
+spw = "0:150~900"
+calibration = "smooth_abs.calfits"
+ffmpeg = "/users/heramgr/hera_software/ffmpeg-3.4.2-64bit-static/ffmpeg"
+framerate = 10
+framesize = "1280x720"
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["EXTRACT_AUTOS",
+           "DATA_INSPECT_NOTEBOOK",
+           "REDCAL",
+           "REDCAL_INSPECT_NOTEBOOK",
+           "ABSCAL",
+           "ABSCAL_INSPECT_NOTEBOOK",
+           "XRFI_TRANSFER",
+           "CAL_SMOOTH",
+           "SMOOTH_CAL_INSPECT_NOTEBOOK",
+           "IMAGING",
+           "MOVIES",
+           "APPLY_CAL_REDUNDANT_AVERAGE",
+           "CLEAN_FILES",
+          ]
+
+[EXTRACT_AUTOS]
+args = ["{basename}"]
+
+[DATA_INSPECT_NOTEBOOK]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${Options:path_to_a_priori_flags}",
+       ]
+
+[REDCAL]
+args = ["{basename}",
+        "${REDCAL_OPTS:ant_z_thresh}",
+        "${REDCAL_OPTS:solar_horizon}",
+        "${REDCAL_OPTS:flag_nchan_low}",
+        "${REDCAL_OPTS:flag_nchan_high}",
+        "${REDCAL_OPTS:oc_maxiter}",
+        "${REDCAL_OPTS:nInt_to_load}",
+        "${REDCAL_OPTS:min_bl_cut}",
+        "${REDCAL_OPTS:max_bl_cut}",
+        "${Options:path_to_a_priori_flags}",
+        "${REDCAL_OPTS:max_dims}",
+        "${REDCAL_OPTS:check_every}",
+        "${REDCAL_OPTS:check_after}",
+       ]
+
+[REDCAL_INSPECT_NOTEBOOK]
+prereqs = "REDCAL"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+       ]
+
+[ABSCAL]
+prereqs = "REDCAL"
+args = ["{basename}",
+        "${ABSCAL_OPTS:model_files_glob}",
+        "${ABSCAL_OPTS:nInt_to_load}",
+        "${ABSCAL_OPTS:min_bl_cut}",
+        "${ABSCAL_OPTS:max_bl_cut}",
+        "${ABSCAL_OPTS:phs_max_iter}",
+        "${ABSCAL_OPTS:phs_conv_crit}",
+        "${ABSCAL_OPTS:edge_cut}"
+       ]
+
+[ABSCAL_INSPECT_NOTEBOOK]
+prereqs = "ABSCAL"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ABSCAL_OPTS:model_files_glob}",
+        "${CAL_SMOOTH_OPTS:lst_blacklists}",
+       ]
+
+[XRFI_TRANSFER]
+prereqs = "ABSCAL"
+args = ["{basename}"]
+
+
+[CAL_SMOOTH]
+prereqs = "XRFI_TRANSFER"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${CAL_SMOOTH_OPTS:freq_scale}",
+        "${CAL_SMOOTH_OPTS:time_scale}",
+        "${CAL_SMOOTH_OPTS:tol}",
+        "${CAL_SMOOTH_OPTS:filter_mode}",
+        "${CAL_SMOOTH_OPTS:window}",
+        "${CAL_SMOOTH_OPTS:maxiter}",
+        "${CAL_SMOOTH_OPTS:alpha}",
+        "${CAL_SMOOTH_OPTS:freq_threshold}",
+        "${CAL_SMOOTH_OPTS:time_threshold}",
+        "${CAL_SMOOTH_OPTS:ant_threshold}",
+        "${CAL_SMOOTH_OPTS:lst_blacklists}"
+       ]
+
+[SMOOTH_CAL_INSPECT_NOTEBOOK]
+prereqs = "CAL_SMOOTH"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ABSCAL_OPTS:model_files_glob}",
+        "${CAL_SMOOTH_OPTS:lst_blacklists}",
+       ]
+
+[IMAGING]
+prereqs = "CAL_SMOOTH"
+prereq_chunk_size = "all"
+mem = 128000
+args = ["{basename}",
+        "${IMAGING_OPTS:casa}",
+        "${IMAGING_OPTS:casa_imaging_scripts}",
+        "${IMAGING_OPTS:spw}",
+        "${ABSCAL_OPTS:model_files_glob}",
+        "${IMAGING_OPTS:calibration}"
+       ]
+
+[MOVIES]
+prereqs = "IMAGING"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${IMAGING_OPTS:spw}",
+        "${IMAGING_OPTS:ffmpeg}",
+        "${IMAGING_OPTS:framerate}",
+        "${IMAGING_OPTS:framesize}",
+       ]
+
+[APPLY_CAL_REDUNDANT_AVERAGE]
+prereqs = "CAL_SMOOTH"
+prereq_chunk_size = "all"
+args = ["{basename}", 
+        "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}"
+       ]
+
+[CLEAN_FILES]
+prereqs = ["MOVIES",
+           "APPLY_CAL_REDUNDANT_AVERAGE",
+           "DATA_INSPECT_NOTEBOOK",
+           "REDCAL_INSPECT_NOTEBOOK",
+           "ABSCAL_INSPECT_NOTEBOOK",
+           "SMOOTH_CAL_INSPECT_NOTEBOOK",
+          ]
+prereq_chunk_size = "all"
+args = ["{basename}"]
