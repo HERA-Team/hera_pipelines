@@ -1,0 +1,4 @@
+hera_cal: 6e80cbdaa4b407374f85cd529b7f1d6f5743d13a
+pyuvdata: 4c66208245db29be8b9920434d6d48d23b29e367
+
+conda environment: h1c_idr3_validation
