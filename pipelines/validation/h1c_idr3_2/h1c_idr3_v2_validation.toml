@@ -2,7 +2,7 @@
 makeflow_type = "analysis"
 path_to_do_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/task_scripts" # TODO
 path_to_a_priori_flags = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/a_priori_flags" # TODO
-conda_env = "h1c_idr3_validation"
+conda_env = "h1c_idr3_2_validation"
 source_script = "~/.bashrc"
 base_mem = 8000
 base_cpu = 1

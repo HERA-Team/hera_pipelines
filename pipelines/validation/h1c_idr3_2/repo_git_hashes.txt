@@ -8,4 +8,4 @@ hera_notebook_templates: a6c8d89ab08ad853e1383d17a63030cab5bb8d68
 hera_pspec: 6a236bc33e78ccdb87be95bbae960ed80490b148
 linsolve: 99001af0d250b9322490b927bbcb21f0d1caefb9
 
-conda environment: h1c_idr3_validation
+conda environment: h1c_idr3_2_validation
