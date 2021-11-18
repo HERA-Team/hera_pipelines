@@ -10,7 +10,7 @@ timeout = "24h"
 pbs_mail_user = "jsdillon+nrao@berkeley.edu"
 
 [NOTEBOOK_OPTS]
-nb_template_dir = '/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_notebook_templates'
+nb_template_dir = '/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_notebook_templates/notebooks'
 nb_output_repo = '/lustre/aoc/projects/hera/Validation/test-4.1.0/h1c_idr3_validation_notebooks'
 git_push = false
 
