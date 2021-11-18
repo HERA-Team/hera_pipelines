@@ -14,7 +14,7 @@ _, flags_ac, _, _ = hc_ac.read()
 
 # load flags from H1C IDR2.2
 h1c_idr2_fa_file = (
-    f"/lustre/aoc/projects/hera/H1C_IDR2/IDR2_2/{JD}/zen.{time}.HH.flagged_abs.calfits"
+    f"/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/{JD}/zen.{time}.sum.flagged_abs.calfits"
 )
 print(f"Loading flags from {h1c_idr2_fa_file}")
 hc_fa = io.HERACal(h1c_idr2_fa_file)
