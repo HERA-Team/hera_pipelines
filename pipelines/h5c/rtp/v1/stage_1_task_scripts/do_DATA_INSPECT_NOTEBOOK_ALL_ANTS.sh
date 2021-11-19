@@ -38,6 +38,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/data_inspect.ipynb
+echo Finished running data_inspect notebook for all ants at $(date)
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]

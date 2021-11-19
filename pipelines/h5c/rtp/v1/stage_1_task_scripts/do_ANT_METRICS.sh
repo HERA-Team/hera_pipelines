@@ -41,6 +41,7 @@ cmd="ant_metrics_run.py ${sum_files[@]} \
                         --clobber"
 echo $cmd
 $cmd
+echo Finished ant_metrics at $(date)
 
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
@@ -57,6 +58,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
             echo librarian upload local-rtp ${metrics_f} ${jd}/${metrics_out}
             librarian upload local-rtp ${metrics_f} ${jd}/${metrics_out}
+            echo Finished uploading ${metrics_f} to the Librarian at $(date)
         done
     fi
 fi
@@ -66,4 +68,5 @@ for fn in ${sum_files[@]}; do
     metrics_f=`echo ${fn%.uvh5}${extension}`
     echo add_qm_metrics.py --type=ant ${metrics_f}
     add_qm_metrics.py --type=ant ${metrics_f}
+    echo Finished adding ${metrics_f} to the monitor and control database at $(date)
 done

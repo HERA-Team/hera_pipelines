@@ -55,6 +55,7 @@ cmd="auto_metrics_run.py --median_round_modz_cut ${median_round_modz_cut} \
                          ${metric_outfile} ${raw_auto_files[@]}"
 echo $cmd
 $cmd
+echo Finished running auto_metrics at $(date)
 
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
@@ -66,5 +67,6 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
         echo librarian upload local-rtp ${metric_outfile} ${jd}/${mo_bn}
         librarian upload local-rtp ${metric_outfile} ${jd}/${mo_bn}
+        echo Finished adding ${metric_outfile} to Librarian at $(date)
     fi
 fi

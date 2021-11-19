@@ -46,6 +46,7 @@ done
 
 echo Run_HERA_SSINS.py -f ${data_files[@]} -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro --metrics_files ${auto_metrics_file} ${ant_metrics_files[@]} -c
 Run_HERA_SSINS.py -f ${data_files[@]} -s $streak_sig -o $other_sig -p $prefix -t $tb_aggro --metrics_files ${auto_metrics_file} ${ant_metrics_files[@]} -c
+echo Finished running SSINS at $(date)
 
 # Move all outputs to folder
 echo rm -rf ${prefix}.SSINS

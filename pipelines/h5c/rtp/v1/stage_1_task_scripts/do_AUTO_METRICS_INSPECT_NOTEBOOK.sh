@@ -35,6 +35,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/auto_metrics_inspect.ipynb
+echo Finished running auto_metrics_inspect notebook at $(date)
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]

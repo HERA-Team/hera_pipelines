@@ -37,6 +37,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/delay_spectrum_inspect.ipynb
+echo Finished running delay_spectrum_inspect notebook at $(date)
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]

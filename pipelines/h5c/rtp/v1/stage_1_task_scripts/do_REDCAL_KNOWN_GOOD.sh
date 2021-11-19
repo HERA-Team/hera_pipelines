@@ -40,6 +40,7 @@ librarian_redcal_known_good="${14}"
 
 # get ant_metrics file, removing extension and appending ant_metrics_extension
 ant_metrics_file=`echo ${fn%.uvh5}${ant_metrics_extension}`
+${fn_out}z
 
 # get auto_metrics_file
 jd=$(get_int_jd ${fn})
@@ -72,6 +73,7 @@ cmd="redcal_run.py ${fn} \
                    --verbose"
 echo $cmd
 $cmd
+echo Finished running redcal at $(date)
 
 # add data products to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
@@ -90,6 +92,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             fn_out=`echo ${fn%.uvh5}${ext}`
             echo librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
             librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
+            echo Finished uploading ${fn_out} to the Librarian at $(date)
         done
     fi
 fi

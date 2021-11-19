@@ -21,6 +21,9 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
     echo librarian upload local-rtp ${fn} ${jd}/${fn}
     librarian upload local-rtp ${fn} ${jd}/${fn}
+    echo Finished uploading sum data to Librarian at $(date)
+
     echo librarian upload local-rtp ${fn_diff} ${jd}/${fn_diff}
     librarian upload local-rtp ${fn_diff} ${jd}/${fn_diff}
+    echo Finished uploading diff data to Librarian at $(date)
 fi

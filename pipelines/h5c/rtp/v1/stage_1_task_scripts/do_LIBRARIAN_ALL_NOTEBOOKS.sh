@@ -46,6 +46,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
                 nb_basename=$(basename "${nb_outfile}")
                 echo librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
                 librarian upload local-rtp ${nb_outfile} ${jd}/zen.${decimal_jd}.${nb_basename}
+                echo Finished adding ${nb_outfile} to Librarian at $(date)
             fi
         done
     fi

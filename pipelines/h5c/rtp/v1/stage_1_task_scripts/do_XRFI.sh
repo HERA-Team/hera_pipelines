@@ -46,3 +46,4 @@ cmd="xrfi_run_data_only.py --data_files ${data_files[@]} \
                            --clobber"
 echo $cmd
 $cmd
+echo Finished runing XRFI at $(date)

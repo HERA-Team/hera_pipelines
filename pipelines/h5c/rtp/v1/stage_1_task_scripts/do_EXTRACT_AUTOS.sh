@@ -19,6 +19,7 @@ autos_file=`echo ${fn%.sum.uvh5}.sum.autos.uvh5`
 
 echo extract_autos.py ${fn} ${autos_file} --clobber
 extract_autos.py ${fn} ${autos_file} --clobber
+echo Finished extracting autos from sum data at $(date)
 
 # now do the same for the diffs
 diff_file=`echo ${fn%.sum.uvh5}.diff.uvh5`
@@ -26,6 +27,7 @@ diff_autos_file=`echo ${fn%.sum.uvh5}.diff.autos.uvh5`
 
 echo extract_autos.py ${diff_file} ${diff_autos_file} --clobber
 extract_autos.py ${diff_file} ${diff_autos_file} --clobber
+echo Finished extracting autos from diff data at $(date)
 
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_autos}" == "True" ]; then
@@ -34,8 +36,10 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
         echo librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
         librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
+        echo Finished uploading sum autos to Librarian at $(date)
 
         echo librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
         librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
+        echo Finished uploading diff autos to Librarian at $(date)
     fi
 fi
