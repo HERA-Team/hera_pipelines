@@ -76,7 +76,7 @@ actions = ["EXTRACT_AUTOS",
            "IMAGING",
            "MOVIES",
            "APPLY_CAL_REDUNDANT_AVERAGE",
-           "CLEAN_FILES",
+           # "CLEAN_FILES", # TODO: update this and put it back in
           ]
 
 [EXTRACT_AUTOS]
