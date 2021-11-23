@@ -43,7 +43,8 @@ chan_thresh_frac = 0.05
 [ANT_METRICS_OPTS]
 crossCut = 0.0
 deadCut = 0.4
-Nbls_per_load = 1000
+Nbls_per_load = "None"
+Nfiles_per_load = 1
 extension = ".ant_metrics.hdf5"
 
 [REDCAL_OPTS]
@@ -219,9 +220,11 @@ chunk_size = 10 # TODO: update this once we're using single integration files
 stride_length = 10
 time_centered = false
 collect_stragglers = true
+mem = 24000
 args = ["${ANT_METRICS_OPTS:crossCut}",
         "${ANT_METRICS_OPTS:deadCut}",
         "${ANT_METRICS_OPTS:Nbls_per_load}",
+        "${ANT_METRICS_OPTS:Nfiles_per_load}",
         "${ANT_METRICS_OPTS:extension}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_ant_metrics}",

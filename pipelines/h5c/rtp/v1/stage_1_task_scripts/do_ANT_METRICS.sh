@@ -12,18 +12,20 @@ source ${src_dir}/_common.sh
 # 1 - crossCut: Metric cut for most cross-polarized antenna.
 # 2 - deadCut: Metric cut for most likely dead antenna.
 # 3 - Nbls_per_load: Number of baselines to load simultaneously.
-# 4 - extension: Extension to be appended to the file name.
-# 5 - upload_to_librarian: global boolean trigger
-# 6 - librarian_ant_metrics: boolean trigger for this step
-# 7+ - filenames
+# 4 - Nfiles_per_load : Number of sum and diff files to load simultaneously
+# 5 - extension: Extension to be appended to the file name.
+# 6 - upload_to_librarian: global boolean trigger
+# 7 - librarian_ant_metrics: boolean trigger for this step
+# 8+ - filenames
 crossCut=${1}
 deadCut=${2}
 Nbls_per_load=${3}
-extension=${4}
-upload_to_librarian="${5}"
-librarian_ant_metrics="${6}"
-fn1=`basename ${7}`
-sum_files="${@:7}"
+Nfiles_per_load=${4}
+extension=${5}
+upload_to_librarian="${6}"
+librarian_ant_metrics="${7}"
+fn1=`basename ${8}`
+sum_files="${@:8}"
 
 # get corresponding diff files
 diff_files=()
@@ -37,8 +39,13 @@ cmd="ant_metrics_run.py ${sum_files[@]} \
                         --crossCut ${crossCut} \
                         --deadCut ${deadCut} \
                         --extension ${extension} \
-                        --Nbls_per_load ${Nbls_per_load} \
                         --clobber"
+if [ ${Nbls_per_load} != "none" ] && [ ${Nbls_per_load} != "None" ]; then
+    cmd="$cmd --Nbls_per_load ${Nbls_per_load}"
+fi
+if [ ${Nfiles_per_load} != "none" ] && [ ${Nfiles_per_load} != "None" ]; then
+    cmd="$cmd --Nfiles_per_load ${Nfiles_per_load}"
+fi
 echo $cmd
 $cmd
 echo Finished ant_metrics at $(date)
