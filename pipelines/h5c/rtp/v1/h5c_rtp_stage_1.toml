@@ -8,7 +8,7 @@ path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h5c/rtp/v1/stage_1_
 conda_env = "RTP"
 mandc_report = true
 batch_system = "slurm"
-default_queue = "hera,bigmem"
+default_queue = "hera,bigmem,gpu"
 
 [LIBRARIAN_OPTS]
 # These trigger which sets of files get added to the librarian
