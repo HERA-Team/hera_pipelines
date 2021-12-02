@@ -113,9 +113,13 @@ actions = ["SETUP",
 args = []
 
 [LIBRARIAN_RAW_DATA]
+chunk_size = 10
+stride_length = 10
+time_centered = false
+collect_stragglers = true
 mem = 1000
-args = ["{basename}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
+args = ["${LIBRARIAN_OPTS:upload_to_librarian}",
+        "{obsid_list}",
        ]
 
 [LIBRARIAN_MAKE_SESSION]
