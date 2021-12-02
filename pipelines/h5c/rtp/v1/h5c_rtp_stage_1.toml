@@ -113,6 +113,7 @@ actions = ["SETUP",
 args = []
 
 [LIBRARIAN_RAW_DATA]
+mem = 1000
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
        ]
@@ -350,6 +351,7 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
+mem = 1000
 
 [SSINS]
 prereqs = ["ANT_METRICS", "AUTO_METRICS"]
@@ -367,6 +369,7 @@ collect_stragglers = true
 
 [LIBRARIAN_SSINS]
 prereqs = "SSINS"
+mem = 1000
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_SSINS}",
