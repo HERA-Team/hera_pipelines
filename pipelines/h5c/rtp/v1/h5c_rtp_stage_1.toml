@@ -114,11 +114,12 @@ actions = ["SETUP",
 args = []
 
 [LIBRARIAN_RAW_DATA]
-chunk_size = 10
-stride_length = 10
+queue = "librarian"
+chunk_size = 1
+stride_length = 1
 time_centered = false
 collect_stragglers = true
-mem = 1000
+mem = 12000
 args = ["${LIBRARIAN_OPTS:upload_to_librarian}",
         "{obsid_list}",
        ]
@@ -221,8 +222,7 @@ args = ["{basename}",
 ########## ANT METRICS ##########
 
 [ANT_METRICS]
-prereqs = "LIBRARIAN_MAKE_SESSION"
-chunk_size = 10 # TODO: update this once we're using single integration files
+chunk_size = 10
 stride_length = 10
 time_centered = false
 collect_stragglers = true
