@@ -14,8 +14,10 @@ upload_to_librarian="${1}"
 sum_files="${@:2}"
 
 if [ "${upload_to_librarian}" == "True" ]; then
-    for fn in ${sum_files[@]}; do
+    for fn_path in ${sum_files[@]}; do
         # get the integer portion of the JD
+        
+        fn="$(basename "${fn_path}")"
         jd=$(get_int_jd ${fn})
 
         # get the name of the diff file
