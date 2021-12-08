@@ -114,7 +114,6 @@ actions = ["SETUP",
 args = []
 
 [LIBRARIAN_RAW_DATA]
-queue = "librarian"
 chunk_size = 1
 stride_length = 1
 time_centered = false
