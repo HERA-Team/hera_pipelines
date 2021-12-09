@@ -40,7 +40,6 @@ librarian_redcal_known_good="${14}"
 
 # get ant_metrics file, removing extension and appending ant_metrics_extension
 ant_metrics_file=`echo ${fn%.uvh5}${ant_metrics_extension}`
-${fn_out}z
 
 # get auto_metrics_file
 jd=$(get_int_jd ${fn})
