@@ -34,6 +34,12 @@ for fn in ${data_files[@]}; do
     ant_metrics_files+=( ${fn%.uvh5}${6} )
 done
 
+# construct autos files from data files 
+autos_files=()
+for fn in ${data_files[@]}; do
+    autos_files+=( "${fn%.uvh5}.autos.uvh5" )
+done
+
 # run XRFI
 cmd="xrfi_run_data_only.py --data_files ${data_files[@]} \
                            --kt_size=${1} \
