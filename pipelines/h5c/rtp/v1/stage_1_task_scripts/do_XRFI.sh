@@ -41,7 +41,7 @@ for fn in ${data_files[@]}; do
 done
 
 # run XRFI
-cmd="xrfi_run_data_only.py --data_files ${data_files[@]} \
+cmd="xrfi_run_data_only.py --data_files ${autos_files[@]} \
                            --kt_size=${1} \
                            --kf_size=${2} \
                            --sig_init=${3} \
