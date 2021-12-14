@@ -49,6 +49,7 @@ cmd="xrfi_run_data_only.py --data_files ${autos_files[@]} \
                            --Nwf_per_load=${5} \
                            --skip_cross_mean_filter \
                            --metrics_files ${auto_metrics_file} ${ant_metrics_files[@]} \
+                           --skip_cross_pol_vis \
                            --clobber"
 echo $cmd
 $cmd
