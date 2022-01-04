@@ -7,7 +7,6 @@ source_script = "~/.bashrc"
 base_mem = 8000
 base_cpu = 1
 timeout = "24h"
-pbs_mail_user = "jsdillon+nrao@berkeley.edu"
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_notebook_templates/notebooks'
