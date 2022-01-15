@@ -303,7 +303,19 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:git_push}",
         ]
 
-########## UPDATE SEASON SUMMARY ##########
+########## UPDATE ANTENNA REPORTS AND SEASON SUMMARY ##########
+
+[ANTENNA_REPORT_NOTEBOOKS]
+prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2", "RTP_SUMMARY_NOTEBOOK_3"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
 
 [SEASON_SUMMARY_NOTEBOOK]
 prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2", "RTP_SUMMARY_NOTEBOOK_3"]
@@ -463,6 +475,7 @@ prereqs = ["LIBRARIAN_RAW_DATA",
            "LIBRARIAN_ALL_NOTEBOOKS",
            "LIBRARIAN_XRFI_DAY_THRESHOLD",
            "LIBRARIAN_SSINS",
+           "ANTENNA_REPORT_NOTEBOOKS",
            "SEASON_SUMMARY_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
