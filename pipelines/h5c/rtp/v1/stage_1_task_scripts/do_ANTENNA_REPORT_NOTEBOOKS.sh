@@ -42,6 +42,6 @@ then
     git add ${nb_output_repo}/antenna_report/antenna_*_report.html
     python ${src_dir}/build_notebook_readme.py ${nb_output_repo}/antenna_report
     git add ${nb_output_repo}/antenna_report/README.md
-    git commit -m "Update antenna rports."
+    git commit -m "Update antenna reports."
     git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi
