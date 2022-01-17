@@ -13,9 +13,9 @@ source ${src_dir}/_common.sh
 # 3 - nb_output_repo: repository for saving evaluated notebooks
 # 4 - git_push: boolean whether to push the results created in the nb_output_repo
 fn=${1}
-nb_template_dir=${1}
-nb_output_repo=${2}
-git_push=${3}
+nb_template_dir=${2}
+nb_output_repo=${3}
+git_push=${4}
 
 # loop over antennas in the data file
 antennas=`python -c "from pyuvdata import UVData; import numpy as np; uv = UVData(); uv.read('${fn}', read_data=False); print(' '.join([str(ant) for ant in (set(uv.ant_1_array) | set(uv.ant_2_array))]))"`
