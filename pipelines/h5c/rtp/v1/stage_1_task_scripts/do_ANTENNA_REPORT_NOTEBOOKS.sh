@@ -32,16 +32,16 @@ for antenna in $antennas; do
     --ExecutePreprocessor.timeout=-1 \
     --execute ${nb_template_dir}/antenna_report.ipynb
     echo Finished finished running antenna ${antenna} report summary notebook at $(date)
-done
 
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_output_repo}/antenna_report/antenna_*_report.html
-    python ${src_dir}/build_notebook_readme.py ${nb_output_repo}/antenna_report
-    git add ${nb_output_repo}/antenna_report/README.md
-    git commit -m "Update antenna reports."
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
-fi
+    # If desired, push results to github
+    if [ "${git_push}" == "True" ]
+    then
+        cd ${nb_output_repo}
+        git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
+        git add ${nb_output_repo}/antenna_report/antenna_*_report.html
+        python ${src_dir}/build_notebook_readme.py ${nb_output_repo}/antenna_report
+        git add ${nb_output_repo}/antenna_report/README.md
+        git commit -m "Update report for antenna ${antenna}."
+        git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
+    fi
+done
