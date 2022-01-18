@@ -24,15 +24,6 @@ redcal_ext=".known_good.omni.calfits"
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/_rtp_summary_
-if [ ! -L ${nb_outdir} ]; then
-  if [ ! -d ${nb_outdir} ]; then
-    mkdir -p ${nb_outdir}
-  fi
-else
-  if [! -d `readlink -f ${nb_outdir}`]; then
-    mkdir -p ${nb_outdir}
-  fi
-fi
 nb_outfile=${nb_outdir}/rtp_summary_${jd}.html
 
 # Export variables used by the notebook

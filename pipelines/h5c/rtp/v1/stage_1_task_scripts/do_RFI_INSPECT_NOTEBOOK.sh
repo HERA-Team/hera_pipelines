@@ -20,15 +20,6 @@ git_push=${4}
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/rfi_inspect
-if [ ! -L ${nb_outdir} ]; then
-  if [ ! -d ${nb_outdir} ]; then
-    mkdir -p ${nb_outdir}
-  fi
-else
-  if [! -d `readlink -f ${nb_outdir}`]; then
-    mkdir -p ${nb_outdir}
-  fi
-fi
 nb_outfile=${nb_outdir}/rfi_inspect_${jd}.ipynb
 
 # Export variables used by the notebook
