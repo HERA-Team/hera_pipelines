@@ -20,8 +20,14 @@ git_push=${4}
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/delay_spectrum_inspect
-if [ ! -d ${nb_outdir} ]; then
-  mkdir -p ${nb_outdir}
+if [ ! -L ${nb_outdir} ]; then
+  if [ ! -d ${nb_outdir} ]; then
+    mkdir -p ${nb_outdir}
+  fi
+else
+  if [! -d `readlink -f ${nb_outdir}`]; then
+    mkdir -p ${nb_outdir}
+  fi
 fi
 nb_outfile=${nb_outdir}/delay_spectrum_inspect_${jd}.html
 csv_outfile=${nb_outdir}/ds_noise_ratio_${jd}.csv

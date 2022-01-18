@@ -22,8 +22,14 @@ ant_metrics_extension=${5}
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/redcal_inspect_known_good
-if [ ! -d ${nb_outdir} ]; then
-  mkdir -p ${nb_outdir}
+if [ ! -L ${nb_outdir} ]; then
+  if [ ! -d ${nb_outdir} ]; then
+    mkdir -p ${nb_outdir}
+  fi
+else
+  if [! -d `readlink -f ${nb_outdir}`]; then
+    mkdir -p ${nb_outdir}
+  fi
 fi
 nb_outfile=${nb_outdir}/redcal_inspect_known_good_${jd}.ipynb
 
