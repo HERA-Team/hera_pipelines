@@ -81,10 +81,9 @@ actions = ["UNCALIBRATE",
            "XRFI_TRANSFER",
            "CAL_SMOOTH",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           "IMAGING",
-           "MOVIES",
-           "APPLY_CAL_REDUNDANT_AVERAGE",
-           # "CLEAN_FILES", # TODO: update this and put it back in
+           # "IMAGING",
+           # "MOVIES",
+           # "APPLY_CAL_REDUNDANT_AVERAGE",
           ]
 
 [UNCALIBRATE]
