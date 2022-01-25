@@ -92,7 +92,6 @@ actions = ["UNCALIBRATE",
 args = ["{basename}",
         "${UNCALIBRATE_OPTS:sky_cmp}",
         "${UNCALIBRATE_OPTS:path_to_sim_configs}",
-        "${UNCALIBRATE_OPTS:path_to_sim_files}",
         "${UNCALIBRATE_OPTS:path_to_scripts}",
         "${UNCALIBRATE_OPTS:path_to_data_files}",
         "${UNCALIBRATE_OPTS:save_dir_base}",
@@ -100,7 +99,7 @@ args = ["{basename}",
 
 [EXTRACT_AUTOS]
 prereqs = "UNCALIBRATE"
-prereq_chunk_size = "all"  # Does this need to be set?
+prereq_chunk_size = "all"
 args = ["{basename}"]
 
 [DATA_INSPECT_NOTEBOOK]

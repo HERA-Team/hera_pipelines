@@ -26,7 +26,7 @@ data_dir="${5}"
 save_dir_base="${6}"
 
 # Get the data filename correct, then append the data path.
-jd_int=$(get_int_jd `basename ${uvh5_fn}`)
+jd_int=$(get_int_jd `basename ${fn}`)
 uvh5_fn=$(remove_pol $fn)
 uvh5_fn="${data_dir}/${jd_int}/${uvh5_fn%.HH.uv}.sum.autos.uvh5"
 
