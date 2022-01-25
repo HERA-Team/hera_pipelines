@@ -84,6 +84,8 @@ actions = ["UNCALIBRATE",
            # "IMAGING",
            # "MOVIES",
            # "APPLY_CAL_REDUNDANT_AVERAGE",
+           "SMOOTH_CAL_APPLY",
+           "CLEAN_FILES",
           ]
 
 [UNCALIBRATE]
@@ -244,9 +246,13 @@ args = ["{basename}",
         "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}"
        ]
 
+[SMOOTH_CAL_APPLY]
+prereqs = "CAL_SMOOTH"
+mem = 32000
+args = ["{basename}"]
+
 [CLEAN_FILES]
-prereqs = ["MOVIES",
-           "APPLY_CAL_REDUNDANT_AVERAGE",
+prereqs = ["SMOOTH_CAL_APPLY",
            "DATA_INSPECT_NOTEBOOK",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL_INSPECT_NOTEBOOK",
