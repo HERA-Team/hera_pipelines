@@ -29,6 +29,7 @@ save_dir_base="${6}"
 jd_int=$(get_int_jd `basename ${fn}`)
 uvh5_fn=$(remove_pol $fn)
 uvh5_fn="${data_dir}/${jd_int}/${uvh5_fn%.HH.uv}.sum.autos.uvh5"
+save_dir="${save_dir_base}/${jd_int}"
 
 # Figure out which configuration file to use.
 config_file="${config_path}/${jd_int}.yaml"
