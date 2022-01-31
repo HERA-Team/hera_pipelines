@@ -87,8 +87,8 @@ do
       fi
 
       # select spw ranges.
-      echo select_spw_ranges_run.py ${input_file} ${input_file} --spw_ranges ${spw_ranges} --clobber
-      select_spw_ranges_run.py ${input_file} ${input_file} --spw_ranges ${spw_ranges} --clobber
+      echo select_spw_ranges.py ${input_file} ${input_file} --spw_ranges ${spw_ranges} --clobber
+      select_spw_ranges.py ${input_file} ${input_file} --spw_ranges ${spw_ranges} --clobber
 
       # apply calibration solutions.
       echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file} --vis_units Jy
