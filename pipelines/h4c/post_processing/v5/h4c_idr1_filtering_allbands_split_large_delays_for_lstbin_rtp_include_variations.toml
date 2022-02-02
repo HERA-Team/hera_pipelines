@@ -1,6 +1,6 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v4/pre_lstbin/task_scripts"
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v5/pre_lstbin/task_scripts"
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
 base_mem = 8000
