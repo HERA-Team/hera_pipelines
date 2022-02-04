@@ -54,13 +54,16 @@ do
 
     outfilename=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.uvh5
     baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5`
+    nchunks=`ls zen.${int_jd}.*.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5 | wc -l`
+    # check that time inpainted files exist.
+    if [ "${nchunks}" != "0" ]
+    then
+      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber
 
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
-
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
-
+      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+          --baseline_chunk_files ${baseline_chunk_files} --clobber
+    fi
   else
     echo "${time_chunk_template} does not exist!"
   fi
