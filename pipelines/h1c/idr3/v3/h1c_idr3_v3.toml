@@ -11,7 +11,7 @@ pbs_mail_user = "jsdillon+nrao@berkeley.edu"
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_3/h1c_idr3_software/hera_notebook_templates/notebooks'
-nb_output_repo = '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_3/H1C_IDR3_Notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_3/H1C_IDR3_3_Notebooks'
 git_push = false
 
 [REDCAL_OPTS]
