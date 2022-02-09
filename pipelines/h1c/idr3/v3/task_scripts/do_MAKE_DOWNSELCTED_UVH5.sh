@@ -34,6 +34,7 @@ python -c "from pyuvdata import UVData; \
            uv.write_uvh5(\"${fn_out}\", clobber=True)"
 
 # throw out flagged antennas
+jd_int=$(get_int_jd `basename ${fn_out}`)
 ex_ants_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
 echo throw_away_flagged_antennas.py ${fn_out} ${fn_out} --yaml_file ${ex_ants_yaml} --clobber
 throw_away_flagged_antennas.py ${fn_out} ${fn_out} --yaml_file ${ex_ants_yaml} --clobber
