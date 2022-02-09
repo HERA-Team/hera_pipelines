@@ -70,13 +70,13 @@ lst_blacklists = ""
 actions = ["MAKE_DOWNSELCTED_UVH5", 
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
-           # "ABSCAL",
-           # "ABSCAL_INSPECT_NOTEBOOK",
-           # "XRFI",
-           # "XRFI_DAY_THRESHOLD",
-           # "RFI_INSPECT_NOTEBOOK",
-           # "CAL_SMOOTH",
-           # "SMOOTH_CAL_INSPECT_NOTEBOOK",
+           "ABSCAL",
+           "ABSCAL_INSPECT_NOTEBOOK",
+           "XRFI",
+           "XRFI_DAY_THRESHOLD",
+           "RFI_INSPECT_NOTEBOOK",
+           "CAL_SMOOTH",
+           "SMOOTH_CAL_INSPECT_NOTEBOOK",
            # "CLEAN_FILES",
           ]
 
@@ -231,10 +231,7 @@ args = ["{basename}",
        ]
 
 [CLEAN_FILES]
-prereqs = ["MOVIES",
-           "APPLY_CAL_REDUNDANT_AVERAGE",
-           "DATA_INSPECT_NOTEBOOK",
-           "REDCAL_INSPECT_NOTEBOOK",
+prereqs = ["REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL_INSPECT_NOTEBOOK",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "RFI_INSPECT_NOTEBOOK",
