@@ -38,8 +38,8 @@ phs_conv_crit = 1e-6
 edge_cut = 100
 
 [XRFI_OPTS]
-kt_size = 8
-kf_size = 8
+kt_size = 10
+kf_size = 5
 sig_init = 5.0
 sig_adj = 2.0
 Nwf_per_load = 100
@@ -156,10 +156,7 @@ args = ["${XRFI_OPTS:kt_size}",
         "{obsid_list}"
        ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in
-# must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
-# chunk_size must be >= 9 (with centered==True).
-# Larger chunk_size will reduce redundant i/o and median filter calculation.
-# The numbers below result in about 35% redundancy.
+# must be greater than 2 * kt_size. 
 chunk_size = 3
 stride_length = 1
 time_centered = true
