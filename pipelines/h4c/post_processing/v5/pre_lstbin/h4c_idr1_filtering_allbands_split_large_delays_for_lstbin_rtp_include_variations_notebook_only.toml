@@ -66,19 +66,19 @@ max_plots_per_row = 10
 ############################################################################################################
 
 [WorkFlow]
-actions = ["PRE_CHUNK",
-           "DELAY",
-           "XTALK",
-           "TIME_INPAINT",
-           "RECONSTITUTE",
+actions = [#"PRE_CHUNK",
+           #"DELAY",
+           #"XTALK",
+           #"TIME_INPAINT",
+           #"RECONSTITUTE",
            #"TRANSFER_FLAGS",
-           "TIME_AVERAGE",
-           "RECONSTITUTE_TAVG",
-           "PSTOKES",
-           "PSPEC",
-           "AUTOERRORS",
+           #"TIME_AVERAGE",
+           #"RECONSTITUTE_TAVG",
+           #"PSTOKES",
+           #"PSPEC",
+           #"AUTOERRORS",
            #BOOTSTRAPERRORS,
-           "FILTER_NOTEBOOK",
+           #"FILTER_NOTEBOOK",
            "POWER_SPECTRUM_NOTEBOOK",
            "POWER_SPECTRUM_SUMMARY_NOTEBOOK",
            "CLEANUP_KEEP_FGFILLED"]
@@ -212,8 +212,8 @@ args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOO
       "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${PSPEC_OPTS:spw_ranges}"]
 
 [POWER_SPECTRUM_NOTEBOOK]
-prereqs="AUTOERRORS"
-prereq_chunk_size="all"
+#prereqs="AUTOERRORS"
+#prereq_chunk_size="all"
 mem=256000
 chunk_size=1
 stride_length="all"
