@@ -61,6 +61,10 @@ cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
                  --clobber \
                  --skip_omnical_zscore_filter \
                  --skip_abscal_zscore_filter \
-                 --skip_cross_mean_filter"
+                 --skip_cross_mean_filter \
+                 --skip_auto_median_filter \
+                 --skip_auto_mean_filter \
+                 --skip_omnivis_median_filter \
+                 --skip_omnivis_mean_filter"
 echo $cmd
 $cmd
