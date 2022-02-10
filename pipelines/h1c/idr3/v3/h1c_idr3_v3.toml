@@ -39,7 +39,7 @@ edge_cut = 100
 
 [XRFI_OPTS]
 kt_size = 10
-kf_size = 5
+kf_size = 10
 sig_init = 5.0
 sig_adj = 2.0
 Nwf_per_load = 100
