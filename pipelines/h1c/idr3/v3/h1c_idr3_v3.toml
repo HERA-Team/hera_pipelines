@@ -67,7 +67,7 @@ lst_blacklists = ""
 ############################################################################################################
 
 [WorkFlow]
-actions = ["MAKE_DOWNSELCTED_UVH5", 
+actions = ["MAKE_DOWNSELECTED_UVH5", 
            "EXTRACT_AUTOS",
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
@@ -81,18 +81,18 @@ actions = ["MAKE_DOWNSELCTED_UVH5",
            # "CLEAN_FILES",
           ]
 
-[MAKE_DOWNSELCTED_UVH5]
+[MAKE_DOWNSELECTED_UVH5]
 mem = 32000
 args = ["{basename}",
         "${Options:path_to_a_priori_flags}",
        ]
 
 [EXTRACT_AUTOS]
-prereqs = "MAKE_DOWNSELCTED_UVH5"
+prereqs = "MAKE_DOWNSELECTED_UVH5"
 args = ["{basename}"]
 
 [REDCAL]
-prereqs = "MAKE_DOWNSELCTED_UVH5"
+prereqs = "MAKE_DOWNSELECTED_UVH5"
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
         "${REDCAL_OPTS:solar_horizon}",
