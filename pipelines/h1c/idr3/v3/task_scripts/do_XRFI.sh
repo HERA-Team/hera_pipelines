@@ -29,7 +29,7 @@ Nwf_per_load="${6}"
 data_files="${@:7}"
 
 # build up omnical and abscal files, converting to correct uvh5 file
-uvh5_files=()
+autos_files=()
 model_files=()
 ocalfits_files=()
 acalfits_files=()
@@ -37,20 +37,21 @@ for data_file in ${data_files[@]}; do
     uvh5_fn=`basename "$data_file"`
     uvh5_fn=$(remove_pol $uvh5_fn)
     uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5 # this makes things more compatible with H3C/H4C software
-    uvh5_files+=( $uvh5_fn )
+    autos_file=`echo ${uvh5_fn%.*}.autos.uvh5`
+    autos_files+=( $autos_file )
     model_files+=( ${uvh5_fn%.*}.omni_vis.uvh5 )
     ocalfits_files+=( ${uvh5_fn%.*}.omni.calfits )
     acalfits_files+=( ${uvh5_fn%.*}.abs.calfits )
 done
 
 # get a priori flag yaml file
-jd_int=$(get_int_jd `basename ${uvh5_files[0]}`)
+jd_int=$(get_int_jd `basename ${autos_files[0]}`)
 flag_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
 
 # run script
 cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
                  --model_files ${model_files[@]} \
-                 --data_files ${uvh5_files[@]} \
+                 --data_files ${autos_files[@]} \
                  --acalfits_files ${acalfits_files[@]} \
                  --kt_size ${kt_size} \
                  --kf_size ${kf_size} \
