@@ -55,8 +55,10 @@ cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
                  --acalfits_files ${acalfits_files[@]} \
                  --kt_size ${kt_size} \
                  --kf_size ${kf_size} \
-                 --sig_init ${sig_init} \
-                 --sig_adj ${sig_adj} \
+                 --sig_init_med 10.0 \
+                 --sig_adj_med 4.0 \
+                 --sig_init_mean 5.0 \
+                 --sig_adj_mean 2.0 \
                  --Nwf_per_load ${Nwf_per_load} \
                  --a_priori_flag_yaml ${flag_yaml} \
                  --clobber \
