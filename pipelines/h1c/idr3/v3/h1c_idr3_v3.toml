@@ -40,8 +40,10 @@ edge_cut = 100
 [XRFI_OPTS]
 kt_size = 8
 kf_size = 8
-sig_init = 5.0
-sig_adj = 2.0
+sig_init_med = 10.0
+sig_adj_med = 4.0
+sig_init_mean = 5.0
+sig_adj_mean = 2.0
 Nwf_per_load = 100
 # TODO: investigate dumping autos and/or omni vis
 
@@ -155,8 +157,10 @@ prereqs = ["REDCAL",
           ]
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
-        "${XRFI_OPTS:sig_init}",
-        "${XRFI_OPTS:sig_adj}",
+        "${XRFI_OPTS:sig_init_med}",
+        "${XRFI_OPTS:sig_adj_med}",
+        "${XRFI_OPTS:sig_init_mean}",
+        "${XRFI_OPTS:sig_adj_mean}",
         "${Options:path_to_a_priori_flags}",
         "${XRFI_OPTS:Nwf_per_load}",
         "{obsid_list}"

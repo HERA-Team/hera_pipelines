@@ -14,19 +14,23 @@ source ${src_dir}/_common.sh
 ### XRFI parameters - see hera_qm.utils for details
 # 1 - kt_size
 # 2 - kf_size
-# 3 - sig_init
-# 4 - sig_adj
-# 5 - path_to_a_priori_flags: folder containing a priori flag YAML files
-# 6 - Nwf_per_load
-# 7+ - filenames
+# 3 - sig_init_med
+# 4 - sig_adj_med
+# 5 - sig_init_mean
+# 6 - sig_adj_mean
+# 7 - path_to_a_priori_flags: folder containing a priori flag YAML files
+# 8 - Nwf_per_load
+# 9+ - filenames
 
 kt_size="${1}"
 kf_size="${2}"
-sig_init="${3}"
-sig_adj="${4}"
-path_to_a_priori_flags="${5}"
-Nwf_per_load="${6}"
-data_files="${@:7}"
+sig_init_med="${3}"
+sig_adj_med="${4}"
+sig_init_mean="${5}"
+sig_adj_mean="${6}"
+path_to_a_priori_flags="${7}"
+Nwf_per_load="${8}"
+data_files="${@:9}"
 
 # build up omnical and abscal files, converting to correct uvh5 file
 autos_files=()
@@ -55,10 +59,10 @@ cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
                  --acalfits_files ${acalfits_files[@]} \
                  --kt_size ${kt_size} \
                  --kf_size ${kf_size} \
-                 --sig_init_med 10.0 \
-                 --sig_adj_med 4.0 \
-                 --sig_init_mean 5.0 \
-                 --sig_adj_mean 2.0 \
+                 --sig_init_med ${sig_init_med} \
+                 --sig_adj_med ${sig_adj_med} \
+                 --sig_init_mean ${sig_init_mean} \
+                 --sig_adj_mean ${sig_adj_mean} \
                  --Nwf_per_load ${Nwf_per_load} \
                  --a_priori_flag_yaml ${flag_yaml} \
                  --clobber \
