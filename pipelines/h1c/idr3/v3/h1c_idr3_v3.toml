@@ -96,6 +96,11 @@ actions = [
            # "CAL_SMOOTH",
            # "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "INPAINT_AUTOS",
+           # TIME_AVG_REF_CAL
+           # CALIBRATE_DATA
+           # BASELINE_AVG_CALIBRATED_DATA
+           # DELAY_FILTER
+           # FR_FITLER
            # "CLEAN_FILES",
           ]
 
