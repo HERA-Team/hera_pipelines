@@ -83,17 +83,18 @@ zeropad = 256
 ############################################################################################################
 
 [WorkFlow]
-actions = ["MAKE_DOWNSELECTED_UVH5", 
-           "EXTRACT_AUTOS",
-           "REDCAL",
-           "REDCAL_INSPECT_NOTEBOOK",
-           "ABSCAL",
-           "ABSCAL_INSPECT_NOTEBOOK",
-           "XRFI",
-           "XRFI_DAY_THRESHOLD",
-           "RFI_INSPECT_NOTEBOOK",
-           "CAL_SMOOTH",
-           "SMOOTH_CAL_INSPECT_NOTEBOOK",
+actions = [
+           # "MAKE_DOWNSELECTED_UVH5", 
+           # "EXTRACT_AUTOS",
+           # "REDCAL",
+           # "REDCAL_INSPECT_NOTEBOOK",
+           # "ABSCAL",
+           # "ABSCAL_INSPECT_NOTEBOOK",
+           # "XRFI",
+           # "XRFI_DAY_THRESHOLD",
+           # "RFI_INSPECT_NOTEBOOK",
+           # "CAL_SMOOTH",
+           # "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "INPAINT_AUTOS",
            # "CLEAN_FILES",
           ]
@@ -253,8 +254,8 @@ args = ["{basename}",
        ]
 
 [INPAINT_AUTOS]
-prereqs = "CAL_SMOOTH"
-prereq_chunk_size = "all"
+# prereqs = "CAL_SMOOTH"
+# prereq_chunk_size = "all"
 args = ["{basename}",
         "${INPAINT_AUTOS_OPTS:horizon}",
         "${INPAINT_AUTOS_OPTS:standoff}",
