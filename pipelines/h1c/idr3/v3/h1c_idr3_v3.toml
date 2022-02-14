@@ -66,6 +66,20 @@ time_threshold = 1.0
 ant_threshold = 0.5
 lst_blacklists = ""
 
+[INPAINT_AUTOS_OPTS]
+horizon = 1.0
+standoff = 50.0
+min_dly = 2500.0
+gain = 0.9
+maxiter = 100
+window = 'tukey'
+alpha = 0.15
+edgecut_low = 85
+edgecut_hi = 100
+tol = 1e-8
+skip_wgt = 0.2
+zeropad = 256
+
 ############################################################################################################
 
 [WorkFlow]
