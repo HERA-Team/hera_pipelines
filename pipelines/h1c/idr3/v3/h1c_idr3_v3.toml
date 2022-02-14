@@ -80,6 +80,7 @@ actions = ["MAKE_DOWNSELECTED_UVH5",
            "RFI_INSPECT_NOTEBOOK",
            "CAL_SMOOTH",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
+           "INPAINT_AUTOS",
            # "CLEAN_FILES",
           ]
 
@@ -237,12 +238,30 @@ args = ["{basename}",
         "${CAL_SMOOTH_OPTS:lst_blacklists}",
        ]
 
-[CLEAN_FILES]
-prereqs = ["REDCAL_INSPECT_NOTEBOOK",
-           "ABSCAL_INSPECT_NOTEBOOK",
-           "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           "RFI_INSPECT_NOTEBOOK",
-          ]
+[INPAINT_AUTOS]
+prereqs = "CAL_SMOOTH"
 prereq_chunk_size = "all"
-args = ["{basename}"]
+args = ["{basename}",
+        "${INPAINT_AUTOS_OPTS:horizon}",
+        "${INPAINT_AUTOS_OPTS:standoff}",
+        "${INPAINT_AUTOS_OPTS:min_dly}",
+        "${INPAINT_AUTOS_OPTS:gain}",
+        "${INPAINT_AUTOS_OPTS:maxiter}",
+        "${INPAINT_AUTOS_OPTS:window}",
+        "${INPAINT_AUTOS_OPTS:alpha}",
+        "${INPAINT_AUTOS_OPTS:edgecut_low}",
+        "${INPAINT_AUTOS_OPTS:edgecut_hi}",
+        "${INPAINT_AUTOS_OPTS:tol}",
+        "${INPAINT_AUTOS_OPTS:skip_wgt}",
+        "${INPAINT_AUTOS_OPTS:zeropad}",
+       ]
+
+# [CLEAN_FILES]
+# prereqs = ["REDCAL_INSPECT_NOTEBOOK",
+#            "ABSCAL_INSPECT_NOTEBOOK",
+#            "SMOOTH_CAL_INSPECT_NOTEBOOK",
+#            "RFI_INSPECT_NOTEBOOK",
+#           ]
+# prereq_chunk_size = "all"
+# args = ["{basename}"]
 
