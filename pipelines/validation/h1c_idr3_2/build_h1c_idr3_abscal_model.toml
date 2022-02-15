@@ -1,0 +1,33 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/abscal_model_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/a_priori_flags"
+conda_env = "h1c_idr3_2_validation"
+source_script = "~/.bashrc"
+base_mem = 8000
+base_cpu = 1
+timeout = "24h"
+
+[BUILD_MODEL_OPTS]
+sky_cmp = "foreground"
+config_path = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/abscal_model_scripts/abscal_model_config.yaml"
+path_to_scripts = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/scripts"
+save_dir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/abscal_model"
+
+# [DELAY_FILTER_OPTS]
+
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["BUILD_MODEL",
+           # "DELAY_FILTER",
+          ]
+
+[BUILD_MODEL]
+args = ["{basename}",
+        "${BUILD_MODEL_OPTS:sky_cmp}",
+        "${BUILD_MODEL_OPTS:config_path}",
+        "${BUILD_MODEL_OPTS:path_to_scripts}",
+        "${BUILD_MODEL_OPTS:save_dir}",
+       ]
