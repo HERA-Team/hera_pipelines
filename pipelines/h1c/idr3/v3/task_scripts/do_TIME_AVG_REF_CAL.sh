@@ -49,19 +49,19 @@ jd_int=$(get_int_jd `basename ${data_files[0]}`)
 output_fname=${data_files[0]%${jd_int}.*}${jd_int}.time_avg_ref_cal.calfits
 
 # build and execute command
-cmd="delay_filter_run.py ${ip_auto_files[@]} \
-                         --output_fname ${output_fname} \
-                         --time_avg \
-                         --dly_ranges ${expanded_dly_ranges[@]} \
-                         --window ${window} \
-                         --alpha ${alpha} \
-                         --edgecut_low ${edgecut_low} \
-                         --edgecut_hi ${edgecut_hi} \
-                         --zeropad ${zeropad} \
-                         --Nphs ${Nphs} \
-                         --fthin ${fthin} \
-                         --ref_sig_cut 
-                         --write_npz \
-                         --overwrite"
+cmd="auto_reflection_run.py ${ip_auto_files[@]} \
+                            --output_fname ${output_fname} \
+                            --time_avg \
+                            --dly_ranges ${expanded_dly_ranges[@]} \
+                            --window ${window} \
+                            --alpha ${alpha} \
+                            --edgecut_low ${edgecut_low} \
+                            --edgecut_hi ${edgecut_hi} \
+                            --zeropad ${zeropad} \
+                            --Nphs ${Nphs} \
+                            --fthin ${fthin} \
+                            --ref_sig_cut 
+                            --write_npz \
+                            --overwrite"
 echo $cmd
 $cmd
