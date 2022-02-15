@@ -23,6 +23,10 @@ edgecut_hi="${8}"
 zeropad="${9}"
 data_files="${@:10}"
 
+# build output calfile
+jd_int=$(get_int_jd `basename ${10}`)
+output_fname=${10%${jd_int}.*}${jd_int}.time_avg_ref_cal.calfits
+
 # build list of inpainted autos files
 ip_auto_files=()
 for data_file in ${data_files[@]}; do
@@ -43,10 +47,6 @@ for dly_range in ${dly_ranges}; do
         expanded_dly_ranges+=( "${start_dly},${end_dly}" )
     done
 done
-
-# build output calfile
-jd_int=$(get_int_jd `basename ${data_files[0]}`)
-output_fname=${data_files[0]%${jd_int}.*}${jd_int}.time_avg_ref_cal.calfits
 
 # build and execute command
 cmd="auto_reflection_run.py ${ip_auto_files[@]} \
