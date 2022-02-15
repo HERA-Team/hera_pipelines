@@ -45,7 +45,6 @@ sig_adj_med = 4.0
 sig_init_mean = 5.0
 sig_adj_mean = 2.0
 Nwf_per_load = 100
-# TODO: investigate dumping autos and/or omni vis
 
 [XRFI_DAY_THRESHOLD_OPTS]
 nsig_f = 7.0
@@ -80,6 +79,14 @@ tol = 1e-8
 skip_wgt = 0.2
 zeropad = 256
 
+[TIME_AVG_REF_CAL_OPTS]
+dly_ranges = "'25~800x20 100~800x20 200~800x20 250~800x20 300~800x20 500~1200x20 700~1500x3 1100~2000x1'"
+window = 'bh'
+alpha = 0.1
+Nphs = 100
+fthin = 1
+ref_sig_cut = 1.0
+
 ############################################################################################################
 
 [WorkFlow]
@@ -95,7 +102,7 @@ actions = ["MAKE_DOWNSELECTED_UVH5",
            "CAL_SMOOTH",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "INPAINT_AUTOS",
-           # TIME_AVG_REF_CAL
+           "TIME_AVG_REF_CAL",
            # CALIBRATE_DATA
            # BASELINE_AVG_CALIBRATED_DATA
            # DELAY_FILTER
@@ -273,6 +280,25 @@ args = ["{basename}",
         "${INPAINT_AUTOS_OPTS:tol}",
         "${INPAINT_AUTOS_OPTS:skip_wgt}",
         "${INPAINT_AUTOS_OPTS:zeropad}",
+       ]
+
+[TIME_AVG_REF_CAL]
+prereqs = "INPAINT_AUTOS"
+prereq_chunk_size = "all"
+chunk_size = "all"
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["${TIME_AVG_REF_CAL_OPTS:dly_ranges}",
+        "${TIME_AVG_REF_CAL_OPTS:window}",
+        "${TIME_AVG_REF_CAL_OPTS:alpha}",
+        "${TIME_AVG_REF_CAL_OPTS:Nphs}",
+        "${TIME_AVG_REF_CAL_OPTS:fthin}",
+        "${TIME_AVG_REF_CAL_OPTS:ref_sig_cut}",
+        "${INPAINT_AUTOS_OPTS:edgecut_low}",
+        "${INPAINT_AUTOS_OPTS:edgecut_hi}",
+        "${INPAINT_AUTOS_OPTS:zeropad}",
+        "{obsid_list}",
        ]
 
 # [CLEAN_FILES]
