@@ -90,18 +90,18 @@ ref_sig_cut = 1.0
 ############################################################################################################
 
 [WorkFlow]
-actions = ["MAKE_DOWNSELECTED_UVH5", 
-           "EXTRACT_AUTOS",
-           "REDCAL",
-           "REDCAL_INSPECT_NOTEBOOK",
-           "ABSCAL",
-           "ABSCAL_INSPECT_NOTEBOOK",
-           "XRFI",
-           "XRFI_DAY_THRESHOLD",
-           "RFI_INSPECT_NOTEBOOK",
-           "CAL_SMOOTH",
-           "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           "INPAINT_AUTOS",
+actions = [#"MAKE_DOWNSELECTED_UVH5", 
+           #"EXTRACT_AUTOS",
+           #"REDCAL",
+           #"REDCAL_INSPECT_NOTEBOOK",
+           #"ABSCAL",
+           #"ABSCAL_INSPECT_NOTEBOOK",
+           #"XRFI",
+           #"XRFI_DAY_THRESHOLD",
+           #"RFI_INSPECT_NOTEBOOK",
+           #"CAL_SMOOTH",
+           #"SMOOTH_CAL_INSPECT_NOTEBOOK",
+           #"INPAINT_AUTOS",
            "TIME_AVG_REF_CAL",
            # CALIBRATE_DATA
            # BASELINE_AVG_CALIBRATED_DATA
@@ -283,8 +283,8 @@ args = ["{basename}",
        ]
 
 [TIME_AVG_REF_CAL]
-prereqs = "INPAINT_AUTOS"
-prereq_chunk_size = "all"
+# prereqs = "INPAINT_AUTOS"
+# prereq_chunk_size = "all"
 chunk_size = "all"
 stride_length = "all"
 time_centered = false
