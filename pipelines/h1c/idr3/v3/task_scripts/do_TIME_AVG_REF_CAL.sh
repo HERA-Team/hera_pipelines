@@ -33,7 +33,7 @@ for data_file in ${data_files[@]}; do
 done
 
 # build output calfile
-fn=`basename ${data_files[0]}`
+fn=`basename "${data_files[0]}"`
 jd_int=$(get_int_jd ${fn})
 output_fname=${fn%${jd_int}.*}${jd_int}.time_avg_ref_cal.calfits
 
