@@ -28,7 +28,7 @@ ip_auto_files=()
 for data_file in ${data_files[@]}; do
     ip_auto_file=`basename "$data_file"`
     ip_auto_file=$(remove_pol $ip_auto_file)
-    ip_auto_file=${uvh5_fn%.HH.uv}.sum.autos.inpainted.uvh5 
+    ip_auto_file=${ip_auto_file%.HH.uv}.sum.autos.inpainted.uvh5 
     ip_auto_files+=( $ip_auto_file )
 done
 
