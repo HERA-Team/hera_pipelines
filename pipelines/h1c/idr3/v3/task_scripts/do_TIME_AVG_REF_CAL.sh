@@ -60,7 +60,7 @@ cmd="auto_reflection_run.py ${ip_auto_files[@]} \
                             --zeropad ${zeropad} \
                             --Nphs ${Nphs} \
                             --fthin ${fthin} \
-                            --ref_sig_cut 
+                            --ref_sig_cut ${ref_sig_cut} \
                             --write_npz \
                             --overwrite"
 echo $cmd
