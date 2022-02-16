@@ -24,9 +24,6 @@ parser.add_argument(
 parser.add_argument(
     "--clobber", default=False, action="store_true", help="Overwrite existing files."
 )
-parser.add_argument(
-    "--inflate", default=False, action="store_true", help="Inflate data by redundancy."
-)
 
 if __name__ == "__main__":
     init_time = time.time()
@@ -63,13 +60,11 @@ if __name__ == "__main__":
     t1 = time.time()
     ref_uvdata = UVData()
     ref_uvdata.read(infile)
-    ref_data_ants = np.union1d(ref_uvdata.ant_1_array, ref_uvdata.ant_2_array)
     good_ants = set([])
     for bl in ref_uvdata.get_antpairpols():
         if not np.all(ref_uvdata.get_flags(bl)):
             good_ants.add(bl[0])
             good_ants.add(bl[1])
-    bad_ants = [ant for ant in ref_data_ants if ant not in good_ants]        
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Figuring out bad antennas took {dt:.2f} minutes.")
@@ -90,34 +85,10 @@ if __name__ == "__main__":
     first_ind = np.argwhere(start_lsts <= np.round(ref_lsts.min(), 7)).flatten()[-1]
     last_ind = np.argwhere(start_lsts <= np.round(ref_lsts.max(), 7)).flatten()[-1]
 
-    # We need separate antenna arrays since not all of the antennas will be present
-    # in the data for compressed files, which can lead to read errors.
-    sim_uvdata = UVData()
-    sim_uvdata.read(sim_files[0], read_data=False)
-    data_ants = set(sim_uvdata.ant_1_array.tolist()).union(
-        sim_uvdata.ant_2_array.tolist()
-    )
-    ants_to_load = np.array(
-        [ant for ant in data_ants if ant not in bad_ants]
-    )
-    # If we're inflating, then we're going to need to make sure not to include any
-    # bad antennas that may have been missed in the previous filter.
-    ants_to_keep = np.array(
-        [ant for ant in ref_uvdata.antenna_numbers if ant not in bad_ants ]
-    )
-    trim_on_read = set(ants_to_keep.tolist()) == set(ants_to_load.tolist())
-    t2 = time.time()
-    dt = (t2 - t1) / 60
-    print(f"File selection took {dt:.2f} minutes.")
-
     # Now load in the files.
     t1 = time.time()
     sim_uvdata = UVData()
-    sim_uvdata.read(
-        sim_files[first_ind:last_ind+1],
-        antenna_nums=ants_to_load,
-        keep_all_metadata=not trim_on_read,
-    )
+    sim_uvdata.read(sim_files[first_ind:last_ind+1])
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Reading simulation data took {dt:.2f} minutes.")
@@ -140,18 +111,15 @@ if __name__ == "__main__":
     dt = (t2 - t1) / 60
     print(f"Interpolating simulation to data took {dt:.2f} minutes.")
 
-    # Inflate the data if it's compressed
-    if args.inflate:
-        t1 = time.time()
-        sim_uvdata.inflate_by_redundancy()
-        t2 = time.time()
-        dt = (t2 - t1) / 60
-        ants_to_keep = np.array([ant for ant in ants_to_keep if ant in 
-                                 np.union1d(sim_uvdata.ant_1_array, sim_uvdata.ant_2_array)])
-        print(f"Inflating data took {dt:.2f} minutes.")
-
-    if not trim_on_read:
-        sim_uvdata.select(antenna_nums=ants_to_keep, keep_all_metadata=False)
+    # Inflate the data
+    t1 = time.time()
+    sim_uvdata.inflate_by_redundancy()
+    t2 = time.time()
+    dt = (t2 - t1) / 60
+    sim_data_ants = np.union1d(sim_uvdata.ant_1_array, sim_uvdata.ant_2_array)
+    ants_to_keep = np.array([ant for ant in sim_data_ants if ant in good_ants])
+    sim_uvdata.select(antenna_nums=ants_to_keep, keep_all_metadata=False)
+    print(f"Inflating data took {dt:.2f} minutes.")
 
     # Make sure the antennas are ordered the same way as in the configuration file.
     t1 = time.time()
