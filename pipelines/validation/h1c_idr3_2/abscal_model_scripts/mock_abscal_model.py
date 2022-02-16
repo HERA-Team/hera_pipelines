@@ -56,7 +56,7 @@ if __name__ == "__main__":
     dt = (t2 - t1) / 60
     print(f"Setup took {dt:.2f} minutes.")    
 
-    # Figure out bad antennas.
+    # Figure out good antennas.
     t1 = time.time()
     ref_uvdata = UVData()
     ref_uvdata.read(infile)
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     dt = (t2 - t1) / 60
     sim_data_ants = np.union1d(sim_uvdata.ant_1_array, sim_uvdata.ant_2_array)
     ants_to_keep = np.array([ant for ant in sim_data_ants if ant in good_ants])
-    sim_uvdata.select(antenna_nums=ants_to_keep, keep_all_metadata=False)
+    sim_uvdata.select(antenna_nums=ants_to_keep, polarizations=ref_uvdata.polarization_array, keep_all_metadata=False)
     print(f"Inflating data took {dt:.2f} minutes.")
 
     # Make sure the antennas are ordered the same way as in the configuration file.
