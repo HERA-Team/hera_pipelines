@@ -12,18 +12,44 @@ timeout = "24h"
 sky_cmp = "foreground"
 save_dir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/abscal_model"
 
-# [DELAY_FILTER_OPTS]
-
+[DELAY_FILTER_MODEL_OPTS]
+tol = 0.0000001
+gain = 0.9
+skip_wgt = 0.2
+edgecut_low = 50
+edgecut_hi = 50
+maxiter = 100
+min_dly = 150
+horizon = 1.0
+standoff = 50
+window = 'tukey'
+alpha = 0.2
 
 ############################################################################################################
 
 [WorkFlow]
 actions = ["BUILD_MODEL",
-           # "DELAY_FILTER",
+           "DELAY_FILTER",
           ]
 
 [BUILD_MODEL]
 args = ["{basename}",
         "${BUILD_MODEL_OPTS:sky_cmp}",
         "${BUILD_MODEL_OPTS:save_dir}",
+       ]
+
+[DELAY_FILTER_MODEL]
+prereqs = "BUILD_MODEL"
+args = ["{basename}",
+        "${DELAY_FILTER_MODEL_OPTS:horizon}",
+        "${DELAY_FILTER_MODEL_OPTS:standoff}",
+        "${DELAY_FILTER_MODEL_OPTS:min_dly}",
+        "${DELAY_FILTER_MODEL_OPTS:gain}",
+        "${DELAY_FILTER_MODEL_OPTS:maxiter}",
+        "${DELAY_FILTER_MODEL_OPTS:window}",
+        "${DELAY_FILTER_MODEL_OPTS:alpha}",
+        "${DELAY_FILTER_MODEL_OPTS:edgecut_low}",
+        "${DELAY_FILTER_MODEL_OPTS:edgecut_hi}",
+        "${DELAY_FILTER_MODEL_OPTS:tol}",
+        "${DELAY_FILTER_MODEL_OPTS:skip_wgt}",
        ]
