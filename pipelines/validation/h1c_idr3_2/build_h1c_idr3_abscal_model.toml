@@ -10,8 +10,6 @@ timeout = "24h"
 
 [BUILD_MODEL_OPTS]
 sky_cmp = "foreground"
-config_path = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/abscal_model_scripts/abscal_model_config.yaml"
-path_to_scripts = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/scripts"
 save_dir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/abscal_model"
 
 # [DELAY_FILTER_OPTS]
@@ -27,7 +25,5 @@ actions = ["BUILD_MODEL",
 [BUILD_MODEL]
 args = ["{basename}",
         "${BUILD_MODEL_OPTS:sky_cmp}",
-        "${BUILD_MODEL_OPTS:config_path}",
-        "${BUILD_MODEL_OPTS:path_to_scripts}",
         "${BUILD_MODEL_OPTS:save_dir}",
        ]
