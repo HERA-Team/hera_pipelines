@@ -29,7 +29,7 @@ alpha = 0.2
 
 [WorkFlow]
 actions = ["BUILD_MODEL",
-           "DELAY_FILTER",
+           "DELAY_FILTER_MODEL",
           ]
 
 [BUILD_MODEL]
