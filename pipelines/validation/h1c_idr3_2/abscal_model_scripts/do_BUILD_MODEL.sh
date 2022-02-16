@@ -20,5 +20,5 @@ save_dir="${3}"
 config_file=${src_dir}/abscal_model_config.yaml
 
 # Do the interpolation and systematics simulation.
-echo ${src_dir}/python mock_data.py ${fn} ${sky_cmp} --config ${config_file} --outdir ${save_dir} --inflate
-${src_dir}/python mock_data.py ${fn} ${sky_cmp} --config ${config_file} --outdir ${save_dir} --inflate
+echo python ${src_dir}/mock_data.py ${fn} ${sky_cmp} --config ${config_file} --outdir ${save_dir} --inflate
+python ${src_dir}/mock_data.py ${fn} ${sky_cmp} --config ${config_file} --outdir ${save_dir} --inflate
