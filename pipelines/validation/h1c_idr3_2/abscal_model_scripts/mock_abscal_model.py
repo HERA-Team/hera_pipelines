@@ -104,7 +104,6 @@ if __name__ == "__main__":
         kind="cubic",
         kt=3,
     )
-    sim_uvdata.lst_array %= (2 * np.pi)
     ref_integration_time = np.mean(ref_uvdata.integration_time)
     sim_uvdata.integration_time[:] = ref_integration_time
     t2 = time.time()
@@ -168,6 +167,9 @@ if __name__ == "__main__":
         t2 = time.time()
         dt = t2 - t1
         print(f"Done in {dt:.5f} seconds.\n")
+
+    # Undo phase wrap
+    sim_uvdata.lst_array %= (2 * np.pi)
 
     # We should be done. Now just write the contents to disk.
     t1 = time.time()
