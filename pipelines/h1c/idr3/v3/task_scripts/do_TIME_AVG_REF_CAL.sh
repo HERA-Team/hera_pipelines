@@ -63,6 +63,7 @@ cmd="auto_reflection_run.py ${ip_auto_files[@]} \
                             --fthin ${fthin} \
                             --ref_sig_cut ${ref_sig_cut} \
                             --write_npz \
+                            --only_write_final_calfits \
                             --overwrite"
 echo $cmd
 $cmd
