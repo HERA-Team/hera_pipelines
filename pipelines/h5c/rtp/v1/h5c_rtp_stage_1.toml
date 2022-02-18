@@ -61,8 +61,10 @@ max_dims = 4 # TODO: knock this down to 2 when we have enough good antennas to c
 [XRFI_OPTS]
 kt_size = 8
 kf_size = 8
-sig_init = 5.0
-sig_adj = 2.0
+sig_init_med = 10.0
+sig_adj_med = 4.0
+sig_init_mean = 5.0
+sig_adj_mean = 2.0
 Nwf_per_load = 1000
 
 [XRFI_DAY_THRESHOLD_OPTS]
@@ -156,8 +158,8 @@ args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
         "${AUTO_METRICS_OPTS:edge_cut}",
         "${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
-        "${XRFI_OPTS:sig_init}",
-        "${XRFI_OPTS:sig_adj}",
+        "${XRFI_OPTS:sig_init_mean}",
+        "${XRFI_OPTS:sig_adj_mean}",
         "${AUTO_METRICS_OPTS:chan_thresh_frac}", 
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_auto_metrics}",
@@ -335,8 +337,10 @@ args = ["${NOTEBOOK_OPTS:nb_template_dir}",
 prereqs = ["ANT_METRICS", "AUTO_METRICS"]
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
-        "${XRFI_OPTS:sig_init}",
-        "${XRFI_OPTS:sig_adj}",
+        "${XRFI_OPTS:sig_init_med}",
+        "${XRFI_OPTS:sig_adj_med}",
+        "${XRFI_OPTS:sig_init_mean}",
+        "${XRFI_OPTS:sig_adj_mean}",
         "${XRFI_OPTS:Nwf_per_load}",
         "${ANT_METRICS_OPTS:extension}",
         "{obsid_list}"
