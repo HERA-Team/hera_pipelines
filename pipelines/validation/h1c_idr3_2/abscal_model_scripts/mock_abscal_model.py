@@ -169,7 +169,7 @@ if __name__ == "__main__":
         print(f"Done in {dt:.5f} seconds.\n")
 
     # Undo phase wrap
-    sim_uvdata.lst_array %= (2 * np.pi)
+    sim_uvdata.data.lst_array %= (2 * np.pi)
 
     # We should be done. Now just write the contents to disk.
     t1 = time.time()
