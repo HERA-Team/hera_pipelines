@@ -7,5 +7,3 @@ noise:
             interpolator: "interp1d"
             kind: "cubic"
     seed: "initial"
-    channel_width: 97656.25
-    integration_time: 10.737378895282745
