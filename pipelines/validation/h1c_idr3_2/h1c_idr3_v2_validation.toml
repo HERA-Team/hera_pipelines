@@ -34,7 +34,7 @@ check_every = 50
 check_after = 500
 
 [ABSCAL_OPTS]
-model_files_glob = "'/lustre/aoc/projects/hera/Validation/test-4.0.0/data/visibilities/abscal_model/zen.*.M.uvh5'" # TODO UPDATE FOR H1C IDR3
+model_files_glob = "'/lustre/aoc/projects/hera/Validation/test-4.1.0/abscal_model/zen.245804*.abscal_model.smoothed.uvh5'"
 nInt_to_load = 6
 min_bl_cut = 1.0
 max_bl_cut = 140.0
