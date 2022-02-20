@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# This script applies both smooth_cal (which is one per file) and ref_cal (which is one per day) to the original data.
+
 # import common functions
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
