@@ -43,7 +43,9 @@ cd $script_dir
 
 # Do the interpolation and systematics simulation.
 echo python mock_data.py ${uvh5_fn} ${sky_cmp} --config ${config_file} \
-                         --outdir ${save_dir} --clobber --inflate
+                         --outdir ${save_dir} --clobber --inflate \
+                         --input_is_compressed
 python mock_data.py ${uvh5_fn} ${sky_cmp} --config ${config_file} \
-                    --outdir ${save_dir} --clobber --inflate
+                    --outdir ${save_dir} --clobber --inflate \
+                    --input_is_compressed
 cd $cwd
