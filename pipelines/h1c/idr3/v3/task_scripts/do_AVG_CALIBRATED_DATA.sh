@@ -17,3 +17,4 @@ for ant_str in auto cross all; do
     cmd = "python ${src_dir}/avg_baselines.py ${infile} ${infile%.uvh5}.avg_${ant_str}.uvh5 --ant_str ${ant_str} --clobber"
     echo $cmd
     $cmd
+done
