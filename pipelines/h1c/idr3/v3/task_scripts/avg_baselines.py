@@ -51,4 +51,4 @@ for pol in data.pols():
 # write results
 hd.select(bls=list(avg_data.keys()))
 hd.update(data=avg_data, flags=avg_flags, nsamples=avg_nsamples)
-hd.write_uvh5(args.outfile, clobber=args.clobber)
+hd.write_uvh5(args.outfile, clobber=args.clobber, fix_autos=True)
