@@ -102,8 +102,9 @@ actions = [#"MAKE_DOWNSELECTED_UVH5",
            #"CAL_SMOOTH",
            #"SMOOTH_CAL_INSPECT_NOTEBOOK",
            #"INPAINT_AUTOS",
-           "TIME_AVG_REF_CAL",
-           # CALIBRATE_DATA
+           # "TIME_AVG_REF_CAL",
+           "FINAL_APPLY_CAL",
+           "AVG_CALIBRATED_DATA",
            # BASELINE_AVG_CALIBRATED_DATA
            # DELAY_FILTER
            # FR_FITLER
@@ -283,8 +284,8 @@ args = ["{basename}",
        ]
 
 [TIME_AVG_REF_CAL]
-# prereqs = "INPAINT_AUTOS"
-# prereq_chunk_size = "all"
+prereqs = "INPAINT_AUTOS"
+prereq_chunk_size = "all"
 chunk_size = "all"
 stride_length = "all"
 time_centered = false
@@ -300,6 +301,16 @@ args = ["${TIME_AVG_REF_CAL_OPTS:dly_ranges}",
         "${INPAINT_AUTOS_OPTS:zeropad}",
         "{obsid_list}",
        ]
+
+[FINAL_APPLY_CAL]
+# prereqs = "TIME_AVG_REF_CAL"
+# prereq_chunk_size = "all"
+args = ["{basename}"]
+
+[AVG_CALIBRATED_DATA]
+prereqs = "FINAL_APPLY_CAL"
+args = ["{basename}"]
+
 
 # [CLEAN_FILES]
 # prereqs = ["REDCAL_INSPECT_NOTEBOOK",
