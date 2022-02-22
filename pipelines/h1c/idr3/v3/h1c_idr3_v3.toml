@@ -87,6 +87,13 @@ Nphs = 100
 fthin = 1
 ref_sig_cut = 1.0
 
+[DPSS_DELAY_FILTER_OPTS]
+tol = 1e-9
+horizon = 1.0
+standoff = 50.0
+min_dly = 100.0
+cache_dir = 'dpss_delay_filter_cache'
+
 ############################################################################################################
 
 [WorkFlow]
@@ -103,11 +110,10 @@ actions = [#"MAKE_DOWNSELECTED_UVH5",
            #"SMOOTH_CAL_INSPECT_NOTEBOOK",
            #"INPAINT_AUTOS",
            # "TIME_AVG_REF_CAL",
-           "FINAL_APPLY_CAL",
-           "AVG_CALIBRATED_DATA",
-           # BASELINE_AVG_CALIBRATED_DATA
-           # DELAY_FILTER
-           # FR_FITLER
+           # "FINAL_APPLY_CAL",
+           # "AVG_CALIBRATED_DATA",
+           "DPSS_DELAY_FILTER",
+           # "FRINGE_RATE_FITLER",
            # "CLEAN_FILES",
           ]
 
@@ -303,13 +309,22 @@ args = ["${TIME_AVG_REF_CAL_OPTS:dly_ranges}",
        ]
 
 [FINAL_APPLY_CAL]
-# prereqs = "TIME_AVG_REF_CAL"
-# prereq_chunk_size = "all"
+prereqs = "TIME_AVG_REF_CAL"
+prereq_chunk_size = "all"
 args = ["{basename}"]
 
 [AVG_CALIBRATED_DATA]
 prereqs = "FINAL_APPLY_CAL"
 args = ["{basename}"]
+
+[DPSS_DELAY_FILTER]
+# prereqs = "FINAL_APPLY_CAL"
+args = ["${DPSS_DELAY_FILTER_OPTS:tol}",
+        "${DPSS_DELAY_FILTER_OPTS:horizon}",
+        "${DPSS_DELAY_FILTER_OPTS:standoff}",
+        "${DPSS_DELAY_FILTER_OPTS:min_dly}",
+        "${DPSS_DELAY_FILTER_OPTS:cache_dir}",
+       ]
 
 
 # [CLEAN_FILES]
