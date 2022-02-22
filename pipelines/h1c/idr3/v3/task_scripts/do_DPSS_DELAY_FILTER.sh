@@ -23,8 +23,8 @@ min_dly="${5}"
 cache_dir="${6}"
 
 # if cache directory does not exist, make it
-if [ ! -d "${cache_dir}" ]; then
-  mkdir ${cache_dir}
+if [ ! -d ${cache_dir} ]; then
+    mkdir ${cache_dir}
 fi
 
 # get input and output files
