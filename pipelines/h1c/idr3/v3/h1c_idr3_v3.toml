@@ -319,7 +319,8 @@ args = ["{basename}"]
 
 [DPSS_DELAY_FILTER]
 # prereqs = "FINAL_APPLY_CAL"
-args = ["${DPSS_DELAY_FILTER_OPTS:tol}",
+args = ["{basename}",
+        "${DPSS_DELAY_FILTER_OPTS:tol}",
         "${DPSS_DELAY_FILTER_OPTS:horizon}",
         "${DPSS_DELAY_FILTER_OPTS:standoff}",
         "${DPSS_DELAY_FILTER_OPTS:min_dly}",
