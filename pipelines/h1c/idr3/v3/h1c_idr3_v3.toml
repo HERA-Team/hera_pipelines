@@ -319,6 +319,7 @@ args = ["{basename}"]
 
 [DPSS_DELAY_FILTER]
 # prereqs = "FINAL_APPLY_CAL"
+mem = 16000
 args = ["{basename}",
         "${DPSS_DELAY_FILTER_OPTS:tol}",
         "${DPSS_DELAY_FILTER_OPTS:horizon}",
