@@ -53,6 +53,7 @@ done
 cmd="auto_reflection_run.py ${ip_auto_files[@]} \
                             --output_fname ${output_fname} \
                             --time_avg \
+                            --compress_tavg_calfits \
                             --dly_ranges ${expanded_dly_ranges[@]} \
                             --window ${window} \
                             --alpha ${alpha} \
