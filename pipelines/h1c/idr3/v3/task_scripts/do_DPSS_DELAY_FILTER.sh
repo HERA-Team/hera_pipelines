@@ -43,6 +43,7 @@ cmd="delay_filter_run.py ${infile} \
                          --horizon ${horizon} \
                          --min_dly ${min_dly} \
                          --mode dpss_leastsq \
+                         --max_contiguous_edge_flags 10000 \
                          --cache_dir ${cache_dir} \
                          --write_cache \
                          --read_cache \
