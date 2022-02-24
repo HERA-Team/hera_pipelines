@@ -46,7 +46,7 @@ if __name__ == "__main__":
     config_path = Path(args.config)
     with open(config_path, "r") as cfg:
         config = yaml.load(cfg.read(), Loader=yaml.FullLoader)
-        
+
     # Figure out where to write the uncalibrated file.
     infile = Path(args.infile)
     outdir = Path(args.outdir)
@@ -54,27 +54,15 @@ if __name__ == "__main__":
     outfile = outdir / f"{stem}.abscal_model.uvh5"
     t2 = time.time()
     dt = (t2 - t1) / 60
-    print(f"Setup took {dt:.2f} minutes.")    
+    print(f"Setup took {dt:.2f} minutes.")
 
-    # Figure out good antennas.
+    # Read in reference file for metadata and flags
     t1 = time.time()
     ref_uvdata = UVData()
     ref_uvdata.read(infile)
-    good_ants = set([])
-    for bl in ref_uvdata.get_antpairpols():
-        if not np.all(ref_uvdata.get_flags(bl)):
-            good_ants.add(bl[0])
-            good_ants.add(bl[1])
     t2 = time.time()
     dt = (t2 - t1) / 60
-    print(f"Figuring out bad antennas took {dt:.2f} minutes.")
-
-    # Start the interpolation routine.
-    ref_uvdata = UVData()
-    ref_uvdata.read(infile, read_data=False)
-    t2 = time.time()
-    dt = (t2 - t1) / 60
-    print(f"Reading reference metadata took {dt:.2f} minutes.")
+    print(f"Reading reference data took {dt:.2f} minutes.")
 
     # Figure out which files to read in.
     t1 = time.time()
@@ -115,23 +103,26 @@ if __name__ == "__main__":
     sim_uvdata.inflate_by_redundancy()
     t2 = time.time()
     dt = (t2 - t1) / 60
-    sim_data_ants = np.union1d(sim_uvdata.ant_1_array, sim_uvdata.ant_2_array)
-    ants_to_keep = np.array([ant for ant in sim_data_ants if ant in good_ants])
-    sim_uvdata.select(antenna_nums=ants_to_keep, polarizations=ref_uvdata.polarization_array, keep_all_metadata=False)
     print(f"Inflating data took {dt:.2f} minutes.")
 
-    # Make sure the antennas are ordered the same way as in the configuration file.
+    # Downselect to match reference data antennas
     t1 = time.time()
-    antnum_diffs = ants_to_keep[:,None] - np.array(sim_uvdata.antenna_numbers)[None,:]
-    index_map = np.argwhere(antnum_diffs == 0)[:,1]
-    assert np.all(ants_to_keep == np.array(sim_uvdata.antenna_numbers[index_map]))
-    sim_uvdata.antenna_numbers = np.array(sim_uvdata.antenna_numbers)[index_map]
-    sim_uvdata.antenna_names = np.array(sim_uvdata.antenna_names)[index_map]
-    sim_uvdata.antenna_positions = sim_uvdata.antenna_positions[index_map,:]
-    sim_uvdata.antenna_diameters = np.array(sim_uvdata.antenna_diameters)[index_map]
+    sim_data_ants = np.union1d(sim_uvdata.ant_1_array, sim_uvdata.ant_2_array)
+    ref_data_ants = np.union1d(ref_uvdata.ant_1_array, ref_uvdata.ant_2_array)
+    ants_to_keep = np.intersect1d(sim_data_ants, ref_data_ants)
+    sim_uvdata.select(antenna_nums=ants_to_keep, polarizations=ref_uvdata.polarization_array, keep_all_metadata=False)
+    ref_uvdata.select(antenna_nums=ants_to_keep, polarizations=ref_uvdata.polarization_array, keep_all_metadata=False)
+    # Make sure the antennas are ordered the same way as in the reference file.
+    assert np.all(sim_uvdata.antenna_numbers == ref_uvdata.antenna_numbers)
+    # cross-apply flags and other metadata
+    sim_uvdata.flag_array = ref_uvdata.flag_array
+    sim_uvdata.nsample_array = ref_uvdata.nsample_array
+    sim_uvdata.antenna_names = ref_uvdata.antenna_names
+    sim_uvdata.antenna_positions = ref_uvdata.antenna_positions
+    sim_uvdata.antenna_diameters = ref_uvdata.antenna_diameters
     t2 = time.time()
     dt = (t2 - t1) / 60
-    print(f"Fixing antenna ordering took {dt:.2f} minutes.")
+    print(f"Downselecting antennas and cross-applying flags took {dt:.2f} minutes.")
 
     # Now apply the systematics.
     sim_uvdata = Simulator(data=sim_uvdata)
