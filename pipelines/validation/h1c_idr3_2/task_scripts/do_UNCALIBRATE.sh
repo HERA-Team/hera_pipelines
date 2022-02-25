@@ -14,14 +14,14 @@ source ${src_dir}/_common.sh
 # 1 - reference filename
 # 2 - sky component (e.g. foreground)
 # 3 - path to configuration files
-# 4 - path to where the uncalibration script lives
+# 4 - path to simulation data files
 # 5 - path to the IDR3.2 data products
 # 6 - path to where all the calibration products etc. will be saved
 
 fn="${1}"
 sky_cmp="${2}"
 config_path="${3}"
-script_dir="${4}"
+sim_dir="${4}"
 data_dir="${5}"
 save_dir_base="${6}"
 
@@ -37,15 +37,14 @@ config_file="${config_path}/${jd_int}.yaml"
 # Figure out where to write the new data.
 outdir="${save_dir_base}/${jd_int}"
 
-# Remember where we came from, and move to where we need to be.
-cwd="$(pwd)"
-cd $script_dir
-
 # Do the interpolation and systematics simulation.
-echo python mock_data.py ${uvh5_fn} ${sky_cmp} --config ${config_file} \
-                         --outdir ${save_dir} --clobber --inflate \
-                         --input_is_compressed
-python mock_data.py ${uvh5_fn} ${sky_cmp} --config ${config_file} \
-                    --outdir ${save_dir} --clobber --inflate \
-                    --input_is_compressed
-cd $cwd
+cmd="python ${src_dir}/mock_data.py ${uvh5_fn} \
+                                    ${sky_cmp} \
+                                    --config ${config_file} \
+                                    --sim_dir ${sim_dir} \
+                                    --outdir ${save_dir} \
+                                    --clobber \
+                                    --inflate \
+                                    --input_is_compressed"
+echo $cmd
+$cmd

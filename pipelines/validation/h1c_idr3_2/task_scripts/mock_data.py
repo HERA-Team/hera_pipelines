@@ -16,6 +16,9 @@ parser.add_argument(
     "--config", type=str, default="", help="Path to configuration file."
 )
 parser.add_argument(
+    "--sim_dir", type=str, default=".", help="Path to directory containing simulation files."
+)
+parser.add_argument(
     "-o", "--outdir", type=str, default="", help="Absolute path to save directory."
 )
 parser.add_argument(
@@ -41,8 +44,8 @@ if __name__ == "__main__":
 
     # Get the perfectly-calibrated simulation files.
     t1 = time.time()
-    base_path = Path("/lustre/aoc/projects/hera/Validation/H1C_IDR3")
-    sim_dir = base_path / f"chunked_data/{args.sky_cmp}"
+    base_path = Path(args.sim_dir)
+    sim_dir = base_path / args.sky_cmp
     lst_re = re.compile("\d+\.\d+")
     def sort(fn):
         return float(lst_re.findall(str(fn))[0])
