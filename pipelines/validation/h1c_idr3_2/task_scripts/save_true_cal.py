@@ -2,6 +2,7 @@
 import argparse
 import hera_sim
 import yaml
+import numpy as np
 from pathlib import Path
 from pyuvdata import UVData, UVCal
 
