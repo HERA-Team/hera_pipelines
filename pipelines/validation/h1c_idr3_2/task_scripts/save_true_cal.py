@@ -27,7 +27,7 @@ parser.add_argument(
     "--sim_dir", type=str, default=".", help="Path to directory containing simulation files."
 )
 parser.add_argument(
-    "--clober", action="store_true", default=False, help="Whether to overwrite files."
+    "--clobber", action="store_true", default=False, help="Whether to overwrite files."
 )
 
 if __name__ == "__main__":
