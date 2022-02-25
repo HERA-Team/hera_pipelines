@@ -71,6 +71,7 @@ framesize = "1280x720"
 
 [WorkFlow]
 actions = ["UNCALIBRATE",
+           "SAVE_TRUE_CAL",
            "EXTRACT_AUTOS",
            "DATA_INSPECT_NOTEBOOK",
            "REDCAL",
@@ -96,6 +97,12 @@ args = ["{basename}",
         "${UNCALIBRATE_OPTS:path_to_data_files}",
         "${UNCALIBRATE_OPTS:save_dir_base}",
        ]
+
+[SAVE_TRUE_CAL]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}"]
 
 [EXTRACT_AUTOS]
 prereqs = "UNCALIBRATE"
@@ -251,7 +258,8 @@ mem = 32000
 args = ["{basename}"]
 
 [CLEAN_FILES]
-prereqs = ["SMOOTH_CAL_APPLY",
+prereqs = ["SAVE_TRUE_CAL",
+           "SMOOTH_CAL_APPLY",
            "DATA_INSPECT_NOTEBOOK",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL_INSPECT_NOTEBOOK",
