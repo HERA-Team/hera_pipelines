@@ -99,7 +99,6 @@ args = ["{basename}",
 
 [EXTRACT_AUTOS]
 prereqs = "UNCALIBRATE"
-prereq_chunk_size = "all"
 args = ["{basename}"]
 
 [DATA_INSPECT_NOTEBOOK]
