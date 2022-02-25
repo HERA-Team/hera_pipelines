@@ -21,6 +21,12 @@ parser.add_argument(
     help="Whether to simulate the reflection gains.",
 )
 parser.add_argument(
+    "--config", type=str, default="", help="Path to configuration file."
+)
+parser.add_argument(
+    "--sim_dir", type=str, default=".", help="Path to directory containing simulation files."
+)
+parser.add_argument(
     "--clober", action="store_true", default=False, help="Whether to overwrite files."
 )
 
@@ -30,13 +36,16 @@ if __name__ == "__main__":
         sys.exit("Nothing to do.")
 
     # Pull the configuration file for this particular day.
-    validation_dir = Path("/lustre/aoc/projects/hera/Validation/H1C_IDR3")
-    config_file = validation_dir / f"configs/{args.jd}.yaml"
+    base_path = Path(args.sim_dir)
+    if args.config:
+        config_path = Path(args.config)
+    else:
+        config_path = base_path / f"config/{jd}.yaml"
     with open(config_file, "r") as config:
         full_config = yaml.load(config.read(), Loader=yaml.FullLoader)
 
     # Figure out exactly what frequencies we need to use.
-    data_files = validation_dir / "chunked_data/diffuse"
+    data_files = base_path / "diffuse"
     data_file = list(data_files.glob("*.uvh5"))[0]
     uvdata = UVData()
     uvdata.read(data_file, read_data=False)
@@ -90,5 +99,3 @@ if __name__ == "__main__":
         x_orientation='e',
         clobber=args.clobber,
     )
-    )
-

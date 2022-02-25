@@ -102,7 +102,10 @@ args = ["{basename}",
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-args = ["{basename}"]
+args = ["{basename}", 
+        "${UNCALIBRATE_OPTS:path_to_sim_configs}",
+        "${UNCALIBRATE_OPTS:path_to_sim_files}",
+       ]
 
 [EXTRACT_AUTOS]
 prereqs = "UNCALIBRATE"
