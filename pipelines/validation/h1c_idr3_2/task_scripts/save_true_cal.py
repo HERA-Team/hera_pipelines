@@ -38,9 +38,9 @@ if __name__ == "__main__":
     # Pull the configuration file for this particular day.
     base_path = Path(args.sim_dir)
     if args.config:
-        config_path = Path(args.config)
+        config_file = Path(args.config)
     else:
-        config_path = base_path / f"config/{jd}.yaml"
+        config_file = base_path / f"config/{jd}.yaml"
     with open(config_file, "r") as config:
         full_config = yaml.load(config.read(), Loader=yaml.FullLoader)
 
