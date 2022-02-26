@@ -38,12 +38,16 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/stage_2_smooth_cal.ipynb
 
+# Update README
+python ${src_dir}/build_notebook_readme.py ${nb_output_repo}/smooth_cal_inspect
+
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
 then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
+    git add ${nb_output_repo}/smooth_cal_inspect/README.md
     git commit -m "H1C IDR3 smooth_cal notebook for JD ${jd}"
     git push origin master
 fi
