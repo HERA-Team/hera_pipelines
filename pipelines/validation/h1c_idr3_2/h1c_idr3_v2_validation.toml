@@ -11,7 +11,7 @@ timeout = "24h"
 [UNCALIBRATE_OPTS]
 sky_cmp = "foreground"
 path_to_sim_configs = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/configs"
-path_to_scripts = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/scripts"
+path_to_sim_files = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/chunked_data"
 path_to_data_files = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2"
 save_dir_base = "/lustre/aoc/projects/hera/Validation/test-4.1.0"
 
@@ -71,6 +71,7 @@ framesize = "1280x720"
 
 [WorkFlow]
 actions = ["UNCALIBRATE",
+           "SAVE_TRUE_CAL",
            "EXTRACT_AUTOS",
            "DATA_INSPECT_NOTEBOOK",
            "REDCAL",
@@ -88,17 +89,26 @@ actions = ["UNCALIBRATE",
           ]
 
 [UNCALIBRATE]
+mem = 16000
 args = ["{basename}",
         "${UNCALIBRATE_OPTS:sky_cmp}",
         "${UNCALIBRATE_OPTS:path_to_sim_configs}",
-        "${UNCALIBRATE_OPTS:path_to_scripts}",
+        "${UNCALIBRATE_OPTS:path_to_sim_files}",
         "${UNCALIBRATE_OPTS:path_to_data_files}",
         "${UNCALIBRATE_OPTS:save_dir_base}",
        ]
 
+[SAVE_TRUE_CAL]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}", 
+        "${UNCALIBRATE_OPTS:path_to_sim_configs}",
+        "${UNCALIBRATE_OPTS:path_to_sim_files}",
+       ]
+
 [EXTRACT_AUTOS]
 prereqs = "UNCALIBRATE"
-prereq_chunk_size = "all"
 args = ["{basename}"]
 
 [DATA_INSPECT_NOTEBOOK]
@@ -251,7 +261,8 @@ mem = 32000
 args = ["{basename}"]
 
 [CLEAN_FILES]
-prereqs = ["SMOOTH_CAL_APPLY",
+prereqs = ["SAVE_TRUE_CAL",
+           "SMOOTH_CAL_APPLY",
            "DATA_INSPECT_NOTEBOOK",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL_INSPECT_NOTEBOOK",

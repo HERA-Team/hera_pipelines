@@ -32,12 +32,16 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/stage_2_redcal.ipynb
 
+# Update README
+python ${src_dir}/build_notebook_readme.py ${nb_output_repo}/redcal_inspect
+
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
 then
     cd ${nb_output_repo}
     git pull origin master
     git add ${nb_outfile}
+    git add ${nb_output_repo}/redcal_inspect/README.md
     git commit -m "H1C IDR3 redcal notebook for JD ${jd}"
     git push origin master
 fi

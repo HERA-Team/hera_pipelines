@@ -4,7 +4,7 @@ path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/h
 path_to_a_priori_flags = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/a_priori_flags"
 conda_env = "h1c_idr3_2_validation"
 source_script = "~/.bashrc"
-base_mem = 16000
+base_mem = 24000
 base_cpu = 1
 timeout = "24h"
 
