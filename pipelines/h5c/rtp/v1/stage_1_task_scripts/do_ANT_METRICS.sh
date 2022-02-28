@@ -14,18 +14,14 @@ source ${src_dir}/_common.sh
 # 3 - Nbls_per_load: Number of baselines to load simultaneously.
 # 4 - Nfiles_per_load : Number of sum and diff files to load simultaneously
 # 5 - extension: Extension to be appended to the file name.
-# 6 - upload_to_librarian: global boolean trigger
-# 7 - librarian_ant_metrics: boolean trigger for this step
-# 8+ - filenames
+# 6+ - filenames
 crossCut=${1}
 deadCut=${2}
 Nbls_per_load=${3}
 Nfiles_per_load=${4}
 extension=${5}
-upload_to_librarian="${6}"
-librarian_ant_metrics="${7}"
-fn1=`basename ${8}`
-sum_files="${@:8}"
+fn1=`basename ${6}`
+sum_files="${@:6}"
 
 # get corresponding diff files
 diff_files=()
@@ -49,26 +45,6 @@ fi
 echo $cmd
 $cmd
 echo Finished ant_metrics at $(date)
-
-# upload results to librarian if desired
-if [ "${upload_to_librarian}" == "True" ]; then
-    if [ "${librarian_ant_metrics}" == "True" ]; then
-        for fn in ${sum_files[@]}; do
-
-            # get the integer portion of the JD
-            bn=`basename ${fn}`
-            jd=$(get_int_jd ${bn})
-
-            # get ant_metrics file
-            metrics_f=`echo ${fn%.uvh5}${extension}`
-            metrics_out=`echo ${bn%.uvh5}${extension}`
-
-            echo librarian upload local-rtp ${metrics_f} ${jd}/${metrics_out}
-            librarian upload local-rtp ${metrics_f} ${jd}/${metrics_out}
-            echo Finished uploading ${metrics_f} to the Librarian at $(date)
-        done
-    fi
-fi
 
 # add metrics to m&c
 for fn in ${sum_files[@]}; do
