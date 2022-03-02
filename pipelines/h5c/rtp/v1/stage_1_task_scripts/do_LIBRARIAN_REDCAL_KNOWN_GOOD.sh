@@ -24,7 +24,7 @@ jd=$(get_int_jd ${fn})
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_redcal_known_good}" == "True" ]; then
 
-        # Compress all redcal_known_good files into one with a JD corresponding to $fn        
+        # Compress all redcal_known_good files per output type into one with a JD corresponding to $fn        
         declare -a exts=(
             ".known_good.first.calfits"
             ".known_good.omni.calfits"
@@ -41,11 +41,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
             librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
             echo Finished uploading ${compressed_file} to the Librarian at $(date)
-            
-            fn_out=`echo ${fn%.uvh5}${ext}`
-            echo librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
-            librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
-            echo Finished uploading ${fn_out} to the Librarian at $(date)
         done
     fi
 fi
+echo Finished running redcal at $(date)

@@ -297,7 +297,7 @@ stride_length = "all"
 time_centered = false
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_ant_metrics}",
+        "${LIBRARIAN_OPTS:librarian_redcal_known_good}",
         ]
 
 
