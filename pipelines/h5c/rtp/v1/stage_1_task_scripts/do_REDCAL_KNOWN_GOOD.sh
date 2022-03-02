@@ -73,25 +73,3 @@ cmd="redcal_run.py ${fn} \
 echo $cmd
 $cmd
 echo Finished running redcal at $(date)
-
-# add data products to librarian if desired
-if [ "${upload_to_librarian}" == "True" ]; then
-    if [ "${librarian_redcal_known_good}" == "True" ]; then
-        # get the integer portion of the JD
-        jd=$(get_int_jd ${fn})
-
-        # upload files to librarian
-        declare -a exts=(
-            ".known_good.first.calfits"
-            ".known_good.omni.calfits"
-            ".known_good.omni_vis.uvh5"
-            ".known_good.redcal_meta.hdf5"
-        )
-        for ext in ${exts[@]}; do
-            fn_out=`echo ${fn%.uvh5}${ext}`
-            echo librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
-            librarian upload local-rtp ${fn_out} ${jd}/${fn_out}
-            echo Finished uploading ${fn_out} to the Librarian at $(date)
-        done
-    fi
-fi
