@@ -95,6 +95,7 @@ actions = ["SETUP",
            "LIBRARIAN_ANT_METRICS",
            "RTP_SUMMARY_NOTEBOOK_2",
            "REDCAL_KNOWN_GOOD",
+           "LIBRARIAN_REDCAL_KNOWN_GOOD",
            "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "RTP_SUMMARY_NOTEBOOK_3",
            "ANTENNA_REPORT_NOTEBOOKS",
@@ -282,13 +283,23 @@ args = ["{basename}",
         "${REDCAL_OPTS:max_dims}",
         "${ANT_METRICS_OPTS:extension}",
         "${A_PRIORI_STATUS_OPTS:good_statuses}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_redcal_known_good}",
        ]
 # This runs redcal on 1 out of every 10 files
 chunk_size = 1
 stride_length = 10
 time_centered = false
+
+[LIBRARIAN_REDCAL_KNOWN_GOOD]
+prereqs = "REDCAL_KNOWN_GOOD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_ant_metrics}",
+        ]
+
 
 [REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD]
 prereqs = "REDCAL_KNOWN_GOOD"
