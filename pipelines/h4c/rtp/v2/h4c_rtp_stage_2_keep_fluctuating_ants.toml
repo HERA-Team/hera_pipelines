@@ -7,7 +7,7 @@ source_script = "~/.bashrc"
 base_mem = 16000
 base_cpu = 1
 timeout = "24h"
-pbs_mail_user = "jsdillon+nrao@berkeley.edu"
+pbs_mail_user = "aaronew+nrao@berkeley.edu"
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks'
