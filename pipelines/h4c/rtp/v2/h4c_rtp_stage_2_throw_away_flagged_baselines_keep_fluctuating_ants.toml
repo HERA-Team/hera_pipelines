@@ -39,10 +39,8 @@ edge_cut = 100
 [XRFI_OPTS]
 kt_size = 8
 kf_size = 8
-sig_init_med = 10.0
-sig_adj_med = 4.0
-sig_init_mean = 5.0
-sig_adj_mean = 2.0
+sig_init = 5.0
+sig_adj = 2.0
 Nwf_per_load = 1000
 
 [XRFI_DAY_THRESHOLD_OPTS]
@@ -158,22 +156,24 @@ args = ["{basename}",
        ]
 
 [XRFI]
-prereqs = "REDCAL"
+prereqs = ["REDCAL",
+          "ABSCAL",
+          "EXTRACT_AUTOS",
+         ]
 args = ["${XRFI_OPTS:kt_size}",
-        "${XRFI_OPTS:kf_size}",
-        "${XRFI_OPTS:sig_init}",
-        "${XRFI_OPTS:sig_adj}",
-        "${Options:path_to_a_priori_flags}",
-        "${XRFI_OPTS:Nwf_per_load}",
-        "{obsid_list}"
-       ]
+       "${XRFI_OPTS:kf_size}",
+       "${XRFI_OPTS:sig_init_med}",
+       "${XRFI_OPTS:sig_adj_med}",
+       "${XRFI_OPTS:sig_init_mean}",
+       "${XRFI_OPTS:sig_adj_mean}",
+       "${Options:path_to_a_priori_flags}",
+       "${XRFI_OPTS:Nwf_per_load}",
+       "{obsid_list}"
+      ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in
-# must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
-# chunk_size must be >= 9 (with centered==True).
-# Larger chunk_size will reduce redundant i/o and median filter calculation.
-# The numbers below result in about 35% redundancy.
-chunk_size = 31
-stride_length = 23
+# must be greater than 2 * kt_size.
+chunk_size = 3
+stride_length = 1
 time_centered = true
 collect_stragglers = true
 
