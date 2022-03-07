@@ -82,6 +82,7 @@ framesize = "1280x720"
 [WorkFlow]
 actions = [
            "THROW_AWAY_FLAGGED_BASELINES",
+           "EXTRACT_AUTOS",
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL",
@@ -100,8 +101,12 @@ actions = [
 [THROW_AWAY_FLAGGED_BASELINES]
 args = ["{basename}", "${Options:path_to_a_priori_flags}"]
 
-[REDCAL]
+[EXTRACT_AUTOS]
 prereqs = "THROW_AWAY_FLAGGED_BASELINES"
+args = ["{basename}"]
+
+[REDCAL]
+prereqs = "EXTRACT_AUTOS"
 prereq_chunk_size = 1
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",

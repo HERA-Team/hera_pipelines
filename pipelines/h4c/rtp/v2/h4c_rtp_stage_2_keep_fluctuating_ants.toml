@@ -80,7 +80,8 @@ framesize = "1280x720"
 ############################################################################################################
 
 [WorkFlow]
-actions = ["REDCAL",
+actions = ["EXTRACT_AUTOS",
+           "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL",
            "ABSCAL_INSPECT_NOTEBOOK",
@@ -95,8 +96,12 @@ actions = ["REDCAL",
            # "CLEAN_FILES", # TODO: add this back in
           ]
 
+[EXTRACT_AUTOS]
+args = ["{basename}"]
+
 
 [REDCAL]
+prereqs = "EXTRACT_AUTOS"
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
         "${REDCAL_OPTS:solar_horizon}",
