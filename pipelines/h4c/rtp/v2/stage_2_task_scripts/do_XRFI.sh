@@ -38,9 +38,7 @@ model_files=()
 ocalfits_files=()
 acalfits_files=()
 for data_file in ${data_files[@]}; do
-    uvh5_fn=`basename "$data_file"`
-    uvh5_fn=$(remove_pol $uvh5_fn)
-    uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5 # this makes things more compatible with H3C/H4C software
+    uvh5_fn=${fn}
     autos_file=`echo ${uvh5_fn%.*}.autos.uvh5`
     autos_files+=( $autos_file )
     model_files+=( ${uvh5_fn%.*}.omni_vis.uvh5 )
