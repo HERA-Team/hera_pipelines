@@ -37,8 +37,7 @@ autos_files=()
 model_files=()
 ocalfits_files=()
 acalfits_files=()
-for data_file in ${data_files[@]}; do
-    uvh5_fn=${fn}
+for uvh5_fn in ${data_files[@]}; do
     autos_file=`echo ${uvh5_fn%.*}.autos.uvh5`
     autos_files+=( $autos_file )
     model_files+=( ${uvh5_fn%.*}.omni_vis.uvh5 )
