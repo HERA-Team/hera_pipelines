@@ -1,7 +1,7 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags_include_variable"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
 base_mem = 16000
@@ -36,11 +36,14 @@ phs_max_iter = 100
 phs_conv_crit = 1e-6
 edge_cut = 100
 
+
 [XRFI_OPTS]
 kt_size = 8
 kf_size = 8
-sig_init = 5.0
-sig_adj = 2.0
+sig_init_med = 10.0
+sig_adj_med = 4.0
+sig_init_mean = 5.0
+sig_adj_mean = 2.0
 Nwf_per_load = 1000
 
 [XRFI_DAY_THRESHOLD_OPTS]
