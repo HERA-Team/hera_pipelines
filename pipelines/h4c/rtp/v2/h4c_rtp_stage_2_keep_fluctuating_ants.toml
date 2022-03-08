@@ -174,8 +174,8 @@ args = ["${XRFI_OPTS:kt_size}",
       ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in
 # must be greater than 2 * kt_size.
-chunk_size = 3
-stride_length = 1
+chunk_size = 31
+stride_length = 23
 time_centered = true
 collect_stragglers = true
 
