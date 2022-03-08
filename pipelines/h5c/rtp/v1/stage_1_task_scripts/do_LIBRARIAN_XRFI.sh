@@ -22,12 +22,17 @@ if [ "${upload_to_librarian}" == "True" ]; then
         # get xrfi folder
         xrfi_folder=`echo ${fn%.sum.uvh5}.xrfi`
         xrfi_stage_1_folder=`echo ${fn%.sum.uvh5}.stage_1_xrfi`
+        compressed_file=`echo ${fn%.sum.uvh5}.stage_1_xrfi.tar.gz`
         if [ -d "${xrfi_folder}" ]; then
-            echo librarian upload local-rtp ${xrfi_folder} ${jd}/${xrfi_folder%.xrfi}.stage_1_xrfi
-            librarian upload local-rtp ${xrfi_folder} ${jd}/${xrfi_folder%.xrfi}.stage_1_xrfi
+            echo tar -czfv ${compressed_file} ${xrfi_folder}
+            tar -czfv ${compressed_file} ${xrfi_folder}
+            echo librarian upload local-rtp ${compressed_file} ${jd}/${xrfi_folder%.xrfi}.stage_1_xrfi.tar.gz
+            librarian upload local-rtp ${compressed_file} ${jd}/${xrfi_folder%.xrfi}.stage_1_xrfi.tar.gz
         elif [ -d "${xrfi_stage_1_folder}" ]; then # if it has already been renamed
-            echo librarian upload local-rtp ${xrfi_stage_1_folder} ${jd}/${xrfi_stage_1_folder}
-            librarian upload local-rtp ${xrfi_stage_1_folder} ${jd}/${xrfi_stage_1_folder}
+            echo tar -czfv ${compressed_file} ${xrfi_stage_1_folder}
+            tar -czfv ${compressed_file} ${xrfi_stage_1_folder}
+            echo librarian upload local-rtp ${compressed_file} ${jd}/${xrfi_stage_1_folder}.tar.gz
+            librarian upload local-rtp ${compressed_file} ${jd}/${xrfi_stage_1_folder}.tar.gz
         fi
     fi
 fi
