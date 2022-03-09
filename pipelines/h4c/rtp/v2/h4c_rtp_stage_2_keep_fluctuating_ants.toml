@@ -92,7 +92,7 @@ actions = ["EXTRACT_AUTOS",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "IMAGING",
            "MOVIES",
-           "APPLY_CAL_REDUNDANT_AVERAGE",
+           #"APPLY_CAL_REDUNDANT_AVERAGE",
            # "CLEAN_FILES", # TODO: add this back in
           ]
 
