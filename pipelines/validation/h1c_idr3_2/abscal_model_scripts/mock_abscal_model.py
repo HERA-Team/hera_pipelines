@@ -69,9 +69,12 @@ if __name__ == "__main__":
     ref_times, sort_inds = np.unique(ref_uvdata.time_array, return_index=True)
     ref_lsts = ref_uvdata.lst_array[sort_inds]
     ref_lsts[ref_lsts<args.lst_wrap] += 2 * np.pi
+    dlst = np.median(np.diff(ref_lsts))
     # Note that data LSTs will always be entirely to one side of the wrap.
     first_ind = np.argwhere(start_lsts <= np.round(ref_lsts.min(), 7)).flatten()[-1]
-    last_ind = np.argwhere(start_lsts <= np.round(ref_lsts.max(), 7)).flatten()[-1]
+    last_ind = np.argwhere(
+        start_lsts <= np.round(ref_lsts.max() + dlst, 7)
+    ).flatten()[-1]
 
     # Now load in the files.
     t1 = time.time()
