@@ -23,7 +23,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
         # get xrfi folder
         xrfi_folder=`echo ${fn%.sum.uvh5}.xrfi`
         xrfi_stage_1_folder=`echo ${fn%.sum.uvh5}.stage_1_xrfi`
-        compressed_file=`echo ${fn%.sum.uvh5}.stage_1_xrfi.tar.gz`
+        compressed_file=`echo zen.${jd}.stage_1_xrfi.tar.gz`
         if [ -d "${xrfi_folder}" ]; then
             echo tar -czfv ${compressed_file} zen.${jd}.*.xrfi
             tar -czfv ${compressed_file} zen.${jd}.*.xrfi
@@ -36,7 +36,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
             
         # upload all thresholded flags files        
-        compressed_threshold_file=`echo ${fn%.sum.uvh5}.stage_1_threshold_flags.tar.gz`
+        compressed_threshold_file=`echo zen.${jd}.stage_1_threshold_flags.tar.gz`
         echo tar -czfv ${compressed_threshold_file} zen.${jd}*_stage_1_threshold_flags.h5
         tar -czfv ${compressed_threshold_file} zen.${jd}*_stage_1_threshold_flags.h5
         echo librarian upload local-rtp ${compressed_threshold_file} zen.${jd}.stage_1_threshold_flags.tar.gz
