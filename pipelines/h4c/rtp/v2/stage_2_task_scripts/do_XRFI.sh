@@ -50,6 +50,26 @@ jd_int=$(get_int_jd `basename ${autos_files[0]}`)
 flag_yaml=`echo "${path_to_a_priori_flags}/${jd_int}.yaml"`
 
 # run script
+#cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
+#                 --model_files ${model_files[@]} \
+#                 --data_files ${autos_files[@]} \
+#                 --acalfits_files ${acalfits_files[@]} \
+#                 --kt_size ${kt_size} \
+#                 --kf_size ${kf_size} \
+#                 --sig_init_med ${sig_init_med} \
+#                 --sig_adj_med ${sig_adj_med} \
+#                 --sig_init_mean ${sig_init_mean} \
+#                 --sig_adj_mean ${sig_adj_mean} \
+#                 --Nwf_per_load ${Nwf_per_load} \
+#                 --a_priori_flag_yaml ${flag_yaml} \
+#                 --clobber \
+#                 --skip_omnical_zscore_filter \
+#                 --skip_abscal_zscore_filter \
+#                 --skip_cross_mean_filter \
+#                 --skip_auto_median_filter \
+#                 --skip_omnivis_median_filter"
+
+
 cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
                  --model_files ${model_files[@]} \
                  --data_files ${autos_files[@]} \
@@ -63,8 +83,12 @@ cmd="xrfi_run.py --ocalfits_files ${ocalfits_files[@]} \
                  --Nwf_per_load ${Nwf_per_load} \
                  --a_priori_flag_yaml ${flag_yaml} \
                  --clobber \
-                 --skip_omnical_zscore_filter \
+                 --skip_abscal_chi2_median_filter \
+                 --skip_abscal_chi2_mean_filter \
+                 --skip_abscal_median_filter \
+                 --skip_abscal_mean_filter \
                  --skip_abscal_zscore_filter \
+                 --skip_omnical_zscore_filter \
                  --skip_cross_mean_filter \
                  --skip_auto_median_filter \
                  --skip_omnivis_median_filter"
