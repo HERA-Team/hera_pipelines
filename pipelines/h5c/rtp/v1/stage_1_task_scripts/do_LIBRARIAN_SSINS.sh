@@ -18,15 +18,13 @@ if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_SSINS}" == "True" ]; then
         # get the integer portion of the JD
         jd=$(get_int_jd ${fn})
-
-        # get SSINS folder
-        SSINS_folder=`echo ${fn%.uvh5}.SSINS`
-
-        if [ -d "${SSINS_folder}" ]; then
-            echo librarian upload local-rtp ${SSINS_folder} ${jd}/${SSINS_folder}
-            librarian upload local-rtp ${SSINS_folder} ${jd}/${SSINS_folder}
-        else
-            echo ${SSINS_folder} does not exist, possibly due to chunking. Skipping this Librarian step.
-        fi
+        
+        # compress and upload to the librarian
+        compressed_file=`echo zen.${jd}.sum.SSINS.tar.gz`
+        echo tar -czfv ${compressed_file} zen.${jd}.*.sum.SSINS
+        tar -czfv ${compressed_file} zen.${jd}.*.sum.SSINS
+        echo librarian upload local-rtp ${compressed_file} zen.${jd}.sum.SSINS.tar.gz
+        librarian upload local-rtp ${compressed_file} zen.${jd}.sum.SSINS.tar.gz
+        
     fi
 fi
