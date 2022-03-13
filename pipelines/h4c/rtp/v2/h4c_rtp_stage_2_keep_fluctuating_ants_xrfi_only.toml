@@ -80,18 +80,18 @@ framesize = "1280x720"
 ############################################################################################################
 
 [WorkFlow]
-actions = ["EXTRACT_AUTOS",
-           "REDCAL",
-           "REDCAL_INSPECT_NOTEBOOK",
-           "ABSCAL",
-           "ABSCAL_INSPECT_NOTEBOOK",
+actions = [#"EXTRACT_AUTOS",
+           #"REDCAL",
+           #"REDCAL_INSPECT_NOTEBOOK",
+           #"ABSCAL",
+           #"ABSCAL_INSPECT_NOTEBOOK",
            "XRFI",
            "XRFI_DAY_THRESHOLD",
            "RFI_INSPECT_NOTEBOOK",
-           "CAL_SMOOTH",
-           "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           "IMAGING",
-           "MOVIES",
+           #"CAL_SMOOTH",
+           #"SMOOTH_CAL_INSPECT_NOTEBOOK",
+           #"IMAGING",
+           #"MOVIES",
            #"APPLY_CAL_REDUNDANT_AVERAGE",
            # "CLEAN_FILES", # TODO: add this back in
           ]
@@ -158,10 +158,10 @@ args = ["{basename}",
        ]
 
 [XRFI]
-prereqs = ["REDCAL",
-          "ABSCAL",
-          "EXTRACT_AUTOS",
-         ]
+#prereqs = ["REDCAL",
+#          "ABSCAL",
+#          "EXTRACT_AUTOS",
+#         ]
 args = ["${XRFI_OPTS:kt_size}",
        "${XRFI_OPTS:kf_size}",
        "${XRFI_OPTS:sig_init_med}",
@@ -181,7 +181,7 @@ collect_stragglers = true
 
 [XRFI_DAY_THRESHOLD]
 prereqs = ["XRFI",
-           "ABSCAL",
+#           "ABSCAL",
           ]
 prereq_chunk_size = "all"
 chunk_size = "all"
