@@ -61,7 +61,7 @@ if __name__ == "__main__":
         np.random.seed(full_config["bandpass"]["seed"])
         bandpass_gains = hera_sim.sigchain.Bandpass()(freqs, antenna_numbers)
         for ant, gain in bandpass_gains.items():
-            gains[ant] *= gain
+            gains[ant] = gains[ant] * gain
 
     # Prepare references to the classes that simulate reflections.
     reflection_sims = {
@@ -80,7 +80,7 @@ if __name__ == "__main__":
             reflections = reflection_sims[simulator](**params)
             reflection_gains = reflections(freqs, antenna_numbers)
             for ant, gain in reflection_gains.items():
-                gains[ant] *= gain
+                gains[ant] = gains[ant] * gain
 
     # Update the keys of the gain dictionary to what the write function expects.
     true_gains = {}
