@@ -85,8 +85,8 @@ if __name__ == "__main__":
     # Update the keys of the gain dictionary to what the write function expects.
     true_gains = {}
     for ant, gain in gains.items():
-        true_gains[(ant, 'x')] = gain
-        true_gains[(ant, 'y')] = gain
+        true_gains[(ant, 'Jee')] = gain
+        true_gains[(ant, 'Jnn')] = gain
 
     # The writer also needs a time array, so let's make a simple one.
     times = np.array([args.jd], dtype=float)
@@ -97,6 +97,6 @@ if __name__ == "__main__":
         filename=args.outfile,
         freqs=freqs*1e9,
         times=times,
-        x_orientation='e',
+        x_orientation='east',
         clobber=args.clobber,
     )
