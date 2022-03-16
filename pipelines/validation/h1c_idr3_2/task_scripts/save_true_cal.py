@@ -75,7 +75,7 @@ if __name__ == "__main__":
             params = full_config.get(key, None)
             if params is None:
                 continue
-            seed = params.pop("seed")
+            np.random.seed(params.pop("seed"))
             simulator = params.pop("simulator", key)
             reflections = reflection_sims[simulator](**params)
             reflection_gains = reflections(freqs, antenna_numbers)
