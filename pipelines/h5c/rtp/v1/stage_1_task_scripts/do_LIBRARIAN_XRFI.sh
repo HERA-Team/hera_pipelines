@@ -24,16 +24,11 @@ if [ "${upload_to_librarian}" == "True" ]; then
         xrfi_folder=`echo ${fn%.sum.uvh5}.xrfi`
         xrfi_stage_1_folder=`echo ${fn%.sum.uvh5}.stage_1_xrfi`
         compressed_file=`echo zen.${jd}.stage_1_xrfi.tar.gz`
-        if [ -d "${xrfi_folder}" ]; then
-            echo tar -czfv ${compressed_file} zen.${jd}.*.xrfi
-            tar -czfv ${compressed_file} zen.${jd}.*.xrfi
-            echo librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
-            librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
-        elif [ -d "${xrfi_stage_1_folder}" ]; then # if it has already been renamed
-            echo tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
-            tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
-            echo librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
-            librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
+        
+        echo tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
+        tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
+        echo librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
+        librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
             
         # upload all thresholded flags files        
         compressed_threshold_file=`echo zen.${jd}.stage_1_threshold_flags.tar.gz`
