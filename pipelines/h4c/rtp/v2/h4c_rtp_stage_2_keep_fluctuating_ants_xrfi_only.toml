@@ -80,7 +80,7 @@ framesize = "1280x720"
 ############################################################################################################
 
 [WorkFlow]
-actions = [#"EXTRACT_AUTOS",
+actions = ["EXTRACT_AUTOS",
            #"REDCAL",
            #"REDCAL_INSPECT_NOTEBOOK",
            #"ABSCAL",
@@ -158,6 +158,7 @@ args = ["{basename}",
        ]
 
 [XRFI]
+prereqs = [ "EXTRACT_AUTOS" ]
 #prereqs = ["REDCAL",
 #          "ABSCAL",
 #          "EXTRACT_AUTOS",
