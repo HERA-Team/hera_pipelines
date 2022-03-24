@@ -13,14 +13,15 @@ source ${src_dir}/_common.sh
 # 4 - rephase flag
 # 5 - ntimes_per_file
 # 6 - lst_start
-# 7 - dlst
-# 8 - vis_units
-# 9 - output_file_select
-# 10 - file_ext
-# 11 - outdir
-# 12 - Nbls_to_load
-# 13 - calibration
-# 14+ - series of glob-parsable search strings (in quotations!) to files to LSTBIN
+# 7 - fixed_lst_start
+# 8 - dlst
+# 9 - vis_units
+# 10 - output_file_select
+# 11 - file_ext
+# 12 - outdir
+# 13 - Nbls_to_load
+# 14 - calibration
+# 15+ - series of glob-parsable search strings (in quotations!) to files to LSTBIN
 
 # get positional arguments
 sig_clip=${1}
@@ -29,20 +30,21 @@ min_N=${3}
 rephase=${4}
 ntimes_per_file=${5}
 lst_start=${6}
-dlst=${7}
-vis_units=${8}
-output_file_select=${9}
-file_ext=${10}
-outdir=${11}
-Nbls_to_load=${12}
-calibration=${13}
+fixed_lst_start=${7}
+dlst=${8}
+vis_units=${9}
+output_file_select=${10}
+file_ext=${11}
+outdir=${12}
+Nbls_to_load=${13}
+calibration=${14}
 data_files=($@)
 
 # if calibration suffix is not empty, parse it and apply it
 if [ ! -z "${calibration}" ]
 then
-    # if there's a calibration string, then the data files start at the 14th position
-    data_files=(${data_files[*]:13})
+    # if there's a calibration string, then the data files start at the 15th position
+    data_files=(${data_files[*]:14})
     # parse calibration suffix for each nested list in data_files
     input_cals=()
     for df in "${data_files[@]}"; do
@@ -57,8 +59,8 @@ then
     input_cals="--input_cals ${input_cals[@]}"
 else
    input_cals=""
-   # if there's no calibration string, then they start at the 13th position
-   data_files=(${data_files[*]:12})
+   # if there's no calibration string, then they start at the 14th position
+   data_files=(${data_files[*]:13})
 fi
 
 # set special kwargs
@@ -72,23 +74,11 @@ if [ $rephase == True ]; then
 else
     rephase=""
 fi
+if [ $fixed_lst_start == True ]; then
+    fixed_lst_start="--fixed_lst_start"
+else
+    fixed_lst_start=""
+fi
 
-# run the command
-cmd="lstbin_run.py --dlst ${dlst} \
-                   --lst_start ${lst_start} \
-                   --file_ext ${file_ext} \
-                   --outdir ${outdir} \
-                   --ntimes_per_file ${ntimes_per_file} \
-                   ${rephase} \
-                   ${sig_clip} \
-                   --sigma ${sigma} \
-                   --min_N ${min_N} \
-                   --vis_units ${vis_units} \
-                   --output_file_select \
-                   ${output_file_select} \
-                   --Nbls_to_load ${Nbls_to_load} \
-                   ${input_cals} \
-                   --overwrite \
-                   ${data_files[@]}"
-echo $cmd
-$cmd
+echo lstbin_run.py --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
+lstbin_run.py --dlst ${dlst} --file_ext ${file_ext} --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma} --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units} --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} ${input_cals} --overwrite ${data_files[@]}
