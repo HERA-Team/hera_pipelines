@@ -1,8 +1,8 @@
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/task_scripts"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/task_scripts"
 source_script = "~/.bashrc"
-conda_env = "h1c_idr3"
+conda_env = "h1c_idr3_2_validation"
 base_mem = 80000
 base_cpu = 4
 timeout = "48h"
@@ -21,27 +21,27 @@ fixed_lst_start = "True"
 vis_units = "Jy"
 parallelize = "True"
 file_ext = "grp1.of1.{type}.{time:7.5f}.sum.uvh5"
-outdir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3"
-parent_dir = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3"
-data_files = ["/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458185/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458187/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458188/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458189/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458190/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458195/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458196/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458197/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458198/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458199/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458200/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458201/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458202/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458203/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458204/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458205/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458206/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458207/zen.*.sum.smooth_calibrated.uvh5",
-              "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/2458208/zen.*.sum.smooth_calibrated.uvh5"]
+outdir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_3"
+parent_dir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_3"
+data_files = ["/lustre/aoc/projects/hera/Validation/test-4.1.0/2458185/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458187/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458188/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458189/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458190/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458195/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458196/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458197/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458198/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458199/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458200/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458201/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458202/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458203/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458204/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458205/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458206/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458207/zen.*.sum.smooth_calibrated.uvh5",
+              "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458208/zen.*.sum.smooth_calibrated.uvh5"]
 calibration = "''"
 
 
