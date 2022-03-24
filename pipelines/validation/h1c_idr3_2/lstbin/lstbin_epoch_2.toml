@@ -17,7 +17,6 @@ rephase = "True"
 ntimes_per_file = 60
 dlst = 0.001565970008
 lst_start = 4.711094445 # this is before the first LST on 2458041 and after the last LST on 2458208
-fixed_lst_start = "True"
 vis_units = "Jy"
 parallelize = "True"
 file_ext = "grp1.of1.{type}.{time:7.5f}.sum.uvh5"
@@ -51,5 +50,5 @@ actions = ["LSTBIN"]
 
 [LSTBIN]
 args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
-        "fixed_lst_start", "dlst", "vis_units", "output_file_select", "file_ext",
+        "dlst", "vis_units", "output_file_select", "file_ext",
         "outdir", "Nbls_to_load", "calibration"]
