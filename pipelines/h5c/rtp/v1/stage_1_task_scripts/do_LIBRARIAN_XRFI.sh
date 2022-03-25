@@ -25,18 +25,17 @@ if [ "${upload_to_librarian}" == "True" ]; then
         xrfi_stage_1_folder=`echo ${fn%.sum.uvh5}.stage_1_xrfi`
         compressed_file=`echo zen.${jd}.stage_1_xrfi.tar.gz`
         
+        # upload compressed XRFI files
         echo tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
         tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
         echo librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
         librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
             
-        # upload all thresholded flags files        
-        compressed_threshold_file=`echo zen.${jd}.stage_1_threshold_flags.tar.gz`
-        echo tar -czfv ${compressed_threshold_file} zen.${jd}*_stage_1_threshold_flags.h5
-        tar -czfv ${compressed_threshold_file} zen.${jd}*_stage_1_threshold_flags.h5
-        echo librarian upload local-rtp ${compressed_threshold_file} zen.${jd}.stage_1_threshold_flags.tar.gz
-        librarian upload local-rtp ${compressed_threshold_file} zen.${jd}.stage_1_threshold_flags.tar.gz
-            
-        fi
+        # upload all thresholded flags files
+        for ff in zen.${jd}*_stage_1_threshold_flags.h5; do
+            lib_ff=`echo zen.${decimal_jd}${ff#zen.${jd}}`
+            echo librarian upload local-rtp ${ff} ${jd}/${lib_ff}
+            librarian upload local-rtp ${ff} ${jd}/${lib_ff}
+        done
     fi
 fi
