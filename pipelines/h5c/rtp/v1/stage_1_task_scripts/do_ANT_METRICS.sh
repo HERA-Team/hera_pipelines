@@ -46,10 +46,11 @@ echo $cmd
 $cmd
 echo Finished ant_metrics at $(date)
 
+# This has been removed because ant_metrics files are not added to the librarian individually and this errors as a result.
 # add metrics to m&c
-for fn in ${sum_files[@]}; do
-    metrics_f=`echo ${fn%.uvh5}${extension}`
-    echo add_qm_metrics.py --type=ant ${metrics_f}
-    add_qm_metrics.py --type=ant ${metrics_f}
-    echo Finished adding ${metrics_f} to the monitor and control database at $(date)
-done
+# for fn in ${sum_files[@]}; do
+#     metrics_f=`echo ${fn%.uvh5}${extension}`
+#     echo add_qm_metrics.py --type=ant ${metrics_f}
+#     add_qm_metrics.py --type=ant ${metrics_f}
+#     echo Finished adding ${metrics_f} to the monitor and control database at $(date)
+# done
