@@ -15,7 +15,7 @@ source ${src_dir}/_common.sh
 # 4 - librarian_redcal_known_good: boolean trigger for this step
 fn="${1}"
 upload_to_librarian="${2}"
-librarian_ant_metrics="${3}"
+librarian_redcal_known_good="${3}"
 
 bn=`basename ${fn}`
 jd=$(get_int_jd ${fn})
