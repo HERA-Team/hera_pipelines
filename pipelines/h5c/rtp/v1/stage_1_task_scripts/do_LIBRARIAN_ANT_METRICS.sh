@@ -27,8 +27,8 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
         # Compress all ant_metrics files into one with a JD corresponding to $fn
         compressed_file=`echo ${fn%.uvh5}${extension}.tar.gz`
-        echo tar -czfv ${compressed_file} zen.${jd}*${extension}
-        tar -czfv ${compressed_file} zen.${jd}*${extension}
+        echo tar czfv ${compressed_file} zen.${jd}*${extension}
+        tar czfv ${compressed_file} zen.${jd}*${extension}
 
         # Upload gzipped file to the librarian
         librarian_file=`basename ${compressed_file}`

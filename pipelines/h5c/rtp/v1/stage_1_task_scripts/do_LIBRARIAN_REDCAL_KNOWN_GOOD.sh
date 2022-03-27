@@ -33,8 +33,8 @@ if [ "${upload_to_librarian}" == "True" ]; then
         )
         for ext in ${exts[@]}; do
             compressed_file=`echo ${fn%.uvh5}${ext}.tar.gz`
-            echo tar -czfv ${compressed_file} zen.${jd}*${ext}
-            tar -czfv ${compressed_file} zen.${jd}*${ext}
+            echo tar czfv ${compressed_file} zen.${jd}*${ext}
+            tar czfv ${compressed_file} zen.${jd}*${ext}
 
             # Upload gzipped file to the librarian
             librarian_file=`basename ${compressed_file}`

@@ -21,8 +21,8 @@ if [ "${upload_to_librarian}" == "True" ]; then
         
         # compress and upload to the librarian
         compressed_file=`echo zen.${jd}.sum.SSINS.tar.gz`
-        echo tar -czfv ${compressed_file} zen.${jd}.*.sum.SSINS
-        tar -czfv ${compressed_file} zen.${jd}.*.sum.SSINS
+        echo tar czfv ${compressed_file} zen.${jd}.*.sum.SSINS
+        tar czfv ${compressed_file} zen.${jd}.*.sum.SSINS
         echo librarian upload local-rtp ${compressed_file} zen.${jd}.sum.SSINS.tar.gz
         librarian upload local-rtp ${compressed_file} zen.${jd}.sum.SSINS.tar.gz
         

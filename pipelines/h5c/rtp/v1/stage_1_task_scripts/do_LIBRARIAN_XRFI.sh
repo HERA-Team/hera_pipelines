@@ -21,9 +21,9 @@ if [ "${upload_to_librarian}" == "True" ]; then
         decimal_jd=$(get_jd ${fn})
 
         # upload compressed XRFI files
-        echo tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
-        tar -czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
         compressed_file=`echo zen.${jd}.stage_1_xrfi.tar.gz`
+        echo tar czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
+        tar czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
         echo librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
         librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
             
