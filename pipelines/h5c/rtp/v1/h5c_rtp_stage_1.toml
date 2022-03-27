@@ -392,15 +392,14 @@ time_centered = false
 
 [LIBRARIAN_XRFI]
 prereqs = "XRFI_DAY_THRESHOLD"
-args = ["{basename}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_xrfi}",
-       ]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-mem = 1000
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_xrfi}",
+       ]
 
 [SSINS]
 prereqs = ["ANT_METRICS", "AUTO_METRICS"]
@@ -418,7 +417,10 @@ collect_stragglers = true
 
 [LIBRARIAN_SSINS]
 prereqs = "SSINS"
-mem = 1000
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_SSINS}",
