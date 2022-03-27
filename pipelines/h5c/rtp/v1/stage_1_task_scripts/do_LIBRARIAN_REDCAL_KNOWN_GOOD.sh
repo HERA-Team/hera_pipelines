@@ -44,4 +44,4 @@ if [ "${upload_to_librarian}" == "True" ]; then
         done
     fi
 fi
-echo Finished running redcal at $(date)
+echo Finished running librarian redcal known good at $(date)
