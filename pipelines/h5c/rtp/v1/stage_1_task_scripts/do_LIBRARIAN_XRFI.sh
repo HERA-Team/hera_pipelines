@@ -16,16 +16,16 @@ librarian_xrfi="${3}"
 
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_xrfi}" == "True" ]; then
-        # get the integer portion of the JD
+        # get the integer portion of the JD and full decimal JD
         jd=$(get_int_jd ${fn})
         decimal_jd=$(get_jd ${fn})
 
         # upload compressed XRFI files
-        compressed_file=`echo zen.${jd}.stage_1_xrfi.tar.gz`
+        compressed_file=`echo zen.${decimal_jd}.stage_1_xrfi.tar.gz`
         echo tar czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
         tar czfv ${compressed_file} zen.${jd}.*.stage_1_xrfi
-        echo librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
-        librarian upload local-rtp ${compressed_file} zen.${jd}.stage_1_xrfi.tar.gz
+        echo librarian upload local-rtp ${compressed_file} ${jd}/${compressed_file}
+        librarian upload local-rtp ${compressed_file} ${jd}/${compressed_file}
             
         # upload all thresholded flags files
         for ff in zen.${jd}*_stage_1_threshold_flags.h5; do

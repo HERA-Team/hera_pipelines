@@ -24,7 +24,7 @@ jd=$(get_int_jd ${fn})
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_redcal_known_good}" == "True" ]; then
 
-        # Compress all redcal_known_good files per output type into one with a JD corresponding to $fn        
+        # Compress all redcal_known_good files per output type into one with a JD corresponding to $fn
         declare -a exts=(
             ".known_good.first.calfits"
             ".known_good.omni.calfits"

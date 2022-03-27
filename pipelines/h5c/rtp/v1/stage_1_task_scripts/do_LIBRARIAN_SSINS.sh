@@ -18,13 +18,14 @@ if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_SSINS}" == "True" ]; then
         # get the integer portion of the JD
         jd=$(get_int_jd ${fn})
+        decimal_jd=$(get_jd ${fn})
         
         # compress and upload to the librarian
-        compressed_file=`echo zen.${jd}.sum.SSINS.tar.gz`
+        compressed_file=`echo zen.${decimal_jd}.sum.SSINS.tar.gz`
         echo tar czfv ${compressed_file} zen.${jd}.*.sum.SSINS
         tar czfv ${compressed_file} zen.${jd}.*.sum.SSINS
-        echo librarian upload local-rtp ${compressed_file} zen.${jd}.sum.SSINS.tar.gz
-        librarian upload local-rtp ${compressed_file} zen.${jd}.sum.SSINS.tar.gz
+        echo librarian upload local-rtp ${compressed_file} ${jd}/${compressed_file}
+        librarian upload local-rtp ${compressed_file} ${jd}/${compressed_file}
         
     fi
 fi

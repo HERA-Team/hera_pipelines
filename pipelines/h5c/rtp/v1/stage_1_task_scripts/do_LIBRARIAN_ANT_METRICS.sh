@@ -20,6 +20,7 @@ librarian_ant_metrics="${4}"
 
 bn=`basename ${fn}`
 jd=$(get_int_jd ${fn})
+decimal_jd=$(get_jd ${fn})
 
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
