@@ -7,10 +7,10 @@
 # IO Parameters
 #---------------------------------------------------------------
 io :
-  work_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess' # directory to work in
-  out_dir : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess'  # directory to dump all output in
-  logfile : 'preprocess_K_out_epoch_3.log'  # logfile
-  errfile : 'preprocess_K_err_epoch_3.log' # error file
+  work_dir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_3/preprocess' # directory to work in
+  out_dir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_3/preprocess'  # directory to dump all output in
+  logfile : 'preprocess_PRXTK_out_epoch_3.log'  # logfile
+  errfile : 'preprocess_PRXTK_err_epoch_3.log' # error file
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -21,10 +21,10 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : False         # foreground filter, clean or data-inpaint
-  ref_cal : False         # reflection calibration
-  xtalk_sub : False       # xtalk subtraction
-  time_avg : False        # time average data
+  fg_filt : True         # foreground filter, clean or data-inpaint
+  ref_cal : True         # reflection calibration
+  xtalk_sub : True       # xtalk subtraction
+  time_avg : True        # time average data
   red_avg : False         # redundant averaging
   form_pstokes : True    # form pseudo-Stokes visibilities
 
@@ -37,10 +37,10 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess'
+  data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_3'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.PT.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
