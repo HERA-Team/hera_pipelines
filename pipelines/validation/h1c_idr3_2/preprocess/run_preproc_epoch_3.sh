@@ -9,11 +9,11 @@
 #PBS -M jsdillon+nrao@berkeley.edu
 
 source ~/.bashrc
-conda activate h1c_idr3
-cd /lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_3/preprocess
+conda activate h1c_idr3_2_validation
+cd /lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_3/preprocess
 
 echo "start: $(date)"
-preprocess_dir=/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/software/hera_pipelines/pipelines/validation/h1c_idr3_2/preprocess
+preprocess_dir=/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/preprocess
 ${preprocess_dir}/preprocess_data.py ${preprocess_dir}/preprocess_params_epoch_3.yaml 
 
 echo "end: $(date)"
