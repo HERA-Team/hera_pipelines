@@ -1,12 +1,13 @@
 #!/bin/bash
-#PBS -q hera
-#PBS -j oe
-#PBS -o e3_preproc_pipe.out
-#PBS -N e3_preproc_pipe
-#PBS -l nodes=1:ppn=15
-#PBS -l walltime=256:00:00
-#PBS -l vmem=250GB,mem=250GB
-#PBS -M jsdillon+nrao@berkeley.edu
+#SBATCH --job-name=epoch_3_preprocess
+#SBATCH --partition=hera
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=15
+#SBATCH --mem=250G
+#SBATCH --time=256:00:00
+#SBATCH --output=epoch_3_preprocess.out
+#SBATCH --export=ALL
+
 
 source ~/.bashrc
 conda activate h1c_idr3_2_validation
