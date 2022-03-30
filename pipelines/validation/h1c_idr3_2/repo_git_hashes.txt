@@ -1,4 +1,4 @@
-hera_cal: 8076624ce6d8ec508bdcaef7f5f1288dc1edd511
+hera_cal: 40901f45ef94a0dc31744c2b33ec787cbc98e407
 pyuvdata: 4c66208245db29be8b9920434d6d48d23b29e367
 hera_opm: d33f82f5be1cadbb4f0f95228f8ccbfbbc059f5f
 hera_qm: 64734f519e05579fd4fbcdc960af64ccb42acd6b
