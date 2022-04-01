@@ -20,8 +20,8 @@ lst_start = 4.711094445 # this is before the first LST on 2458041 and after the 
 vis_units = "Jy"
 parallelize = "True"
 file_ext = "grp1.of1.{type}.{time:7.5f}.sum.uvh5"
-outdir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_0"
-parent_dir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_0"
+outdir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_0_new_hera_cal"
+parent_dir = "/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_0_new_hera_cal"
 data_files = ["/lustre/aoc/projects/hera/Validation/test-4.1.0/2458041/zen.*.sum.smooth_calibrated.uvh5",
               "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458042/zen.*.sum.smooth_calibrated.uvh5",
               "/lustre/aoc/projects/hera/Validation/test-4.1.0/2458043/zen.*.sum.smooth_calibrated.uvh5",
