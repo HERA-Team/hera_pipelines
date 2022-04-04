@@ -18,41 +18,34 @@ source ${src_dir}/_common.sh
 # 8 - if true, do no foregrounds file. This could run substantially slower if flags are not separable.
 
 fn="${1}"
-include_diffs="${2}"
-label="${3}"
-tol="${4}"
-frate_standoff="${5}"
-min_frate="${6}"
-cache_dir="${7}"
-spw_ranges="${8}"
+label="${2}"
+tol="${3}"
+frate_standoff="${4}"
+min_frate="${5}"
+cache_dir="${6}"
+spw_ranges="${7}"
 
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-# if cache directory does not exist, make it
-if [ "${include_diffs}" = "true" ]
-then
-  sumdiff=("sum" "diff")
-else
-  sumdiff=("sum")
-fi
+sumdiff=("sum")
 
 for sd in ${sumdiff[@]}
 do
-    fn_in=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
-    fg_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.uvh5`
-    fn_out=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5
+    fn_in=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.uvh5
+    fg_files=`echo zen.${int_jd}.*.${sd}.${label}.red_avg.chunked.foreground_model.uvh5`
+    fn_out=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.waterfall.uvh5
     #fn_filled=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.uvh5
     if [ -e "${fn_in}" ]
     then
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
-      --min_frate ${min_frate} --frate_standoff ${frate_standoff} --filled_outfilename ${fn_out} \
+      --min_frate ${min_frate} --frate_standoff ${frate_standoff} --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fin_in}\
       --clobber --verbose --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
-      --min_frate ${min_frate} --frate_standoff ${frate_standoff} --filled_outfilename ${fn_out} \
+      --min_frate ${min_frate} --frate_standoff ${frate_standoff} --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} \
       --clobber --verbose --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
     else

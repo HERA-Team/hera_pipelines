@@ -14,54 +14,23 @@ source ${src_dir}/_common.sh
 # 2 - output label for identifying file.
 
 fn="${1}"
-include_diffs="${2}"
-label="${3}"
+label="${2}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
+sd="sum"
 
-if [ "${include_diffs}" = "true" ]
+time_chunk_template=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.uvh5
+if [ -e "${time_chunk_template}" ]
 then
-  sumdiff=("sum" "diff")
+  # reconstitute xtalk filtered files
+  outfilename=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.uvh5
+  baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.waterfall.uvh5`
+  echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+      --baseline_chunk_files ${baseline_chunk_files} --clobber
+  time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
+      --baseline_chunk_files ${baseline_chunk_files} --clobber
 else
-  sumdiff=("sum")
+  echo "${time_chunk_template} does not exist!"
 fi
-exts=("foreground_filled" "foreground_res" "foreground_model")
-for sd in ${sumdiff[@]}
-do
-  time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.uvh5
-  if [ -e "${time_chunk_template}" ]
-  then
-    for ext in ${exts[@]}
-    do
-      # reconstitute xtalk filtered files
-      outfilename=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.uvh5
-      baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.xtalk_filtered.waterfall.uvh5`
-      echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
-      time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-          --baseline_chunk_files ${baseline_chunk_files} --clobber
-
-      if [ "${ext}" = "foreground_model" ]
-      then
-        # transfer flags from res file to model file.
-        echo transfer_flags.py zen.${jd}.${sd}.${label}.foreground_res.xtalk_filtered.uvh5 ${outfilename} ${outfilename} --clobber
-        transfer_flags.py zen.${jd}.${sd}.${label}.foreground_res.xtalk_filtered.uvh5 ${outfilename} ${outfilename} --clobber
-      fi
-    done
-    # reconstitute fr inpainted files
-
-    outfilename=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.uvh5
-    baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5`
-
-    echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
-
-    time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
-        --baseline_chunk_files ${baseline_chunk_files} --clobber
-
-  else
-    echo "${time_chunk_template} does not exist!"
-  fi
-done
