@@ -12,9 +12,6 @@ foreground filtering.
 
 See preprocess_params.yaml for relevant parameter selections.
 """
-from astropy.utils import iers
-iers.conf.auto_download = False
-
 import multiprocess
 import numpy as np
 import hera_cal as hc
