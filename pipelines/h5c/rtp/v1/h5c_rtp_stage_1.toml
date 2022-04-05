@@ -494,7 +494,7 @@ args = ["{basename}",
 [CLEAN_UP]
 prereqs = ["LIBRARIAN_RAW_DATA",
            "LIBRARIAN_ALL_NOTEBOOKS",
-           "LIBRARIAN_XRFI_DAY_THRESHOLD",
+           "LIBRARIAN_XRFI",
            "LIBRARIAN_SSINS",
            "ANTENNA_REPORT_NOTEBOOKS",
            "SEASON_SUMMARY_NOTEBOOK"]
