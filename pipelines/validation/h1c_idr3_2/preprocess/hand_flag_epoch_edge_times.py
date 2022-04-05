@@ -23,7 +23,7 @@ epoch_flag_regions = {0: [np.array([12, 20.54]) * np.pi / 12],
                       3: [np.array([0, 6.085]) * np.pi / 12]}
 assert args.epoch in epoch_flag_regions
 
-data_files = sorted(glob.glob(f'/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/LSTBIN/epoch_{args.epoch}/zen.grp1.of1.LST*sum.uvh5'))
+data_files = sorted(glob.glob(f'/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_{args.epoch}/zen.grp1.of1.LST*sum.uvh5'))
 _, _, file_lst_arrays, _ = io.get_file_times(data_files)
 for df, lsts in zip(data_files, file_lst_arrays):
     to_flag = np.zeros(len(lsts), dtype=bool)
