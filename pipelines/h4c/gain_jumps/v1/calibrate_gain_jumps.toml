@@ -41,8 +41,8 @@ actions = ["PRE_CHUNK",
            "TIME_INPAINT",
            "RECONSTITUTE",
            "MODEL_CALIBRATION",
-           "SMOOTH_CAL_FREQ",
-           "CLEANUP"]
+           "SMOOTH_CAL_FREQ",]
+           #"CLEANUP"]
 
 [PRE_CHUNK]
 mem=16000
@@ -102,3 +102,11 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${Options:label}"]
+
+[CLEANUP]
+prereqs="SMOOTH_CAL_FREQ"
+prereq_chunk_size=1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem=16000
+args = ["{baseneame}", "${Options:label}"]
