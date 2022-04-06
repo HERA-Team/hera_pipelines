@@ -9,6 +9,10 @@ source ${src_dir}/_common.sh
 fn="${1}"
 label="${2}"
 
+
+jd=$(get_jd $fn)
+int_jd=${jd:0:7}
+
 sd="sum"
 
 model=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.uvh5
