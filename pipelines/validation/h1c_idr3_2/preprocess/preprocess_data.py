@@ -1017,10 +1017,11 @@ if params['xtalk_sub']:
         return 0
 
     # Launch jobs
-    failures = hp.utils.job_monitor(run_xtalk_sub, range(len(blgroups)),
-                                    "XTALK SUB", M=M, lf=lf, 
-                                    maxiter=params['maxiter'], 
-                                    verbose=verbose)
+    print('WARNING: SKIPPING THE FIRST STEP OF XTSUB')
+    # failures = hp.utils.job_monitor(run_xtalk_sub, range(len(blgroups)),
+    #                                 "XTALK SUB", M=M, lf=lf, 
+    #                                 maxiter=params['maxiter'], 
+    #                                 verbose=verbose)
 
     # collect output files
     outfname = os.path.basename(get_template(datafiles, force_other=True, other='*'))
