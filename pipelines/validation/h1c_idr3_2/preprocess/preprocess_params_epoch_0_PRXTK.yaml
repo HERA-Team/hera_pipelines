@@ -40,7 +40,7 @@ data :
   data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_0/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.sum.P.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
