@@ -36,7 +36,7 @@ min_frate = 0.5
 ############################################################################################################
 
 [WorkFlow]
-actions = ["PRE_CHUNK",
+actions = [#"PRE_CHUNK",
            "DELAY",
            "TIME_INPAINT",
            "RECONSTITUTE",
@@ -53,8 +53,8 @@ args=["{basename}", "${Options:label}",
     "${Options:spw_ranges}", "${Options:yaml_dir}"]
 
 [DELAY]
-prereqs = "PRE_CHUNK"
-prereq_chunk_size = 1
+#prereqs = "PRE_CHUNK"
+#prereq_chunk_size = 1
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
