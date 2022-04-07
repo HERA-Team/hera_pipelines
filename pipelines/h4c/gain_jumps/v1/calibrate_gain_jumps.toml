@@ -36,7 +36,7 @@ min_frate = 0.5
 ############################################################################################################
 
 [WorkFlow]
-actions = [#"PRE_CHUNK",
+actions = ["PRE_CHUNK",
            "DELAY",
            "TIME_INPAINT",
            "RECONSTITUTE",
