@@ -60,7 +60,7 @@ stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}",
        "${Options:label}", "${DELAY_OPTS:tol}",
-       "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
+       "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", "${Options:cache_dir}",
        "${DELAY_OPTS:filter_mode}",
        "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}"]
 
