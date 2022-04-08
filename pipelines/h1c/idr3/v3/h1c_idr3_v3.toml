@@ -90,8 +90,8 @@ ref_sig_cut = 1.0
 [DPSS_DELAY_FILTER_OPTS]
 tol = 1e-9
 horizon = 1.0
-standoff = 50.0
-min_dly = 100.0
+standoff = 0.0
+min_dly = 150.0
 cache_dir = 'dpss_delay_filter_cache'
 
 ############################################################################################################
