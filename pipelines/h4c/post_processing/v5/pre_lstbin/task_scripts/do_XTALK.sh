@@ -48,12 +48,12 @@ do
       fn_res=zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.uvh5
       if [ -e "${fn_in}" ]
       then
-        echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
+        echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} --clean_flags_in_resid_flags \
         --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
         --cornerturnfile ${fn_in}\
         --clobber --verbose --mode dpss_leastsq --skip_autos --filter_spw_ranges ${spw_ranges}
 
-        tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
+        tophat_frfilter_run.py ${fg_files}  --tol ${tol} --clean_flags_in_resid_flags \
         --max_frate_coeffs ${frc0} ${frc1} --res_outfilename ${fn_res} \
         --cornerturnfile ${fn_in} \
         --clobber --verbose --mode dpss_leastsq --skip_autos --filter_spw_ranges ${spw_ranges}
