@@ -39,12 +39,12 @@ do
     #fn_filled=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.uvh5
     if [ -e "${fn_in}" ]
     then
-      echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
+      echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} --clean_flags_in_resid_flags \
       --min_frate_half_width ${min_frate} --frate_standoff ${frate_standoff} --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} \
       --clobber --verbose --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
 
-      tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
+      tophat_frfilter_run.py ${fg_files}  --tol ${tol} --clean_flags_in_resid_flags \
       --min_frate_half_width ${min_frate} --frate_standoff ${frate_standoff} --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} \
       --clobber --verbose --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
