@@ -52,18 +52,14 @@ nsig_t = 7.0
 nsig_f_adj = 3.0
 nsig_t_adj = 3.0
 
-[CAL_SMOOTH_OPTS] # TODO: update to DPSS
+[DPSS_SMOOTH_CAL]
 freq_scale = 10
 time_scale = 21600
-tol = 1e-6
-filter_mode = "rect"
-window = "tukey"
-maxiter = 100
-alpha = 0.3
+eigenval_cutoff = 1e-8
 freq_threshold = 1.0
 time_threshold = 1.0
 ant_threshold = 0.5
-lst_blacklists = ""
+lst_blacklists = "'2.75-4.0 15.2788745368-21.0084524881'" # hours, the former is Fornax A, the later is 4.0-5.5 radians (galaxy)
 
 [INPAINT_AUTOS_OPTS]
 horizon = 1.0
@@ -115,7 +111,7 @@ actions = [# "MAKE_DOWNSELECTED_UVH5",
            # "XRFI",
            # "XRFI_DAY_THRESHOLD",
            # "RFI_INSPECT_NOTEBOOK",
-           "CAL_SMOOTH",
+           "DPSS_SMOOTH_CAL",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
            "INPAINT_AUTOS",
            "TIME_AVG_REF_CAL",
@@ -192,7 +188,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
         "${ABSCAL_OPTS:model_files_glob}",
-        "${CAL_SMOOTH_OPTS:lst_blacklists}",
+        "${DPSS_SMOOTH_CAL_OPTS:lst_blacklists}",
        ]
 
 [XRFI]
@@ -246,7 +242,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:git_push}",
         ]
 
-[CAL_SMOOTH]
+[DPSS_SMOOTH_CAL]
 # TODO: put back in
 # prereqs = "XRFI_DAY_THRESHOLD"
 # prereq_chunk_size = "all"
@@ -255,21 +251,17 @@ stride_length = "all"
 time_centered = false
 mem = 128000
 args = ["{basename}",
-        "${CAL_SMOOTH_OPTS:freq_scale}",
-        "${CAL_SMOOTH_OPTS:time_scale}",
-        "${CAL_SMOOTH_OPTS:tol}",
-        "${CAL_SMOOTH_OPTS:filter_mode}",
-        "${CAL_SMOOTH_OPTS:window}",
-        "${CAL_SMOOTH_OPTS:maxiter}",
-        "${CAL_SMOOTH_OPTS:alpha}",
-        "${CAL_SMOOTH_OPTS:freq_threshold}",
-        "${CAL_SMOOTH_OPTS:time_threshold}",
-        "${CAL_SMOOTH_OPTS:ant_threshold}",
-        "${CAL_SMOOTH_OPTS:lst_blacklists}"
+        "${DPSS_SMOOTH_CAL_OPTS:freq_scale}",
+        "${DPSS_SMOOTH_CAL_OPTS:time_scale}",
+        "${DPSS_SMOOTH_CAL_OPTS:eigenval_cutoff}",
+        "${DPSS_SMOOTH_CAL_OPTS:freq_threshold}",
+        "${DPSS_SMOOTH_CAL_OPTS:time_threshold}",
+        "${DPSS_SMOOTH_CAL_OPTS:ant_threshold}",
+        "${DPSS_SMOOTH_CAL_OPTS:lst_blacklists}",
        ]
 
 [SMOOTH_CAL_INSPECT_NOTEBOOK]
-prereqs = "CAL_SMOOTH"
+prereqs = "DPSS_SMOOTH_CAL"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -280,11 +272,11 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
         "${ABSCAL_OPTS:model_files_glob}",
-        "${CAL_SMOOTH_OPTS:lst_blacklists}",
+        "${DPSS_SMOOTH_CAL_OPTS:lst_blacklists}",
        ]
 
 [INPAINT_AUTOS]
-prereqs = "CAL_SMOOTH"
+prereqs = "DPSS_SMOOTH_CAL"
 prereq_chunk_size = "all"
 args = ["{basename}",
         "${INPAINT_AUTOS_OPTS:horizon}",
