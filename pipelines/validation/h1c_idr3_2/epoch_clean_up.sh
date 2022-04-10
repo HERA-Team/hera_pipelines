@@ -119,7 +119,6 @@ else
 fi
 
 for jd in ${jdArray[@]}; do
-    rm -rf /lustre/aoc/projects/hera/Validation/test-4.1.0/${jd}/*abs.calfits
     if [[ "${jd}" == "2458041" ]]; then
         rm -rf /lustre/aoc/projects/hera/Validation/test-4.1.0/${jd}/*.sum.abs.calfits
         rm -rf /lustre/aoc/projects/hera/Validation/test-4.1.0/${jd}/*.sum.first.calfits
