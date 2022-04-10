@@ -94,6 +94,15 @@ standoff = 0.0
 min_dly = 150.0
 cache_dir = 'dpss_delay_filter_cache'
 
+[DPSS_XTALK_FILTER_OPTS]
+tol = 1e-9
+max_frate_const_term = -0.28
+max_frate_linear_term = 0.024
+min_frate_half_width = 0.06
+max_frate_half_width = 0.75
+cache_dir='dpss_xtalk_filter_cache'
+excluded_lsts = "'4.0-5.5'"
+
 ############################################################################################################
 
 [WorkFlow]
@@ -113,7 +122,9 @@ actions = [#"MAKE_DOWNSELECTED_UVH5",
            # "FINAL_APPLY_CAL",
            # "AVG_CALIBRATED_DATA",
            "DPSS_DELAY_FILTER",
-           # "FRINGE_RATE_FITLER",
+           "DPSS_XTALK_FILTER",
+           # "RECONSTITUTE",
+           # "REINSERT AUTOS",
            # "CLEAN_FILES",
           ]
 
@@ -328,6 +339,19 @@ args = ["{basename}",
         "${DPSS_DELAY_FILTER_OPTS:cache_dir}",
        ]
 
+[DPSS_XTALK_FILTER]
+prereqs = "DPSS_DELAY_FILTER"
+prereq_chunk_size = "all"
+mem = 16000
+args = ["{basename}",
+        "${DPSS_XTALK_FILTER_OPTS:tol}",
+        "${DPSS_XTALK_FILTER_OPTS:max_frate_const_term}",
+        "${DPSS_XTALK_FILTER_OPTS:max_frate_linear_term}",
+        "${DPSS_XTALK_FILTER_OPTS:min_frate_half_width}",
+        "${DPSS_XTALK_FILTER_OPTS:max_frate_half_width}",
+        "${DPSS_XTALK_FILTER_OPTS:cache_dir}",
+        "${DPSS_XTALK_FILTER_OPTS:excluded_lsts}",
+       ]
 
 # [CLEAN_FILES]
 # prereqs = ["REDCAL_INSPECT_NOTEBOOK",
