@@ -106,21 +106,21 @@ excluded_lsts = "'4.0-5.5'"
 ############################################################################################################
 
 [WorkFlow]
-actions = [#"MAKE_DOWNSELECTED_UVH5", 
-           #"EXTRACT_AUTOS",
-           #"REDCAL",
-           #"REDCAL_INSPECT_NOTEBOOK",
-           #"ABSCAL",
-           #"ABSCAL_INSPECT_NOTEBOOK",
-           #"XRFI",
-           #"XRFI_DAY_THRESHOLD",
-           #"RFI_INSPECT_NOTEBOOK",
-           #"CAL_SMOOTH",
-           #"SMOOTH_CAL_INSPECT_NOTEBOOK",
-           #"INPAINT_AUTOS",
-           # "TIME_AVG_REF_CAL",
-           # "FINAL_APPLY_CAL",
-           # "AVG_CALIBRATED_DATA",
+actions = [# "MAKE_DOWNSELECTED_UVH5", 
+           # "EXTRACT_AUTOS",
+           # "REDCAL",
+           # "REDCAL_INSPECT_NOTEBOOK",
+           # "ABSCAL",
+           # "ABSCAL_INSPECT_NOTEBOOK",
+           # "XRFI",
+           # "XRFI_DAY_THRESHOLD",
+           # "RFI_INSPECT_NOTEBOOK",
+           "CAL_SMOOTH",
+           "SMOOTH_CAL_INSPECT_NOTEBOOK",
+           "INPAINT_AUTOS",
+           "TIME_AVG_REF_CAL",
+           "FINAL_APPLY_CAL",
+           "AVG_CALIBRATED_DATA",
            "DPSS_DELAY_FILTER",
            "DPSS_XTALK_FILTER",
            # "RECONSTITUTE",
@@ -247,8 +247,9 @@ args = ["{basename}",
         ]
 
 [CAL_SMOOTH]
-prereqs = "XRFI_DAY_THRESHOLD"
-prereq_chunk_size = "all"
+# TODO: put back in
+# prereqs = "XRFI_DAY_THRESHOLD"
+# prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
@@ -329,7 +330,7 @@ prereqs = "FINAL_APPLY_CAL"
 args = ["{basename}"]
 
 [DPSS_DELAY_FILTER]
-# prereqs = "FINAL_APPLY_CAL"
+prereqs = "FINAL_APPLY_CAL"
 mem = 16000
 args = ["{basename}",
         "${DPSS_DELAY_FILTER_OPTS:tol}",
