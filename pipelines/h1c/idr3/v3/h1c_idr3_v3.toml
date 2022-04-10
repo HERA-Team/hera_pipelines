@@ -101,7 +101,7 @@ max_frate_linear_term = 0.024
 min_frate_half_width = 0.06
 max_frate_half_width = 0.75
 cache_dir='dpss_xtalk_filter_cache'
-excluded_lsts = "'4.0-5.5'"
+excluded_lsts = "'15.2788745368-21.0084524881'"  # hours, which is 4.0-5.5 radians
 
 ############################################################################################################
 
