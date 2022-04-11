@@ -41,7 +41,6 @@ cmd="smooth_cal_run.py ${calfiles} \
                        --time_threshold ${time_threshold} \
                        --ant_threshold ${ant_threshold} \
                        --lst_blacklists ${lst_blacklists} \
-                       --skip_flagged_edges \
                        --clobber \
                        --verbose"
 echo $cmd
