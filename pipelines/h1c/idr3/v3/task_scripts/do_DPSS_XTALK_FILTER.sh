@@ -34,10 +34,12 @@ uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5
 this_dpss_res_file=${uvh5_fn%.uvh5}.final_calibrated.dpss_res.uvh5
 jd_int=$(get_int_jd `basename ${uvh5_fn}`)
 all_dpss_res_files=`echo zen.${int_jd}.*.final_calibrated.dpss_res.uvh5`
+this_outfile=${this_dpss_res_file%.uvh5}.xtalk_filt_baseline_subgroup.uvh5
 
 # build and run command
 cmd="tophat_frfilter_run.py ${all_dpss_res_files} \
                             --cornerturnfile ${this_dpss_res_file} \
+                            --res_outfilename ${this_outfile} \
                             --tol ${tol} \
                             --max_frate_coeffs ${max_frate_const_term} ${max_frate_linear_term} \
                             --min_frate_half_width ${min_frate_half_width} \
