@@ -119,7 +119,7 @@ actions = [# "MAKE_DOWNSELECTED_UVH5",
            "AVG_CALIBRATED_DATA",
            "DPSS_DELAY_FILTER",
            "DPSS_XTALK_FILTER",
-           # "RECONSTITUTE",
+           "RECONSTITUTE",
            # "REINSERT AUTOS",
            # "CLEAN_FILES",
           ]
@@ -345,6 +345,11 @@ args = ["{basename}",
         "${DPSS_XTALK_FILTER_OPTS:cache_dir}",
         "${DPSS_XTALK_FILTER_OPTS:excluded_lsts}",
        ]
+
+[RECONSTITUTE]
+prereqs = "DPSS_XTALK_FILTER"
+prereq_chunk_size="all"
+args = ["{basename}"]
 
 # [CLEAN_FILES]
 # prereqs = ["REDCAL_INSPECT_NOTEBOOK",
