@@ -52,7 +52,7 @@ nsig_t = 7.0
 nsig_f_adj = 3.0
 nsig_t_adj = 3.0
 
-[DPSS_SMOOTH_CAL]
+[DPSS_SMOOTH_CAL_OPTS]
 freq_scale = 10
 time_scale = 21600
 eigenval_cutoff = 1e-8
