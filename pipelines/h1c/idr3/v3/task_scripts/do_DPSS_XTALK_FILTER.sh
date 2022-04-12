@@ -26,6 +26,11 @@ max_frate_half_width="${6}"
 cache_dir="${7}"
 excluded_lsts="${8}"
 
+# if cache directory does not exist, make it
+if [ ! -d ${cache_dir} ]; then
+    mkdir ${cache_dir}
+fi
+
 # generate base uvh5 file
 uvh5_fn=$(remove_pol $fn)
 uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5
