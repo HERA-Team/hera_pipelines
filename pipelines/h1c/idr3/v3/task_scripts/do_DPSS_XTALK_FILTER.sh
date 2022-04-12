@@ -38,7 +38,7 @@ uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5
 # get this and all dpss_res files
 this_dpss_res_file=${uvh5_fn%.uvh5}.final_calibrated.dpss_res.uvh5
 jd_int=$(get_int_jd `basename ${uvh5_fn}`)
-all_dpss_res_files=`echo zen.${int_jd}.*.final_calibrated.dpss_res.uvh5`
+all_dpss_res_files=`echo zen.${jd_int}.*.final_calibrated.dpss_res.uvh5`
 this_outfile=${this_dpss_res_file%.uvh5}.xtalk_filt_baseline_subgroup.uvh5
 
 # build and run command
