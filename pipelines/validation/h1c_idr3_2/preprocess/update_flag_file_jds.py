@@ -2,6 +2,7 @@ from pyuvdata import UVFlag
 from hera_cal import io
 import numpy as np
 import argparse
+import glob
 
 parser = argparse.ArgumentParser()
 parser.add_argument("epoch", type=int, help="Which epoch to make sure hand flag JDs match LST-binned JDs")
