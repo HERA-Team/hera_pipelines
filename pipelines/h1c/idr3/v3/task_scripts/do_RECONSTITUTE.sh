@@ -22,7 +22,7 @@ uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5
 # get this dpss_res_file as a time template, all baseline subgroup files, and the outfilename
 this_dpss_res_file=${uvh5_fn%.uvh5}.final_calibrated.dpss_res.uvh5
 jd_int=$(get_int_jd `basename ${uvh5_fn}`)
-all_baseline_subgroup_files=`echo zen.${int_jd}.*.final_calibrated.dpss_res.xtalk_filt_baseline_subgroup.uvh5`
+all_baseline_subgroup_files=`echo zen.${jd_int}.*.final_calibrated.dpss_res.xtalk_filt_baseline_subgroup.uvh5`
 this_outfile=${this_dpss_res_file%.uvh5}.xtalk_filt.uvh5
 
 # build and run command
