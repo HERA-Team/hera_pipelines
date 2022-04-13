@@ -4,7 +4,7 @@ import numpy as np
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("file_to_truncate", type=int, help="Which file to potentially truncate, generally the final file in the epoch")
+parser.add_argument("file_to_truncate", type=str, help="Which file to potentially truncate, generally the final file in the epoch")
 args = parser.parse_args()
 
 # Load corresponding flag file
