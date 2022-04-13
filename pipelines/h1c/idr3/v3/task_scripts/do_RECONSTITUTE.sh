@@ -23,7 +23,7 @@ uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5
 this_dpss_res_file=${uvh5_fn%.uvh5}.final_calibrated.dpss_res.uvh5
 jd_int=$(get_int_jd `basename ${uvh5_fn}`)
 all_baseline_subgroup_files=`echo zen.${int_jd}.*.final_calibrated.dpss_res.xtalk_filt_baseline_subgroup.uvh5`
-this_outfile=${this_dpss_res_file%.uvh5}.xtalk_filt.uvh5`
+this_outfile=${this_dpss_res_file%.uvh5}.xtalk_filt.uvh5
 
 # build and run command
 cmd="time_chunk_from_baseline_chunks_run.py ${this_dpss_res_file} \
