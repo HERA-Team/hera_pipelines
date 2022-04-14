@@ -21,8 +21,8 @@ io :
 #---------------------------------------------------------------
 analysis : 
   rfi_flag : False        # RFI-Flag data
-  fg_filt : True         # foreground filter, clean or data-inpaint
-  ref_cal : True         # reflection calibration
+  fg_filt : False         # foreground filter, clean or data-inpaint
+  ref_cal : False         # reflection calibration
   xtalk_sub : True       # xtalk subtraction
   time_avg : True        # time average data
   red_avg : False         # redundant averaging
@@ -37,14 +37,15 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_1'
+  # data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_1'
+  data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_1/preprocess'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.sum.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.P.sum.uvh5'
 
   # file extension for calibration file to load and apply to data
-  cal_ext : None 
-  # cal_ext : 'allspws.refcal_smooth.calfits'
+  # cal_ext : None 
+  cal_ext : 'allspws.refcal_smooth.calfits'
 
   # file extension to replace .uvh5 in data template for by-hand UVFlag file
   hand_flag_ext : .hand_flags.h5
