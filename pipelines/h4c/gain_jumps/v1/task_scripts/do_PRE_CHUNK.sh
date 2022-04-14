@@ -85,8 +85,8 @@ do
     select_spw_ranges.py ${input_file} ${input_file} --spw_ranges ${spw_ranges} --clobber
 
     # Generate redundantly averaged file.
-    echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file_red} --vis_units Jy -redundant_average
-    apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file_red} --vis_units Jy --redundant_average
+    #echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file_red} --vis_units Jy -redundant_average
+    #apply_cal.py --new_cal ${cal_file} --clobber  ${input_file} ${output_file_red} --vis_units Jy --redundant_average
 
     # apply calibration solutions.
     echo apply_cal.py --new_cal ${cal_file} --clobber ${input_file} ${output_file} --vis_units Jy
@@ -110,10 +110,10 @@ echo chunk_files.py ${input_files} ${input_file} ${output_file}  ${chunk_size} \
 chunk_files.py ${input_files} ${input_file} ${output_file} ${chunk_size} \
 --clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
 
-echo chunk_files.py ${input_files_red} ${input_file_red} ${output_file_red}  ${chunk_size} \
---clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
-chunk_files.py ${input_files_red} ${input_file_red} ${output_file_red} ${chunk_size} \
---clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
+#echo chunk_files.py ${input_files_red} ${input_file_red} ${output_file_red}  ${chunk_size} \
+#--clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
+#chunk_files.py ${input_files_red} ${input_file_red} ${output_file_red} ${chunk_size} \
+#--clobber --polarizations ee nn --throw_away_flagged_ants --ant_flag_yaml ${ant_flag_yaml}
 
 # remove staged files.
 rm -rf ${stage_dir}

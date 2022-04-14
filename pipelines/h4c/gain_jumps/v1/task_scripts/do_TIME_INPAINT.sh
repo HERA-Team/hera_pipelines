@@ -34,8 +34,10 @@ sumdiff=("sum")
 for sd in ${sumdiff[@]}
 do
     fn_in=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.uvh5
-    fg_files=`echo zen.${int_jd}.*.${sd}.${label}.red_avg.chunked.foreground_model.uvh5`
-    fn_out=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.waterfall.uvh5
+    #fg_files=`echo zen.${int_jd}.*.${sd}.${label}.red_avg.chunked.foreground_model.uvh5`
+    fg_files=`echo zen.${int_jd}.*.${sd}.${label}.chunked.foreground_model.uvh5`
+    fn_out=zen.${jd}.${sd}.${label}.chunked.foreground_model.time_inpainted.waterfall.uvh5
+    #fn_out=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.waterfall.uvh5
     #fn_filled=zen.${grpstr}.LST.${lst}.${sd}.${label}.waterfall.uvh5
     if [ -e "${fn_in}" ]
     then

@@ -38,8 +38,11 @@ fi
 
 sd="sum"
 
-fn_in=zen.${jd}.${sd}.${label}.red_avg.chunked.uvh5
-fn_cln=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.uvh5
+fn_in=zen.${jd}.${sd}.${label}.chunked.uvh5
+#fn_in=zen.${jd}.${sd}.${label}.red_avg.chunked.uvh5
+fn_cln=zen.${jd}.${sd}.${label}.chunked.foreground_model.uvh5
+#fn_cln=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.uvh5
+
 if [ -e "${fn_in}" ]
 then
   echo delay_filter_run.py ${fn_in}  \

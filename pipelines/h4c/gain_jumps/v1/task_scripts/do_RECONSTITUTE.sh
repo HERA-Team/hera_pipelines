@@ -21,12 +21,16 @@ int_jd=${jd:0:7}
 
 sd="sum"
 
-time_chunk_template=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.uvh5
+time_chunk_template=zen.${jd}.${sd}.${label}.chunked.foreground_model.uvh5
+#time_chunk_template=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.uvh5
 if [ -e "${time_chunk_template}" ]
 then
   # reconstitute xtalk filtered files
-  outfilename=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.uvh5
-  baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.waterfall.uvh5`
+#  outfilename=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.uvh5
+  outfilename=zen.${jd}.${sd}.${label}.chunked.foreground_model.time_inpainted.uvh5
+
+  #baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.waterfall.uvh5`
+  baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.chunked.foreground_model.time_inpainted.waterfall.uvh5`
   echo time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
       --baseline_chunk_files ${baseline_chunk_files} --clobber
   time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
