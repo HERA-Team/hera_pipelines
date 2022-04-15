@@ -903,6 +903,16 @@ if params['xtalk_sub']:
             # use history of zeroth data file
             history = R.hd.history
 
+            # configure output filename, skip running if file exists
+            outfname = fill_template(data_template, R.hd)
+            outfname = add_file_ext(outfname, p['file_ext'], outdir=params['out_dir'])
+            fext = get_file_ext(outfname)
+            outfname = '.'.join(outfname.split('.')[:-2]) + '.xtsub{:03d}.{}.uvh5'.format(i, fext)
+            if os.path.exists(outfname):
+                hp.utils.log(f"\n{outfname} already exists, so job {i} will not run.", 
+                             f=ef, tb=sys.exc_info(), verbose=verbose)
+                return 0
+
             # read data into HERAData
             R.read(bls=blgroups[i], polarizations=pols, axis='blt')
             R.hd.history = history
@@ -999,12 +1009,6 @@ if params['xtalk_sub']:
             # that calibration (if passed) is applied to these baselines
             cal_data = {k : R.data[k] for k in R.data.keys() if k not in keys}
             R.hd.update(hc.datacontainer.DataContainer(cal_data))
-
-            # configure output filename
-            outfname = fill_template(data_template, R.hd)
-            outfname = add_file_ext(outfname, p['file_ext'], outdir=params['out_dir'])
-            fext = get_file_ext(outfname)
-            outfname = '.'.join(outfname.split('.')[:-2]) + '.xtsub{:03d}.{}.uvh5'.format(i, fext)
 
             # Write to file
             R.hd.history += append_history("xtalk sub", p, get_template(datafiles, force_other=True), inp_cal=inp_cals)
