@@ -28,7 +28,7 @@ if len(uvf.lst_array) < len(hd.lsts):
     # Truncate, update history, and write file to disk
     hd.history += '\n\nManually truncated to match H1C IDR 3.2\n\n'
     hd.select(times=hd.times[0:len(uvf.lst_array)])
-    hd.write_uvh5(args.ffile_to_truncate, clobber=True)
+    hd.write_uvh5(args.file_to_truncate, clobber=True)
 
     # Also truncate STD file
     hd = io.HERAData(args.file_to_truncate.replace('.LST.','.STD.'))
