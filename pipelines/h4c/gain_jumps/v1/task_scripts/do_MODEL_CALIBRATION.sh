@@ -15,7 +15,7 @@ int_jd=${jd:0:7}
 
 sd="sum"
 
-model=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.uvh5
+model=zen.${jd}.${sd}.${label}.chunked.foreground_model.time_inpainted.uvh5
 #model=zen.${jd}.${sd}.${label}.red_avg.chunked.foreground_model.time_inpainted.uvh5
 data=zen.${jd}.${sd}.${label}.chunked.uvh5
 output=zen.${jd}.${sd}.${label}.model_cal.calfits
