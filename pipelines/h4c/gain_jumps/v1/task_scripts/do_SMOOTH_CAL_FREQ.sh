@@ -16,7 +16,7 @@ int_jd=${jd:0:7}
 input=zen.${jd}.${sd}.${label}.model_cal.calfits
 
 cmd="smooth_cal_run.py ${input} --infile_replace .model_cal. \
-     --outifle_replace .model_cal_smooth_freq. --clobber \
+     --outfile_replace .model_cal_smooth_freq. --clobber \
      --pick_refant --verbose --method DPSS --skip_flagged_edges --axis freq"
 
 echo ${cmd}
