@@ -19,7 +19,7 @@ input=zen.${jd}.${sd}.${label}.model_cal.calfits
 
 cmd="smooth_cal_run.py ${input} --infile_replace .model_cal. \
      --outfile_replace .model_cal_smooth_freq. --clobber \
-     --pick_refant --verbose --method DPSS --skip_flagged_edges --axis freq"
+     --pick_refant --verbose --method DPSS --axis freq"
 
 echo ${cmd}
 ${cmd}
