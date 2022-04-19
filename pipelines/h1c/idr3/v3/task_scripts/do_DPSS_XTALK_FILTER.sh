@@ -46,6 +46,7 @@ cmd="tophat_frfilter_run.py ${all_dpss_res_files} \
                             --cornerturnfile ${this_dpss_res_file} \
                             --res_outfilename ${this_outfile} \
                             --tol ${tol} \
+                            --case max_frate_coeffs \
                             --max_frate_coeffs ${max_frate_const_term} ${max_frate_linear_term} \
                             --min_frate_half_width ${min_frate_half_width} \
                             --max_frate_half_width ${max_frate_half_width} \
