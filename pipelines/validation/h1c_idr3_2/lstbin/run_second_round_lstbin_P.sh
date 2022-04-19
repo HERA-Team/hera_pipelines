@@ -10,7 +10,7 @@
 #SBATCH --array=1-67%32
 
 source ~/.bashrc
-conda activate h1c_idr3
+conda activate h1c_idr3_2_validation_lstbin
 
 echo "start: $(date)"
 lstbin_src_dir=/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/lstbin
