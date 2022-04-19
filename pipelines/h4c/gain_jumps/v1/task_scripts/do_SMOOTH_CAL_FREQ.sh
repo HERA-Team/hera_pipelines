@@ -13,6 +13,8 @@ label="${2}"
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
+sd="sum"
+
 input=zen.${jd}.${sd}.${label}.model_cal.calfits
 
 cmd="smooth_cal_run.py ${input} --infile_replace .model_cal. \
