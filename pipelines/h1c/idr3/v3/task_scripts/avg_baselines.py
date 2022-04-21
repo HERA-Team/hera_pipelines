@@ -9,7 +9,7 @@ from hera_cal import io
 
 # Parse arguments
 a = argparse.ArgumentParser(
-    description='Script for averaging baselines together. Keeps polarizations separate.'
+    description='Script for averaging together absolute values of visibilities over baselines. Keeps polarizations separate.'
 )
 a.add_argument("infile", type=str, help="path to .uvh5 file to average over the baseline axis")
 a.add_argument("outfile", type=str, help="path to output file")
@@ -44,8 +44,8 @@ for pol in data.pols():
     avg_nsamples[key] = np.where(avg_flags[key], total_nsamples, unflagged_nsamples)
     
     # avg_data is the average of unflagge data, unless everything is flagged, and then its the average of everything
-    total_data_avg = np.mean([data[bl] for bl in unflagged_bls], axis=0)
-    unflagged_data_avg = np.nanmean([np.where(flags[bl], np.nan, data[bl]) for bl in unflagged_bls], axis=0)
+    total_data_avg = np.mean([np.abs(data[bl]) for bl in unflagged_bls], axis=0)
+    unflagged_data_avg = np.nanmean([np.where(flags[bl], np.nan, np.abs(data[bl])) for bl in unflagged_bls], axis=0)
     avg_data[key] = np.where(avg_flags[key], total_data_avg, unflagged_data_avg)
 
 # write results
