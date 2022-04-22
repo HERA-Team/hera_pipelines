@@ -323,7 +323,7 @@ args = ["{basename}"]
 
 [DPSS_DELAY_FILTER]
 prereqs = "FINAL_APPLY_CAL"
-mem = 16000
+mem = 32000
 args = ["{basename}",
         "${DPSS_DELAY_FILTER_OPTS:tol}",
         "${DPSS_DELAY_FILTER_OPTS:horizon}",
@@ -335,7 +335,7 @@ args = ["{basename}",
 [DPSS_XTALK_FILTER]
 prereqs = "DPSS_DELAY_FILTER"
 prereq_chunk_size = "all"
-mem = 16000
+mem = 32000
 args = ["{basename}",
         "${DPSS_XTALK_FILTER_OPTS:tol}",
         "${DPSS_XTALK_FILTER_OPTS:max_frate_const_term}",
