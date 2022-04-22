@@ -36,6 +36,7 @@ cmd="smooth_cal_run.py ${calfiles} \
                        --pick_refant \
                        --freq_scale ${freq_scale} \
                        --time_scale ${time_scale} \
+                       --method DPSS \
                        --eigenval_cutoff ${eigenval_cutoff} \
                        --freq_threshold ${freq_threshold} \
                        --time_threshold ${time_threshold} \
