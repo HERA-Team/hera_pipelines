@@ -120,8 +120,8 @@ actions = [# "MAKE_DOWNSELECTED_UVH5",
            "DPSS_DELAY_FILTER",
            "DPSS_XTALK_FILTER",
            "RECONSTITUTE",
-           # "REINSERT AUTOS",
            # "CLEAN_FILES",
+           "REPLACE_AUTOS",
           ]
 
 [MAKE_DOWNSELECTED_UVH5]
@@ -359,4 +359,8 @@ args = ["{basename}"]
 #           ]
 # prereq_chunk_size = "all"
 # args = ["{basename}"]
+[REPLACE_AUTOS]
+prereqs = "RECONSTITUTE"
+args = ["{basename}"]
+
 
