@@ -120,8 +120,8 @@ actions = [# "MAKE_DOWNSELECTED_UVH5",
            "DPSS_DELAY_FILTER",
            "DPSS_XTALK_FILTER",
            "RECONSTITUTE",
-           # "CLEAN_FILES",
            "REPLACE_AUTOS",
+           "CLEAN_FILES",
           ]
 
 [MAKE_DOWNSELECTED_UVH5]
@@ -351,16 +351,17 @@ prereqs = "DPSS_XTALK_FILTER"
 prereq_chunk_size="all"
 args = ["{basename}"]
 
-# [CLEAN_FILES]
-# prereqs = ["REDCAL_INSPECT_NOTEBOOK",
-#            "ABSCAL_INSPECT_NOTEBOOK",
-#            "SMOOTH_CAL_INSPECT_NOTEBOOK",
-#            "RFI_INSPECT_NOTEBOOK",
-#           ]
-# prereq_chunk_size = "all"
-# args = ["{basename}"]
 [REPLACE_AUTOS]
 prereqs = "RECONSTITUTE"
 args = ["{basename}"]
 
+[CLEAN_FILES]
+prereqs = ["REDCAL_INSPECT_NOTEBOOK",
+           "ABSCAL_INSPECT_NOTEBOOK",
+           "SMOOTH_CAL_INSPECT_NOTEBOOK",
+           "RFI_INSPECT_NOTEBOOK",
+           "REPLACE_AUTOS",
+          ]
+prereq_chunk_size = "all"
+args = ["{basename}"]
 
