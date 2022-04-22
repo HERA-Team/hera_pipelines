@@ -55,7 +55,7 @@ nsig_t_adj = 3.0
 [DPSS_SMOOTH_CAL_OPTS]
 freq_scale = 10
 time_scale = 21600
-eigenval_cutoff = 1e-9
+eigenval_cutoff = 1e-8
 freq_threshold = 1.0
 time_threshold = 1.0
 ant_threshold = 0.5
