@@ -356,12 +356,17 @@ prereqs = "RECONSTITUTE"
 args = ["{basename}"]
 
 [CLEAN_FILES]
-prereqs = ["REDCAL_INSPECT_NOTEBOOK",
-           "ABSCAL_INSPECT_NOTEBOOK",
-           "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           "RFI_INSPECT_NOTEBOOK",
+prereqs = [# TODO: put back
+           #"REDCAL_INSPECT_NOTEBOOK",
+           #"ABSCAL_INSPECT_NOTEBOOK",
+           #"SMOOTH_CAL_INSPECT_NOTEBOOK",
+           #"RFI_INSPECT_NOTEBOOK",
+           "AVG_CALIBRATED_DATA",
            "REPLACE_AUTOS",
           ]
 prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
 args = ["{basename}"]
 
