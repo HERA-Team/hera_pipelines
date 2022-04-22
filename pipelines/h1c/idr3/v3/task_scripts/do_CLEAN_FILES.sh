@@ -4,36 +4,35 @@ set -e
 # import common functions
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
-
 # define input arguments
 fn="${1}"
 
+# Obvious things to delete:
+
 # remove miriad files
-fn_xx=${fn}
-fn_yy=$(replace_pol $fn "yy")
-fn_xy=$(replace_pol $fn "xy")
-fn_yx=$(replace_pol $fn "yx")
-echo rm -rf "${fn_xx}"
-rm -rf "${fn_xx}"
-echo rm -rf "${fn_yy}"
-rm -rf "${fn_yy}"
-echo rm -rf "${fn_xy}"
-rm -rf "${fn_xy}"
-echo rm -rf "${fn_yx}"
-rm -rf "${fn_yx}"
-
-# remove uvh5 files
-uvh5_fn=$(remove_pol ${fn})
-uvh5_fn=${uvh5_fn%.HH.uv}.sum.uvh5 # this makes things more compatible with H3C/H4C software
-echo rm -rfv ${uvh5_fn}
-rm -rfv ${uvh5_fn}
-
-# remove firstcal files
-firstcal_fn=${uvh5_fn%.uvh5}.first.calfits
-echo rm -rfv ${firstcal_fn}
-rm -rfv ${firstcal_fn}
-
+rm -rfv zen.???????.?????.??.??.uv
+# remove uvh5 file
+rm -rfv zen.???????.?????.sum.uvh5
+# remove firstcal file
+rm -rfv zen.???????.?????.sum.first.calfits
 # remove unflagged abscal files
-abscal_fn=${uvh5_fn%.uvh5}.abs.calfits
-echo rm -rfv ${abscal_fn}
-rm -rfv ${abscal_fn}
+rm -rfv zen.???????.?????.sum.abs.calfits
+# remove final claibrated file
+rm -rfv zen.???????.?????.sum.final_calibrated.uvh5
+# remove final calibrated dpss model
+rm -rfv zen.???????.?????.sum.final_calibrated.dpss_mdl.uvh5
+# remove xtalk filtering baseline subgroup (before cornerturn)
+rm -rfv zen.???????.?????.sum.final_calibrated.dpss_res.xtalk_filt_baseline_subgroup.uvh5
+
+# Things that are potentially interesting but we're deleting to save space:
+
+# remove extracted raw autocorrelations
+rm -rfv zen.???????.?????.sum.autos.uvh5
+# remove omnical visibility solutions
+rm -rfv zen.???????.?????.sum.omni_vis.uvh5
+# remove omnical calibration solutions
+rm -rfv zen.???????.?????.sum.omni.calfits
+# remove flagged abscal calibration solutions
+rm -rfv zen.???????.?????.sum.flagged_abs.calfits
+# remove inpainted autocorrelations that were used to figure out reflections
+rm -rfv zen.???????.?????.sum.autos.inpainted.uvh5
