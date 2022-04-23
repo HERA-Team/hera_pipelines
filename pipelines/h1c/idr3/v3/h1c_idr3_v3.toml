@@ -98,7 +98,7 @@ max_frate_linear_term = 0.024
 min_frate_half_width = 0.06
 max_frate_half_width = 0.75
 cache_dir='dpss_xtalk_filter_cache'
-lst_blacklists = "'16.25-19.25"
+lst_blacklists = "'16.25-19.25'"
 blacklist_wgt = 0.1
 
 ############################################################################################################
