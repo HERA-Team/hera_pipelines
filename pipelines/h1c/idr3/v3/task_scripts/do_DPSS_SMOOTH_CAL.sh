@@ -16,6 +16,7 @@ source ${src_dir}/_common.sh
 # 6 - time_threshold
 # 7 - ant_threshold
 # 8 - lst_blacklists
+# 9 - blacklist_wgt
 fn="${1}"
 freq_scale="${2}"
 time_scale="${3}"
@@ -24,6 +25,7 @@ freq_threshold="${5}"
 time_threshold="${6}"
 ant_threshold="${7}"
 lst_blacklists="${8}"
+blacklist_wgt="${9}"
 
 # get list of all calfiles for a day
 jd=$(get_jd $fn)
@@ -42,6 +44,7 @@ cmd="smooth_cal_run.py ${calfiles} \
                        --time_threshold ${time_threshold} \
                        --ant_threshold ${ant_threshold} \
                        --lst_blacklists ${lst_blacklists} \
+                       --blacklist_wgt ${blacklist_wgt} \
                        --clobber \
                        --verbose"
 echo $cmd

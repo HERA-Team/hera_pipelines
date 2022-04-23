@@ -16,7 +16,8 @@ source ${src_dir}/_common.sh
 # 5 - overall maximum fringe rate half-width to filter to, regardless of the linear equation above
 # 6 - overall minimum fringe rate half-width to filter to, regardless of the linear equation above
 # 7 - directory for caching DPSS matrices
-# 8 - list of lsts to assign 0 weight, input as a space-separated list of dash-separted pairs
+# 8 - list of lsts to assign blacklist_wgt weight, input as a space-separated list of dash-separted pairs
+# 9 - blacklist_wgt (see above)
 fn="${1}"
 tol="${2}"
 max_frate_const_term="${3}"
@@ -24,7 +25,8 @@ max_frate_linear_term="${4}"
 min_frate_half_width="${5}"
 max_frate_half_width="${6}"
 cache_dir="${7}"
-excluded_lsts="${8}"
+lst_blacklists="${8}"
+blacklist_wgt="${9}"
 
 # if cache directory does not exist, make it
 if [ ! -d ${cache_dir} ]; then
@@ -51,7 +53,8 @@ cmd="tophat_frfilter_run.py ${all_dpss_res_files} \
                             --min_frate_half_width ${min_frate_half_width} \
                             --max_frate_half_width ${max_frate_half_width} \
                             --cache_dir ${cache_dir} \
-                            --excluded_lsts ${excluded_lsts} \
+                            --lst_blacklists ${lst_blacklists} \
+                            --blacklist_wgt ${blacklist_wgt} \
                             --mode dpss_leastsq \
                             --skip_autos \
                             --clobber \
