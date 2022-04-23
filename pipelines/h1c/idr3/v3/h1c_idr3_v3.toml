@@ -59,7 +59,7 @@ eigenval_cutoff = 1e-9
 freq_threshold = 1.0
 time_threshold = 1.0
 ant_threshold = 0.5
-lst_blacklists = "'2.75-4.0 15.2788745368-21.0084524881'" # hours, the former is Fornax A, the later is 4.0-5.5 radians (galaxy)
+lst_blacklists = "'2.75-4.0 16.25-19.25'" # hours, the former is Fornax A, the galaxy
 
 [INPAINT_AUTOS_OPTS]
 horizon = 1.0
@@ -97,7 +97,7 @@ max_frate_linear_term = 0.024
 min_frate_half_width = 0.06
 max_frate_half_width = 0.75
 cache_dir='dpss_xtalk_filter_cache'
-excluded_lsts = "'15.2788745368-21.0084524881'"  # hours, which is 4.0-5.5 radians
+lst_blacklists = "'16.25-19.25"
 
 ############################################################################################################
 
