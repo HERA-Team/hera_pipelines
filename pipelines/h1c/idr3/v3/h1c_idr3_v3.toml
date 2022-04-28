@@ -113,17 +113,18 @@ actions = [# "MAKE_DOWNSELECTED_UVH5",
            # "XRFI",
            # "XRFI_DAY_THRESHOLD",
            # "RFI_INSPECT_NOTEBOOK",
-           "DPSS_SMOOTH_CAL",
-           "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           "INPAINT_AUTOS",
-           "TIME_AVG_REF_CAL",
-           "FINAL_APPLY_CAL",
-           "AVG_CALIBRATED_DATA",
-           "DPSS_DELAY_FILTER",
-           "DPSS_XTALK_FILTER",
-           "RECONSTITUTE",
-           "REPLACE_AUTOS",
-           "CLEAN_FILES",
+           # "DPSS_SMOOTH_CAL",
+           # "SMOOTH_CAL_INSPECT_NOTEBOOK",
+           # "INPAINT_AUTOS",
+           # "TIME_AVG_REF_CAL",
+           # "FINAL_APPLY_CAL",
+           # "AVG_CALIBRATED_DATA",
+           # "DPSS_DELAY_FILTER",
+           # "DPSS_XTALK_FILTER",
+           # "RECONSTITUTE",
+           # "REPLACE_AUTOS",
+           "SYSTEMATICS_INSPECT_NOTEBOOK",
+           # "CLEAN_FILES",
           ]
 
 [MAKE_DOWNSELECTED_UVH5]
@@ -245,9 +246,8 @@ args = ["{basename}",
         ]
 
 [DPSS_SMOOTH_CAL]
-# TODO: put back in
-# prereqs = "XRFI_DAY_THRESHOLD"
-# prereq_chunk_size = "all"
+prereqs = "XRFI_DAY_THRESHOLD"
+prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
@@ -338,7 +338,7 @@ args = ["{basename}",
 [DPSS_XTALK_FILTER]
 prereqs = "DPSS_DELAY_FILTER"
 prereq_chunk_size = "all"
-mem = 32000
+mem = 48000
 args = ["{basename}",
         "${DPSS_XTALK_FILTER_OPTS:tol}",
         "${DPSS_XTALK_FILTER_OPTS:max_frate_const_term}",
@@ -359,14 +359,27 @@ args = ["{basename}"]
 prereqs = "RECONSTITUTE"
 args = ["{basename}"]
 
+[SYSTEMATICS_INSPECT_NOTEBOOK]
+# TODO: put back
+# prereqs = "REPLACE_AUTOS"
+# prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
 [CLEAN_FILES]
-prereqs = [# TODO: put back
-           #"REDCAL_INSPECT_NOTEBOOK",
-           #"ABSCAL_INSPECT_NOTEBOOK",
-           #"SMOOTH_CAL_INSPECT_NOTEBOOK",
-           #"RFI_INSPECT_NOTEBOOK",
+prereqs = ["REDCAL_INSPECT_NOTEBOOK",
+           "ABSCAL_INSPECT_NOTEBOOK",
+           "SMOOTH_CAL_INSPECT_NOTEBOOK",
+           "RFI_INSPECT_NOTEBOOK",
+           "SYSTEMATICS_INSPECT_NOTEBOOK",
            "AVG_CALIBRATED_DATA",
-           "REPLACE_AUTOS",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
