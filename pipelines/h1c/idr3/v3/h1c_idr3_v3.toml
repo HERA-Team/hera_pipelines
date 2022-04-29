@@ -360,9 +360,8 @@ prereqs = "RECONSTITUTE"
 args = ["{basename}"]
 
 [SYSTEMATICS_INSPECT_NOTEBOOK]
-# TODO: put back
-# prereqs = "REPLACE_AUTOS"
-# prereq_chunk_size = "all"
+prereqs = "REPLACE_AUTOS"
+prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
