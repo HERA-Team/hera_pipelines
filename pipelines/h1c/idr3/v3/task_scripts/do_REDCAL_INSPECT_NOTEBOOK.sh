@@ -32,6 +32,8 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/stage_2_redcal.ipynb
 
+python ${src_dir}/build_notebook_readme.py ${nb_output_repo}/redcal_inspect
+
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
 then
