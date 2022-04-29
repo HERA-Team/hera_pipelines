@@ -23,6 +23,9 @@ rm -rfv zen.???????.?????.sum.final_calibrated.uvh5
 rm -rfv zen.???????.?????.sum.final_calibrated.dpss_mdl.uvh5
 # remove xtalk filtering baseline subgroup (before cornerturn)
 rm -rfv zen.???????.?????.sum.final_calibrated.dpss_res.xtalk_filt_baseline_subgroup.uvh5
+# remove caches
+rm -rfv dpss_*_filter_cache
+
 
 # Things that are potentially interesting but we're deleting to save space:
 
