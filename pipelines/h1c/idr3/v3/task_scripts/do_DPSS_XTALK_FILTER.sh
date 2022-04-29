@@ -53,6 +53,8 @@ cmd="tophat_frfilter_run.py ${all_dpss_res_files} \
                             --min_frate_half_width ${min_frate_half_width} \
                             --max_frate_half_width ${max_frate_half_width} \
                             --cache_dir ${cache_dir} \
+                            --write_cache \
+                            --read_cache \
                             --lst_blacklists ${lst_blacklists} \
                             --blacklist_wgt ${blacklist_wgt} \
                             --mode dpss_leastsq \
