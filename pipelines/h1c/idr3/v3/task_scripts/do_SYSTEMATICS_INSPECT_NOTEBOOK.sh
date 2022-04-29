@@ -16,6 +16,13 @@ fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
 git_push=${4}
+horizon=${5}
+standoff=${6}
+min_dly=${7}
+max_frate_const_term=${8}
+max_frate_linear_term=${9}
+min_frate_half_width=${10}
+max_frate_half_width=${11}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -24,6 +31,13 @@ nb_outfile=${nb_output_repo}/systematics_mitigation_inspect/systematics_mitigati
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
 export JULIANDATE=${jd}
+export HORIZON=${horizon}
+export STANDOFF=${standoff}
+export MIN_DLY=${min_dly}
+export MAX_FRATE_CONST_TERM=${max_frate_const_term}
+export MAX_FRATE_LINEAR_TERM=${max_frate_linear_term}
+export MIN_FRATE_HALF_WIDTH=${min_frate_half_width}
+export MAX_FRATE_HALF_WIDTH=${max_frate_half_width}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \

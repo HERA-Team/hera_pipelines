@@ -370,6 +370,13 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
+        "${DPSS_DELAY_FILTER_OPTS:horizon}",
+        "${DPSS_DELAY_FILTER_OPTS:standoff}",
+        "${DPSS_DELAY_FILTER_OPTS:min_dly}",
+        "${DPSS_XTALK_FILTER_OPTS:max_frate_const_term}",
+        "${DPSS_XTALK_FILTER_OPTS:max_frate_linear_term}",
+        "${DPSS_XTALK_FILTER_OPTS:min_frate_half_width}",
+        "${DPSS_XTALK_FILTER_OPTS:max_frate_half_width}",
         ]
 
 [CLEAN_FILES]
