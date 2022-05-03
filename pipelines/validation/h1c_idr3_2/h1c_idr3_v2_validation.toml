@@ -9,7 +9,7 @@ base_cpu = 1
 timeout = "24h"
 
 [UNCALIBRATE_OPTS]
-sky_cmp = "foreground"
+sky_cmp = "sum"
 path_to_sim_configs = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/configs"
 path_to_sim_files = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/chunked_data"
 path_to_data_files = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2"
