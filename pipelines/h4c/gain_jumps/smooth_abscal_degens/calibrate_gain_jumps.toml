@@ -1,0 +1,70 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/gain_jumps/smooth_abscal_degens/task_scripts"
+conda_env = "hera3dev"
+source_script = "~/.bashrc"
+base_mem = 16000
+base_cpu = 1
+timeout = "24h"
+mail_user = "aaronew+nrao@berkeley.edu"
+yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags_include_variable/"
+
+[CAL_SMOOTH_OPTS]
+freq_scale = 50
+time_scale = 21600
+tol = 1e-6
+filter_mode = "rect"
+window = "tukey"
+maxiter = 100
+alpha = 0.3
+freq_threshold = 1.0
+time_threshold = 1.0
+ant_threshold = 0.5
+lst_blacklists = "0-1.3 2.5-4.3 6.5-9.1 10.6-11.5 11.9-14.3 16.3-1.3"
+
+############################################################################################################
+
+[WorkFlow]
+actions = [
+           "GET_RED_DEGEN",
+           "SMOOTH_RED_DEGEN_TIME",
+           "MULT_RED_DEGEN",
+           "SMOOTH_CAL_FREQ",]
+
+[GET_RED_DEGEN]
+mem=16000
+args=["{basename}"]
+
+[CAL_SMOOTH_TIME_DEGEN]
+prereqs = "DIVIDE_ABS_RED"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${CAL_SMOOTH_OPTS:time_scale}",
+        "${CAL_SMOOTH_OPTS:tol}",
+        "${CAL_SMOOTH_OPTS:time_threshold}",
+        "${CAL_SMOOTH_OPTS:ant_threshold}",
+        "${CAL_SMOOTH_OPTS:lst_blacklists}"
+       ]
+
+[MULT_RED_ABS_DEGEN]
+prereqs = "CAL_SMOOTH_TIME_DEGEN"
+prereq_chunk_size = "all"
+mem=16000
+args=["{basename}"]
+
+[CAL_SMOOTH_FREQ]
+rereqs = "MULT_RED_ABS_DEGEN"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args=["{basename}",
+      "${CAL_SMOOTH_OPTS:freq_scale}",
+      "${CAL_SMOOTH_OPTS:tol}",
+      "${CAL_SMOOTH_OPTS:freq_threshold}"
+      "${CAL_SMOOTH_OPTS:ant_threshold}"]
