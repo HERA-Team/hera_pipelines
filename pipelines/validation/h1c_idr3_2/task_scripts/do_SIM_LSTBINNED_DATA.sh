@@ -12,7 +12,7 @@ source ${src_dir}/_common.sh
 # 1 - reference file path
 # 2 - sky component (e.g. eor)
 # 3 - path to simulation data files
-# 4 - path to configuration file (leave empty for no systematics or uncalibration)
+# 4 - path to configuration file (use "None" for no systematics or uncalibration)
 
 ref_file="${1}"
 sky_cmp="${2}"
@@ -26,10 +26,12 @@ outfile="${ref_file%.sum*}".eor.uvh5
 cmd="python ${src_dir}/mock_lstbinned_data.py ${ref_file} \
                                               ${sky_cmp} \
                                               ${outfile} \
-                                              --config ${config_file} \
                                               --sim_dir ${sim_dir} \
                                               --clobber \
                                               --inflate \
                                               --input_is_compressed"
+if [ "${config_path}" != "None" ]; then
+    cmd="${cmd} --config ${config_path}"
+fi
 echo $cmd
 $cmd
