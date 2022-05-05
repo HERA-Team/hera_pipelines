@@ -141,8 +141,9 @@ if __name__ == "__main__":
         args.config = None
     if args.config is not None:
         config_path = Path(args.config)
-        config = yaml.load(cfg.read(), Loader=yaml.FullLoader)
-        
+        with open(config_path, "r") as cfg:
+            config = yaml.load(cfg.read(), Loader=yaml.FullLoader)
+
         print("Simulating and applying systematics.")
         print("====================================\n")
         for component_name, parameters in config.items():
