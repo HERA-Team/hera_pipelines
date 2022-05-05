@@ -13,12 +13,12 @@
 # Parameters
 #---------------------------------------------------------------
 
-outdir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/all_epochs_preprocessed'
+outdir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/fg_only/all_epochs_preprocessed'
 epoch_globs : 
-  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_0/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
-  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_1/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
-  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_2/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
-  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/epoch_3/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/fg_only/epoch_0/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/fg_only/epoch_1/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/fg_only/epoch_2/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
+  - '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/fg_only/epoch_3/preprocess/zen.grp1.of1.LST*sum.PX.uvh5'
 calfile_replace : 'None'
 file_ext : 'zen.grp1.of1.LST.{time:7.5f}.sum.LPXL.uvh5'
 weighting : 'freq_avg_nsamples'  # can be 'equal' for equal weighting, 'nsamples' for per-pixel nsamples weighting, or 'freq_avg_nsamples' for frequency-averaged nsamples weighting
