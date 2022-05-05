@@ -181,7 +181,7 @@ if __name__ == "__main__":
 
     # We should be done. Now just write the contents to disk.
     t1 = time.time()
-    sim_uvdata.write(str(outfile), save_format="uvh5", clobber=args.clobber)
+    sim_uvdata.write(str(args.outfile), save_format="uvh5", clobber=args.clobber)
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Writing data to disk took {dt:.2f} minutes.")
