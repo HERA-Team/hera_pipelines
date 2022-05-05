@@ -136,13 +136,13 @@ if __name__ == "__main__":
     print(f"Fixing antenna ordering took {dt:.2f} minutes.")
 
     # Now apply the systematics.
+    sim_uvdata = Simulator(data=sim_uvdata)
     if (isinstance(args.config, str) and len(args.config.strip()) == 0):
         args.config = None
     if args.config is not None:
         config_path = Path(args.config)
         config = yaml.load(cfg.read(), Loader=yaml.FullLoader)
         
-        sim_uvdata = Simulator(data=sim_uvdata)
         print("Simulating and applying systematics.")
         print("====================================\n")
         for component_name, parameters in config.items():
