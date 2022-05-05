@@ -23,6 +23,6 @@ actions = ["SIM_LSTBINNED_DATA",
 [SIM_LSTBINNED_DATA]
 args = ["{basename}",
         "${SIM_LSTBINNED_DATA_OPTS:sky_cmp}",
-        "${SIM_LSTBINNED_DATA_OPTS:path_to_sim_configs}",
         "${SIM_LSTBINNED_DATA_OPTS:path_to_sim_files}",
+        "${SIM_LSTBINNED_DATA_OPTS:path_to_sim_configs}",
        ]
