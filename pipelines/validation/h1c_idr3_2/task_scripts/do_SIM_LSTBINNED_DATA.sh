@@ -20,7 +20,12 @@ sim_dir="${3}"
 config_path="${4}"
 
 # Assumes this is built off soft links in the output folder to files like zen.grp1.of1.LST.0.02584.sum.LPL.uvh5
-outfile="${ref_file%.sum*}".eor.uvh5
+if [ "${config_path}" != "None" ]; then
+    outfile="${ref_file%.sum*}".eor.with_systematics.uvh5
+else
+    outfile="${ref_file%.sum*}".eor.uvh5
+fi
+
 
 # Do the interpolation and systematics simulation.
 cmd="python ${src_dir}/mock_lstbinned_data.py ${ref_file} \
