@@ -13,24 +13,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("ref_file", type=str, help="File to match LSTs, antennas, etc.")
 parser.add_argument("sky_cmp", type=str, help="Sky component (e.g. diffuse).")
 parser.add_argument("outfile", type=str, help="Path of output file.")
-parser.add_argument(
-    "--config", type=str, default=None, help="Path to configuration file with systematics. Default no systematics."
-)
-parser.add_argument(
-    "--sim_dir", type=str, default=".", help="Path to directory containing simulation files."
-)
-parser.add_argument(
-    "--lst_wrap", type=float, default=4.711094445, help="Where to wrap in LST."
-)
-parser.add_argument(
-    "--clobber", default=False, action="store_true", help="Overwrite existing files."
-)
-parser.add_argument(
-    "--inflate", default=False, action="store_true", help="Inflate data by redundancy."
-)
-parser.add_argument(
-    "--input_is_compressed", default=False, action="store_true", help="Whether the input files are compressed by redundancy.",
-)
+parser.add_argument("--config", type=str, default=None, help="Path to configuration file with systematics. Default None or all white space string means no systematics.")
+parser.add_argument("--sim_dir", type=str, default=".", help="Path to directory containing simulation files.")
+parser.add_argument("--lst_wrap", type=float, default=4.711094445, help="Where to wrap in LST.")
+parser.add_argument("--clobber", default=False, action="store_true", help="Overwrite existing files.")
+parser.add_argument("--inflate", default=False, action="store_true", help="Inflate data by redundancy.")
+parser.add_argument("--input_is_compressed", default=False, action="store_true", help="Whether the input files are compressed by redundancy.")
 
 if __name__ == "__main__":
     init_time = time.time()
@@ -148,6 +136,8 @@ if __name__ == "__main__":
     print(f"Fixing antenna ordering took {dt:.2f} minutes.")
 
     # Now apply the systematics.
+    if (isinstance(args.config, str) and len(args.config.strip()) == 0):
+        args.config = None
     if args.config is not None:
         config_path = Path(args.config)
         config = yaml.load(cfg.read(), Loader=yaml.FullLoader)
