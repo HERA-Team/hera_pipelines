@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # Start the interpolation routine.
     t1 = time.time()
     ref_uvdata = UVData()
-    ref_uvdata.read(infile, read_data=False)
+    ref_uvdata.read(args.ref_file, read_data=False)
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Reading reference metadata took {dt:.2f} minutes.")
