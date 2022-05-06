@@ -40,7 +40,7 @@ data :
   data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/eor_only/all_epochs'
 
   # glob-parseable, data template for input data products
-  data_template : 'zen.grp1.of1.LST.?.?????.eor.uvh5'
+  data_template : 'zen.grp1.of1.LST.?.?????.true_eor.uvh5'
 
   # file extension for calibration file to load and apply to data
   cal_ext : None 
