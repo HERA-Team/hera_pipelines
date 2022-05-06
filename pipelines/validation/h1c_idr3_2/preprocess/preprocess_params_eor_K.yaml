@@ -216,4 +216,4 @@ algorithm :
   # Forming pStokes
   pstokes : 
     outstokes : ['pI', 'pQ', 'pU', 'pV']
-    file_ext : "K"
+    file_ext : ".K"
