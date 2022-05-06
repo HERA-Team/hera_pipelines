@@ -203,8 +203,8 @@ algorithm :
     t_window : 214.0      # width of averaging window in seconds
     file_Ntimes : 20      # output file Ntimes (this is a minimum, might be 1 more if it doesn't divide evenly)
     wgt_by_nsample : False
-    wgt_by_favg_nsample : True
-    freq_avg_min_nsamp : 50  # minimum allowed number of samples after averaging, otherwise flag
+    wgt_by_favg_nsample : False
+    freq_avg_min_nsamp : 0  # minimum allowed number of samples after averaging, otherwise flag
     rm_intermediate_files : True
 
   # Redundant Averaging
