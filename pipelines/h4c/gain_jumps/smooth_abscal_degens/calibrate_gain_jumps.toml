@@ -29,7 +29,7 @@ actions = [
            "GET_RED_DEGEN",
            "SMOOTH_RED_DEGEN_TIME",
            "MULT_RED_DEGEN",
-           "SMOOTH_CAL_FREQ",]
+           "SMOOTH_CAL_FREQ"]
 
 [GET_RED_DEGEN]
 mem=16000
@@ -47,8 +47,7 @@ args = ["{basename}",
         "${CAL_SMOOTH_OPTS:tol}",
         "${CAL_SMOOTH_OPTS:time_threshold}",
         "${CAL_SMOOTH_OPTS:ant_threshold}",
-        "${CAL_SMOOTH_OPTS:lst_blacklists}"
-       ]
+        "${CAL_SMOOTH_OPTS:lst_blacklists}"]
 
 [MULT_RED_ABS_DEGEN]
 prereqs = "CAL_SMOOTH_TIME_DEGEN"
