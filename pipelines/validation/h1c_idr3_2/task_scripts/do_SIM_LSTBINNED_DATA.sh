@@ -38,7 +38,7 @@ cmd="python ${src_dir}/mock_lstbinned_data.py ${ref_file} \
 if [ "${config_path}" != "None" ]; then
     cmd="${cmd} --config ${config_path}"
 fi
-if [ "${inflate}" != "True" ]; then
+if [ "${inflate}" == "True" ]; then
     cmd="${cmd} --inflate"
 fi
 echo $cmd
