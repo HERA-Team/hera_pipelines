@@ -61,7 +61,7 @@ data :
   bls : None
 
   # filter baseline on actual baselines in data (e.g. when operating on red_avg data)
-  filter_bls : True
+  filter_bls : False
 
   # select inclusive range in LST [radians] for globbed datafiles
   # file mean LST be within bounds, otherwise it is dropped
