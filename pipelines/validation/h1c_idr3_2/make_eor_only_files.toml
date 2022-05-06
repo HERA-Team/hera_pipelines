@@ -12,12 +12,7 @@ timeout = "24h"
 sky_cmp = "eor"
 path_to_sim_files = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/chunked_data"
 path_to_sim_config = "None"
-# path_to_sim_config = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/systematics_configs/epoch_0_xtalk_only.yaml"
-# path_to_sim_config = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/systematics_configs/epoch_1_xtalk_only.yaml"
-# path_to_sim_config = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/systematics_configs/epoch_2_xtalk_only.yaml"
-# path_to_sim_config = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/systematics_configs/epoch_3_xtalk_only.yaml"
-
-
+inflate = "False"
 
 ############################################################################################################
 
@@ -30,4 +25,5 @@ args = ["{basename}",
         "${SIM_LSTBINNED_DATA_OPTS:sky_cmp}",
         "${SIM_LSTBINNED_DATA_OPTS:path_to_sim_files}",
         "${SIM_LSTBINNED_DATA_OPTS:path_to_sim_config}",
+        "${SIM_LSTBINNED_DATA_OPTS:inflate}",
        ]
