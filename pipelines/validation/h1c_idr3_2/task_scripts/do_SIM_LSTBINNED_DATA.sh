@@ -40,5 +40,6 @@ if [ "${config_path}" != "None" ]; then
 fi
 if [ "${inflate}" != "True" ]; then
     cmd="${cmd} --inflate"
+fi
 echo $cmd
 $cmd
