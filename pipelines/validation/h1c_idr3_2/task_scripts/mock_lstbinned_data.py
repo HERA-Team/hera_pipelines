@@ -76,7 +76,7 @@ if __name__ == "__main__":
     else:
         ants_to_keep = np.array([ant for ant in ref_uvdata.antenna_numbers if ant not in bad_ants])
 
-    trim_on_read = set(ants_to_keep.tolist()) == set(ants_to_load.tolist())
+    trim_on_read = args.inflate and (set(ants_to_keep.tolist()) == set(ants_to_load.tolist()))
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"File selection took {dt:.2f} minutes.")
