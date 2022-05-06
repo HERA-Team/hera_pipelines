@@ -37,7 +37,7 @@ analysis :
 #---------------------------------------------------------------
 data :
   # data root directory
-  data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/true_sum/epoch_0/preprocess'
+  data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/true_sum/epoch_0'
 
   # glob-parseable, data template for input data products
   data_template : 'zen.grp1.of1.LST.?.?????.true_sum.with_xtalk.uvh5'
