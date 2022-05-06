@@ -71,9 +71,11 @@ if __name__ == "__main__":
     ants_to_load = np.array(list(data_ants))
     # If we're inflating, then we're going to need to make sure not to include any
     # bad antennas that may have been missed in the previous filter.
-    ants_to_keep = np.array(
-        [ant for ant in ref_uvdata.antenna_numbers if ant not in bad_ants]
-    )
+    if not args.inflate:
+        ants_to_keep = ants_to_load
+    else:
+        ants_to_keep = np.array([ant for ant in ref_uvdata.antenna_numbers if ant not in bad_ants])
+
     trim_on_read = set(ants_to_keep.tolist()) == set(ants_to_load.tolist())
     t2 = time.time()
     dt = (t2 - t1) / 60
