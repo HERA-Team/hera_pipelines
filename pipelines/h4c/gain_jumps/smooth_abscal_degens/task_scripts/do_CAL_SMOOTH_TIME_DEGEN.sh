@@ -23,7 +23,7 @@ calfiles=`echo zen.${int_jd}.*.red_degen.calfits`
 
 input=zen.${jd}.sum.red_degen.calfits
 
-cmd="smooth_cal_run.py ${input} --infile_replace .red_degen. \
+cmd="smooth_cal_run.py ${calfiles} --infile_replace .red_degen. \
      --outfile_replace .red_degen_time_smoothed. --clobber \
      --pick_refant --verbose --method DPSS --axis freq --time_threshold ${time_threshold} \
      --ant_threshold ${ant_threshold} --time_scale ${time_scale} --lst_blacklists ${lst_blacklists}"
