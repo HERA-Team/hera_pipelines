@@ -14,7 +14,7 @@ int_jd=${jd:0:7}
 
 input1=zen.${jd}.sum.red_degen_time_smoothed.calfits
 input2=zen.${jd}.sum.omni.calfits
-output=zen.${jd}.sum.freq_smoothed_abs_degen_time_smoothed.calfits
+output=zen.${jd}.sum.abs_degen_time_smoothed.calfits
 
 cmd="multiply_gains.py ${input1} ${input2} ${output} --clobber"
 
