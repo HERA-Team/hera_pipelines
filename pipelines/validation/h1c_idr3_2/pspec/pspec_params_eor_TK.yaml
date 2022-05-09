@@ -92,7 +92,7 @@ algorithm :
 
   # pspec pipeline
   pspec : 
-    outfname : "pspec.grp1.of1.LPLTK.h5"
+    outfname : "pspec.grp1.of1.true_eor.TK.h5"
     groupname : "stokespol"
     output_by_red : True
     input_data_weight : "identity"
