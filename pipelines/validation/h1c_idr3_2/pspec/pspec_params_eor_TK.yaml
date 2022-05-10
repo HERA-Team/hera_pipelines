@@ -15,8 +15,8 @@
 io :
   work_dir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/eor_only/all_epochs/pspec' # directory to work in
   out_dir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/eor_only/all_epochs/pspec' # directory for output; root is work_dir
-  logfile : 'pspipe_out_eor_K.log'  # logfile; root is work_dir
-  errfile : 'pspipe_err_eor_K.log' # error file; root is work_dir
+  logfile : 'pspipe_out_eor_TK.log'  # logfile; root is work_dir
+  errfile : 'pspipe_err_eor_TK.log' # error file; root is work_dir
   joinlog : True       # redirect error output into logfile
   overwrite : True     # overwrite
   verbose : True        # report feedback to standard output
@@ -41,7 +41,7 @@ data :
   data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/eor_only/all_epochs/pspec'
 
   # data template basename: optionally with {group} and/or {pol} fields
-  data_template : 'zen.grp1.of1.LST.*.true_eor.K.uvh5'
+  data_template : 'zen.grp1.of1.LST.*.true_eor.TK.uvh5'
   
   # std template basename: optionally with {grup} and/or {pol} fields
   std_template : None
@@ -74,7 +74,7 @@ data :
   bls : None
 
   # denote bad antennas
-  xants : [] # 0,2,24,50,53,54,67,69,81,98,103,104,116,117,136,155,156,180,181,182,183,334,338]
+  xants : [] #0,2,24,50,53,54,67,69,81,98,103,104,116,117,136,155,156,180,181,182,183,334,338]
 
   # if True, sort files by LST of the first integration, using lst_branch_cut to decide where to wrap
   lst_sort : True 
@@ -92,7 +92,7 @@ algorithm :
 
   # pspec pipeline
   pspec : 
-    outfname : "pspec.grp1.of1.true_eor.TK.h5"
+    outfname : "pspec.grp1.of1.true_eor.K.h5"
     groupname : "stokespol"
     output_by_red : True
     input_data_weight : "identity"
