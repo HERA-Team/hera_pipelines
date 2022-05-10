@@ -3,7 +3,7 @@
 #SBATCH --partition=hera
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=15
-#SBATCH --mem=250G
+#SBATCH --mem=64G
 #SBATCH --time=256:00:00
 #SBATCH --output=eor_K_pspec.out
 #SBATCH --export=ALL
