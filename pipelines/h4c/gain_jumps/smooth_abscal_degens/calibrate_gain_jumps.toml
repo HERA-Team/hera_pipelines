@@ -10,7 +10,7 @@ mail_user = "aaronew+nrao@berkeley.edu"
 yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags_include_variable/"
 
 [CAL_SMOOTH_OPTS]
-freq_scale = 50
+freq_scale = 10
 time_scale = 21600
 tol = 1e-6
 filter_mode = "rect"
