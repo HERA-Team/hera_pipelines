@@ -185,8 +185,8 @@ args=["{basename}", "${Options:include_diffs}", "${Options:label}",
      "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
 
 [AUTOERRORS]
-prereqs = "PSPEC"
-prereq_chunk_size = 1
+#prereqs = "PSPEC"
+#prereq_chunk_size = 1
 mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
