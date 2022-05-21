@@ -37,8 +37,8 @@ do
   output_file=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.tavg.uvh5
   if [ -e "${input_file}" ]
   then
-    echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-    time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+    echo time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --wgt_by_favg_nsample --clobber
+    time_average.py ${input_file} ${output_file} --t_avg ${t_avg} --wgt_by_favg_nsample --clobber
   else
     echo "${input_file} does not exist!"
   fi
