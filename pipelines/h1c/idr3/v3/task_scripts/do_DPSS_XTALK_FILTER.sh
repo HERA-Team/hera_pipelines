@@ -58,6 +58,9 @@ cmd="tophat_frfilter_run.py ${all_dpss_res_files} \
                             --lst_blacklists ${lst_blacklists} \
                             --blacklist_wgt ${blacklist_wgt} \
                             --mode dpss_leastsq \
+                            --max_contiguous_edge_flags 10000 \
+                            --dont_skip_contiguous_flags \
+                            --dont_flag_model_rms_outliers \
                             --skip_autos \
                             --clobber \
                             --verbose"

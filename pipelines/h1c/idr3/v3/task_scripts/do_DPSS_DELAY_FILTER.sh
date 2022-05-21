@@ -44,6 +44,8 @@ cmd="delay_filter_run.py ${infile} \
                          --min_dly ${min_dly} \
                          --mode dpss_leastsq \
                          --max_contiguous_edge_flags 10000 \
+                         --dont_skip_contiguous_flags \
+                         --dont_flag_model_rms_outliers \
                          --cache_dir ${cache_dir} \
                          --write_cache \
                          --read_cache \
