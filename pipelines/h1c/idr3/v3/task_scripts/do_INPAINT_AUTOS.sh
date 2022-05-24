@@ -39,6 +39,9 @@ cmd="delay_filter_run.py ${autos_file} \
                          --calfilelist ${smooth_abs_calfile} \
                          --filled_outfilename ${filled_outfile} \
                          --mode clean \
+                         --dont_skip_contiguous_flags
+                         --dont_skip_flagged_edges
+                         --dont_flag_model_rms_outliers
                          --horizon ${horizon} \
                          --standoff ${standoff} \
                          --min_dly ${min_dly} \
