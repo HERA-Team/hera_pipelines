@@ -90,9 +90,18 @@ actions = ["FIRSTCAL_META_MEDIANS",
            #"CLEANUP_KEEP_FGFILLED"]
 
 [FIRSTCAL_META_MEDIANS]
-
+mem=16000
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}", "${Options:label}"]
 
 [INSERT_OMNICAL_MEDIANS]
+prereqs = "FIRSTCAL_META_MEDIANS"
+chunk_size = 1
+prereq_chunk_size = "all"
+mem=16000
+args=["{basename}", "${Options:label}"]
 
 [GET_RED_DEGEN]
 prereqs="INSERT_OMNICAL_MEDIANS"
