@@ -8,20 +8,19 @@ source ${src_dir}/_common.sh
 
 
 fn="${1}"
-time_scale="${2}"
-tol="${3}"
-time_threshold="${4}"
-ant_threshold="${5}"
-lst_blacklists="${@:6}"
+label="${2}"
+time_scale="${3}"
+tol="${4}"
+time_threshold="${5}"
+ant_threshold="${6}"
+lst_blacklists="${@:7}"
 
 
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-calfiles=`echo zen.${int_jd}.*.red_degen.calfits`
-
-input=zen.${jd}.sum.red_degen.calfits
+calfiles=`echo zen.${int_jd}.*.sum.${label}.red_degen.calfits`
 
 cmd="smooth_cal_run.py ${calfiles} --infile_replace .red_degen. \
      --outfile_replace .red_degen_time_smoothed. --clobber \

@@ -8,13 +8,14 @@ source ${src_dir}/_common.sh
 
 
 fn="${1}"
+label="${2}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-input1=zen.${jd}.sum.red_degen_time_smoothed.calfits
-input2=zen.${jd}.sum.omni.calfits
-output=zen.${jd}.sum.abs_degen_time_smoothed.calfits
+input1=zen.${jd}.sum.${label}.red_degen_time_smoothed.calfits
+input2=zen.${jd}.sum.${label}.omni.calfits
+output=zen.${jd}.sum.${label}.abs_degen_time_smoothed.calfits
 
 cmd="multiply_gains.py ${input1} ${input2} ${output} --clobber"
 

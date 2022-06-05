@@ -62,7 +62,8 @@ do
       # concatenate name of staged file to list of files to be fed to file chunker.
       input_files=${input_files}" ${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5"
       # calibrate file
-      cal_file=zen.${jd_temp}.sum.smooth_abs.calfits
+      cal_file=zen.${jd_temp}.sum.${label}.freq_smoothed_abs_degen_time_smoothed.calfits
+
       input_file=${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5
       output_file=${stage_dir}/${int_jd}/zen.${jd_temp}.${sd}.uvh5
       # if the diff does not exist, spoof it with the sum file and set

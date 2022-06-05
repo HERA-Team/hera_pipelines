@@ -8,19 +8,18 @@ source ${src_dir}/_common.sh
 
 
 fn="${1}"
-freq_scale="${2}"
-tol="${3}"
-freq_threshold="${4}"
-ant_threshold="${5}"
+label="${2}"
+freq_scale="${3}"
+tol="${4}"
+freq_threshold="${5}"
+ant_threshold="${6}"
 
 
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-calfiles=`echo zen.${int_jd}.*.abs_degen_time_smoothed.calfits`
-
-input=zen.${jd}.sum.freq_smoothed_abs_degen_time_smoothed.calfits
+calfiles=`echo zen.${int_jd}.*.sum.${label}.abs_degen_time_smoothed.calfits`
 
 cmd="smooth_cal_run.py ${calfiles} --infile_replace .abs_degen_time_smoothed. \
      --outfile_replace .freq_smoothed_abs_degen_time_smoothed. --clobber \
