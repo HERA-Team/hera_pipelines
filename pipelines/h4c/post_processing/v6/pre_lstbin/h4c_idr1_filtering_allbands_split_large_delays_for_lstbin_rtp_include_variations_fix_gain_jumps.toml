@@ -158,6 +158,7 @@ args=["{basename}",
 
 [PRE_CHUNK]
 prereqs = "CAL_SMOOTH_FREQ"
+prereq_chunk_size = "all"
 mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
