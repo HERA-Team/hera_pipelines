@@ -19,7 +19,7 @@ include_diffs = "true"
 
 [CAL_SMOOTH_OPTS]
 freq_scale = 10
-time_scale = 21600
+time_scale = 864000
 tol = 1e-6
 filter_mode = "rect"
 window = "tukey"
