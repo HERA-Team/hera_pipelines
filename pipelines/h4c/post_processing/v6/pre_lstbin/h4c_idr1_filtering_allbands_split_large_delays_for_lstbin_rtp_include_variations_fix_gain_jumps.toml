@@ -52,6 +52,7 @@ tol = 1e-9
 # inpaint beyond frate limit by this much.
 frate_standoff = 0.0
 min_frate = 0.5
+yaml_flag_file="/lustre/aoc/projects/hera/H4C/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/post_process_flags.yaml"
 
 [PSPEC_OPTS]
 pstokes="pI"
@@ -206,7 +207,7 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
-       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}"]
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
 
 
 #[TIME_INPAINT]
@@ -218,7 +219,7 @@ args = ["{basename}", "${Options:include_diffs}",
 #args = ["{basename}", "${Options:include_diffs}",
        #"${Options:label}", "${FR_OPTS:tol}",
        #"${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
-       #"${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}"]
+       #"${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
 
 
 

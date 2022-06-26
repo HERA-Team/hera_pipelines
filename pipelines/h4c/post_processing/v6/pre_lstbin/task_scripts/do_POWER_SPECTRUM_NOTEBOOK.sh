@@ -42,7 +42,7 @@ exts=("foreground_filled")
 
 for ext in ${exts[@]}
 do
-  nb_outfile=${nb_output_repo}/power_spectrum_inspect/power_spectrum_inspect_${label}_${jd}_${ext}.ipynb
+  nb_outfile=${nb_output_repo}/power_spectrum_inspect/power_spectrum_inspect_${label}_${int_jd}_${ext}.ipynb
   # Export variables used by the notebook
   export DATA_PATH=`pwd`
   export JULIANDATE=${int_jd}

@@ -41,7 +41,7 @@ if [[ "$int_jd" == *"."* ]]; then
   jd="LST.${jd}"
 fi
 
-nb_outfile=${nb_output_repo}/power_spectrum_summary/power_spectrum_summary_${label}_${jd}.ipynb
+nb_outfile=${nb_output_repo}/power_spectrum_summary/power_spectrum_summary_${label}_${int_jd}.ipynb
 
 
 exts="foreground_filled"

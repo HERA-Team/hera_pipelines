@@ -34,7 +34,7 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
 
-nb_outfile=${nb_output_repo}/gain_jump_calibration_inspect/gain_jump_inspect_${label}_${jd}.ipynb
+nb_outfile=${nb_output_repo}/gain_jump_calibration_inspect/gain_jump_inspect_${label}_${int_jd}.ipynb
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
 export JULIANDATE=${int_jd}
