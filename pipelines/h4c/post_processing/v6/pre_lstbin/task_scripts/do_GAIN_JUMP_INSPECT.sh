@@ -33,28 +33,26 @@ label=${5}
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 
-for ext in ${exts[@]}
-do
-  nb_outfile=${nb_output_repo}/power_spectrum_inspect/power_spectrum_inspect_${label}_${jd}_${ext}.ipynb
-  # Export variables used by the notebook
-  export DATA_PATH=`pwd`
-  export JULIANDATE=${int_jd}
-  export LABEL=${label}
+
+nb_outfile=${nb_output_repo}/gain_jump_calibration_inspect/gain_jump_inspect_${label}_${jd}.ipynb
+# Export variables used by the notebook
+export DATA_PATH=`pwd`
+export JULIANDATE=${int_jd}
+export LABEL=${label}
 
 
-  # Execute jupyter notebook
-  jupyter nbconvert --output=${nb_outfile} \
-  --to notebook \
-  --ExecutePreprocessor.allow_errors=True \
-  --ExecutePreprocessor.timeout=-1 \
-  --execute ${nb_template_dir}/inspect_gain_jump_calibration.ipynb
-  # If desired, push results to github
-  if [ "${git_push}" == "True" ]
-  then
-      cd ${nb_output_repo}
-      git pull origin master
-      git add ${nb_outfile}
-      git commit -m "H4C RTP Gain Jump Calibration Notebook for JD ${jd} ${label}"
-      git push origin master
-  fi
-done
+# Execute jupyter notebook
+jupyter nbconvert --output=${nb_outfile} \
+--to notebook \
+--ExecutePreprocessor.allow_errors=True \
+--ExecutePreprocessor.timeout=-1 \
+--execute ${nb_template_dir}/inspect_gain_jump_calibration.ipynb
+# If desired, push results to github
+if [ "${git_push}" == "True" ]
+then
+    cd ${nb_output_repo}
+    git pull origin master
+    git add ${nb_outfile}
+    git commit -m "H4C RTP Gain Jump Calibration Notebook for JD ${jd} ${label}"
+    git push origin master
+fi
