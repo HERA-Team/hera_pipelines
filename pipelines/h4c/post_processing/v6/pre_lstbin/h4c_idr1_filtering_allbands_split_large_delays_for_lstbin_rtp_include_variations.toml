@@ -176,9 +176,9 @@ args=["{basename}",
       "${GAIN_JUMP_INSPECT_OPTS:git_push}",
       "${Options:label}"]
 
-[PRE_CHUNK]
-prereqs = "CAL_SMOOTH_FREQ"
-prereq_chunk_size = "all"
+[PRE_CHUNK_NO_GAIN_FIX]
+#prereqs = "CAL_SMOOTH_FREQ"
+#prereq_chunk_size = "all"
 mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
