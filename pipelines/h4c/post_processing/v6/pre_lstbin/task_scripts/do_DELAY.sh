@@ -24,6 +24,7 @@ cache_dir="${7}"
 filter_mode="${8}"
 nbl_per_load="${9}"
 spw_ranges="${10}"
+flag_yaml="${11}"
 # get julian day from file name
 
 jd=$(get_jd $fn)
@@ -63,12 +64,12 @@ do
           --filled_outfilename ${fn_out} --clobber \
           --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
-          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
+          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges} --flag_yaml ${flag_yaml}
         delay_filter_run.py ${fn_in}  \
           --filled_outfilename ${fn_out} --clobber  \
           --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
-          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges}
+          --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges} --flag_yaml ${flag_yaml}
       elif [ "${filter_mode}" == "CLEAN" ]
       then
         npad=$((${spw1}-${spw0}))
@@ -76,13 +77,13 @@ do
         --filled_outfilename ${fn_out} --clobber \
         --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
         --tol ${tol} --standoff ${standoff}   --filter_spw_ranges ${spw_ranges}\
-        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean
+        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean --flag_yaml ${flag_yaml}
 
         delay_filter_run.py ${fn_in} \
         --filled_outfilename ${fn_out} --clobber \
         --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
         --tol ${tol} --standoff ${standoff}   --filter_spw_ranges ${spw_ranges}\
-        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean
+        --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean --flag_yaml ${flag_yaml}
       fi
     else
       echo "${fn_in} does not exist!"

@@ -196,7 +196,7 @@ args = ["{basename}",
        "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
        "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
        "${DELAY_OPTS:filter_mode}",
-       "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}"]
+       "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
 
 [XTALK]
 prereqs = "DELAY"
