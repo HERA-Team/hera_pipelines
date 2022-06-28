@@ -187,7 +187,7 @@ args=["{basename}", "${Options:include_diffs}", "${Options:label}",
     "${Options:spw_ranges}", "${Options:yaml_dir}"]
 
 [DELAY]
-prereqs = "PRE_CHUNK"
+prereqs = "PRE_CHUNK_NO_GAIN_FIX"
 prereq_chunk_size = 1
 chunk_size=1
 stride_length="${Options:chunk_size}"
