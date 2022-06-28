@@ -52,7 +52,7 @@ tol = 1e-9
 # inpaint beyond frate limit by this much.
 frate_standoff = 0.0
 min_frate = 0.5
-yaml_flag_file="/lustre/aoc/projects/hera/H4C/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/post_process_flags.yaml"
+yaml_flag_file="/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/post_process_flags.yaml"
 
 [PSPEC_OPTS]
 pstokes="pI"
