@@ -23,7 +23,7 @@ parallelize = "True"
 average_redundant_baselines = "False"
 file_ext = "{type}.{time:7.5f}.diff.all-bands-allbls-long-delay-clean-include-variable-ants.foreground_filled.xtalk_filtered.uvh5"
 outdir = "/lustre/aoc/projects/hera/H4C/lstbin/after_filtering_before_red_averaging/all-bands-long-delay-clean-include-variable-ants/"
-parent_dir = "/lustre/aoc/projects/hera/H4C/makeflow/lstbin_after_filtering_before_red_averaging_diff_allbands_foreground_filled_xtalk_filtered"
+parent_dir = "/lustre/aoc/projects/hera/H4C/makeflow/lstbin_diff_h4c_idr2p2"
 data_files = [
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459114/zen.*.diff.all-bands-allbls-long-delay-clean-include-variable-ants.foreground_filled.xtalk_filtered.uvh5",
               "/lustre/aoc/projects/hera/H4C/postprocessing/2459116/zen.*.diff.all-bands-allbls-long-delay-clean-include-variable-ants.foreground_filled.xtalk_filtered.uvh5",
