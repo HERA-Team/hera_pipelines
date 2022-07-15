@@ -83,6 +83,7 @@ if [ $fixed_lst_start == True ]; then
 else
     fixed_lst_start=""
 fi
+fixed_lst_start=""
 
 if [ "${average_redundant_baselines}" = "True" ]
 then
