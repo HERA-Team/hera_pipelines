@@ -36,7 +36,7 @@ fi
 
 for sd in ${sumdiff[@]}
 do
-  exts=( "foreground_filled.chunked" "frf" "foreground_filled.xtalk_filtered.chunked" )
+  exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
   for ext in ${exts[@]}
   do
     time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.chunked.uvh5

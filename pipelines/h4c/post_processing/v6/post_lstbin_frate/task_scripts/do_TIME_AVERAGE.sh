@@ -35,7 +35,7 @@ else
 fi
 
 
-exts=( "frf" "foreground_filled.chunked" "foreground_filled.xtalk_filtered.chunked" )
+exts=( "frf" "foreground_filled.xtalk_filtered.chunked" )
 for sd in ${sumdiff[@]}
 do
   for ext in ${exts[@]}

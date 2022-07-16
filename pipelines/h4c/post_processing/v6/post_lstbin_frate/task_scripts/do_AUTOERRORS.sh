@@ -24,7 +24,7 @@ if [[ "$int_jd" == *"."* ]]; then
   jd="LST.${jd}"
 fi
 
-exts=( "foreground_filled.chunked" "frf" "foreground_filled.xtalk_filtered.chunked" )
+exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
 
 
 

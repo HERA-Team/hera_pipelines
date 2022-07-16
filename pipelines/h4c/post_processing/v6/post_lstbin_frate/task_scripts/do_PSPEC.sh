@@ -29,7 +29,7 @@ else
   sumdiff=("sum")
 fi
 
-exts=( "foreground_filled.chunked" "frf" "foreground_filled.xtalk_filtered.chunked" )
+exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
 
 pol_pair_list=("XX~XX,YY~YY" "pI~pI")
 pol_label_list=("" "_pstokes")

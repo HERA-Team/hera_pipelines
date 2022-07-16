@@ -33,7 +33,7 @@ fi
 
 
 
-exts=( "foreground_filled.xtalk_filtered" "foreground_filled" )
+exts=( "foreground_filled.xtalk_filtered")
 
 for sd in ${sumdiff[@]}
 do
