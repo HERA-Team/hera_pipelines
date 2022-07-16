@@ -54,12 +54,12 @@ do
       #  then
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
-      --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
+      --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
       --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --case "uvbeam"
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
-      --cornerturnfile ${fn_in} --uvbeam ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
+      --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
       --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --case "uvbeam"
       #fi
     else
