@@ -15,7 +15,7 @@ pols = "ee nn"
 yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/"
 nbl_per_load = 100
 t_avg = 300.0
-include_diffs = "false"
+include_diffs = "true"
 transfer_filled_flags = "false"
 transfer_res_flags = "true"
 
