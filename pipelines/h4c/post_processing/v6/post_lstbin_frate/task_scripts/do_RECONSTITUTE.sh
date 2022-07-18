@@ -39,7 +39,7 @@ do
   exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
   for ext in ${exts[@]}
   do
-    time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.chunked.uvh5
+    time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.chunked.uvh5
     if [ -e "${time_chunk_template}" ]
     then
         # reconstitute frf files
