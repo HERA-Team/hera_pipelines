@@ -13,11 +13,14 @@ source ${src_dir}/_common.sh
 # 3 - nb_template_dir: where to look for the notebook template
 # 4 - nb_output_repo: repository for saving evaluated notebooks
 # 5 - git_push: boolean whether to push the results created in the nb_output_repo
+# 6 - good_statuses: string list of comma-separated (no spaces) antenna statuses considered "good"
+
 fn=${1}
 ant_metrics_ext=${2}
 nb_template_dir=${3}
 nb_output_repo=${4}
 git_push=${5}
+good_statuses=${6}
 
 redcal_ext=".known_good.omni.calfits"
 
@@ -32,6 +35,7 @@ export JULIANDATE=${jd}
 export ANT_METRICS_EXT=${ant_metrics_ext}
 export REDCAL_EXT=${redcal_ext}
 export NB_OUTDIR=${nb_outdir}
+export GOOD_STATUSES=${good_statuses}
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \

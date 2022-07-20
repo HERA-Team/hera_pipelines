@@ -12,5 +12,5 @@ set -e
 # 5 - git_push: boolean whether to push the results created in the nb_output_repo
 
 src_dir="$(dirname "$0")"
-echo ${src_dir}/do_RTP_SUMMARY_NOTEBOOK_1.sh ${1} ${2} ${3} ${4} ${5} 
-${src_dir}/do_RTP_SUMMARY_NOTEBOOK_1.sh ${1} ${2} ${3} ${4} ${5} 
+echo ${src_dir}/do_RTP_SUMMARY_NOTEBOOK_1.sh ${1} ${2} ${3} ${4} ${5} ${6}
+${src_dir}/do_RTP_SUMMARY_NOTEBOOK_1.sh ${1} ${2} ${3} ${4} ${5} ${6}

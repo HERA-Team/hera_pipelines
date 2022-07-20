@@ -193,6 +193,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}"
         ]
 
 [DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
@@ -262,6 +263,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}"
         ]
 
 ########## REDCAL AND ASSOCIATED NOTEBOOKS ##########
@@ -325,6 +327,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}"
         ]
 
 ########## UPDATE ANTENNA REPORTS AND SEASON SUMMARY ##########
