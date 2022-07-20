@@ -6,6 +6,7 @@
 import argparse
 import os
 import glob
+from astropy.time import Time
 
 starting_dir = os.getcwd()
 
@@ -34,10 +35,17 @@ branch = stream.read().strip()
 # build repo
 readme = ['# Links to view files:', '']
 for file in  sorted(glob.glob('*')):
+    try:  # try to append dates in a parethetical
+        JD = os.path.splitext(file)[0].split('_')[-1]
+        utc = Time(JD, format='jd').datetime
+        date_str = f' ({utc.year}-{utc.month}-{utc.day})'
+    except:
+        date_str = ''
+
     if file.endswith('.html'):
-        readme.append(f'* [{file}](https://htmlpreview.github.io/?https://github.com/{user}/{repo}/blob/{branch}/{sub_folders}/{file})')
+        readme.append(f'* [{file}{date_str}](https://htmlpreview.github.io/?https://github.com/{user}/{repo}/blob/{branch}/{sub_folders}/{file})')
     elif file.endswith('.ipynb'):
-        readme.append(f'* [{file}](https://nbviewer.jupyter.org/github/{user}/{repo}/blob/{branch}/{sub_folders}/{file})')
+        readme.append(f'* [{file}{date_str}](https://nbviewer.jupyter.org/github/{user}/{repo}/blob/{branch}/{sub_folders}/{file})')
 
 
 with open('README.md', 'w') as f:
