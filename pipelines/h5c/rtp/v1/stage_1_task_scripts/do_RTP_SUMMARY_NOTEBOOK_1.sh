@@ -52,6 +52,7 @@ then
     git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
     git add ${nb_outfile}
     git add ${nb_outdir}/rtp_summary_table_${jd}.csv
+    git add ${nb_outdir}/array_health_table_${jd}.csv
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
