@@ -30,6 +30,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             "rfi_inspect"
             "delay_spectrum_inspect"
             "rtp_summary"
+            "file_inspect"
         )
 
         for nb_name in ${nb_names[@]}; do

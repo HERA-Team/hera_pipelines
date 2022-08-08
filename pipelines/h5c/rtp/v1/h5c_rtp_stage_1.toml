@@ -78,6 +78,21 @@ streak_sig = 20.0
 other_sig = 5.0
 tb_aggro = 0.5
 
+[FILE_INSPECT_OPTS]
+am_corr_bad = 0.2
+am_corr_suspect = 0.4
+am_xpol_bad = -0.1
+am_xpol_suspect = 0.0
+auto_power_good_low = 5
+auto_power_good_high = 30
+auto_power_suspect_low = 1
+auto_power_suspect_high = 80
+auto_slope_good_low = -0.2
+auto_slope_good_high = 0.2
+auto_slope_suspect_low = -0.4
+auto_slope_suspect_high = 0.4
+
+
 ############################################################################################################
 
 [WorkFlow]
@@ -167,7 +182,31 @@ args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
         "{obsid_list}",
         ]
 
-########## DATA/AUTO INSPECT NOTEBOOKS ##########
+########## FILE/DATA/AUTO INSPECT NOTEBOOKS ##########
+
+[FILE_INSPECT_NOTEBOOK]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 32000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${FILE_INSPECT_OPTS:am_corr_bad}",
+        "${FILE_INSPECT_OPTS:am_corr_suspect}",
+        "${FILE_INSPECT_OPTS:am_xpol_bad}",
+        "${FILE_INSPECT_OPTS:am_xpol_suspect}",
+        "${FILE_INSPECT_OPTS:auto_power_good_low}",
+        "${FILE_INSPECT_OPTS:auto_power_good_high}",
+        "${FILE_INSPECT_OPTS:auto_power_suspect_low}",
+        "${FILE_INSPECT_OPTS:auto_power_suspect_high}",
+        "${FILE_INSPECT_OPTS:auto_slope_good_low}",
+        "${FILE_INSPECT_OPTS:auto_slope_good_high}",
+        "${FILE_INSPECT_OPTS:auto_slope_suspect_low}",
+        "${FILE_INSPECT_OPTS:auto_slope_suspect_high}",
+        ]
+
 
 [AUTO_METRICS_INSPECT_NOTEBOOK]
 prereqs = "AUTO_METRICS"
@@ -481,6 +520,7 @@ prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
            "RFI_INSPECT_NOTEBOOK",
            "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_3",
+           "FILE_INSPECT_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
