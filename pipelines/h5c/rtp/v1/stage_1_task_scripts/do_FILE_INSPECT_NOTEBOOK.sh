@@ -36,7 +36,7 @@ nb_outdir=${nb_output_repo}/file_inspect
 nb_outfile=${nb_outdir}/file_inspect_${jd}.ipynb
 
 # Export variables used by the notebook
-export SUM_FILE=${fn}
+export SUM_FILE=`realpath ${fn}`
 export AM_CORR_BAD=${am_corr_bad}
 export AM_CORR_SUSPECT=${am_corr_suspect}
 export AM_XPOL_BAD=${am_xpol_bad}
