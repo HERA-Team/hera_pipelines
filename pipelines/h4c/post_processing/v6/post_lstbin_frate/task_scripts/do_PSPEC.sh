@@ -71,7 +71,7 @@ do
               echo pspec_run.py ${input} ${output}\
                 --overwrite\
                 --pol_pairs ${pol_pairs} --verbose\
-                --Jy2mK --beam ${beam_file}\
+                --Jy2mK --beam ${beam_file} --interleave_times\
                 --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
                 --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
                 --exclude_cross_bls --exclude_crosscorrs
@@ -80,7 +80,7 @@ do
               pspec_run.py ${input} ${output}\
                 --overwrite\
                 --pol_pairs ${pol_pairs} --verbose\
-                --Jy2mK --beam ${beam_file}\
+                --Jy2mK --beam ${beam_file} --interleave_times\
                 --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
                 --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
                 --exclude_cross_bls --exclude_crosscorrs
