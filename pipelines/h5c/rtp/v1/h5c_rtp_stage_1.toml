@@ -188,7 +188,7 @@ args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
 [FILE_INSPECT_NOTEBOOK]
 chunk_size = 1
 stride_length = "all"
-time_centered = false
+time_centered = true
 mem = 32000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
