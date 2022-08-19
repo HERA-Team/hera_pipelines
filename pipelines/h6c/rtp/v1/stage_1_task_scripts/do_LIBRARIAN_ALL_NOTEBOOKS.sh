@@ -24,7 +24,6 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
         declare -a nb_names=(
             "auto_metrics_inspect"
-            "data_inspect_known_good"
             "data_inspect_all_ants"
             "redcal_inspect_known_good"
             "rfi_inspect"

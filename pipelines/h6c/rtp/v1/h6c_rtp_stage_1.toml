@@ -105,7 +105,6 @@ actions = ["SETUP",
            "FILE_INSPECT_NOTEBOOK",
            "AUTO_METRICS_INSPECT_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_1",
-           "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "ANT_METRICS",
            "LIBRARIAN_ANT_METRICS",
@@ -230,20 +229,6 @@ stride_length = "all"
 time_centered = false
 args = ["{basename}",
         "${ANT_METRICS_OPTS:extension}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${A_PRIORI_STATUS_OPTS:good_statuses}"
-        ]
-
-[DATA_INSPECT_NOTEBOOK_KNOWN_GOOD]
-prereqs = "EXTRACT_AUTOS"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 128000
-args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
@@ -515,7 +500,6 @@ args = ["{basename}",
 
 [LIBRARIAN_ALL_NOTEBOOKS]
 prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
-           "DATA_INSPECT_NOTEBOOK_KNOWN_GOOD", 
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "RFI_INSPECT_NOTEBOOK",
