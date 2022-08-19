@@ -1,0 +1,17 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 12000 # TODO: Check if this is the right number for site
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h5c/rtp/file_conversion/task_scripts"
+conda_env = "RTP"
+mandc_report = false
+batch_system = "slurm"
+default_queue = "hera,bigmem,gpu"
+
+[WorkFlow]
+actions = ["CONVERT_RAW_DATA"]
+
+[CONVERT_RAW_DATA]
+args = ["{basename}"]
