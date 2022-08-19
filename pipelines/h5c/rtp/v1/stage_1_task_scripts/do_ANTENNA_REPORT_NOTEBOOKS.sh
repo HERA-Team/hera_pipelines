@@ -18,7 +18,7 @@ nb_output_repo=${3}
 git_push=${4}
 
 # loop over antennas in the data file
-antennas=`python -c "from pyuvdata import UVData; import numpy as np; uv = UVData(); uv.read('${fn}', read_data=False); print(''.join([str(ant).zfill(3) for ant in (set(uv.ant_1_array) | set(uv.ant_2_array))]))"`
+antennas=`python -c "from pyuvdata import UVData; import numpy as np; uv = UVData(); uv.read('${fn}', read_data=False); print(' '.join([str(ant).zfill(3) for ant in (set(uv.ant_1_array) | set(uv.ant_2_array))]))"`
 for antenna in $antennas; do
     # Export variables used by the notebook
     export ANTENNA=$antenna
