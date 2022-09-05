@@ -12,7 +12,7 @@ source ${src_dir}/_common.sh
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
 # 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5+ - various bounds
+# 5+ - various bounds and settings
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
@@ -29,6 +29,14 @@ auto_slope_good_low=${13}
 auto_slope_good_high=${14}
 auto_slope_suspect_low=${15}
 auto_slope_suspect_high=${16}
+zeros_per_spec_good=${17}
+zeros_per_spec_suspect=${18}
+oc_cspa_good=${19}
+oc_cspa_suspect=${20}
+oc_max_dims=${21}
+oc_max_rerun=${22}
+oc_maxiter=${23}
+oc_skip_outriggers=${24}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -49,6 +57,14 @@ export AUTO_SLOPE_GOOD_LOW=${auto_slope_good_low}
 export AUTO_SLOPE_GOOD_HIGH=${auto_slope_good_high}
 export AUTO_SLOPE_SUSPECT_LOW=${auto_slope_suspect_low}
 export AUTO_SLOPE_SUSPECT_HIGH=${auto_slope_suspect_high}
+export MAX_ZEROS_PER_EO_SPEC_GOOD=${zeros_per_spec_good}
+export MAX_ZEROS_PER_EO_SPEC_SUSPECT=${zeros_per_spec_suspect}
+export OC_CSPA_GOOD=${oc_cspa_good}
+export OC_CSPA_SUSPECT=${oc_cspa_suspect}
+export OC_MAX_DIMS=${oc_max_dims}
+export OC_MAX_RERUN=${oc_max_rerun}
+export OC_MAXITER=${oc_maxiter}
+export OC_SKIP_OUTRIGGERS=${oc_skip_outriggers}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \

@@ -91,6 +91,14 @@ auto_slope_good_low = -0.2
 auto_slope_good_high = 0.2
 auto_slope_suspect_low = -0.4
 auto_slope_suspect_high = 0.4
+zeros_per_spec_good = 2
+zeros_per_spec_suspect = 8
+oc_cspa_good = 3
+oc_cspa_suspect = 4
+oc_max_dims = 4
+oc_max_rerun = 4
+oc_maxiter = 100
+oc_skip_outriggers = true
 
 
 ############################################################################################################
@@ -205,6 +213,14 @@ args = ["{basename}",
         "${FILE_INSPECT_OPTS:auto_slope_good_high}",
         "${FILE_INSPECT_OPTS:auto_slope_suspect_low}",
         "${FILE_INSPECT_OPTS:auto_slope_suspect_high}",
+        "${FILE_INSPECT_OPTS:zeros_per_spec_good}",
+        "${FILE_INSPECT_OPTS:zeros_per_spec_suspect}",
+        "${FILE_INSPECT_OPTS:oc_cspa_good}",
+        "${FILE_INSPECT_OPTS:oc_cspa_suspect}",
+        "${FILE_INSPECT_OPTS:oc_max_dims}",
+        "${FILE_INSPECT_OPTS:oc_max_rerun}",
+        "${FILE_INSPECT_OPTS:oc_maxiter}",
+        "${FILE_INSPECT_OPTS:oc_skip_outriggers}",
         ]
 
 
