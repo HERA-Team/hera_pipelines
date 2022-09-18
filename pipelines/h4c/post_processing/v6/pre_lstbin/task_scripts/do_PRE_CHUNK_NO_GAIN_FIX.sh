@@ -1,11 +1,45 @@
 #!/bin/bash
+#-----------------------------------------------------------------------------
+# This script is meant to be run at the beginning of the
+# post-processing pipeline. It accomplishes the following
+# 1) Downloads sum/diff data files from the librarian based on JD
+#    of input file.
+# 2) Throw away data with flagged antennas.
+# 3) Applies calibration solutions to data files.
+# 4) Chunks together multiple data files (which are typically 2-integrations)
+#    to form files with more integrations which improves downstream I/O times.
+# ----------------------------------------------------------------------------
+
 set -e
 
 # import common funcitons
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
-
+#-----------------------------------------------------------------------------
+# ARGUMENTS
+# 1) Input filename (string).
+# 2) Whether or not to perform analysis on diff files as well as sum files.
+#    valid options are "true" or "false".
+# 3) identifying string label for analysis outputs to set it apart from other
+#    runs with different parameters.
+# 4) Number of files to combine into "chunked" file.
+# 5) string indicating which channels to keep in output files. Format is
+#    comma-separated spectral windows where low/hi channels are joined by a tilde
+#    example: "0~10,15~25,30~80" will generate output files with three contiguous
+#    spectral windows that include channels 0-10, 15-25, and 30-80 from original
+#    files.
+# 6) path to directory containing a-priori yaml flag files with lists of antennas
+#    to throw away (along with any a-priori spectral/time flags you wish to apply)
+#    assumes that the yaml has the title <JD>.yaml
+#
+# OUTPUTS
+# 1) Chunked and calibrated sum files with the name forma
+#    zen.<JD>.sum.<label>.chunked.uvh5
+# 2) if include_diffs is "true" also generates calibrated diff
+#    files that are chunked with name
+#    zen.<JD>.diff.<label>.chunked.uvh5
+#-----------------------------------------------------------------------------
 fn="${1}"
 include_diffs="${2}"
 label="${3}"
