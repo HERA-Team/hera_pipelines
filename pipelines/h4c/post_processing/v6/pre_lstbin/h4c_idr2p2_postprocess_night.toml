@@ -74,35 +74,72 @@ filter_mode = "DPSS"
 spw_ranges = "0~265,265~737"
 
 # we may want to consider another flagging round after delay filtering.
-
 [FR_OPTS]
-# dividing this by two for low band.
+# The following two parameters are used by the XTALK filter (a notch filter).
+# The XTALK steps removes all fringe rates with absolute value of f_r less than
+# |f_r| < frmax1 + bl_ew * frmax0
+# in unites of [mHz] and bl_ew is the EW length of each baseline in units of meters.
 frmax0 = 0.0
 frmax1 = 0.025
+# remove Modes specified above to below this fraction of their original amplitude.
 tol = 1e-9
-# inpaint beyond frate limit by this much.
+# The following parameters are only used if you decide to include the do_INPAINT
+# and FILTER_NOTEBOOK steps -- useful for visualizing fringe-rate delay plots
+# without artifacts from flagged times.
+# fringe-rates are in-painted with
+# f_r <= max(min_frate, frate_standoff )
 frate_standoff = 0.0
 min_frate = 0.5
+# This yaml file specifies LST ranges to skip over during time inpainting and XTALK subtraction.
+# In particular, here I decided to throw away LSTs below 0 hours (excluding the LST of Galactic set)
+# which has a lot of non-fringing artifacts from antenna-antenna reflections.
+# I'm not sure it actually makes a difference though.
 yaml_flag_file="/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/post_process_flags.yaml"
 
 [PSPEC_OPTS]
+# These are not strictly necessary if you only want to produce in-painted and XTALK filtered files for LST binning.
+# Psuedo-stokes to produce (but not necessarily plot) in power spectrum analysis. I don't know if this is actually used in the end
+# besides in the PSPEC step (whose intermediary products are deleted anyways).
 pstokes="pI"
+# UVBeam file for power spectrum normalization.
 beam_file="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix"
-#spw_ranges="0~95,95~180,180~265,265~365,365~430,430~515,515~600,600~685"
+# spw_ranges to use for power spectrum estimation. Indices are referenced to the subbands
+# from Options;spw_ranges
 spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
-#spw_ranges="0~102,102~204,204~310,310~410,410~512,512~592,592~672,672~752,752~832"
+# These parameters are only used for calculating boot-strap error bars.
+# (if the do_BOOTSTRAP_ERRORS) step is uncommented.
 nsamples=100
 seed=10
 
 [FILTER_NOTEBOOK_OPTS]
+# Options for generating filter notebook for visualizing fringe-rate delay plots
+# of time/frequency-inpainted data.
+# This is the directory where the template for the notebook is stored. This is wherever
+# you have a local install of https://github.com/HERA-Team/hera_notebook_templates
 nb_template_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks/"
+# Directory to write filtering notebook too. This can be a local notebook repo like
+# https://github.com/HERA-Team/H4C_Notebooks
+# or just any old directory.
+# FILTER_NOTEBOOK FILES ARE OFTEN TOO BIG FOR GITHUB SO I DONT RECOMMEND USING
+# A REPO
 nb_output_repo = "/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/"
+# If True, automatically add, commit, and push new notebook to github
+# FILTER_NOTEBOOK FILES ARE OFTEN TOO BIG FOR GITHUB SO I DONT RECOMMEND USING
 git_push = "False"
+# The following parameters control the numbers of rows/columns in large
+# multi-baseline waterfall plots.
 nreds = 6
+# maximum number of baselines to plot per redundant group (in a row on a multi-panel)
+# waterfall plot
 max_bls_per_redgrp = 4
+# number of baselines to skip for plotting all waterfalls of array.
 nskip = 3
 
 [POWER_SPECTRUM_NOTEBOOK_OPTS]
+# Options for generating a nightly power spectrum notebook
+# generated from frequency inpainted, xtalk filtered data.
+# This is the directory containing the notebook template for power spectrum notebook
+# In this case, it's a local version of https://github.com/HERA-Team/hera_notebook_templates
 nb_template_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks/"
 nb_output_repo = "/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/"
 git_push = "False"
