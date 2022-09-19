@@ -56,6 +56,8 @@ mkdir ${stage_dir}
 mkdir ${stage_dir}/${int_jd}
 ant_flag_yaml=${yaml_dir}/${int_jd}.yaml
 
+
+# determine whether we are including diff files.
 if [ "${include_diffs}" = "true" ]
 then
   sumdiff=("sum" "diff")
@@ -63,6 +65,7 @@ else
   sumdiff=("sum")
 fi
 
+# iterate through sums or diffs.
 for sd in ${sumdiff[@]}
 do
   # stage full baseline files.
