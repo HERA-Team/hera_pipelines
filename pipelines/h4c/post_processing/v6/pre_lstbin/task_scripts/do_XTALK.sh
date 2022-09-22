@@ -1,13 +1,34 @@
 #! /bin/bash
+
+#-----------------------------------------------------------------------------
+# This script performs subtraction of slow fringe-rate cross-talk structure
+# similar to what was found in the H1C IDR2.2 results but instead of using
+# SVD, we fit and subtract DPSS modes.
+# In order to process all observation times on a night within each job
+# it performs a "corner-turn" where we transform from files with a small
+# number of time integrations and all baselines to files with a small number
+# of baselines and all integratins in a night.
+# see do_RECONSTITUTE.sh to undo the cornerturn and transform back into files
+# with all baselines and small number of integrations.
+#-----------------------------------------------------------------------------
+
+
 set -e
 #export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
-
 #import common functions
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
-# Parameters are set in the configuration file, here we define their positions,
-# which must be consistent with the config.
+#-----------------------------------------------------------------------------
+# ARGUMENTS
+# 1) fn: Input filename (string) assumed to contain JD.
+# 2) include_diffs: Whether or not to perform analysis on diff files as well as sum files.
+#    valid options are "true" or "false".
+# 3) label: identifying string label for analysis outputs to set it apart from other
+#    runs with different parameters.
+# 4) tol: 
+
+
 # 1 - file name
 # 2 - data extension
 # 3 - output label

@@ -18,18 +18,18 @@ source ${src_dir}/_common.sh
 
 #-----------------------------------------------------------------------------
 # ARGUMENTS
-# 1) Input filename (string).
-# 2) Whether or not to perform analysis on diff files as well as sum files.
+# 1) fn: Input filename (string). Assumed to contain JD.
+# 2) include_diffs: Whether or not to perform analysis on diff files as well as sum files.
 #    valid options are "true" or "false".
-# 3) identifying string label for analysis outputs to set it apart from other
+# 3) label: identifying string label for analysis outputs to set it apart from other
 #    runs with different parameters.
-# 4) Number of files to combine into "chunked" file.
-# 5) string indicating which channels to keep in output files. Format is
+# 4) chunk_size: Number of files to combine into "chunked" file.
+# 5) spw_ranges: string indicating which channels to keep in output files. Format is
 #    comma-separated spectral windows where low/hi channels are joined by a tilde
 #    example: "0~10,15~25,30~80" will generate output files with three contiguous
 #    spectral windows that include channels 0-10, 15-25, and 30-80 from original
 #    files.
-# 6) path to directory containing a-priori yaml flag files with lists of antennas
+# 6) yaml_dir: path to directory containing a-priori yaml flag files with lists of antennas
 #    to throw away (along with any a-priori spectral/time flags you wish to apply)
 #    assumes that the yaml has the title <JD>.yaml
 #
