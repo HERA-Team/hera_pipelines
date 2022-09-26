@@ -100,7 +100,7 @@ oc_cspa_suspect = 4
 oc_max_dims = 4
 oc_min_dim_size = 8
 oc_skip_outriggers = true
-oc_maxiter = 100
+oc_maxiter = 50
 oc_max_rerun = 4
 
 
@@ -228,7 +228,6 @@ args = ["{basename}",
         "${FILE_INSPECT_OPTS:oc_maxiter}",
         "${FILE_INSPECT_OPTS:oc_max_rerun}",
         ]
-
 
 [AUTO_METRICS_INSPECT_NOTEBOOK]
 prereqs = "AUTO_METRICS"
