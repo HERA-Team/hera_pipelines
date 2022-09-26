@@ -87,6 +87,6 @@ then
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "RTP summary notebook for JD ${jd}" -m ${lasturl}
+    git commit -m "File Inspect notebook for JD ${jd}" -m ${lasturl}
     git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi
