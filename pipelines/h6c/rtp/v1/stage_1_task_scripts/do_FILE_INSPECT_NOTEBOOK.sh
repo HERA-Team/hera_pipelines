@@ -44,7 +44,7 @@ oc_max_rerun=${27}
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/file_inspect
-nb_outfile=${nb_outdir}/file_inspect_${jd}.ipynb
+nb_outfile=${nb_outdir}/file_inspect_${jd}.html
 
 # Export variables used by the notebook
 export SUM_FILE=`realpath ${fn}`
@@ -72,7 +72,7 @@ export OC_MAX_RERUN=${oc_max_rerun}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
---to notebook \
+--to html \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/file_inspect.ipynb
@@ -87,6 +87,6 @@ then
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "RTP file inspection for JD ${jd}" -m ${lasturl}
+    git commit -m "RTP summary notebook for JD ${jd}" -m ${lasturl}
     git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi
