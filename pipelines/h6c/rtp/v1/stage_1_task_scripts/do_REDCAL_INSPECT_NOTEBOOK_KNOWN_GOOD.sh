@@ -22,7 +22,7 @@ ant_metrics_extension=${5}
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/redcal_inspect_known_good
-nb_outfile=${nb_outdir}/redcal_inspect_known_good_${jd}.ipynb
+nb_outfile=${nb_outdir}/redcal_inspect_known_good_${jd}.html
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
@@ -32,7 +32,7 @@ export OMNI_PREFIX=.known_good
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
---to notebook \
+--to html \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/redcal_inspect.ipynb

@@ -20,7 +20,7 @@ git_push=${4}
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/rfi_inspect
-nb_outfile=${nb_outdir}/rfi_inspect_${jd}.ipynb
+nb_outfile=${nb_outdir}/rfi_inspect_${jd}.html
 
 # Export variables used by the notebook
 export DATA_PATH=`pwd`
@@ -28,7 +28,7 @@ export JULIANDATE=${jd}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
---to notebook \
+--to html \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/rfi_inspect.ipynb
