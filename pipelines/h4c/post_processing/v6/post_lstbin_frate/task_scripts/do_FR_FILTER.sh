@@ -15,7 +15,7 @@ uvbeam="${5}"
 percentile_low="${6}"
 percentile_high="${7}"
 spw_ranges="${8}"
-
+prefilter_zero_frate="${9}"
 #clobber="true"
 
 jd=$(get_jd $fn)
@@ -38,6 +38,13 @@ else
   sumdiff=("sum")
 fi
 
+if [ "${prefilter_zero_frate}" = "true" ]
+then
+  pf_arg="--pre_filter_modes_between_lobe_minimum_and_zero"
+else
+  pf_arg=""
+fi
+
 for sd in ${sumdiff[@]}
 do
   fn_in=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.chunked.uvh5
@@ -55,12 +62,12 @@ do
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --case "uvbeam"
+      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --case "uvbeam" ${pf_arg}
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --case "uvbeam"
+      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --case "uvbeam" ${pf_arg}
       #fi
     else
       echo "${fn_in} does not exist!"
