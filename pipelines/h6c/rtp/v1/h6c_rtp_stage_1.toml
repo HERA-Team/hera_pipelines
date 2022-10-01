@@ -102,6 +102,8 @@ oc_min_dim_size = 8
 oc_skip_outriggers = true
 oc_maxiter = 50
 oc_max_rerun = 4
+rfi_dpss_halfwidth = 300e-9
+rfi_nsig = 6
 
 
 ############################################################################################################
@@ -227,6 +229,8 @@ args = ["{basename}",
         "${FILE_INSPECT_OPTS:oc_skip_outriggers}",
         "${FILE_INSPECT_OPTS:oc_maxiter}",
         "${FILE_INSPECT_OPTS:oc_max_rerun}",
+        "${FILE_INSPECT_OPTS:rfi_dpss_halfwidth}",
+        "${FILE_INSPECT_OPTS:rfi_nsig}",
         ]
 
 [AUTO_METRICS_INSPECT_NOTEBOOK]
