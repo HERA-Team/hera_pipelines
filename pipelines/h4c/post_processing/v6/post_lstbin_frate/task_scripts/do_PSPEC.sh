@@ -64,7 +64,7 @@ do
               --file_type uvh5  --xant_flag_thresh 1.1\
               --taper bh --spw_ranges ${spw_ranges}
 
-            if [ "${ext}" = "foreground_filled.chunked" ]
+            if [ "${ext}" = "foreground_filled.xtalk_filtered.chunked" ]
             then
               # auto power spectra
               output=zen.${jd}.${sd}.${label}.autos.${ext}${pol_label}.tavg.pspec.h5
