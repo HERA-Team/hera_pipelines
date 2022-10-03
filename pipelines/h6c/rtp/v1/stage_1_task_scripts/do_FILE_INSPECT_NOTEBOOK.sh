@@ -40,6 +40,8 @@ oc_min_dim_size=${24}
 oc_skip_outriggers=${25}
 oc_maxiter=${26}
 oc_max_rerun=${27}
+rfi_dpss_halfwidth=${28}
+rfi_nsig=${29}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -69,6 +71,8 @@ export OC_MIN_DIM_SIZE=${oc_min_dim_size}
 export OC_SKIP_OUTRIGGERS=${oc_skip_outriggers}
 export OC_MAXITER=${oc_maxiter}
 export OC_MAX_RERUN=${oc_max_rerun}
+export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
+export RFI_NSIG=${rfi_nsig}
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
