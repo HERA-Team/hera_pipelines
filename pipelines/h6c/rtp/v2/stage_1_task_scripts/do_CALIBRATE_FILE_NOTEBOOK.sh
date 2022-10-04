@@ -43,11 +43,6 @@ oc_max_rerun=${27}
 rfi_dpss_halfwidth=${28}
 rfi_nsig=${29}
 
-# Get JD from filename
-jd=$(get_int_jd ${fn})
-nb_outdir=${nb_output_repo}/file_inspect
-nb_outfile=${nb_outdir}/file_inspect_${jd}.html
-
 # Export variables used by the notebook
 export SUM_FILE=`realpath ${fn}`
 export AM_CORR_BAD=${am_corr_bad}
@@ -74,6 +69,8 @@ export OC_MAX_RERUN=${oc_max_rerun}
 export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
 
+nb_outfile=${fn%.uvh5}.calibration_notebook.html
+
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
@@ -85,12 +82,24 @@ echo Finished running file inspect notebook at $(date)
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
 then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_outfile}
-    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-    git add ${nb_outdir}/README.md
-    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "File Inspect notebook for JD ${jd}" -m ${lasturl}
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
+    # Get JD from filename
+    jd=$(get_int_jd ${fn})
+    is_first_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[0])"`
+    if [ "${is_first_file}" == "True" ]
+    then
+        # Copy file to github repo
+        github_nb_outdir=${nb_output_repo}/file_inspect
+        github_nb_outfile=${github_nb_outdir}/file_inspect_${jd}.html
+        cp ${nb_outfile} ${github_nb_outfile}
+
+        # Push to github
+        cd ${nb_output_repo}
+        git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
+        git add ${github_nb_outfile}
+        python ${src_dir}/build_notebook_readme.py ${github_nb_outdir}
+        git add ${github_nb_outdir}/README.md
+        lasturl=`python -c "readme = open('${github_nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
+        git commit -m "File Inspect notebook for JD ${jd}" -m ${lasturl}
+        git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
+    fi
 fi
