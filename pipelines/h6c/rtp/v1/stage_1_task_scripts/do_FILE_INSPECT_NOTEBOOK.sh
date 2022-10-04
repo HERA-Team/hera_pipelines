@@ -45,8 +45,8 @@ rfi_nsig=${29}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outdir=${nb_output_repo}/file_inspect
-nb_outfile=${nb_outdir}/file_inspect_${jd}.html
+nb_outdir=${nb_output_repo}/file_calibration
+nb_outfile=${nb_outdir}/file_calibration_${jd}.html
 
 # Export variables used by the notebook
 export SUM_FILE=`realpath ${fn}`
@@ -79,8 +79,8 @@ jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/file_inspect.ipynb
-echo Finished running file inspect notebook at $(date)
+--execute ${nb_template_dir}/file_calibration.ipynb
+echo Finished running file calibration notebook at $(date)
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
@@ -91,6 +91,6 @@ then
     python ${src_dir}/build_notebook_readme.py ${nb_outdir}
     git add ${nb_outdir}/README.md
     lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "File Inspect notebook for JD ${jd}" -m ${lasturl}
+    git commit -m "File Calibration notebook for JD ${jd}" -m ${lasturl}
     git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi
