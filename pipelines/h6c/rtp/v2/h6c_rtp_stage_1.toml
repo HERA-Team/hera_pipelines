@@ -1,0 +1,559 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 12000 # TODO: Check if this is the right number for site
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h6c/rtp/v1/stage_1_task_scripts"
+conda_env = "RTP"
+mandc_report = true
+batch_system = "slurm"
+default_queue = "hera,bigmem,gpu"
+
+[LIBRARIAN_OPTS]
+# These trigger which sets of files get added to the librarian
+upload_to_librarian = true # upload raw data to librarian, if false all below switches will be ignored.
+librarian_autos = true
+librarian_auto_metrics = true
+librarian_ant_metrics = true
+librarian_redcal_known_good = true
+librarian_xrfi = true
+librarian_SSINS = true
+librarian_downselected_data = false
+librarian_notebooks = true
+
+[A_PRIORI_STATUS_OPTS]
+# TODO: these will need to be updated as commissioning gets underway
+# Antennas considered "good" and thus likely candidates for LST-binning
+good_statuses = "digital_ok,calibration_maintenance,calibration_triage,calibration_ok"
+# All antennas that are on and worth running ant_metrics and the data_inspect notebook on.
+all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital_maintenance,calibration_maintenance,calibration_triage,calibration_ok"
+
+[NOTEBOOK_OPTS]
+nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/home/obs/src/H6C_Notebooks'
+git_push = true
+
+[AUTO_METRICS_OPTS]
+median_round_modz_cut = 8.0
+mean_round_modz_cut = 4.0
+edge_cut = 50
+chan_thresh_frac = 0.05
+
+[ANT_METRICS_OPTS]
+crossCut = 0.0
+deadCut = 0.4
+Nbls_per_load = 5000
+Nfiles_per_load = 1
+extension = ".ant_metrics.hdf5"
+
+[REDCAL_OPTS]
+ant_z_thresh = 4
+solar_horizon = 0.0
+nInt_to_load = 10
+flag_nchan_low = 0
+flag_nchan_high = 0
+oc_maxiter = 5000
+min_bl_cut = 1.0 # TODO: restore this to 15.0 when we have more antennas
+max_bl_cut = 10000.0 # TODO: restore this to 100.0 when we have more antennas
+max_dims = 4 # TODO: knock this down to 2 when we have enough good antennas to calibrate with
+
+[XRFI_OPTS]
+kt_size = 8
+kf_size = 8
+sig_init_med = 10.0
+sig_adj_med = 4.0
+sig_init_mean = 5.0
+sig_adj_mean = 2.0
+Nwf_per_load = 1000
+
+[XRFI_DAY_THRESHOLD_OPTS]
+nsig_f = 7.0
+nsig_t = 7.0
+nsig_f_adj = 3.0
+nsig_t_adj = 3.0
+
+[SSINS_OPTS]
+streak_sig = 20.0
+other_sig = 5.0
+tb_aggro = 0.5
+
+[FILE_INSPECT_OPTS]
+am_corr_bad = 0.2
+am_corr_suspect = 0.4
+am_xpol_bad = -0.1
+am_xpol_suspect = 0.0
+zeros_per_spec_good = 2
+zeros_per_spec_suspect = 8
+auto_power_good_low = 5
+auto_power_good_high = 30
+auto_power_suspect_low = 1
+auto_power_suspect_high = 50
+auto_slope_good_low = -0.2
+auto_slope_good_high = 0.4
+auto_slope_suspect_low = -0.25
+auto_slope_suspect_high = 0.5
+auto_rfi_good = 0.01
+auto_rfi_suspect = 0.02
+oc_cspa_good = 3
+oc_cspa_suspect = 4
+oc_max_dims = 4
+oc_min_dim_size = 8
+oc_skip_outriggers = true
+oc_maxiter = 50
+oc_max_rerun = 4
+rfi_dpss_halfwidth = 300e-9
+rfi_nsig = 6
+
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["SETUP",
+           "LIBRARIAN_RAW_DATA",
+           "LIBRARIAN_MAKE_SESSION",
+           "ADD_RTP_PROCESS_RECORD",
+           "EXTRACT_AUTOS",
+           "AUTO_METRICS",
+           "FILE_INSPECT_NOTEBOOK",
+           "AUTO_METRICS_INSPECT_NOTEBOOK",
+           "RTP_SUMMARY_NOTEBOOK_1",
+           "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
+           "ANT_METRICS",
+           "LIBRARIAN_ANT_METRICS",
+           "RTP_SUMMARY_NOTEBOOK_2",
+           "REDCAL_KNOWN_GOOD",
+           "LIBRARIAN_REDCAL_KNOWN_GOOD",
+           "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
+           "RTP_SUMMARY_NOTEBOOK_3",
+           "ANTENNA_REPORT_NOTEBOOKS",
+           "SEASON_SUMMARY_NOTEBOOK",
+           "XRFI",
+           "XRFI_DAY_THRESHOLD",
+           "LIBRARIAN_XRFI",
+           "SSINS",
+           "LIBRARIAN_SSINS",
+           "RFI_INSPECT_NOTEBOOK",
+           "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
+           # "DATA_DOWNSELECT", # TODO: THIS DOES NOTHING CURRENTLY
+           # "LIBRARIAN_DATA_DOWNSELECT", # TODO: THIS DOES NOTHING CURRENTLY
+           "LIBRARIAN_ALL_NOTEBOOKS",
+           "CLEAN_UP",
+          ]
+
+########## PRELIMINARIES (RAW DATA, AUTOS, LIBRARIAN, ETC.) ##########
+
+[SETUP]
+args = []
+
+[LIBRARIAN_RAW_DATA]
+chunk_size = 1
+stride_length = 1
+time_centered = false
+collect_stragglers = true
+mem = 1000
+args = ["${LIBRARIAN_OPTS:upload_to_librarian}",
+        "{obsid_list}",
+       ]
+
+[LIBRARIAN_MAKE_SESSION]
+prereqs = "LIBRARIAN_RAW_DATA"
+prereq_chunk_size = "all"
+chunk_size = "all"
+stride_length = "all"
+args = ["${LIBRARIAN_OPTS:upload_to_librarian}"]
+
+[ADD_RTP_PROCESS_RECORD]
+prereqs = "LIBRARIAN_MAKE_SESSION"
+prereq_chunk_size = "all"
+args = ["{basename}", 
+        "${WorkFlow:actions}"]
+
+[EXTRACT_AUTOS]
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_autos}",
+       ]
+
+[AUTO_METRICS]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
+chunk_size = "all"
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
+        "${AUTO_METRICS_OPTS:mean_round_modz_cut}",
+        "${AUTO_METRICS_OPTS:edge_cut}",
+        "${XRFI_OPTS:kt_size}",
+        "${XRFI_OPTS:kf_size}",
+        "${XRFI_OPTS:sig_init_mean}",
+        "${XRFI_OPTS:sig_adj_mean}",
+        "${AUTO_METRICS_OPTS:chan_thresh_frac}", 
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_auto_metrics}",
+        "{obsid_list}",
+        ]
+
+########## FILE/DATA/AUTO INSPECT NOTEBOOKS ##########
+
+[FILE_INSPECT_NOTEBOOK]
+chunk_size = 1
+stride_length = "all"
+time_centered = true
+mem = 32000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${FILE_INSPECT_OPTS:am_corr_bad}",
+        "${FILE_INSPECT_OPTS:am_corr_suspect}",
+        "${FILE_INSPECT_OPTS:am_xpol_bad}",
+        "${FILE_INSPECT_OPTS:am_xpol_suspect}",
+        "${FILE_INSPECT_OPTS:zeros_per_spec_good}",
+        "${FILE_INSPECT_OPTS:zeros_per_spec_suspect}",
+        "${FILE_INSPECT_OPTS:auto_power_good_low}",
+        "${FILE_INSPECT_OPTS:auto_power_good_high}",
+        "${FILE_INSPECT_OPTS:auto_power_suspect_low}",
+        "${FILE_INSPECT_OPTS:auto_power_suspect_high}",
+        "${FILE_INSPECT_OPTS:auto_slope_good_low}",
+        "${FILE_INSPECT_OPTS:auto_slope_good_high}",
+        "${FILE_INSPECT_OPTS:auto_slope_suspect_low}",
+        "${FILE_INSPECT_OPTS:auto_slope_suspect_high}",
+        "${FILE_INSPECT_OPTS:auto_rfi_good}",
+        "${FILE_INSPECT_OPTS:auto_rfi_suspect}",
+        "${FILE_INSPECT_OPTS:oc_cspa_good}",
+        "${FILE_INSPECT_OPTS:oc_cspa_suspect}",
+        "${FILE_INSPECT_OPTS:oc_max_dims}",
+        "${FILE_INSPECT_OPTS:oc_min_dim_size}",
+        "${FILE_INSPECT_OPTS:oc_skip_outriggers}",
+        "${FILE_INSPECT_OPTS:oc_maxiter}",
+        "${FILE_INSPECT_OPTS:oc_max_rerun}",
+        "${FILE_INSPECT_OPTS:rfi_dpss_halfwidth}",
+        "${FILE_INSPECT_OPTS:rfi_nsig}",
+        ]
+
+[AUTO_METRICS_INSPECT_NOTEBOOK]
+prereqs = "AUTO_METRICS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
+[RTP_SUMMARY_NOTEBOOK_1]
+prereqs = "AUTO_METRICS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${ANT_METRICS_OPTS:extension}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}"
+        ]
+
+[DATA_INSPECT_NOTEBOOK_ALL_ANTS]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${A_PRIORI_STATUS_OPTS:all_statuses}"
+        ]
+
+########## ANT METRICS ##########
+
+[ANT_METRICS]
+chunk_size = 10
+stride_length = 10
+time_centered = false
+collect_stragglers = true
+mem = 14000
+args = ["${ANT_METRICS_OPTS:crossCut}",
+        "${ANT_METRICS_OPTS:deadCut}",
+        "${ANT_METRICS_OPTS:Nbls_per_load}",
+        "${ANT_METRICS_OPTS:Nfiles_per_load}",
+        "${ANT_METRICS_OPTS:extension}",
+        "{obsid_list}",
+       ]
+
+[LIBRARIAN_ANT_METRICS]
+prereqs = "ANT_METRICS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${ANT_METRICS_OPTS:extension}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_ant_metrics}",
+        ]
+
+[RTP_SUMMARY_NOTEBOOK_2]
+prereqs = "ANT_METRICS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${ANT_METRICS_OPTS:extension}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}"
+        ]
+
+########## REDCAL AND ASSOCIATED NOTEBOOKS ##########
+
+[REDCAL_KNOWN_GOOD]
+# queue = "gpu"
+# extra_batch_options = "--gres=gpu"
+prereqs = ["ANT_METRICS", "AUTO_METRICS"]
+args = ["{basename}",
+        "${REDCAL_OPTS:ant_z_thresh}",
+        "${REDCAL_OPTS:solar_horizon}",
+        "${REDCAL_OPTS:flag_nchan_low}",
+        "${REDCAL_OPTS:flag_nchan_high}",
+        "${REDCAL_OPTS:oc_maxiter}",
+        "${REDCAL_OPTS:nInt_to_load}",
+        "${REDCAL_OPTS:min_bl_cut}",
+        "${REDCAL_OPTS:max_bl_cut}",
+        "${REDCAL_OPTS:max_dims}",
+        "${ANT_METRICS_OPTS:extension}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}",
+       ]
+# This runs redcal on 1 out of every 10 files
+chunk_size = 1
+stride_length = 10
+time_centered = false
+
+[LIBRARIAN_REDCAL_KNOWN_GOOD]
+prereqs = "REDCAL_KNOWN_GOOD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_redcal_known_good}",
+        ]
+
+
+[REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD]
+prereqs = "REDCAL_KNOWN_GOOD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${ANT_METRICS_OPTS:extension}",
+      ]
+
+[RTP_SUMMARY_NOTEBOOK_3]
+prereqs = "REDCAL_KNOWN_GOOD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${ANT_METRICS_OPTS:extension}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${A_PRIORI_STATUS_OPTS:good_statuses}"
+        ]
+
+########## UPDATE ANTENNA REPORTS AND SEASON SUMMARY ##########
+
+[ANTENNA_REPORT_NOTEBOOKS]
+prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2", "RTP_SUMMARY_NOTEBOOK_3"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
+[SEASON_SUMMARY_NOTEBOOK]
+prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2", "RTP_SUMMARY_NOTEBOOK_3"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
+########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
+
+[XRFI]
+prereqs = ["ANT_METRICS", "AUTO_METRICS"]
+args = ["${XRFI_OPTS:kt_size}",
+        "${XRFI_OPTS:kf_size}",
+        "${XRFI_OPTS:sig_init_med}",
+        "${XRFI_OPTS:sig_adj_med}",
+        "${XRFI_OPTS:sig_init_mean}",
+        "${XRFI_OPTS:sig_adj_mean}",
+        "${XRFI_OPTS:Nwf_per_load}",
+        "${ANT_METRICS_OPTS:extension}",
+        "{obsid_list}"
+       ]
+# xrfi will drop data within kt_size of time edge. Total integrations read in
+# must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
+# chunk_size must be >= 9 (with centered==True).
+# Larger chunk_size will reduce redundant i/o and median filter calculation.
+# The numbers below result in about 35% redundancy.
+# TODO: update when we move to single integration files
+chunk_size = 31
+stride_length = 23
+time_centered = true
+collect_stragglers = true
+
+[XRFI_DAY_THRESHOLD]
+prereqs = "XRFI"
+args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
+        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t}",
+        "${XRFI_DAY_THRESHOLD_OPTS:nsig_f_adj}",
+        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t_adj}",
+        "{obsid_list}"
+       ]
+prereq_chunk_size = "all"
+chunk_size = "all"
+stride_length = "all"
+time_centered = false
+
+[LIBRARIAN_XRFI]
+prereqs = "XRFI_DAY_THRESHOLD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_xrfi}",
+       ]
+
+[SSINS]
+prereqs = ["ANT_METRICS", "AUTO_METRICS"]
+mem = 28000
+args = ["${SSINS_OPTS:streak_sig}",
+        "${SSINS_OPTS:other_sig}",
+        "${SSINS_OPTS:tb_aggro}",
+        "${ANT_METRICS_OPTS:extension}",
+        "{obsid_list}"
+       ]
+stride_length = 10
+chunk_size = 10
+time_centered = false
+collect_stragglers = true
+
+[LIBRARIAN_SSINS]
+prereqs = "SSINS"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_SSINS}",
+       ]
+
+[RFI_INSPECT_NOTEBOOK]
+prereqs = ["XRFI_DAY_THRESHOLD", "SSINS"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
+########## DELAY SPECTRUM INSPECTION ##########
+
+[DELAY_SPECTRUM_INSPECT_NOTEBOOK]
+prereqs = "XRFI_DAY_THRESHOLD"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 128000
+ncpu = 8
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        ]
+
+########## DATA DOWNSELECTION ##########
+
+# [DATA_DOWNSELECT]
+# prereqs = "LIBRARIAN_MAKE_SESSION"
+# args = ["{basename}"]
+
+# [LIBRARIAN_DATA_DOWNSELECT]
+# prereqs = "DATA_DOWNSELECT"
+# args = ["{basename}",
+#         "${LIBRARIAN_OPTS:upload_to_librarian}",
+#         "${LIBRARIAN_OPTS:librarian_downselected_data}",
+#        ]
+
+########## BACKUP NOTEBOOKS IN LIBRARIAN ##########
+
+[LIBRARIAN_ALL_NOTEBOOKS]
+prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
+           "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
+           "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
+           "RFI_INSPECT_NOTEBOOK",
+           "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
+           "RTP_SUMMARY_NOTEBOOK_3",
+           "FILE_INSPECT_NOTEBOOK",
+          ]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_notebooks}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        ]
+
+########## DELETE ALL DATA FROM LOCAL DISK ##########
+
+[CLEAN_UP]
+prereqs = ["LIBRARIAN_RAW_DATA",
+           "LIBRARIAN_ALL_NOTEBOOKS",
+           "LIBRARIAN_XRFI",
+           "LIBRARIAN_SSINS",
+           "ANTENNA_REPORT_NOTEBOOKS",
+           "SEASON_SUMMARY_NOTEBOOK"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 1000
+args = ["{basename}"]
