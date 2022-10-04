@@ -4,7 +4,7 @@ source_script = "~/.bashrc"
 base_mem = 12000 # TODO: Check if this is the right number for site
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h6c/rtp/v1/stage_1_task_scripts"
+path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h6c/rtp/v2/stage_1_task_scripts"
 conda_env = "RTP"
 mandc_report = true
 batch_system = "slurm"
@@ -15,8 +15,9 @@ default_queue = "hera,bigmem,gpu"
 upload_to_librarian = true # upload raw data to librarian, if false all below switches will be ignored.
 librarian_autos = true
 librarian_auto_metrics = true
+librarian_calibration_notebooks = true
 librarian_ant_metrics = true
-librarian_redcal_known_good = true
+librarian_redcal = true
 librarian_xrfi = true
 librarian_SSINS = true
 librarian_downselected_data = false
@@ -34,51 +35,7 @@ nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
 nb_output_repo = '/home/obs/src/H6C_Notebooks'
 git_push = true
 
-[AUTO_METRICS_OPTS]
-median_round_modz_cut = 8.0
-mean_round_modz_cut = 4.0
-edge_cut = 50
-chan_thresh_frac = 0.05
-
-[ANT_METRICS_OPTS]
-crossCut = 0.0
-deadCut = 0.4
-Nbls_per_load = 5000
-Nfiles_per_load = 1
-extension = ".ant_metrics.hdf5"
-
-[REDCAL_OPTS]
-ant_z_thresh = 4
-solar_horizon = 0.0
-nInt_to_load = 10
-flag_nchan_low = 0
-flag_nchan_high = 0
-oc_maxiter = 5000
-min_bl_cut = 1.0 # TODO: restore this to 15.0 when we have more antennas
-max_bl_cut = 10000.0 # TODO: restore this to 100.0 when we have more antennas
-max_dims = 4 # TODO: knock this down to 2 when we have enough good antennas to calibrate with
-
-[XRFI_OPTS]
-kt_size = 8
-kf_size = 8
-sig_init_med = 10.0
-sig_adj_med = 4.0
-sig_init_mean = 5.0
-sig_adj_mean = 2.0
-Nwf_per_load = 1000
-
-[XRFI_DAY_THRESHOLD_OPTS]
-nsig_f = 7.0
-nsig_t = 7.0
-nsig_f_adj = 3.0
-nsig_t_adj = 3.0
-
-[SSINS_OPTS]
-streak_sig = 20.0
-other_sig = 5.0
-tb_aggro = 0.5
-
-[FILE_INSPECT_OPTS]
+[CALIBRATE_FILE_OPTS]
 am_corr_bad = 0.2
 am_corr_suspect = 0.4
 am_xpol_bad = -0.1
@@ -104,6 +61,34 @@ oc_maxiter = 50
 oc_max_rerun = 4
 rfi_dpss_halfwidth = 300e-9
 rfi_nsig = 6
+# min_bl_cut = 15.0 # TODO: add this when we have more antennas working
+# max_bl_cut = 100.0 # TODO: add this when we have more antennas working
+
+[AUTO_METRICS_OPTS]
+median_round_modz_cut = 8.0
+mean_round_modz_cut = 4.0
+edge_cut = 50
+chan_thresh_frac = 0.05
+
+[XRFI_OPTS]
+kt_size = 8
+kf_size = 8
+sig_init_med = 10.0
+sig_adj_med = 4.0
+sig_init_mean = 5.0
+sig_adj_mean = 2.0
+Nwf_per_load = 1000
+
+[XRFI_DAY_THRESHOLD_OPTS]
+nsig_f = 7.0
+nsig_t = 7.0
+nsig_f_adj = 3.0
+nsig_t_adj = 3.0
+
+[SSINS_OPTS]
+streak_sig = 20.0
+other_sig = 5.0
+tb_aggro = 0.5
 
 
 ############################################################################################################
@@ -115,17 +100,14 @@ actions = ["SETUP",
            "ADD_RTP_PROCESS_RECORD",
            "EXTRACT_AUTOS",
            "AUTO_METRICS",
-           "FILE_INSPECT_NOTEBOOK",
+           "CALIBRATE_FILE_NOTEBOOK",
            "AUTO_METRICS_INSPECT_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_1",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           "ANT_METRICS",
+           "LIBRARIAN_CALIBRATION_NOTEBOOKS",
+           "LIBRARIAN_REDCAL",
            "LIBRARIAN_ANT_METRICS",
            "RTP_SUMMARY_NOTEBOOK_2",
-           "REDCAL_KNOWN_GOOD",
-           "LIBRARIAN_REDCAL_KNOWN_GOOD",
-           "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
-           "RTP_SUMMARY_NOTEBOOK_3",
            "ANTENNA_REPORT_NOTEBOOKS",
            "SEASON_SUMMARY_NOTEBOOK",
            "XRFI",
@@ -195,43 +177,7 @@ args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
         "{obsid_list}",
         ]
 
-########## FILE/DATA/AUTO INSPECT NOTEBOOKS ##########
-
-[FILE_INSPECT_NOTEBOOK]
-chunk_size = 1
-stride_length = "all"
-time_centered = true
-mem = 32000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${FILE_INSPECT_OPTS:am_corr_bad}",
-        "${FILE_INSPECT_OPTS:am_corr_suspect}",
-        "${FILE_INSPECT_OPTS:am_xpol_bad}",
-        "${FILE_INSPECT_OPTS:am_xpol_suspect}",
-        "${FILE_INSPECT_OPTS:zeros_per_spec_good}",
-        "${FILE_INSPECT_OPTS:zeros_per_spec_suspect}",
-        "${FILE_INSPECT_OPTS:auto_power_good_low}",
-        "${FILE_INSPECT_OPTS:auto_power_good_high}",
-        "${FILE_INSPECT_OPTS:auto_power_suspect_low}",
-        "${FILE_INSPECT_OPTS:auto_power_suspect_high}",
-        "${FILE_INSPECT_OPTS:auto_slope_good_low}",
-        "${FILE_INSPECT_OPTS:auto_slope_good_high}",
-        "${FILE_INSPECT_OPTS:auto_slope_suspect_low}",
-        "${FILE_INSPECT_OPTS:auto_slope_suspect_high}",
-        "${FILE_INSPECT_OPTS:auto_rfi_good}",
-        "${FILE_INSPECT_OPTS:auto_rfi_suspect}",
-        "${FILE_INSPECT_OPTS:oc_cspa_good}",
-        "${FILE_INSPECT_OPTS:oc_cspa_suspect}",
-        "${FILE_INSPECT_OPTS:oc_max_dims}",
-        "${FILE_INSPECT_OPTS:oc_min_dim_size}",
-        "${FILE_INSPECT_OPTS:oc_skip_outriggers}",
-        "${FILE_INSPECT_OPTS:oc_maxiter}",
-        "${FILE_INSPECT_OPTS:oc_max_rerun}",
-        "${FILE_INSPECT_OPTS:rfi_dpss_halfwidth}",
-        "${FILE_INSPECT_OPTS:rfi_nsig}",
-        ]
+########## DATA/AUTO INSPECT NOTEBOOKS ##########
 
 [AUTO_METRICS_INSPECT_NOTEBOOK]
 prereqs = "AUTO_METRICS"
@@ -253,7 +199,6 @@ chunk_size = 1
 stride_length = "all"
 time_centered = false
 args = ["{basename}",
-        "${ANT_METRICS_OPTS:extension}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
@@ -274,74 +219,68 @@ args = ["{basename}",
         "${A_PRIORI_STATUS_OPTS:all_statuses}"
         ]
 
-########## ANT METRICS ##########
+########## CALIBRATION AND ANT METRICS ##########
 
-[ANT_METRICS]
-chunk_size = 10
-stride_length = 10
-time_centered = false
-collect_stragglers = true
-mem = 14000
-args = ["${ANT_METRICS_OPTS:crossCut}",
-        "${ANT_METRICS_OPTS:deadCut}",
-        "${ANT_METRICS_OPTS:Nbls_per_load}",
-        "${ANT_METRICS_OPTS:Nfiles_per_load}",
-        "${ANT_METRICS_OPTS:extension}",
-        "{obsid_list}",
-       ]
+[CALIBRATE_FILE_NOTEBOOK]
+chunk_size = 1
+stride_length = "all"
+time_centered = true
+mem = 24000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${CALIBRATE_FILE_OPTS:am_corr_bad}",
+        "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_suspect}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_good}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_max_dims}",
+        "${CALIBRATE_FILE_OPTS:oc_min_dim_size}",
+        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        "${CALIBRATE_FILE_OPTS:oc_maxiter}",
+        "${CALIBRATE_FILE_OPTS:oc_max_rerun}",
+        "${CALIBRATE_FILE_OPTS:rfi_dpss_halfwidth}",
+        "${CALIBRATE_FILE_OPTS:rfi_nsig}",
+        ]
 
-[LIBRARIAN_ANT_METRICS]
-prereqs = "ANT_METRICS"
+[LIBRARIAN_CALIBRATION_NOTEBOOKS]
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
 args = ["{basename}",
-        "${ANT_METRICS_OPTS:extension}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_calibration_notebooks}",
+        ]
+
+[LIBRARIAN_ANT_METRICS]
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_ant_metrics}",
         ]
 
-[RTP_SUMMARY_NOTEBOOK_2]
-prereqs = "ANT_METRICS"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${ANT_METRICS_OPTS:extension}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${A_PRIORI_STATUS_OPTS:good_statuses}"
-        ]
-
-########## REDCAL AND ASSOCIATED NOTEBOOKS ##########
-
-[REDCAL_KNOWN_GOOD]
-# queue = "gpu"
-# extra_batch_options = "--gres=gpu"
-prereqs = ["ANT_METRICS", "AUTO_METRICS"]
-args = ["{basename}",
-        "${REDCAL_OPTS:ant_z_thresh}",
-        "${REDCAL_OPTS:solar_horizon}",
-        "${REDCAL_OPTS:flag_nchan_low}",
-        "${REDCAL_OPTS:flag_nchan_high}",
-        "${REDCAL_OPTS:oc_maxiter}",
-        "${REDCAL_OPTS:nInt_to_load}",
-        "${REDCAL_OPTS:min_bl_cut}",
-        "${REDCAL_OPTS:max_bl_cut}",
-        "${REDCAL_OPTS:max_dims}",
-        "${ANT_METRICS_OPTS:extension}",
-        "${A_PRIORI_STATUS_OPTS:good_statuses}",
-       ]
-# This runs redcal on 1 out of every 10 files
-chunk_size = 1
-stride_length = 10
-time_centered = false
-
-[LIBRARIAN_REDCAL_KNOWN_GOOD]
-prereqs = "REDCAL_KNOWN_GOOD"
+[LIBRARIAN_REDCAL]
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -352,38 +291,26 @@ args = ["{basename}",
         ]
 
 
-[REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD]
-prereqs = "REDCAL_KNOWN_GOOD"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${ANT_METRICS_OPTS:extension}",
-      ]
-
-[RTP_SUMMARY_NOTEBOOK_3]
-prereqs = "REDCAL_KNOWN_GOOD"
+[RTP_SUMMARY_NOTEBOOK_2]
+prereqs = ["AUTO_METRICS", "CALIBRATE_FILE_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
 args = ["{basename}",
-        "${ANT_METRICS_OPTS:extension}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
         "${A_PRIORI_STATUS_OPTS:good_statuses}"
         ]
 
+# TODO: daily calibration summary notebook
+
+
 ########## UPDATE ANTENNA REPORTS AND SEASON SUMMARY ##########
 
 [ANTENNA_REPORT_NOTEBOOKS]
-prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2", "RTP_SUMMARY_NOTEBOOK_3"]
+prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2"]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -395,7 +322,7 @@ args = ["{basename}",
         ]
 
 [SEASON_SUMMARY_NOTEBOOK]
-prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2", "RTP_SUMMARY_NOTEBOOK_3"]
+prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2"]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -408,7 +335,7 @@ args = ["${NOTEBOOK_OPTS:nb_template_dir}",
 ########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
 
 [XRFI]
-prereqs = ["ANT_METRICS", "AUTO_METRICS"]
+prereqs = ["CALIBRATE_FILE_NOTEBOOK", "AUTO_METRICS"]
 args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:kf_size}",
         "${XRFI_OPTS:sig_init_med}",
@@ -455,7 +382,7 @@ args = ["{basename}",
        ]
 
 [SSINS]
-prereqs = ["ANT_METRICS", "AUTO_METRICS"]
+prereqs = ["CALIBRATE_FILE_NOTEBOOK", "AUTO_METRICS"]
 mem = 28000
 args = ["${SSINS_OPTS:streak_sig}",
         "${SSINS_OPTS:other_sig}",
@@ -526,11 +453,10 @@ args = ["{basename}",
 [LIBRARIAN_ALL_NOTEBOOKS]
 prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           "REDCAL_INSPECT_NOTEBOOK_KNOWN_GOOD",
            "RFI_INSPECT_NOTEBOOK",
            "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
-           "RTP_SUMMARY_NOTEBOOK_3",
-           "FILE_INSPECT_NOTEBOOK",
+           "RTP_SUMMARY_NOTEBOOK_2",
+           "CALIBRATE_FILE_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -546,6 +472,9 @@ args = ["{basename}",
 
 [CLEAN_UP]
 prereqs = ["LIBRARIAN_RAW_DATA",
+           "LIBRARIAN_CALIBRATION_NOTEBOOKS",
+           "LIBRARIAN_ANT_METRICS",
+           "LIBRARIAN_REDCAL",
            "LIBRARIAN_ALL_NOTEBOOKS",
            "LIBRARIAN_XRFI",
            "LIBRARIAN_SSINS",
