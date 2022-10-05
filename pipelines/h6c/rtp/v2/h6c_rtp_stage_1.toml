@@ -343,7 +343,6 @@ args = ["${XRFI_OPTS:kt_size}",
         "${XRFI_OPTS:sig_init_mean}",
         "${XRFI_OPTS:sig_adj_mean}",
         "${XRFI_OPTS:Nwf_per_load}",
-        "${ANT_METRICS_OPTS:extension}",
         "{obsid_list}"
        ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in
@@ -387,7 +386,6 @@ mem = 28000
 args = ["${SSINS_OPTS:streak_sig}",
         "${SSINS_OPTS:other_sig}",
         "${SSINS_OPTS:tb_aggro}",
-        "${ANT_METRICS_OPTS:extension}",
         "{obsid_list}"
        ]
 stride_length = 10

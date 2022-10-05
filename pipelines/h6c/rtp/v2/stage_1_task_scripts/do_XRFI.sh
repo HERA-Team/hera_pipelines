@@ -17,9 +17,8 @@ source ${src_dir}/_common.sh
 # 5 - sig_init_mean
 # 6 - sig_adj_mean
 # 7 - Nwf_per_load
-# 8 - ant_metrics_ext
-# 9+ - filenames
-data_files=(${@:9})
+# 8+ - filenames
+data_files=(${@:8})
 
 # get auto_metrics_file to exclude bad antennas
 fn=${data_files[0]}
@@ -33,7 +32,7 @@ auto_metrics_file=${pattern_files[0]}
 # get ant_metrics_files to exclude bad antennas
 ant_metrics_files=()
 for fn in ${data_files[@]}; do
-    ant_metrics_files+=( ${fn%.uvh5}${8} )
+    ant_metrics_files+=( ${fn%.uvh5}.ant_metrics.hdf5 )
 done
 
 # construct autos files from data files 
