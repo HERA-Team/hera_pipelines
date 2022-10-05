@@ -79,6 +79,20 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/file_inspect.ipynb
 echo Finished running file inspect notebook at $(date)
 
+# Check to see that output files were correctly produced
+am_file=${fn%.uvh5}.ant_metrics.hdf5
+antclass_file=${fn%.uvh5}.ant_class.csv
+omnical_file=${fn%.uvh5}.omni.calfits
+omnivis_file=${fn%.uvh5}.omni_vis.uvh5
+for f in am_file antclass_file omnical_file omnivis_file; do
+    if [ -f "$f" ]; then
+        echo Resulting $f found.
+    else
+        echo $f not produced.
+        exit 1
+    fi
+done
+
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
 then
