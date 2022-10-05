@@ -41,7 +41,7 @@ do
       echo ${psc}
       if [ -e "${psc}" ]
       then
-        dfile=zen.${jd}.sum.${label}.foreground_filled.chunked${pol_label}.tavg.uvh5
+        dfile=zen.${jd}.sum.${label}.foreground_filled.xtalk_filtered.chunked${pol_label}.tavg.uvh5
         if [ -e "${dfile}" ]
         then
           echo auto_noise_run.py ${psc} ${dfile} ${beamfile} --err_type 'P_N' 'P_SN'
