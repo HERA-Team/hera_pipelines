@@ -222,9 +222,6 @@ args = ["{basename}",
 ########## CALIBRATION AND ANT METRICS ##########
 
 [CALIBRATE_FILE_NOTEBOOK]
-chunk_size = 1
-stride_length = "all"
-time_centered = true
 mem = 24000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
