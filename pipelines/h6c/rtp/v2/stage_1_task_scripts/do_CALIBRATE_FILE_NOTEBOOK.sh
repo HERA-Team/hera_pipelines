@@ -76,8 +76,8 @@ jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/file_inspect.ipynb
-echo Finished running file inspect notebook at $(date)
+--execute ${nb_template_dir}/file_calibration.ipynb
+echo Finished running file calibration notebook at $(date)
 
 # Check to see that output files were correctly produced
 am_file=${fn%.uvh5}.ant_metrics.hdf5
@@ -102,8 +102,8 @@ then
     if [ "${is_first_file}" == "True" ]
     then
         # Copy file to github repo
-        github_nb_outdir=${nb_output_repo}/file_inspect
-        github_nb_outfile=${github_nb_outdir}/file_inspect_${jd}.html
+        github_nb_outdir=${nb_output_repo}/file_calibration
+        github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
         cp ${nb_outfile} ${github_nb_outfile}
 
         # Push to github
@@ -113,7 +113,7 @@ then
         python ${src_dir}/build_notebook_readme.py ${github_nb_outdir}
         git add ${github_nb_outdir}/README.md
         lasturl=`python -c "readme = open('${github_nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-        git commit -m "File Inspect notebook for JD ${jd}" -m ${lasturl}
+        git commit -m "File calibration notebook for JD ${jd}" -m ${lasturl}
         git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
     fi
 fi
