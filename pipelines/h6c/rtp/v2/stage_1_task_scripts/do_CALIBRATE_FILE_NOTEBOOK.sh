@@ -44,7 +44,7 @@ rfi_dpss_halfwidth=${28}
 rfi_nsig=${29}
 
 # Export variables used by the notebook
-export SUM_FILE=`realpath ${fn}`
+export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
 export AM_CORR_BAD=${am_corr_bad}
 export AM_CORR_SUSPECT=${am_corr_suspect}
 export AM_XPOL_BAD=${am_xpol_bad}
