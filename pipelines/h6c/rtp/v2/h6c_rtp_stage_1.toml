@@ -222,7 +222,7 @@ args = ["{basename}",
 ########## CALIBRATION AND ANT METRICS ##########
 
 [CALIBRATE_FILE_NOTEBOOK]
-mem = 24000
+mem = 12000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
