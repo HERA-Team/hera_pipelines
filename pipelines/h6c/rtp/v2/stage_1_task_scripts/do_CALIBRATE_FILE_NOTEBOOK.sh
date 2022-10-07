@@ -69,7 +69,7 @@ export OC_MAX_RERUN=${oc_max_rerun}
 export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
 
-nb_outfile=${fn%.uvh5}.calibration_notebook.html
+nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
@@ -80,10 +80,10 @@ jupyter nbconvert --output=${nb_outfile} \
 echo Finished running file calibration notebook at $(date)
 
 # Check to see that output files were correctly produced
-am_file=${fn%.uvh5}.ant_metrics.hdf5
-antclass_file=${fn%.uvh5}.ant_class.csv
-omnical_file=${fn%.uvh5}.omni.calfits
-omnivis_file=${fn%.uvh5}.omni_vis.uvh5
+am_file=${SUM_FILE%.uvh5}.ant_metrics.hdf5
+antclass_file=${SUM_FILE%.uvh5}.ant_class.csv
+omnical_file=${SUM_FILE%.uvh5}.omni.calfits
+omnivis_file=${SUM_FILE%.uvh5}.omni_vis.uvh5
 for f in am_file antclass_file omnical_file omnivis_file; do
     if [ -f "$f" ]; then
         echo Resulting $f found.
