@@ -84,7 +84,7 @@ am_file=${SUM_FILE%.uvh5}.ant_metrics.hdf5
 antclass_file=${SUM_FILE%.uvh5}.ant_class.csv
 omnical_file=${SUM_FILE%.uvh5}.omni.calfits
 omnivis_file=${SUM_FILE%.uvh5}.omni_vis.uvh5
-for f in am_file antclass_file omnical_file omnivis_file; do
+for f in ${am_file} ${antclass_file} ${omnical_file} ${omnivis_file}; do
     if [ -f "$f" ]; then
         echo Resulting $f found.
     else
