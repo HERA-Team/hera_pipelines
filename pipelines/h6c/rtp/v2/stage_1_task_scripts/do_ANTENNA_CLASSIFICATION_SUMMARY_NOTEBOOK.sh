@@ -28,7 +28,7 @@ nb_outfile=${nb_outdir}/antenna_classification_summary_${jd}.html
 
 # Export variables used by the notebook
 export ANT_CLASS_FOLDER="$(cd "$(dirname "$fn")" && pwd)"
-export SUM_FILE=${fn}
+export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
 export OC_SKIP_OUTRIGGERS=${oc_skip_outriggers}
 
 # Execute jupyter notebook and save as HTML
