@@ -30,6 +30,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             "delay_spectrum_inspect"
             "rtp_summary"
             "file_inspect"
+            "antenna_classification_summary"
         )
 
         for nb_name in ${nb_names[@]}; do
