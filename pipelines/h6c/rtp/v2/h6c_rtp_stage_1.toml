@@ -107,6 +107,7 @@ actions = ["SETUP",
            "LIBRARIAN_CALIBRATION_NOTEBOOKS",
            "LIBRARIAN_REDCAL",
            "LIBRARIAN_ANT_METRICS",
+           "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_2",
            "ANTENNA_REPORT_NOTEBOOKS",
            "SEASON_SUMMARY_NOTEBOOK",
@@ -287,6 +288,18 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_redcal}",
         ]
 
+[ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        ]
 
 [RTP_SUMMARY_NOTEBOOK_2]
 prereqs = ["AUTO_METRICS", "CALIBRATE_FILE_NOTEBOOK"]
@@ -452,6 +465,7 @@ prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
            "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_2",
            "CALIBRATE_FILE_NOTEBOOK",
+           "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
