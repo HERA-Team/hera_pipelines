@@ -212,16 +212,16 @@ args = ["{basename}", "${Options:include_diffs}",
        "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
 
 
-#[TIME_INPAINT]
-#prereqs = "XTALK"
-#prereq_chunk_size=1
-#chunk_size=1
-#stride_length="${Options:chunk_size}"
-#mem = 16000
-#args = ["{basename}", "${Options:include_diffs}",
-       #"${Options:label}", "${FR_OPTS:tol}",
-       #"${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
-       #"${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
+[TIME_INPAINT]
+prereqs = "XTALK"
+prereq_chunk_size=1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}", "${FR_OPTS:tol}",
+       "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
 
 
 
@@ -235,14 +235,14 @@ args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}"]
 
 
-#[TRANSFER_FLAGS]
-#prereqs = "RECONSTITUTE"
-#prereq_chunk_size=1
-#chunk_size=1
-#stride_length="${Options:chunk_size}"
-#mem = 16000
-#args = ["{basename}", "${Options:include_diffs}",
-      #"${Options:label}"]
+[TRANSFER_FLAGS]
+prereqs = "RECONSTITUTE"
+prereq_chunk_size=1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}"]
 
 
 [TIME_AVERAGE]
@@ -297,16 +297,16 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
 
-#[FILTER_NOTEBOOK]
-#prereqs="AUTOERRORS"
-#prereq_chunk_size="all"
-#mem=128000
-#chunk_size=1
-#stride_length="all"
-#time_centered = false
-#args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOOK_OPTS:nb_output_repo}",
-#      "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
-#      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${PSPEC_OaPTS:spw_ranges}"]
+[FILTER_NOTEBOOK]
+prereqs="AUTOERRORS"
+prereq_chunk_size="all"
+mem=128000
+chunk_size=1
+stride_length="all"
+time_centered = false
+args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOOK_OPTS:nb_output_repo}",
+      "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
+      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${PSPEC_OaPTS:spw_ranges}"]
 
 [POWER_SPECTRUM_NOTEBOOK]
 prereqs="AUTOERRORS"
