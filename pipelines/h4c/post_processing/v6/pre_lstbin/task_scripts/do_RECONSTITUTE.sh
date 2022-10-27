@@ -50,7 +50,8 @@ do
         transfer_flags.py zen.${jd}.${sd}.${label}.foreground_res.xtalk_filtered.uvh5 ${outfilename} ${outfilename} --clobber
       fi
     done
-    # reconstitute fr inpainted files
+    # reconstitute time inpainted files
+    # if they were produced
 
     outfilename=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.uvh5
     baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5`

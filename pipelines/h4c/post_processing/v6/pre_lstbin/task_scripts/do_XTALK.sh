@@ -14,6 +14,8 @@
 
 
 set -e
+# sometimes /tmp gets filled up on NRAO nodes hence this line.
+# haven't need to use it recently.
 #export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
 #import common functions
 src_dir="$(dirname "$0")"
@@ -26,17 +28,37 @@ source ${src_dir}/_common.sh
 #    valid options are "true" or "false".
 # 3) label: identifying string label for analysis outputs to set it apart from other
 #    runs with different parameters.
-# 4) tol: 
+# 4) tol: the fractional level that crosstalk will be subtracted too. Recommend ~1e-9
+# 5) frc0: "fringe-rate coefficient 0", linear coefficient describing width of fringe-rate filter [mHz]
+#          half-width frf = frc1 + frc0 * EW-baseline-length
+# 6) frc1: "fringe rate coefficient 1", constant coefficient term describing width of fringe-rate filter [mHz / meters]
+#          half-width frf = frc1 + frc0 * EW-baseline-length
+# 7) cache_dir: directory where filtering cache files will be temporarily stored.
+# 8) spw_ranges: string indicating which channels to keep in output files. Format is
+#    comma-separated spectral windows where low/hi channels are joined by a tilde
+#    example: "0~10,15~25,30~80" will generate output files with three contiguous
+#    spectral windows that include channels 0-10, 15-25, and 30-80 from original
+#    files.
+# 9) flag_yaml: path to yaml file containing a-priori flags to apply. Can also contain
+#               LST ranges that you wish to exclude from the FRF and flag downstream.
+#
+#
+#
+# ASSUMED INPUTS:
+# 1) Chunked, calibrated, and foreground in-painted sum / diff files with names of the form
+#    zen.<JD>.<sum/diff>.<label>.foreground_filled.uvh5. See do_DELAY.sh
+#    for more information (do_DELAY.sh is the prereq task).
+#
+# OUTPUTS
+# 1) sum/diff xtalk subtracted waterfall files
+#    zen.<jd>.<sum/diff>.<label>.foreground_fille.d.xtalk_filtered.waterfall.uvh5
+#    these files contain a small number of baselines and all time integrations for the night
+#    To convert to files with a small number of time integrations and all baselines we must use
+#    do_RECONSTITUTE.sh
+#
+# ------------------------------------------------------------------------------
 
 
-# 1 - file name
-# 2 - data extension
-# 3 - output label
-# 4 - Level to subtract cross-talk too.
-# 5 - First xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1.
-# 6 - Second xtalk filter coefficient. Remove power below fringe-rates of fc0 * bl_len + fc1
-# 7 - Cache Directory.
-# 8 - if true, do no foregrounds file. This could run substantially slower if flags are not separable.
 
 fn="${1}"
 include_diffs="${2}"

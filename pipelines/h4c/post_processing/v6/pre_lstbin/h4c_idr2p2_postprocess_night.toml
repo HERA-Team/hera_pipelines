@@ -226,6 +226,8 @@ args = ["{basename}", "${Options:include_diffs}",
 
 
 [RECONSTITUTE]
+# If you are doing time-inpainting, make sure to turn prereq here to TIME_INPAINT
+# otherwise leave as XTALK.
 prereqs = "XTALK"
 prereq_chunk_size="all"
 chunk_size=1
