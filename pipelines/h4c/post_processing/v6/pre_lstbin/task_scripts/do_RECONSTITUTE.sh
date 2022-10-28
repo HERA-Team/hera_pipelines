@@ -1,17 +1,52 @@
 #! /bin/bash
+#-----------------------------------------------------------------------------
+# This script reverses the corner-turn performed by the cross-talk subtraction
+# and time-inpainting scripts. do_XTALK.sh and do_TIME_INTPAINT.sh both produce
+# waterfall files where each file contains a small number of baselines and all
+# LSTs on that night. Downstream tomls, on the other hand, assume files that contain
+# all baselines for the night in each file and a small number of times. The naming
+# convention that we use also implies that files contain observations close to a
+# specific JD or LST. Efficient parallelization of the power spectrum code also
+# requires that each time chunk knows about all LSTs
+# ASIDE: although in the future
+# we might consider paralellizing power spectrum estimation across redundant groups
+# and forego the notion of fields altogether.
+# this will almost certainly require time in-painting and keeping track of the statistics
+# of estimates of the fringe-rate modes.
+#-----------------------------------------------------------------------------
+
 set -e
+# sometimes /tmp gets filled up on NRAO nodes hence this line.
+# haven't need to use it recently.
 #export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
 
-#import common functions
+# import common functions
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
-# This script reconstitutes as time chunk from many baselines.
-# Parameters are set in the configuration file, here we define their positions,
-# which must be consistent with the config.
-# 1 - template file name (template for time chunk to reconstitute).
-# 2 - data extension
-# 2 - output label for identifying file.
+#-----------------------------------------------------------------------------
+# 1) fn: Input filename (string) assumed to contain JD.
+# 2) include_diffs: Whether or not to perform analysis on diff files as well as sum files.
+#    valid options are "true" or "false".
+# 3) label: identifying string label for analysis outputs to set it apart from other
+#    runs with different parameters.
+#
+#
+# ASSUMED INPUTS:
+# 1) Chunked, calibrated, foreground in-painted AND xtalk_filtered/time_inpainted (optional)
+#    sum / diff waterfall files where each files has all time integrations on the night
+#    and together all of the files contain all baselines from the night. These files have names of the form
+#    * zen.<JD>.<sum/diff>.<label>.foreground_filled.xtalk_filtered.waterfall.uvh5 (xtalk_filtered waterfalls)
+#    * zen.<JD>.<sum/diff>.<label>.foreground_filled.time_inpainted.waterfall.uvh5 (time_inpainted waterfalls [optional])
+#    If time_inpainted waterfalls are not present in the run dir, they are simply not processed.
+#
+# OUTPUTS:
+# 1) sum/diff time_inpainted and xtalk_filtered files with cornerturn reversed.
+#    Names have the format
+#    * zen.<JD>.<sum/diff>.<label>.foreground_filled.xtalk_filtered.uvh5 (xtalk_filtered)
+#    * zen.<JD>.<sum/diff>.<label>.foreground_filled.time_inpainted.uvh5 (time_inpainted)
+#
+#-----------------------------------------------------------------------------
 
 fn="${1}"
 include_diffs="${2}"
