@@ -78,6 +78,10 @@ do
       time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --outfilename ${outfilename}\
           --baseline_chunk_files ${baseline_chunk_files} --clobber
 
+
+      # this is some visitgial code that we may bring back where we transfer flags to the foreground
+      # model file to assess the impact on LST binning and better understand effects of varying gains and flags.
+      # It probably belongs in its own script. Oh well.
       if [ "${ext}" = "foreground_model" ]
       then
         # transfer flags from res file to model file.
@@ -85,9 +89,9 @@ do
         transfer_flags.py zen.${jd}.${sd}.${label}.foreground_res.xtalk_filtered.uvh5 ${outfilename} ${outfilename} --clobber
       fi
     done
+    
     # reconstitute time inpainted files
     # if they were produced
-
     outfilename=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.uvh5
     baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5`
     nchunks=`ls zen.${int_jd}.*.${sd}.${label}.foreground_filled.time_inpainted.waterfall.uvh5 | wc -l`
