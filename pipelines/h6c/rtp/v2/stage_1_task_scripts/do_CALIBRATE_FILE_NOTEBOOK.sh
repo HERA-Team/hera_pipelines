@@ -104,7 +104,7 @@ if [ "${git_push}" == "True" ]
 then
     # Get JD from filename
     jd=$(get_int_jd ${fn})
-    is_first_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[0])"`
+    is_first_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
     if [ "${is_first_file}" == "True" ]
     then
         # Copy file to github repo
