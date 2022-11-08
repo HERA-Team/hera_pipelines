@@ -25,10 +25,11 @@ oc_skip_outriggers=${5}
 jd=$(get_int_jd ${fn})
 nb_outdir=${nb_output_repo}/antenna_classification_summary
 nb_outfile=${nb_outdir}/antenna_classification_summary_${jd}.html
+middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print(files[len(files) // 2])"`
 
 # Export variables used by the notebook
-export ANT_CLASS_FOLDER="$(cd "$(dirname "$fn")" && pwd)"
-export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
+export ANT_CLASS_FOLDER="$(cd "$(dirname "${middle_file}")" && pwd)"
+export SUM_FILE="$(cd "$(dirname "${middle_file}")" && pwd)/$(basename "${middle_file}")"
 export OC_SKIP_OUTRIGGERS=${oc_skip_outriggers}
 
 # Execute jupyter notebook and save as HTML
