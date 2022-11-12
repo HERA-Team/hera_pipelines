@@ -1,17 +1,44 @@
 #! /bin/bash
+
+#-----------------------------------------------------------------------------
+# This script performs coherent LST-averages of full night waterfall files
+#-----------------------------------------------------------------------------
+
+
 set -e
 
+# sometimes /tmp gets filled up on NRAO nodes hence this line.
+# haven't need to use it recently.
+#export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
 #import common functions
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
-# This script averages data in time.
-# Parameters are set in the configuration file, here we define their positions,
-# which must be consistent with the config.
-# 1 - template file name (template for time chunk to reconstitute).
-# 2 - data extension
-# 2 - output label for identifying file.
-# 3 - number of seconds to average in time.
+#-----------------------------------------------------------------------------
+# ARGUMENTS
+# 1) fn: Input filename (string) assumed to contain JD.
+# 2) include_diffs: Whether or not to perform analysis on diff files as well as sum files.
+#    valid options are "true" or "false".
+# 3) label: identifying string label for analysis outputs to set it apart from other
+#    runs with different parameters.
+# 4) t_avg: (float) number of seconds to perform coherent averaging over.
+#
+# ASSUMED INPUTS
+# 1) sum/diff xtalk subtracted waterfall files
+#    zen.<jd>.<sum/diff>.<label>.foreground_fille.d.xtalk_filtered.waterfall.uvh5
+#    these files contain a small number of baselines and all time integrations for the night
+#    To convert to files with a small number of time integrations and all baselines we must use
+# 2) (optional) sum/diff xtalk time-inpainted files
+#    zen.<jd>.<sum/diff>.<label>.foreground_fille.d.time_inpainted.waterfall.uvh5
+#    these files contain a small number of baselines and all time integrations for the night
+#    To convert to files with a small number of time integrations and all baselines we must use
+
+# OUTPUTS
+# 1) coherently averaged sum/diff xtalk subtracted waterfall files.
+#    zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.waterfall.tavg.uvh5
+# 2) (optional) coherently averaged sum/diff time-inpainted waterfall files.
+#   zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.waterfall.tavg.uvh5
+#-----------------------------------------------------------------------------
 
 fn="${1}"
 include_diffs="${2}"
