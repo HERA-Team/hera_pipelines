@@ -25,6 +25,7 @@ src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
 #-----------------------------------------------------------------------------
+# ARGUMENTS:
 # 1) fn: Input filename (string) assumed to contain JD.
 # 2) include_diffs: Whether or not to perform analysis on diff files as well as sum files.
 #    valid options are "true" or "false".
@@ -89,7 +90,7 @@ do
         transfer_flags.py zen.${jd}.${sd}.${label}.foreground_res.xtalk_filtered.uvh5 ${outfilename} ${outfilename} --clobber
       fi
     done
-    
+
     # reconstitute time inpainted files
     # if they were produced
     outfilename=zen.${jd}.${sd}.${label}.foreground_filled.time_inpainted.uvh5
