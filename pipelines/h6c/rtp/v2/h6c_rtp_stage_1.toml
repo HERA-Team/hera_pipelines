@@ -50,10 +50,8 @@ auto_slope_good_low = -0.4
 auto_slope_good_high = 0.4
 auto_slope_suspect_low = -0.6
 auto_slope_suspect_high = 0.6
-auto_rfi_good_low = -0.02
-auto_rfi_good_high = 0.01
-auto_rfi_suspect_low = -0.04
-auto_rfi_suspect_high = 0.02
+auto_rfi_good = 0.01
+auto_rfi_suspect = 0.02
 auto_shape_good = 0.0625
 auto_shape_suspect = 0.125
 oc_cspa_good = 3
@@ -246,10 +244,8 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:auto_slope_good_high}",
         "${CALIBRATE_FILE_OPTS:auto_slope_suspect_low}",
         "${CALIBRATE_FILE_OPTS:auto_slope_suspect_high}",
-        "${CALIBRATE_FILE_OPTS:auto_rfi_good_low}",
-        "${CALIBRATE_FILE_OPTS:auto_rfi_good_high}",
-        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect_low}",
-        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_good}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
         "${CALIBRATE_FILE_OPTS:auto_shape_good}",
         "${CALIBRATE_FILE_OPTS:auto_shape_suspect}",
         "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
