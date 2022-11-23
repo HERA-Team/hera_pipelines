@@ -176,7 +176,6 @@ actions = [
            #BOOTSTRAPERRORS, # Estimate bootstrap errorbars.
            #"FILTER_NOTEBOOK", # Generate a waterfall and fringe-rate plots (optional) requires TIME_INPAINT
            "POWER_SPECTRUM_NOTEBOOK", # Power spectrum visualization notebook.
-           #"POWER_SPECTRUM_SUMMARY_NOTEBOOK", # Additional summary notebook comparing power spectra of resids vs clean models etc...
            "CLEANUP_KEEP_FGFILLED" # Clean up intermediary products -- I recommend commenting this out if you are debugging.
            ]
 

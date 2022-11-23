@@ -1,21 +1,45 @@
 #! /bin/bash
+
 set -e
-
-# This script generates a notebook for inspecting foreground and x-talk filtered time-averaged data.
-
+# sometimes /tmp gets filled up on NRAO nodes hence this line.
+# haven't need to use it recently.
+#export TMPDIR=/lustre/aoc/projects/hera/heramgr/tmp/
+#import common functions
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
-# Parameters are set in the configuration file. Here we define their positions,
-# which must be consistent with the config.
-# 1 - (raw) filename
-# 2 - nb_template_dir: where to look for the notebook template
-# 3 - nb_output_repo: repository for saving evaluated notebooks
-# 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5 - identifier label.
-# 6 - number of redundant groups to show in plots
-# 7 - maximum number of baselines to show per redundant group.
-# 8 - number of redundant groups to skip over when plotting the number of redundant groups specified in $6.
+
+#-----------------------------------------------------------------------------
+# ARGUMENTS
+# 1) fn: Input filename (string) assumed to contain JD.
+# 2) nb_template_dir: Directory where to look for the notebook template. This should
+#    be wherever you've installed a copy of
+#    https://github.com/HERA-Team/hera_notebook_templates/blob/master/notebooks/filter_inspect.ipynb
+# 3) nb_output_repo: Location of repository where you plan on saving evaluated notebooks
+#    This should probably be deprecated due to Githubs relatively limited storage.
+# 4) git_push: boolean whether to push the results created to nb_output_repo
+# 5) label: identifier label.
+# 6) nreds: number of redundant groups to show in plots.
+# 7) max_bl_per_redgrp: Maximum number of baselines to show per redundant group.
+# 8) nskip: number of redundant groups to skip over when
+#    plotting the number of redundant groups specified in $6.
+# 9) spws:
+#
+#
+# ASSUMED INPUTS
+# 1) Xtalk filtered, delay inpainted, time averaged sum/diff data files.
+#    zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered.tavg.uvh5
+#    where ext="foreground_filled"
+# 1) Delay inpainted, time averaged sum/diff data files.
+#    zen.${jd}.${sd}.${label}.${ext}.tavg.uvh5
+#    where ext="foreground_filled"
+#
+# OUTPUTS:
+# 1) Notebook output written to ${nb_output_repo}.
+#    nb_outfile=${nb_output_repo}/filter_inspect/filter_inspect_${label}_${jd}_${ext}.ipynb
+#
+#-----------------------------------------------------------------------------
+
 
 fn=${1}
 nb_template_dir=${2}

@@ -32,6 +32,8 @@ source ${src_dir}/_common.sh
 #    pstokes I polarizations with naming format
 #    zen.${jd}.${sd}.${label}.${ext}.xtalk_filtered${pol_label}.tavg.uvh5
 #    where pol_label can be "_pI" or "" (for XX/YY).
+# 2) Beam file with naming convention
+#    ${beamfile_stem}${pol_label}.fits
 
 # OUTPUTS:
 # 1) sum/diff xtalk filtered, delay inpainted, time-averaged pstokes power spectra
