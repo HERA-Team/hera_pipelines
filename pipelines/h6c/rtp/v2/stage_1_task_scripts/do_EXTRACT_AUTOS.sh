@@ -29,6 +29,23 @@ echo extract_autos.py ${diff_file} ${diff_autos_file} --clobber
 extract_autos.py ${diff_file} ${diff_autos_file} --clobber
 echo Finished extracting autos from diff data at $(date)
 
+# now delete .dat files, since we've already shown that they are readable
+sum_dat_file=`echo ${fn%.sum.uvh5}.sum.dat`
+if [ -f "$sum_dat_file" ]; then
+    if [ -f "$fn" ]; then
+        echo Removing ${sum_dat_file}
+        rm -rf ${sum_dat_file}
+    fi
+fi
+diff_dat_file=`echo ${fn%.sum.uvh5}.diff.dat`
+if [ -f "$diff_dat_file" ]; then
+    if [ -f "$diff_file" ]; then
+        echo Removing ${diff_dat_file}
+        rm -rf ${diff_dat_file}
+    fi
+fi
+
+# upload to librarian
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_autos}" == "True" ]; then
         # get the integer portion of the JD
