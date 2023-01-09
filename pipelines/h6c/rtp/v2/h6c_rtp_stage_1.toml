@@ -40,6 +40,7 @@ am_corr_bad = 0.2
 am_corr_suspect = 0.4
 am_xpol_bad = -0.1
 am_xpol_suspect = 0.0
+suspect_solar_alt = 0.0
 zeros_per_spec_good = 2
 zeros_per_spec_suspect = 8
 auto_power_good_low = 5
@@ -59,6 +60,8 @@ oc_cspa_suspect = 6
 oc_max_dims = 4
 oc_min_dim_size = 8
 oc_skip_outriggers = true
+oc_min_bl_len = 1
+oc_max_bl_len = 1e100
 oc_maxiter = 50
 oc_max_rerun = 4
 rfi_dpss_halfwidth = 300e-9
@@ -234,6 +237,7 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
         "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
         "${CALIBRATE_FILE_OPTS:am_xpol_suspect}",
+        "${CALIBRATE_FILE_OPTS:suspect_solar_alt}",
         "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
         "${CALIBRATE_FILE_OPTS:zeros_per_spec_suspect}",
         "${CALIBRATE_FILE_OPTS:auto_power_good_low}",
@@ -253,6 +257,8 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:oc_max_dims}",
         "${CALIBRATE_FILE_OPTS:oc_min_dim_size}",
         "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        "${CALIBRATE_FILE_OPTS:oc_min_bl_len}",
+        "${CALIBRATE_FILE_OPTS:oc_max_bl_len}",
         "${CALIBRATE_FILE_OPTS:oc_maxiter}",
         "${CALIBRATE_FILE_OPTS:oc_max_rerun}",
         "${CALIBRATE_FILE_OPTS:rfi_dpss_halfwidth}",
