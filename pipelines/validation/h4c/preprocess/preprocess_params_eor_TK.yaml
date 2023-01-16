@@ -1,0 +1,231 @@
+# reprocess_params.yaml
+#
+# hera_pspec H1C IDR3.2 preprocessing pipeline for data that's been per-epoch preprocessed
+# configuration file
+
+#---------------------------------------------------------------
+# IO Parameters
+#---------------------------------------------------------------
+io :
+  work_dir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/eor_only/all_epochs/preprocess' # directory to work in
+  out_dir : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/eor_only/all_epochs/preprocess'  # directory to dump all output in
+  logfile : 'preprocess_out_eor_TK.log'  # logfile   
+  errfile : 'preprocess_err_eor_TK.log' # error file
+  joinlog : True       # redirect error output into logfile
+  overwrite : True     # overwrite
+  verbose : True        # report feedback to standard output
+  plot : False
+
+#---------------------------------------------------------------
+# Analysis Parameters
+#---------------------------------------------------------------
+analysis : 
+  rfi_flag : False        # RFI-Flag data
+  fg_filt : False         # foreground filter, clean or data-inpaint
+  ref_cal : False         # reflection calibration
+  xtalk_sub : False       # xtalk subtraction
+  time_avg : True        # time average data
+  red_avg : False         # redundant averaging
+  form_pstokes : True    # form pseudo-Stokes visibilities
+
+  multiproc : True    # use multiprocess module
+  nproc : 4               # number of processes to spawn
+  maxiter : 1        # number of attempts for each block
+
+#---------------------------------------------------------------
+# Data Parameters
+#---------------------------------------------------------------
+data :
+  # data root directory
+  data_root : '/lustre/aoc/projects/hera/Validation/test-4.1.0/LSTBIN/eor_only/all_epochs'
+
+  # glob-parseable, data template for input data products
+  data_template : 'zen.grp1.of1.LST.?.?????.true_eor.uvh5'
+
+  # file extension for calibration file to load and apply to data
+  cal_ext : None 
+  # cal_ext : 'allspws.refcal_smooth.calfits'
+
+  # file extension to replace .uvh5 in data template for by-hand UVFlag file
+  hand_flag_ext : .hand_flags.h5
+
+  # list of polarizations to operate on from input file
+  pols : ['xx', 'xy', 'yx', 'yy']
+
+  # data baseline-type length range [meters] and angle range [degrees]
+  bl_len_range : [0, 1000]  
+  bl_deg_range : [0, 180]
+  xants : []
+
+  # specify baselines as list of lists, overriding len, deg and xants choices
+  bls : [[1, 1], [11, 1], [12, 1], [12, 11], [14, 1], [14, 11], [14, 12], [23, 1], [23, 14], [25, 1], 
+         [25, 12], [27, 1], [27, 11], [27, 12], [27, 23], [36, 1], [36, 11], [36, 14], [36, 25], 
+         [36, 27], [41, 1], [41, 11], [41, 12], [41, 14], [41, 23], [41, 36], [65, 1], [65, 11], 
+         [65, 12], [65, 14], [65, 23], [65, 25], [65, 27], [65, 41], [66, 1], [66, 11], [66, 14], 
+         [66, 23], [66, 27], [66, 41], [68, 1], [68, 11], [68, 12], [68, 23], [68, 41], [88, 1], 
+         [88, 11], [88, 12], [88, 14], [88, 23], [88, 25], [88, 36], [88, 41], [88, 65], [88, 66], 
+         [99, 1], [99, 11], [99, 12], [99, 14], [99, 23], [99, 27], [99, 41], [99, 88], [101, 1], 
+         [101, 11], [101, 12], [101, 23], [102, 1], [102, 11], [102, 36], [118, 1], [118, 12], [118, 14], 
+         [119, 1], [119, 27], [119, 41], [121, 1], [121, 11], [121, 12], [121, 23], [121, 36], [121, 65], 
+         [122, 1], [122, 11], [122, 65], [123, 1], [123, 11], [123, 23], [124, 1], [124, 11], [124, 23], 
+         [124, 36], [124, 65], [124, 118], [137, 1], [137, 14], [137, 27], [137, 41], [137, 88], [137, 123], 
+         [138, 1], [138, 11], [138, 14], [139, 1], [140, 1], [141, 1], [141, 65], [142, 1], [142, 99], 
+         [143, 1], [143, 11], [143, 65], [143, 99]]
+
+  # filter baseline on actual baselines in data (e.g. when operating on red_avg data)
+  filter_bls : False
+
+  # select inclusive range in LST [radians] for globbed datafiles
+  # file mean LST be within bounds, otherwise it is dropped
+  lst_range : None  # [0, 3.14]
+  # if True, sort files by LST of the first integration, using lst_branch_cut to decide where to wrap
+  lst_sort : True 
+  # value in radians for branchcut for how to order LSTs. Only used if lst_sort is True. Default 0.0.
+  lst_branch_cut : 4.70
+
+#---------------------------------------------------------------
+# Algorithm Parameters
+#---------------------------------------------------------------
+algorithm :
+
+  # RFI Flagging
+  rfi_flag :
+    file_ext : 'R'                    # file extension
+    detrend_alg : 'detrend_medfilt'   # hera_qm xrfi metric algorithm
+    Kt : 10
+    Kf : 15
+    sig_init : 4                    # initial sigma for flagging metrics
+    sig_adj : 4                     # secondary sigma for watershed
+
+  # Foreground Filtering
+  fg_filt :
+    # IO
+    resid_ext : None
+    inpaint_ext : "P"
+    axis : 'freq'
+    # Filtering params
+    clean_params : 
+      standoff : 50.0
+      horizon : 1.0
+      min_dly : 2000.0
+      tol : 1.0e-06
+      autotol : 5.0e-08
+      maxiter : 100
+      window : 'tukey'
+      alpha : 0.15
+      skip_wgt : 0.2
+      gain : 0.9
+      edgecut_low : 100
+      edgecut_hi : 150
+      zeropad : 256
+      max_frate : 3.0
+    # trim FG model below noise
+    trim_model : False
+    noise_thresh : 3.0
+    delay_cut : 2000
+    kernel_size : None
+    polyfit_deg : 3
+    # hand flagging before CLEANing
+    flag_lsts : None #[[0.9, 1.0]]  # start stop radians
+    flag_chans :  None # start stop channels
+        # - [135, 136]
+        # - [169, 171]
+        # - [424, 425]
+        # - [570, 573]
+        # - [697, 698]
+        # - [815, 816]
+    freq_avg_min_nsamp : 10  # freq-averaged min nsample flag cut for each time bin
+    apply_hand_flag_files : True # applies flagging waterfalls before filteirng using hand_flag_ext above
+
+  # Reflection Calibration
+  ref_cal :
+    cal_ext : 'refcal.calfits'
+    time_avg : True
+    expand_times : True   # if time_avg, inflate gains to full time range of file
+    full_day_avg_round : True # first perform reflection calibration on a full-day autos averaged down, then refine per-file
+    wgt_by_nsample : False
+    wgt_by_favg_nsample : True
+    dly_ranges :
+      - [25, 800, 5]
+      - [100, 800, 5]
+      - [200, 800, 5]
+      - [250, 800, 5]
+      - [300, 800, 5]
+      - [500, 1200, 5]
+      - [700, 1500, 5]
+      - [1100, 2500, 5]
+    # initial guess parameters
+    window : 'bh'
+    alpha : 0.1
+    edgecut_low : [116, 534]
+    edgecut_hi : [660, 189]
+    combine_spws : True
+    spw_boundaries :
+      - [0, 384]
+      - [385, 1023]  # channel boundaries when combining multispw. default is to use edgecuts.
+    zeropad : 256
+    Nphs : 100
+    fthin : None
+    ref_sig_cut : 1.0
+    # refinement parameters
+    opt_maxiter : 0
+    opt_buffer : [15, 30]
+    opt_method : 'BFGS'
+    opt_tol : 0.001
+    # time smoothcal parameters
+    smooth_ref : True  # smooth calibration across time
+    time_scale : 14400  # FWHM of Gaussian in seconds
+    Nmirror : 0  # number of times to mirror time axis
+    smooth_cal_ext : '_smooth'  # extension to ...{}.calfits field
+
+  # Xtalk Subtraction
+  xtalk_sub : 
+    # IO
+    file_ext : "X" # "X"
+    Nbl_per_task : 10
+    # algorithm parameters
+    method : "svd-gp"  # options = ['frfilter', 'svd-gp', 'linear_filter']
+    max_frate_coeffs : [0.024, -0.28]  # max_frate [mHz] = x1 * EW_bl_len [m] + x2
+    max_frate : 0.75
+    # svd method parameters
+    min_dly : 100
+    max_dly : 4000
+    horizon : .8
+    standoff : 0
+    window : 'bh'
+    alpha : 0.1
+    edgecut_low : [100, 400]
+    edgecut_hi : [624, 150]
+    gp_frate_degrade : 0.0
+    gp_Nmirror : 200
+    Nkeep : 50
+    xthin : None
+    project_vmodes : False
+    frate_thresh : 0.06  # if max_frate [mHz] is below this, don't filter it
+    rm_intermediate_files : False
+    tol : 1.0e-8
+    excluded_lsts : # Give zero weight to these ranges of LSTs (in radians) when subtracting crosstalk
+      - [4.0, 4.71]
+      - [4.71, 5.5]
+
+  # Time Averaging
+  time_avg : 
+    file_ext : ".T"        # file extension of time-averaged data
+    Nbl_per_task : 10
+    t_window : 214.0      # width of averaging window in seconds
+    file_Ntimes : 20      # output file Ntimes (this is a minimum, might be 1 more if it doesn't divide evenly)
+    wgt_by_nsample : False
+    wgt_by_favg_nsample : False
+    freq_avg_min_nsamp : 0  # minimum allowed number of samples after averaging, otherwise flag
+    rm_intermediate_files : True
+
+  # Redundant Averaging
+  red_avg :
+    file_ext : "E"        # file extension of red-averaged data
+    red_tol : 1.0          # redundant baseline tolerance [meters]
+    wgt_by_nsample : False  # weight average by nsample and integration time
+
+  # Forming pStokes
+  pstokes : 
+    outstokes : ['pI', 'pQ', 'pU', 'pV']
+    file_ext : "K"

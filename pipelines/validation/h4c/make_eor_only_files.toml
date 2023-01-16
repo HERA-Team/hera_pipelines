@@ -1,0 +1,29 @@
+[Options]
+makeflow_type = "analysis"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/test-4.1.0/software/hera_pipelines/pipelines/validation/h1c_idr3_2/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2/h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2/a_priori_flags"
+conda_env = "h1c_idr3_2_validation"
+source_script = "~/.bashrc"
+base_mem = 16000
+base_cpu = 1
+timeout = "24h"
+
+[SIM_LSTBINNED_DATA_OPTS]
+sky_cmp = "eor"
+path_to_sim_files = "/lustre/aoc/projects/hera/Validation/H1C_IDR3/chunked_data"
+path_to_sim_config = "None"
+inflate = "False"
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["SIM_LSTBINNED_DATA",
+          ]
+
+[SIM_LSTBINNED_DATA]
+args = ["{basename}",
+        "${SIM_LSTBINNED_DATA_OPTS:sky_cmp}",
+        "${SIM_LSTBINNED_DATA_OPTS:path_to_sim_files}",
+        "${SIM_LSTBINNED_DATA_OPTS:path_to_sim_config}",
+        "${SIM_LSTBINNED_DATA_OPTS:inflate}",
+       ]

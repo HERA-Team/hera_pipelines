@@ -1,0 +1,54 @@
+noise:
+    simulator: "thermal_noise"
+    Trx: 100
+    omega_p: !Beam
+        datafile: "/lustre/aoc/projects/hera/Validation/H1C_IDR3/configs/omegas.npz"
+        interp_kwargs:
+            interpolator: "interp1d"
+            kind: "cubic"
+    seed: "initial"
+bandpass:
+    simulator: "bandpass_gain"
+    seed: "once"
+short_reflection:
+    simulator: "reflections"
+    amp: 0.005
+    dly: 180
+    amp_jitter: 0.2
+    dly_jitter: 10
+    seed: "once"
+reflection_spectrum:
+    seed: "once"
+    n_copies: 20
+    dly_range:
+        - 200
+        - 1000
+    amp_range:
+        - -3
+        - -4
+    dly_jitter: 30
+    amp_jitter: 0.01
+long_reflection:
+    simulator: "reflections"
+    amp: 0.0008
+    dly: None
+    amp_jitter: 0.01
+    dly_jitter: 10
+    seed: "once"
+mutual_coupling:
+    simulator: "OverAirCrossCoupling"
+    emitter_pos:  # Roughly based on Fig. 4 of HERA Memo 104
+        - -217.30
+        - -2.15
+        - 3.27
+    cable_delays: None
+    base_amp: 0.75
+    amp_norm: 1
+    amp_slope: -2.29
+    amp_decay_base: 4.23
+    n_copies: None
+    amp_jitter: 0.2
+    dly_jitter: 30
+    max_delay: 2000
+    amp_decay_fac: 0.01
+    seed: "once"

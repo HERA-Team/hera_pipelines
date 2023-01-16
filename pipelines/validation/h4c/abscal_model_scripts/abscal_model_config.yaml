@@ -1,0 +1,9 @@
+noise:
+    simulator: "thermal_noise"
+    Trx: 100
+    omega_p: !Beam
+        datafile: "/lustre/aoc/projects/hera/Validation/H1C_IDR3/configs/omegas.npz"
+        interp_kwargs:
+            interpolator: "interp1d"
+            kind: "cubic"
+    seed: "initial"
