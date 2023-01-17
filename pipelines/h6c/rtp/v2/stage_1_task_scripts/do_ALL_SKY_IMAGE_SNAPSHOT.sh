@@ -51,6 +51,4 @@ mv *${jd}*jpg ${jd}_imgs
 
 # delete ms, v1
 rm -rf $MSFILE
-IMAGENAME=$(python -c "import os; print('${MSFILE}'.replace('ms','v1'))")
-rm -rf ${IMAGENAME}.{psf,image,pb,model,fits,residual,sumwt} #delete all except jpg
 
