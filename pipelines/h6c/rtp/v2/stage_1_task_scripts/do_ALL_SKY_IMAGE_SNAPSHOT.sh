@@ -56,5 +56,5 @@ python ~/bin/widefield_fits2img.py $IMAGEFILE
 #mv *${jd}*jpg ${jd}_imgs
 
 # delete ms, v1
-#rm -rf $MSFILE
+rm -rf $MSFILE
 
