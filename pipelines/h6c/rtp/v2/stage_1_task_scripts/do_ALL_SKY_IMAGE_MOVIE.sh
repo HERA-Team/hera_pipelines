@@ -21,3 +21,5 @@ cd ${jd}_imgs
 ffmpeg -f image2 -pattern_type glob -i '*.jpg' HERA_${jd}_automatic.mp4
 cp  HERA_${jd}_automatic.mp4 ..
 # TODO put movie in Librarian and upload to enterprise for quick online viewing
+# Put movie where it will be rsynced to heranow by a regular cron
+cp  HERA_${jd}_automatic.mp4 /mnt/sn1/nightly_movies/
