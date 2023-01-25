@@ -95,11 +95,10 @@ streak_sig = 20.0
 other_sig = 5.0
 tb_aggro = 0.5
 
-
 [ALL_SKY_IMAGE_SNAPSHOT_OPTS]
 hera_env = "RTP"
-[ALL_SKY_IMAGE_MOVIE_OPTS]
 casa_env = "casa_py38"
+
 ############################################################################################################
 
 [WorkFlow]
@@ -443,14 +442,15 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${NOTEBOOK_OPTS:git_push}",
         ]
+
 [ALL_SKY_IMAGE_SNAPSHOT]
 prereqs = ["CALIBRATE_FILE_NOTEBOOK"]
 mem = 7000
 chunk_size = "1"
 stride_length = "10"
 args = ["{basename}",
-        "${ALL_SKY_IMAGE_OPTS:hera_env}",
-        "${ALL_SKY_IMAGE_OPTS:casa_env}"
+        "${ALL_SKY_IMAGE_SNAPSHOT_OPTS:hera_env}",
+        "${ALL_SKY_IMAGE_SNAPSHOT_OPTS:casa_env}"
         ]
 
 [ALL_SKY_IMAGE_MOVIE]
@@ -458,7 +458,7 @@ prereqs = ["ALL_SKY_IMAGE_SNAPSHOT"]
 prereq_chunk_size = "all"
 chunk_size = "all"
 args = ["{basename}",
-        "{ALL_SKY_IMAGE_OPTS:casa_env}"]
+        "{ALL_SKY_IMAGE_SNAPSHOT_OPTS:casa_env}"]
 
 
 ########## DELAY SPECTRUM INSPECTION ##########
