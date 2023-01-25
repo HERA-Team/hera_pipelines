@@ -8,10 +8,28 @@ hostname
 
 # for now assumes scripts are to be found in ~/bin/
 
-
-
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
+
+# >>> conda initialize >>>
+# contents within this block must be kept matching those in ~/.bashrc
+__conda_setup="$('/home/obs/mambaforge/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/obs/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/obs/mambaforge/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/obs/mambaforge/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/home/obs/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/home/obs/mambaforge/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+
 # Parameters are set in the configuration file. Here we define their positions,
 # which must be consistent with the config.
 fn=${1}
