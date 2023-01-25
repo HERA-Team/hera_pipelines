@@ -23,3 +23,6 @@ cp  HERA_${jd}_automatic.mp4 ..
 # TODO put movie in Librarian and upload to enterprise for quick online viewing
 # Put movie where it will be rsynced to heranow by a regular cron
 cp  HERA_${jd}_automatic.mp4 /mnt/sn1/nightly_movies/
+
+#make sure the environment is the global env
+conda activate RTP
