@@ -458,7 +458,7 @@ prereqs = ["ALL_SKY_IMAGE_SNAPSHOT"]
 prereq_chunk_size = "all"
 chunk_size = "all"
 args = ["{basename}",
-        "{ALL_SKY_IMAGE_SNAPSHOT_OPTS:casa_env}"]
+        "${ALL_SKY_IMAGE_SNAPSHOT_OPTS:casa_env}"]
 
 
 ########## DELAY SPECTRUM INSPECTION ##########
