@@ -20,22 +20,22 @@ fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
 git_push=${4}
-upload_to_librarian="${5}"
-librarian_full_day_rfi="${6}"
-FM_low_freq="${7}"
-FM_high_freq="${8}"
-max_solar_alt="${9}"
-freq_filter_scale="${10}"
-time_filter_scale="${11}"
-eigenval_cutoff="${12}"
-min_frac_of_autos="${13}"
-max_auto_L2="${14}"
-z_thresh="${15}"
-ws_z_thresh="${16}"
-avg_z_thresh="${17}"
-repeat_flag_z_thresh="${18}"
-max_freq_flag_frac="${19}"
-max_time_flag_frac="${20}"
+upload_to_librarian=${5}
+librarian_full_day_rfi=${6}
+FM_low_freq=${7}
+FM_high_freq=${8}
+max_solar_alt=${9}
+freq_filter_scale=${10}
+time_filter_scale=${11}
+eigenval_cutoff=${12}
+min_frac_of_autos=${13}
+max_auto_L2=${14}
+z_thresh=${15}
+ws_z_thresh=${16}
+avg_z_thresh=${17}
+repeat_flag_z_thresh=${18}
+max_freq_flag_frac=${19}
+max_time_flag_frac=${20}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -64,7 +64,6 @@ export REPEAT_FLAG_Z_THESH=${repeat_flag_z_thresh}
 export MAX_FREQ_FLAG_FRAC=${max_freq_flag_frac}
 export MAX_TIME_FLAG_FRAC=${max_time_flag_frac}
 
-
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
@@ -72,6 +71,15 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/full_day_rfi.ipynb
 echo Finished full-day rfi notebook at $(date)
+
+# Check to see that at least one output file was correctly produced
+first_outfile=${SUM_FILE%.uvh5}.flag_waterfall.h5
+if [ -f "$first_outfile" ]; then
+    echo Resulting $first_outfile found.
+else
+    echo $first_outfile not produced.
+    exit 1
+fi
 
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
@@ -89,7 +97,6 @@ if [ "${upload_to_librarian}" == "True" ]; then
         echo Finished uploading ${compressed_file} to the Librarian at $(date)
     fi
 fi
-
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
