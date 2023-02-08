@@ -191,7 +191,7 @@ prereq_chunk_size = "all"
 chunk_size = "all"
 stride_length = "all"
 time_centered = false
-mem = 128000
+mem = 120000
 args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
         "${AUTO_METRICS_OPTS:mean_round_modz_cut}",
         "${AUTO_METRICS_OPTS:edge_cut}",
@@ -213,7 +213,7 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-mem = 128000
+mem = 120000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
@@ -239,7 +239,7 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-mem = 128000
+mem = 120000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
@@ -483,7 +483,7 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-mem = 128000
+mem = 120000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
@@ -516,7 +516,7 @@ args = ["{basename}",
 # chunk_size = 1
 # stride_length = "all"
 # time_centered = false
-# mem = 128000
+# mem = 120000
 # ncpu = 8
 # args = ["{basename}",
 #         "${NOTEBOOK_OPTS:nb_template_dir}",
