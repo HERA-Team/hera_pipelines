@@ -18,6 +18,7 @@ librarian_auto_metrics = true
 librarian_calibration_notebooks = true
 librarian_ant_metrics = true
 librarian_redcal = true
+librarian_full_day_rfi = true
 librarian_xrfi = true
 librarian_SSINS = true
 librarian_downselected_data = false
@@ -74,6 +75,22 @@ median_round_modz_cut = 8.0
 mean_round_modz_cut = 4.0
 edge_cut = 50
 chan_thresh_frac = 0.05
+
+[FULL_DAY_RFI_OPTS]
+FM_low_freq = 87.5 # in MHz
+FM_high_freq = 108.0 # in MHz
+max_solar_alt = 0.0 # in degrees
+freq_filter_scale = 5.0 # in MHz
+time_filter_scale = 450 # in s
+eigenval_cutoff = 1e-9
+min_frac_of_autos = 0.25
+max_auto_L2 = 1.2
+z_thresh = 5.0
+ws_z_thresh = 4.0
+avg_z_thresh =  1.5
+repeat_flag_z_thresh = 2.0
+max_freq_flag_frac = 0.25
+max_time_flag_frac = 0.1
 
 [XRFI_OPTS]
 kt_size = 8
@@ -303,6 +320,36 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_redcal}",
         ]
 
+[FULL_DAY_RFI_NOTEBOOK]
+mem = 120000
+prereqs = ["CALIBRATE_FILE_NOTEBOOK", "EXTRACT_AUTOS"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${NOTEBOOK_OPTS:upload_to_librarian}",
+        "${NOTEBOOK_OPTS:librarian_full_day_rfi}",
+        "{FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "{FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "{FULL_DAY_RFI_OPTS:max_solar_alt}",
+        "{FULL_DAY_RFI_OPTS:freq_filter_scale}",
+        "{FULL_DAY_RFI_OPTS:time_filter_scale}",
+        "{FULL_DAY_RFI_OPTS:eigenval_cutoff}",
+        "{FULL_DAY_RFI_OPTS:min_frac_of_autos}",
+        "{FULL_DAY_RFI_OPTS:max_auto_L2}",
+        "{FULL_DAY_RFI_OPTS:z_thresh}",
+        "{FULL_DAY_RFI_OPTS:ws_z_thresh}",
+        "{FULL_DAY_RFI_OPTS:avg_z_thresh}",
+        "{FULL_DAY_RFI_OPTS:repeat_flag_z_thresh}",
+        "{FULL_DAY_RFI_OPTS:max_freq_flag_frac}",
+        "{FULL_DAY_RFI_OPTS:max_time_flag_frac}",
+        ]
+
+
 [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
 prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
@@ -500,6 +547,7 @@ prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_2",
            "CALIBRATE_FILE_NOTEBOOK",
            "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
+           "FULL_DAY_RFI_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
