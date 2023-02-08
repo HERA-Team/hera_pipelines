@@ -1,0 +1,333 @@
+# This toml is designed to be run after RTP stage 2
+# This can be found at https://github.com/HERA-Team/hera_pipelines/blob/main/pipelines/h4c/rtp/v2/h4c_rtp_stage_2_throw_away_flagged_baselines_keep_fluctuating_ants.toml
+# A memo describing where this toml falls in the context of the overall analysis pipeline can be found at
+# https://www.overleaf.com/read/bfbvqqskvqyp
+# It should be run in a directory containing a set of files whose titles contain the JD of each observation AND contain
+# Smoothcal solutions with the titles zen.JD.smooth_abs.calfits
+# To use it, make a direcotyr where you want all of the log files and run scripts to be output.
+# cd <log_dir>
+# build_
+[Options]
+makeflow_type = "analysis"
+# Below is the path to the task scripts used by this toml. You probably want to change this for your own environment.
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v7_interleaving/pre_lstbin/task_scripts"
+# This also needs to be changed depending on the environment you are using to process the data.
+conda_env = "hera3dev"
+source_script = "~/.bashrc"
+base_mem = 8000
+base_cpu = 1
+timeout = "24h"
+# Change this to your own email so that you get emails notifying you whether jobs were dropped due to things
+# like exceeding the maximum memory limit per job.
+mail_user = "aaronew+nrao@berkeley.edu"
+# This is the number of 2-integration files that will be chunked together and processed simultaneously in each job
+# If you are encountering memory overflow issues, you may consider lowering this or
+# raising the memory per job.
+chunk_size = 8
+# these are the spectral windows that will be selected before performing any analysis.
+# channels not included in these ranges will be thrown out of the analysis.
+# this saves memory, storage, and time for the analysis steps and intermediate products
+# I chose these based on bands heavily contaminated by RFI across all baselines.
+spw_ranges='10~105,150~320,515~615,665~717,770~1090'
+# all intermediate data products and final pipeline outputs will have this label attached to them
+label = "all-bands-allbls-long-delay-clean-include-variable-ants"
+# This is a temporary directory where temporary filter cache files will be written too
+# too speed up filtering.
+cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
+# These are the polarizations to be processed. Polarizations not included will not be included
+# in the intermediary data products.
+pols = "ee nn"
+# Directory containing a-priori yaml files. These are used to remove antennas from the data that have already been flagged
+# which can significantly improve i/o and storage requirements (for H4C this was a factor of ~2)
+yaml_dir = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags_include_variable/"
+# number of baselines to load into memory at a time. This can also be reduced if you are running out of
+# memory on individual jobs though it might not fix every step.
+nbl_per_load = 100
+# number of seconds to coherently average for power spectra. This is only used for the diagnostic steps
+# and is not stricly necearry for the data going into LST binning.
+t_avg = 300.0
+# Determine whether or not we want to perform the analysis for diff files as well as sum files.
+include_diffs = "true"
+
+# These options are for DELAY inpainting.
+[DELAY_OPTS]
+# This is how far into the foreground power level you want to interpolate
+# For example -- 1e-9 means that we will inpaint 1 - 1e-9 of the foregrounds
+tol = 1e-9
+# The following two parameters control the delays to be inpainted per baseline
+# and are in units of [nsec]
+# tau_inpaint = Max(min_dly, b / c + standoff )
+# where b is the baseline length and c is the speed of light.
+standoff = 50.0
+min_dly = 750.0
+# This controls the method we want to use to perform the in-painting.
+# "DPSS" uses linear DPSS in-painting. "CLEAN" is supported in principal
+# but hasn't been tested so you've been warned.
+filter_mode = "DPSS"
+# These spw_ranges (DELAY_OPTS:spw_ranges) are distinct from Options:spw_ranges in that they
+# control which subset of spectral channels to simultaneously fit with smooth in-painting components.
+# here, we are using one set of smooth components to fit all channels below the FM band
+# and another to fit all channels above the FM band.
+# Note that these channels are indexed relative to the channels left over after selection
+# channels with Options:spw_ranges so this is why the "bottom of the FM" shows up as
+# one channel away from the "top of the FM" since the FM was already removed by Options:spw_ranges
+spw_ranges = "0~265,265~737"
+
+# we may want to consider another flagging round after delay filtering.
+[FR_OPTS]
+# The following two parameters are used by the XTALK filter (a notch filter).
+# The XTALK steps removes all fringe rates with absolute value of f_r less than
+# |f_r| < frmax1 + bl_ew * frmax0
+# in unites of [mHz] and bl_ew is the EW length of each baseline in units of meters.
+frmax0 = 0.0
+frmax1 = 0.025
+# remove Modes specified above to below this fraction of their original amplitude.
+tol = 1e-9
+# The following parameters are only used if you decide to include the do_INPAINT
+# and FILTER_NOTEBOOK steps -- useful for visualizing fringe-rate delay plots
+# without artifacts from flagged times.
+# fringe-rates are in-painted with
+# f_r <= max(min_frate, frate_standoff )
+frate_standoff = 0.0
+min_frate = 0.5
+# This yaml file specifies LST ranges to skip over during time inpainting and XTALK subtraction.
+# In particular, here I decided to throw away LSTs below 0 hours (excluding the LST of Galactic set)
+# which has a lot of non-fringing artifacts from antenna-antenna reflections.
+# I'm not sure it actually makes a difference though.
+yaml_flag_file="/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/flag_yamls/post_process_flags.yaml"
+# number of interleavings to use
+n_interleave=4
+[PSPEC_OPTS]
+# These are not strictly necessary if you only want to produce in-painted and XTALK filtered files for LST binning.
+# Psuedo-stokes to produce (but not necessarily plot) in power spectrum analysis. I don't know if this is actually used in the end
+# besides in the PSPEC step (whose intermediary products are deleted anyways).
+pstokes="pI"
+# UVBeam file for power spectrum normalization.
+beam_file="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix"
+# spw_ranges to use for power spectrum estimation. Indices are referenced to the subbands
+# from Options;spw_ranges
+spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
+# These parameters are only used for calculating boot-strap error bars.
+# (if the do_BOOTSTRAP_ERRORS) step is uncommented.
+nsamples=100
+seed=10
+
+[FILTER_NOTEBOOK_OPTS]
+# Options for generating filter notebook for visualizing fringe-rate delay plots
+# of time/frequency-inpainted data.
+# This is the directory where the template for the notebook is stored. This is wherever
+# you have a local install of https://github.com/HERA-Team/hera_notebook_templates
+nb_template_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks/"
+# Directory to write filtering notebook too. This can be a local notebook repo like
+# https://github.com/HERA-Team/H4C_Notebooks
+# or just any old directory.
+# FILTER_NOTEBOOK FILES ARE OFTEN TOO BIG FOR GITHUB SO I DONT RECOMMEND USING
+# A REPO
+nb_output_repo = "/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/"
+# If True, automatically add, commit, and push new notebook to github
+# FILTER_NOTEBOOK FILES ARE OFTEN TOO BIG FOR GITHUB SO I DONT RECOMMEND USING
+git_push = "False"
+# The following parameters control the numbers of rows/columns in large
+# multi-baseline waterfall plots.
+nreds = 6
+# maximum number of baselines to plot per redundant group (in a row on a multi-panel)
+# waterfall plot
+max_bls_per_redgrp = 4
+# number of baselines to skip for plotting all waterfalls of array.
+nskip = 3
+
+[POWER_SPECTRUM_NOTEBOOK_OPTS]
+# Options for generating a nightly power spectrum notebook
+# generated from frequency inpainted, xtalk filtered data.
+# This is the directory containing the notebook template for power spectrum notebook
+# In this case, it's a local version of https://github.com/HERA-Team/hera_notebook_templates
+nb_template_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks/"
+nb_output_repo = "/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/"
+git_push = "False"
+# spws to include in the nightly power spectrum notebook.
+spws = "0,1,2,3,4,5,6,7,8"
+# LST hour ranges of the fields
+lst_fields = "1~3,4.2~6.2"
+# number of baseline groups to skip over in waterfall plots
+# where each row is
+grp_skip = 10
+# number of baseline pairs to skip in waterfall plots within each group.
+blp_skip = 2
+# labels for the different fields in the lst_fields variable.
+field_labels = "1,2"
+# maximum number of plots in each row
+max_plots_per_row = 10
+
+############################################################################################################
+[WorkFlow]
+actions = [
+           "PRE_CHUNK_NO_GAIN_FIX", # This step downloads data and chunks files together to improve i/o.
+           "DELAY", # This step performs foreground in-painting.
+           "XTALK", # This step performs crosstalk subtraction.
+           #"TIME_INPAINT", # This step (optional) performs time-inpainting of visibilities for fringe-rate visualizations.
+           "RECONSTITUTE", # This step reconstitutes waterfall generated by XTALK into two-second integrations.
+           # Everything below this line is technically not required for LST binning but is required for per-night
+           # power spectra and data quality assessment.
+           "TIME_AVERAGE", # Coherently average visibilities to 300 seconds. Operates on waterfall files.
+           "RECONSTITUTE_TAVG", # Reconstitute time avergaged files.
+           "PSTOKES", # Generate psuedo-stokes I/Q files.
+           "PSPEC", # Compute power spectra.
+           "AUTOERRORS", # Estimate thermal noise error bars based on autocorrelation amplitudes.
+           #BOOTSTRAPERRORS, # Estimate bootstrap errorbars.
+           #"FILTER_NOTEBOOK", # Generate a waterfall and fringe-rate plots (optional) requires TIME_INPAINT
+           "POWER_SPECTRUM_NOTEBOOK", # Power spectrum visualization notebook.
+           "CLEANUP_KEEP_FGFILLED" # Clean up intermediary products -- I recommend commenting this out if you are debugging.
+           ]
+
+[PRE_CHUNK_NO_GAIN_FIX]
+mem=16000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:include_diffs}", "${Options:label}",
+    "${Options:chunk_size}",
+    "${Options:spw_ranges}", "${Options:yaml_dir}"]
+
+[DELAY]
+prereqs = "PRE_CHUNK_NO_GAIN_FIX"
+prereq_chunk_size = 1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}",
+       "${Options:include_diffs}", "${Options:label}", "${DELAY_OPTS:tol}",
+       "${DELAY_OPTS:standoff}",   "${DELAY_OPTS:min_dly}", , "${Options:cache_dir}",
+       "${DELAY_OPTS:filter_mode}",
+       "${Options:nbl_per_load}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
+
+[XTALK]
+prereqs = "DELAY"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}", "${FR_OPTS:tol}",
+       "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
+
+
+[TIME_INPAINT]
+prereqs = "XTALK"
+prereq_chunk_size=1
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}", "${FR_OPTS:tol}",
+       "${FR_OPTS:frate_standoff}", "${FR_OPTS:min_frate}",
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
+
+
+
+[RECONSTITUTE]
+# If you are doing time-inpainting, make sure to turn prereq here to TIME_INPAINT
+# otherwise leave as XTALK.
+prereqs = "XTALK"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}"]
+
+[TIME_AVERAGE]
+prereqs = "RECONSTITUTE"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+       "${Options:label}", "${Options:t_avg}"]
+
+[RECONSTITUTE_TAVG]
+prereqs = "TIME_AVERAGE"
+prereq_chunk_size="all"
+chunk_size=1
+stride_length="${Options:chunk_size}"
+mem = 16000
+args = ["{basename}", "${Options:include_diffs}",
+      "${Options:label}"]
+
+[PSTOKES]
+prereqs="RECONSTITUTE_TAVG"
+prereq_chunk_size=1
+mem=16000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:include_diffs}",
+     "${Options:label}", "${PSPEC_OPTS:pstokes}"]
+
+[PSPEC]
+prereqs = "PSTOKES"
+prereq_chunk_size = 1
+mem=16000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:include_diffs}", "${Options:label}",
+     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
+
+[AUTOERRORS]
+prereqs = "PSPEC"
+prereq_chunk_size = 1
+mem=16000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:beam_file}"]
+
+[BOOTSTRAPERRORS]
+prereqs = "AUTOERRORS"
+prereq_chunk_size = 1
+mem=32000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:include_diffs}", "${Options:label}", "${PSPEC_OPTS:nsamples}", "${PSPEC_OPTS:seed}"]
+
+[FILTER_NOTEBOOK]
+prereqs="AUTOERRORS"
+prereq_chunk_size="all"
+mem=128000
+chunk_size=1
+stride_length="all"
+time_centered = false
+args=["{basename}", "${FILTER_NOTEBOOK_OPTS:nb_template_dir}", "${FILTER_NOTEBOOK_OPTS:nb_output_repo}",
+      "${FILTER_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${FILTER_NOTEBOOK_OPTS:nreds}",
+      "${FILTER_NOTEBOOK_OPTS:max_bls_per_redgrp}", "${FILTER_NOTEBOOK_OPTS:nskip}", "${PSPEC_OaPTS:spw_ranges}"]
+
+[POWER_SPECTRUM_NOTEBOOK]
+prereqs="AUTOERRORS"
+prereq_chunk_size="all"
+mem=128000
+chunk_size=1
+stride_length="all"
+time_centered=false
+args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_output_repo}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:spws}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:lst_fields}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:grp_skip}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
+
+[POWER_SPECTRUM_SUMMARY_NOTEBOOK]
+prereqs="POWER_SPECTRUM_NOTEBOOK"
+prereq_chunk_size="all"
+mem=128000
+chunk_size=1
+stride_length="all"
+time_centered=false
+args=["{basename}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_template_dir}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:nb_output_repo}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:git_push}", "${Options:label}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:spws}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:lst_fields}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:grp_skip}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:blp_skip}", "${POWER_SPECTRUM_NOTEBOOK_OPTS:field_labels}",
+      "${POWER_SPECTRUM_NOTEBOOK_OPTS:max_plots_per_row}"]
+
+[CLEANUP_KEEP_FGFILLED]
+prereqs= "POWER_SPECTRUM_NOTEBOOK"
+prereq_chunk_size = "all"
+mem=8000
+chunk_size=1
+stride_length="${Options:chunk_size}"
+args=["{basename}", "${Options:label}"]
