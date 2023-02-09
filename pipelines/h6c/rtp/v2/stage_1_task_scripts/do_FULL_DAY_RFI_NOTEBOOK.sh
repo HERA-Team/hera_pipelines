@@ -44,11 +44,12 @@ nb_outfile=${nb_outdir}/full_day_rfi_${jd}.html
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
+export SUM_SUFFIX="sum.uvh5"
 export SUM_AUTOS_SUFFIX="sum.autos.uvh5"
 export DIFF_AUTOS_SUFFIX="diff.autos.uvh5"
-export CAL_SUFFIX="omni.calfits"
-export ANT_CLASS_SUFFIX="ant_class.csv"
-export OUT_FLAG_SUFFIX="flag_waterfall.h5"
+export CAL_SUFFIX="sum.omni.calfits"
+export ANT_CLASS_SUFFIX="sum.ant_class.csv"
+export OUT_FLAG_SUFFIX="sum.flag_waterfall.h5"
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
 export MAX_SOLAR_ALT=${max_solar_alt}
@@ -73,7 +74,7 @@ jupyter nbconvert --output=${nb_outfile} \
 echo Finished full-day rfi notebook at $(date)
 
 # Check to see that at least one output file was correctly produced
-first_outfile=${SUM_FILE%.uvh5}.flag_waterfall.h5
+first_outfile=${SUM_FILE%.sum.uvh5}.sum.flag_waterfall.h5
 if [ -f "$first_outfile" ]; then
     echo Resulting $first_outfile found.
 else
