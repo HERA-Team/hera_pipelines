@@ -19,8 +19,6 @@ librarian_calibration_notebooks = true
 librarian_ant_metrics = true
 librarian_redcal = true
 librarian_full_day_rfi = true
-librarian_xrfi = true
-librarian_SSINS = true
 librarian_downselected_data = false
 librarian_notebooks = true
 
@@ -75,6 +73,10 @@ median_round_modz_cut = 8.0
 mean_round_modz_cut = 4.0
 edge_cut = 50
 chan_thresh_frac = 0.05
+kt_size = 8
+kf_size = 8
+sig_init_mean = 5.0
+sig_adj_mean = 2.0
 
 [FULL_DAY_RFI_OPTS]
 FM_low_freq = 87.5 # in MHz
@@ -91,26 +93,6 @@ avg_z_thresh =  1.5
 repeat_flag_z_thresh = 2.0
 max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.1
-
-[XRFI_OPTS]
-kt_size = 8
-kf_size = 8
-sig_init_med = 10.0
-sig_adj_med = 4.0
-sig_init_mean = 5.0
-sig_adj_mean = 2.0
-Nwf_per_load = 1000
-
-[XRFI_DAY_THRESHOLD_OPTS]
-nsig_f = 7.0
-nsig_t = 7.0
-nsig_f_adj = 3.0
-nsig_t_adj = 3.0
-
-[SSINS_OPTS]
-streak_sig = 20.0
-other_sig = 5.0
-tb_aggro = 0.5
 
 [ALL_SKY_IMAGE_SNAPSHOT_OPTS]
 hera_env = "RTP"
@@ -137,12 +119,6 @@ actions = ["SETUP",
            "RTP_SUMMARY_NOTEBOOK_2",
            "ANTENNA_REPORT_NOTEBOOKS",
            "SEASON_SUMMARY_NOTEBOOK",
-           "XRFI",
-           "XRFI_DAY_THRESHOLD",
-           "LIBRARIAN_XRFI",
-           "SSINS",
-           "LIBRARIAN_SSINS",
-           "RFI_INSPECT_NOTEBOOK",
            # "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
            "ALL_SKY_IMAGE_SNAPSHOT",
            "ALL_SKY_IMAGE_MOVIE",
@@ -196,10 +172,10 @@ mem = 120000
 args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
         "${AUTO_METRICS_OPTS:mean_round_modz_cut}",
         "${AUTO_METRICS_OPTS:edge_cut}",
-        "${XRFI_OPTS:kt_size}",
-        "${XRFI_OPTS:kf_size}",
-        "${XRFI_OPTS:sig_init_mean}",
-        "${XRFI_OPTS:sig_adj_mean}",
+        "${AUTO_METRICS_OPTS:kt_size}",
+        "${AUTO_METRICS_OPTS:kf_size}",
+        "${AUTO_METRICS_OPTS:sig_init_mean}",
+        "${AUTO_METRICS_OPTS:sig_adj_mean}",
         "${AUTO_METRICS_OPTS:chan_thresh_frac}", 
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_auto_metrics}",
@@ -350,7 +326,6 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:max_time_flag_frac}",
         ]
 
-
 [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
 prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
@@ -377,9 +352,7 @@ args = ["{basename}",
         "${A_PRIORI_STATUS_OPTS:good_statuses}"
         ]
 
-
 # TODO: daily calibration summary notebook
-
 
 ########## UPDATE ANTENNA REPORTS AND SEASON SUMMARY ##########
 
@@ -406,90 +379,7 @@ args = ["${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:git_push}",
         ]
 
-########## RFI IDENTIFICATION AND ASSOCIATED NOTEBOOKS ##########
-
-[XRFI]
-prereqs = ["CALIBRATE_FILE_NOTEBOOK", "AUTO_METRICS"]
-args = ["${XRFI_OPTS:kt_size}",
-        "${XRFI_OPTS:kf_size}",
-        "${XRFI_OPTS:sig_init_med}",
-        "${XRFI_OPTS:sig_adj_med}",
-        "${XRFI_OPTS:sig_init_mean}",
-        "${XRFI_OPTS:sig_adj_mean}",
-        "${XRFI_OPTS:Nwf_per_load}",
-        "{obsid_list}"
-       ]
-# xrfi will drop data within kt_size of time edge. Total integrations read in
-# must be greater than 2 * kt_size. With 2 integrations per file, and kt_size=8,
-# chunk_size must be >= 9 (with centered==True).
-# Larger chunk_size will reduce redundant i/o and median filter calculation.
-# The numbers below result in about 35% redundancy.
-# TODO: update when we move to single integration files
-chunk_size = 31
-stride_length = 23
-time_centered = true
-collect_stragglers = true
-
-[XRFI_DAY_THRESHOLD]
-prereqs = "XRFI"
-args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
-        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t}",
-        "${XRFI_DAY_THRESHOLD_OPTS:nsig_f_adj}",
-        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t_adj}",
-        "{obsid_list}"
-       ]
-prereq_chunk_size = "all"
-chunk_size = "all"
-stride_length = "all"
-time_centered = false
-
-[LIBRARIAN_XRFI]
-prereqs = "XRFI_DAY_THRESHOLD"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_xrfi}",
-       ]
-
-[SSINS]
-prereqs = ["CALIBRATE_FILE_NOTEBOOK", "AUTO_METRICS"]
-mem = 28000
-args = ["${SSINS_OPTS:streak_sig}",
-        "${SSINS_OPTS:other_sig}",
-        "${SSINS_OPTS:tb_aggro}",
-        "{obsid_list}"
-       ]
-stride_length = 10
-chunk_size = 10
-time_centered = false
-collect_stragglers = true
-
-[LIBRARIAN_SSINS]
-prereqs = "SSINS"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_SSINS}",
-       ]
-
-[RFI_INSPECT_NOTEBOOK]
-prereqs = ["XRFI_DAY_THRESHOLD", "SSINS"]
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 120000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        ]
+########## IMAGING AND MOVIES ##########
 
 [ALL_SKY_IMAGE_SNAPSHOT]
 prereqs = ["CALIBRATE_FILE_NOTEBOOK"]
@@ -543,7 +433,6 @@ args = ["{basename}",
 [LIBRARIAN_ALL_NOTEBOOKS]
 prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           "RFI_INSPECT_NOTEBOOK",
            # "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_2",
            "CALIBRATE_FILE_NOTEBOOK",
@@ -568,8 +457,6 @@ prereqs = ["LIBRARIAN_RAW_DATA",
            "LIBRARIAN_ANT_METRICS",
            "LIBRARIAN_REDCAL",
            "LIBRARIAN_ALL_NOTEBOOKS",
-           "LIBRARIAN_XRFI",
-           "LIBRARIAN_SSINS",
            "ANTENNA_REPORT_NOTEBOOKS",
            "SEASON_SUMMARY_NOTEBOOK",
            "ALL_SKY_IMAGE_MOVIE"]
