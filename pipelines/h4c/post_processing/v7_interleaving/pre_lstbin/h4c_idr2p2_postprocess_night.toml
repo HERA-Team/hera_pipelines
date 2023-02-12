@@ -96,7 +96,7 @@ min_frate = 0.5
 # I'm not sure it actually makes a difference though.
 yaml_flag_file="/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/flag_yamls/post_process_flags.yaml"
 # number of interleavings to use
-n_interleave=4
+ninterleave=4
 [PSPEC_OPTS]
 # These are not strictly necessary if you only want to produce in-painted and XTALK filtered files for LST binning.
 # Psuedo-stokes to produce (but not necessarily plot) in power spectrum analysis. I don't know if this is actually used in the end
@@ -208,7 +208,8 @@ mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:tol}",
        "${FR_OPTS:frmax0}", "${FR_OPTS:frmax1}",
-       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}"]
+       "${Options:cache_dir}", "${DELAY_OPTS:spw_ranges}", "${FR_OPTS:yaml_flag_file}",
+       "${FR_OPTS:ninterleave}"]
 
 
 [TIME_INPAINT]
