@@ -30,7 +30,7 @@ chunk_size = 8
 # I chose these based on bands heavily contaminated by RFI across all baselines.
 spw_ranges='10~105,150~320,515~615,665~717,770~1090'
 # all intermediate data products and final pipeline outputs will have this label attached to them
-label = "all-bands-allbls-long-delay-clean-include-variable-ants"
+label = "include-variable-ants-interleave-4-way"
 # This is a temporary directory where temporary filter cache files will be written too
 # too speed up filtering.
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
