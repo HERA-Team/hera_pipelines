@@ -87,7 +87,9 @@ if __name__ == "__main__":
     t1 = time.time()
     ref_times, sort_inds = np.unique(ref_uvdata.time_array, return_index=True)
     ref_lsts = ref_uvdata.lst_array[sort_inds]
+    print('first ref_lsts', ref_lsts)
     ref_lsts[ref_lsts<args.lst_wrap] += 2 * np.pi
+    print('ref less than lst_wrap', ref_lsts)
     # Note that data LSTs will always be entirely to one side of the wrap.
     dref_lsts = np.median(np.diff(ref_lsts))
     first_ind = np.argwhere(start_lsts <= np.round(ref_lsts.min(), 7)).flatten()[-1]
