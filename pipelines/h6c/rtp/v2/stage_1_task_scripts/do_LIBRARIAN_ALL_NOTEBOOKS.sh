@@ -26,11 +26,11 @@ if [ "${upload_to_librarian}" == "True" ]; then
             "auto_metrics_inspect"
             "data_inspect_all_ants"
             "redcal_inspect_known_good"
-            "rfi_inspect"
             "delay_spectrum_inspect"
             "rtp_summary"
             "file_inspect"
             "antenna_classification_summary"
+            "full_day_rfi"
         )
 
         for nb_name in ${nb_names[@]}; do
