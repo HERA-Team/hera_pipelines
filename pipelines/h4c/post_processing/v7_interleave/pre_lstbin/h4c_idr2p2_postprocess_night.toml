@@ -10,7 +10,7 @@
 [Options]
 makeflow_type = "analysis"
 # Below is the path to the task scripts used by this toml. You probably want to change this for your own environment.
-path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v7_interleaving/pre_lstbin/task_scripts"
+path_to_do_scripts = "/users/aewallwi/lustre/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/task_scripts"
 # This also needs to be changed depending on the environment you are using to process the data.
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
@@ -169,7 +169,7 @@ actions = [
            # Everything below this line is technically not required for LST binning but is required for per-night
            # power spectra and data quality assessment.
            "TIME_AVERAGE", # Coherently average visibilities to 300 seconds. Operates on waterfall files.
-           "RECONSTITUTE_TAVG", # Reconstitute time avergaged files.
+           #"RECONSTITUTE_TAVG", # Reconstitute time avergaged files.
            "PSTOKES", # Generate psuedo-stokes I/Q files.
            "PSPEC", # Compute power spectra.
            "AUTOERRORS", # Estimate thermal noise error bars based on autocorrelation amplitudes.
