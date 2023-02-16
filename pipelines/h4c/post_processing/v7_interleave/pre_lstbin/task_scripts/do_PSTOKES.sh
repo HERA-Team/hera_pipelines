@@ -43,10 +43,6 @@ include_diffs="${2}"
 label="${3}"
 pstokes="${@:4}"
 
-echo "hello"
-echo ${label}
-echo ${pstokes}
-
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 exts=("foreground_filled")
