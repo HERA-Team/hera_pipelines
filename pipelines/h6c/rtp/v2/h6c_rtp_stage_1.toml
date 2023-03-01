@@ -19,6 +19,7 @@ librarian_calibration_notebooks = true
 librarian_ant_metrics = true
 librarian_redcal = true
 librarian_full_day_rfi = true
+librarian_full_day_antenna_flagging = true
 librarian_downselected_data = false
 librarian_notebooks = true
 
@@ -94,6 +95,16 @@ repeat_flag_z_thresh = 2.0
 max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.1
 
+[FULL_DAY_ANTENNA_FLAGGING_OPTS]
+smoothing_scale_nfiles = 30
+max_flag_gap_nfiles = 30
+auto_power_max_flag_frac = 0.5
+auto_shape_max_flag_frac = 0.25
+auto_slope_max_flag_frac = 0.25
+auto_rfi_max_flag_frac = 0.25
+chisq_max_flag_frac = 0.5
+overall_max_flag_frac = 0.5
+
 [ALL_SKY_IMAGE_SNAPSHOT_OPTS]
 hera_env = "RTP"
 casa_env = "casa_py38"
@@ -115,6 +126,7 @@ actions = ["SETUP",
            "LIBRARIAN_REDCAL",
            "LIBRARIAN_ANT_METRICS",
            "FULL_DAY_RFI_NOTEBOOK",
+           "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
            "RTP_SUMMARY_NOTEBOOK_2",
            "ANTENNA_REPORT_NOTEBOOKS",
@@ -326,6 +338,50 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:max_time_flag_frac}",
         ]
 
+[FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_full_day_antenna_flagging}",
+        "${CALIBRATE_FILE_OPTS:am_corr_bad}",
+        "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_suspect}",
+        "${CALIBRATE_FILE_OPTS:suspect_solar_alt}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_good}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_good}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:smoothing_scale_nfiles}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:max_flag_gap_nfiles}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_power_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_shape_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_slope_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_rfi_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:chisq_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:overall_max_flag_frac}",
+        ]
+
 [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
 prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
@@ -438,6 +494,7 @@ prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
            "CALIBRATE_FILE_NOTEBOOK",
            "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
            "FULL_DAY_RFI_NOTEBOOK",
+           "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
