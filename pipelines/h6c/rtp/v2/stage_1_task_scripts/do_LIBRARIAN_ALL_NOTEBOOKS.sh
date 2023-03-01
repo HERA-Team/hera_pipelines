@@ -31,6 +31,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             "file_inspect"
             "antenna_classification_summary"
             "full_day_rfi"
+            "full_day_antenna_flagging"
         )
 
         for nb_name in ${nb_names[@]}; do
