@@ -13,8 +13,8 @@ source ${src_dir}/_common.sh
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
 # 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5 - librarian_full_day_rfi: boolean trigger for this step
-# 6 - nb_output_repo: repository for saving evaluated notebooks
+# 5 - upload_to_librarian: global boolean trigger
+# 6 - librarian_full_day_rfi: boolean trigger for this step
 # 7+ - various settings
 fn=${1}
 nb_template_dir=${2}
