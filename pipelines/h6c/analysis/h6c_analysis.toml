@@ -1,0 +1,255 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 15500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/jsdillon/Libraries/hera_pipelines/pipelines/h6c/analysis/task_scripts" # TODO: update for heramgr
+conda_env = "python3"
+batch_system = "slurm"
+
+[LIBRARIAN_OPTS]
+# These trigger which sets of files get added to the librarian
+upload_to_librarian = false # upload raw data to librarian, if false all below switches will be ignored.
+librarian_autos = false
+librarian_auto_metrics = false
+librarian_calibration_notebooks = false
+librarian_ant_metrics = false
+librarian_redcal = false
+librarian_full_day_rfi = false
+librarian_full_day_antenna_flagging = false
+librarian_smooth_cal = false
+librarian_downselected_data = false
+librarian_notebooks = false
+
+[NOTEBOOK_OPTS]
+nb_template_dir = '/users/jsdillon/Libraries/hera_notebook_templates/notebooks' # TODO: update for heramgr
+nb_output_repo = '/users/jsdillon/lustre/H6C/abscal/notebooks' # TODO: update for heramgr
+git_push = false
+
+[CALIBRATE_FILE_OPTS]
+am_corr_bad = 0.2
+am_corr_suspect = 0.4
+am_xpol_bad = -0.1
+am_xpol_suspect = 0.0
+suspect_solar_alt = 0.0
+zeros_per_spec_good = 2
+zeros_per_spec_suspect = 8
+auto_power_good_low = 5
+auto_power_good_high = 30
+auto_power_suspect_low = 1
+auto_power_suspect_high = 60
+auto_slope_good_low = -0.4
+auto_slope_good_high = 0.4
+auto_slope_suspect_low = -0.6
+auto_slope_suspect_high = 0.6
+auto_rfi_good = 0.015
+auto_rfi_suspect = 0.03
+auto_shape_good = 0.1
+auto_shape_suspect = 0.2
+oc_cspa_good = 2
+oc_cspa_suspect = 3
+oc_max_dims = 4
+oc_min_dim_size = 8
+oc_skip_outriggers = true
+oc_min_bl_len = 1
+oc_max_bl_len = 1e100
+oc_maxiter = 50
+oc_max_rerun = 4
+rfi_dpss_halfwidth = 300e-9
+rfi_nsig = 6
+# TODO: add abscal baseline lengths
+
+[FULL_DAY_RFI_OPTS]
+FM_low_freq = 87.5 # in MHz
+FM_high_freq = 108.0 # in MHz
+max_solar_alt = 0.0 # in degrees
+freq_filter_scale = 5.0 # in MHz
+time_filter_scale = 450 # in s
+eigenval_cutoff = 1e-9
+min_frac_of_autos = 0.25
+max_auto_L2 = 1.2
+z_thresh = 5.0
+ws_z_thresh = 4.0
+avg_z_thresh =  1.5
+repeat_flag_z_thresh = 2.0
+max_freq_flag_frac = 0.25
+max_time_flag_frac = 0.1
+
+[FULL_DAY_ANTENNA_FLAGGING_OPTS]
+smoothing_scale_nfiles = 30
+max_flag_gap_nfiles = 30
+auto_power_max_flag_frac = 0.5
+auto_shape_max_flag_frac = 0.25
+auto_slope_max_flag_frac = 0.25
+auto_rfi_max_flag_frac = 0.25
+chisq_max_flag_frac = 0.5
+overall_max_flag_frac = 0.5
+
+[CALIBRATION_SMOOTHING_OPTS]
+freq_smoothing_scale = 10.0 # in MHz
+time_smoothing_scale = 21600.0 # in seconds
+eigenval_cutoff = 1e-9
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["SETUP",
+           "EXTRACT_AUTOS",
+           "CALIBRATE_FILE_NOTEBOOK",
+           "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
+           "FULL_DAY_RFI_NOTEBOOK",
+           "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
+           "CALIBRATION_SMOOTHING_NOTEBOOK",
+           #"POSTPROCESS_FILE NOTEBOOK"
+          ]
+
+[SETUP]
+args = []
+
+[EXTRACT_AUTOS]
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_autos}",
+       ]
+
+[CALIBRATE_FILE_NOTEBOOK]
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${CALIBRATE_FILE_OPTS:am_corr_bad}",
+        "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_suspect}",
+        "${CALIBRATE_FILE_OPTS:suspect_solar_alt}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_good}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_good}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_max_dims}",
+        "${CALIBRATE_FILE_OPTS:oc_min_dim_size}",
+        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        "${CALIBRATE_FILE_OPTS:oc_min_bl_len}",
+        "${CALIBRATE_FILE_OPTS:oc_max_bl_len}",
+        "${CALIBRATE_FILE_OPTS:oc_maxiter}",
+        "${CALIBRATE_FILE_OPTS:oc_max_rerun}",
+        "${CALIBRATE_FILE_OPTS:rfi_dpss_halfwidth}",
+        "${CALIBRATE_FILE_OPTS:rfi_nsig}",
+        ]
+
+[ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        ]
+
+[FULL_DAY_RFI_NOTEBOOK]
+mem = 120000
+prereqs = ["CALIBRATE_FILE_NOTEBOOK", "EXTRACT_AUTOS"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_full_day_rfi}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${FULL_DAY_RFI_OPTS:max_solar_alt}",
+        "${FULL_DAY_RFI_OPTS:freq_filter_scale}",
+        "${FULL_DAY_RFI_OPTS:time_filter_scale}",
+        "${FULL_DAY_RFI_OPTS:eigenval_cutoff}",
+        "${FULL_DAY_RFI_OPTS:min_frac_of_autos}",
+        "${FULL_DAY_RFI_OPTS:max_auto_L2}",
+        "${FULL_DAY_RFI_OPTS:z_thresh}",
+        "${FULL_DAY_RFI_OPTS:ws_z_thresh}",
+        "${FULL_DAY_RFI_OPTS:avg_z_thresh}",
+        "${FULL_DAY_RFI_OPTS:repeat_flag_z_thresh}",
+        "${FULL_DAY_RFI_OPTS:max_freq_flag_frac}",
+        "${FULL_DAY_RFI_OPTS:max_time_flag_frac}",
+        ]
+        
+[FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_full_day_antenna_flagging}",
+        "${CALIBRATE_FILE_OPTS:am_corr_bad}",
+        "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_suspect}",
+        "${CALIBRATE_FILE_OPTS:suspect_solar_alt}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_good}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_good}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:smoothing_scale_nfiles}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:max_flag_gap_nfiles}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_power_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_shape_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_slope_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_rfi_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:chisq_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:overall_max_flag_frac}",
+        ]
+
+[CALIBRATION_SMOOTHING_NOTEBOOK]
+mem = 120000
+prereqs = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_smooth_cal}",
+        "${CALIBRATION_SMOOTHING_OPTS:freq_smoothing_scale}",
+        "${CALIBRATION_SMOOTHING_OPTS:time_smoothing_scale}",
+        "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
+        ]
