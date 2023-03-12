@@ -38,6 +38,7 @@ source ${src_dir}/_common.sh
 
 
 
+
 fn="${1}"
 include_diffs="${2}"
 label="${3}"
@@ -49,6 +50,8 @@ jd=$(get_jd $fn)
 int_jd=${jd:0:7}
 exts=("foreground_filled")
 
+echo "label is: " $label
+echo "pstokes is:" $ pstokes
 
 if [ "${include_diffs}" = "true" ]
 then
