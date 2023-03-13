@@ -30,6 +30,7 @@ spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
 percentile_low=5.0
 percentile_high=95.0
 prefilter_zero_frate="false"
+ninterleave=4
 
 [PSPEC_OPTS]
 pstokes="pI"
@@ -78,7 +79,8 @@ stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
       "${Options:label}", "${FR_OPTS:tol}", "${FR_OPTS:uvbeam}",
       "${FR_OPTS:percentile_low}", "${FR_OPTS:percentile_high}",
-      "${FR_OPTS:spw_ranges}", "${FR_OPTS:prefilter_zero_frate}"]
+      "${FR_OPTS:spw_ranges}", "${FR_OPTS:prefilter_zero_frate}",
+      "${FR_OPTS:ninterleave}"]
 
 [TIME_AVERAGE]
 prereqs = "FR_FILTER"
@@ -87,7 +89,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}", "${Options:t_avg}"]
+       "${Options:label}", "${Options:t_avg} ${FR_OPTS:ninterleave}"]
 
 [RECONSTITUTE]
 prereqs = "TIME_AVERAGE"
@@ -96,7 +98,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}"]
+       "${Options:label}", "${FR_OPTS:ninterleave}"]
 
 [PSTOKES]
 prereqs="RECONSTITUTE"
@@ -105,7 +107,8 @@ mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
-     "${Options:label}","${PSPEC_OPTS:pstokes}"]
+     "${Options:label}","${PSPEC_OPTS:pstokes}",
+     "${fR_OPTS:ninterleave}"]
 
 [PSPEC]
 prereqs = "PSTOKES"
