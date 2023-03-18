@@ -108,7 +108,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
      "${Options:label}","${PSPEC_OPTS:pstokes}",
-     "${fR_OPTS:ninterleave}"]
+     "${FR_OPTS:ninterleave}"]
 
 [PSPEC]
 prereqs = "PSTOKES"
@@ -117,7 +117,8 @@ mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}",
-     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}"]
+     "${PSPEC_OPTS:beam_file}", "${PSPEC_OPTS:spw_ranges}",
+     "${FR_OPTS:ninterleave}"]
 
 [AUTOERRORS]
 prereqs = "PSPEC"
