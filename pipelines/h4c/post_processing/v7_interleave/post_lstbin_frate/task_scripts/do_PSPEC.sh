@@ -39,7 +39,7 @@ polnums=(0 1)
 dset_pairs_str = ""
 for interleave_1 in {0...$((${ninterleave} - 1))}
 do
-    for interleave_2 in {${interleave_1}...$((${ninterleave} - 1))}
+    for interleave_2 in {0...$((${ninterleave} - 1))}
     do
 	dset_pairs_str = "${dset_pairs_str},${interleave_1}~${interleave_2}"
     done
