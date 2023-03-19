@@ -89,7 +89,7 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
 args = ["{basename}", "${Options:include_diffs}",
-       "${Options:label}", "${Options:t_avg} ${FR_OPTS:ninterleave}"]
+       "${Options:label}", "${Options:t_avg}", "${FR_OPTS:ninterleave}"]
 
 [RECONSTITUTE]
 prereqs = "TIME_AVERAGE"
