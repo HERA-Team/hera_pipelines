@@ -58,7 +58,8 @@ oc_maxiter = 50
 oc_max_rerun = 4
 rfi_dpss_halfwidth = 300e-9
 rfi_nsig = 6
-# TODO: add abscal baseline lengths
+abscal_min_bl_len = 1.0
+abscal_max_bl_len = 140.0
 
 [FULL_DAY_RFI_OPTS]
 FM_low_freq = 87.5 # in MHz
@@ -148,6 +149,8 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:oc_max_rerun}",
         "${CALIBRATE_FILE_OPTS:rfi_dpss_halfwidth}",
         "${CALIBRATE_FILE_OPTS:rfi_nsig}",
+        "${CALIBRATE_FILE_OPTS:abscal_min_bl_len}",
+        "${CALIBRATE_FILE_OPTS:abscal_max_bl_len}",
         ]
 
 [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
