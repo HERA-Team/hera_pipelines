@@ -47,6 +47,8 @@ oc_maxiter=${31}
 oc_max_rerun=${32}
 rfi_dpss_halfwidth=${33}
 rfi_nsig=${34}
+abscal_min_bl_len=${35}
+abscal_max_bl_len=${36}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -80,6 +82,8 @@ export OC_MAXITER=${oc_maxiter}
 export OC_MAX_RERUN=${oc_max_rerun}
 export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
+export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
+export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
 
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
