@@ -67,7 +67,7 @@ FM_high_freq = 108.0 # in MHz
 max_solar_alt = 0.0 # in degrees
 freq_filter_scale = 5.0 # in MHz
 time_filter_scale = 450 # in s
-eigenval_cutoff = 1e-9
+eigenval_cutoff = 1e-12
 min_frac_of_autos = 0.25
 max_auto_L2 = 1.2
 z_thresh = 5.0
@@ -90,7 +90,7 @@ overall_max_flag_frac = 0.5
 [CALIBRATION_SMOOTHING_OPTS]
 freq_smoothing_scale = 10.0 # in MHz
 time_smoothing_scale = 21600.0 # in seconds
-eigenval_cutoff = 1e-9
+eigenval_cutoff = 1e-12
 
 ############################################################################################################
 
