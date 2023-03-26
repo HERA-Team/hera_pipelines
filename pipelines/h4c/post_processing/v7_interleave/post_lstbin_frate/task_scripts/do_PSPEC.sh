@@ -36,12 +36,12 @@ pol_pair_list=("XX~XX,YY~YY" "pI~pI")
 pol_label_list=("" "_pstokes")
 polnums=(0 1)
 # Create dset_pairs string.
-dset_pairs_str = ""
+dset_pairs_str=""
 for ((interleave_1=0; interleave_1 < ${ninterleave}; ilabel++))
 do
     for ((interleave_2=0; interleave_2 < ${ninterleave}; ilabel++))
     do
-	dset_pairs_str = "${dset_pairs_str},${interleave_1}~${interleave_2}"
+	dset_pairs_str="${dset_pairs_str},${interleave_1}~${interleave_2}"
     done
 done
 
