@@ -44,9 +44,8 @@ do
     if [ -e "${time_chunk_template}" ]
     then
 	# iterate through interleaves
-	for interleave in {1..${ninterleave}}
+	for ((ilabel=0; ilabel < ${ninterleave}; ilabel++))
 	do
-	    ilabel = "$((${interleave} - 1))"
             # reconstitute frf files
             outfilename=zen.${jd}.${sd}.${label}.${ext}.tavg.interleave_${label}.uvh5
             baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.waterfall.tavg.interleave_${ilabel}.uvh5`

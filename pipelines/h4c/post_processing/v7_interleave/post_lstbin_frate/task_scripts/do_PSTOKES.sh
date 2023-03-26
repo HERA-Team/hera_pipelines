@@ -39,9 +39,8 @@ do
   exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
   for ext in ${exts[@]}
   do
-      for interleave in {1..${ninterleave}}
+      for ((ilabel=0; ilabel < ${ninterleave}; ilabel++))
       do
-	  ilabel = "$((${interleave} - 1))"
 	  # compute pstokes of fr filtered files.
 	  input=zen.${jd}.${sd}.${label}.${ext}.tavg.interleave_${ilabel}.uvh5
 	  output=zen.${jd}.${sd}.${label}.${ext}_pstokes.tavg.interleave_${ilabel}.uvh5
