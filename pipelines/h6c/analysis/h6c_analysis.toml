@@ -92,6 +92,13 @@ freq_smoothing_scale = 10.0 # in MHz
 time_smoothing_scale = 3e6 # in seconds
 eigenval_cutoff = 1e-12
 
+[POSTPROCESS_FILE_OPTS]
+dly_filt_horizon = 1.0
+dly_filt_standoff = 0.0 # in ns
+dly_filt_min_dly = 150.0 # in ns
+dly_filt_eigenval_cutoff = 1e-12
+dly_filt_FM_cut_freq = 100e6 # in Hz
+
 ############################################################################################################
 
 [WorkFlow]
@@ -102,7 +109,7 @@ actions = ["SETUP",
            "FULL_DAY_RFI_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
-           #"POSTPROCESS_FILE NOTEBOOK"
+           "POSTPROCESS_FILE_NOTEBOOK",
           ]
 
 [SETUP]
@@ -255,4 +262,18 @@ args = ["{basename}",
         "${CALIBRATION_SMOOTHING_OPTS:freq_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:time_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
+        ]
+
+[POSTPROCESS_FILE_NOTEBOOK]
+prereqs = "CALIBRATION_SMOOTHING_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_horizon}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_FM_cut_freq}",
         ]
