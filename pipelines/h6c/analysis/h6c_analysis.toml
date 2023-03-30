@@ -89,7 +89,7 @@ overall_max_flag_frac = 0.5
 
 [CALIBRATION_SMOOTHING_OPTS]
 freq_smoothing_scale = 10.0 # in MHz
-time_smoothing_scale = 3e6 # in seconds
+time_smoothing_scale = 6e5 # in seconds
 eigenval_cutoff = 1e-12
 
 [POSTPROCESS_FILE_OPTS]
