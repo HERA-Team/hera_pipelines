@@ -1,4 +1,4 @@
-name: h6c
+name: h6c_idr2
 channels:
   - defaults
   - conda-forge
