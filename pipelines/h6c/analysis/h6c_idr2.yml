@@ -40,6 +40,7 @@ dependencies:
   - sqlalchemy
   - tabulate
   - pip
+  - jax
   - pip:
       - toml
       - pytest-cases
