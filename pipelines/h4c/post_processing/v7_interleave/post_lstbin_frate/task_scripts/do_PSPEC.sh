@@ -37,9 +37,9 @@ pol_label_list=("" "_pstokes")
 polnums=(0 1)
 # Create dset_pairs string.
 dset_pairs_str=""
-for ((interleave_1=0; interleave_1 < ${ninterleave}; ilabel++))
+for ((interleave_1=0; interleave_1 < ${ninterleave}; interleave_1++))
 do
-    for ((interleave_2=0; interleave_2 < ${ninterleave}; ilabel++))
+    for ((interleave_2=0; interleave_2 < ${ninterleave}; interleave_2++))
     do
 	dset_pairs_str="${dset_pairs_str},${interleave_1}~${interleave_2}"
     done
@@ -56,12 +56,19 @@ do
       beam_file=${beam_file_stem}${pol_label}.fits
       # power spectra of cross-talk filtered data.
       # Generate list of dsets (interleaves).
-      inputs = ""
-      for interleave in {0...$((${ninterleave} - 1))}
+      inputs=""
+      inputs_exist="true"
+      for ((interleave=0; interleave < ${ninterleave}; interleave++))
       do
-	  inputs="${inputs} zen.${jd}.${sd}.${label}.${ext}${pol_label}.tavg.interleave_${interleave}uvh5"
+	  input="zen.${jd}.${sd}.${label}.${ext}${pol_label}.tavg.interleave_${interleave}.uvh5"
+	  if [ ! -e "${input}" ]
+	  then
+	     inputs_exist="false"
+	     echo "${input} does not exist!"
+	  fi
+	  inputs="${inputs} ${input}"
       done
-      if [ -e "${input}" ]
+      if [ ${inputs_exist} = "true" ]
       then
           output=zen.${jd}.${sd}.${label}.${ext}${pol_label}.tavg.pspec.h5
           # average all times incoherently
