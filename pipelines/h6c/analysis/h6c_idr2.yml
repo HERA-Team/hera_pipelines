@@ -52,18 +52,19 @@ dependencies:
       - flake8-rst-docstrings
       - pep8-naming
       - bokeh
-      - /lustre/aoc/projects/hera/H6C/src/aipy
-      - /lustre/aoc/projects/hera/H6C/src/pyuvdata
-      - /lustre/aoc/projects/hera/H6C/src/pyuvsim
-      - /lustre/aoc/projects/hera/H6C/src/uvtools
-      - /lustre/aoc/projects/hera/H6C/src/hera_filters
-      - /lustre/aoc/projects/hera/H6C/src/linsolve
-      - /lustre/aoc/projects/hera/H6C/src/hera_mc
-      - /lustre/aoc/projects/hera/H6C/src/hera_sim
-      - /lustre/aoc/projects/hera/H6C/src/hera_opm
-      - /lustre/aoc/projects/hera/H6C/src/hera_qm
-      - /lustre/aoc/projects/hera/H6C/src/hera_cal
-      - /lustre/aoc/projects/hera/H6C/src/eor_limits
-      - /lustre/aoc/projects/hera/H6C/src/hera_notebook_templates
-      - /lustre/aoc/projects/hera/H6C/src/hera_pspec
-      - /lustre/aoc/projects/hera/H6C/src/simpleQE
+      - /lustre/aoc/projects/hera/h6c-analysis/src/aipy
+      - /lustre/aoc/projects/hera/h6c-analysis/src/pyuvdata
+      - /lustre/aoc/projects/hera/h6c-analysis/src/pyuvsim
+      - /lustre/aoc/projects/hera/h6c-analysis/src/uvtools
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_filters
+      - /lustre/aoc/projects/hera/h6c-analysis/src/linsolve
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_mc
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_sim
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_opm
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_qm
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_cal
+      - /lustre/aoc/projects/hera/h6c-analysis/src/eor_limits
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_notebook_templates
+      - /lustre/aoc/projects/hera/h6c-analysis/src/hera_pspec
+      - /lustre/aoc/projects/hera/h6c-analysis/src/simpleQE
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/librarian
