@@ -47,6 +47,8 @@ oc_maxiter=${31}
 oc_max_rerun=${32}
 rfi_dpss_halfwidth=${33}
 rfi_nsig=${34}
+abscal_min_bl_len=${35}
+abscal_max_bl_len=${36}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -80,6 +82,8 @@ export OC_MAXITER=${oc_maxiter}
 export OC_MAX_RERUN=${oc_max_rerun}
 export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
+export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
+export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
 
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
@@ -104,19 +108,17 @@ for f in ${am_file} ${antclass_file} ${omnical_file} ${omnivis_file}; do
     fi
 done
 
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    # Get JD from filename
-    jd=$(get_int_jd ${fn})
-    is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
-    if [ "${is_middle_file}" == "True" ]
-    then
-        # Copy file to github repo
-        github_nb_outdir=${nb_output_repo}/file_calibration
-        github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
-        cp ${nb_outfile} ${github_nb_outfile}
-
+# Get JD from filename
+jd=$(get_int_jd ${fn})
+is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
+if [ "${is_middle_file}" == "True" ]; then
+    # Copy file to github repo
+    github_nb_outdir=${nb_output_repo}/file_calibration
+    github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
+    cp ${nb_outfile} ${github_nb_outfile}
+    
+    # If desired, push results to github
+    if [ "${git_push}" == "True" ]; then
         # Push to github
         cd ${nb_output_repo}
         git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'

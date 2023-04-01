@@ -17,6 +17,7 @@ fn="${1}"
 include_diffs="${2}"
 label="${3}"
 t_avg="${4}"
+ninterleave="${5}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -50,8 +51,8 @@ do
       if echo x"$filelist" | grep '*' > /dev/null; then
         echo "No waterfall files exist with ${jd}. This is probably because there are more times then baseline groups."
       else
-        echo time_average.py ${filelist} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-        time_average.py ${filelist} ${output_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+        echo time_average.py ${filelist} ${output_file} --t_avg ${t_avg} --dont_wgt_by_nsample --ninterleave ${ninterleave} --clobber
+        time_average.py ${filelist} ${output_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --ninterleave ${ninterleave} --clobber
       fi
     else
       # need to do cornerturn for fgfilled files.
@@ -60,8 +61,8 @@ do
       filelist=`echo zen.*.${sd}.${label}.${ext}.uvh5`
       if [ -e "${input_file}" ]
       then
-        echo time_average.py ${filelist} ${output_file} --cornerturnfile ${input_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
-        time_average.py ${filelist} ${output_file} --cornerturnfile ${input_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --clobber
+        echo time_average.py ${filelist} ${output_file} --cornerturnfile ${input_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --ninterleave ${ninterleave} --clobber
+        time_average.py ${filelist} ${output_file} --cornerturnfile ${input_file}  --t_avg ${t_avg} --dont_wgt_by_nsample --ninterleave ${ninterleave} --clobber
       else
         echo "${input_file} does not exist!"
       fi
