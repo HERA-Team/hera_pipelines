@@ -41,7 +41,13 @@ for ((interleave_1=0; interleave_1 < ${ninterleave}; interleave_1++))
 do
     for ((interleave_2=0; interleave_2 < ${ninterleave}; interleave_2++))
     do
-	dset_pairs_str="${dset_pairs_str},${interleave_1}~${interleave_2}"
+	if [ $interleave_1 -gt 0 ] || [ $interleave_2 -gt 0 ]
+	then
+	    dset_pairs_str="${dset_pairs_str},${interleave_1}~${interleave_2}"
+	else
+	    dset_pairs_str="${interleave_1}~${interleave_2}"
+	fi
+	# echo ${dset_pairs_str}
     done
 done
 
