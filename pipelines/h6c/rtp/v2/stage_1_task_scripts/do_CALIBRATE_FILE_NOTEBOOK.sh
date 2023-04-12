@@ -122,14 +122,18 @@ then
         github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
         cp ${nb_outfile} ${github_nb_outfile}
 
-        # Push to github
-        cd ${nb_output_repo}
-        git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-        git add ${github_nb_outfile}
-        python ${src_dir}/build_notebook_readme.py ${github_nb_outdir}
-        git add ${github_nb_outdir}/README.md
-        lasturl=`python -c "readme = open('${github_nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-        git commit -m "File calibration notebook for JD ${jd}" -m ${lasturl}
-        git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
+        if [ $(stat -c %s "${github_nb_outfile}") -lt 100000000 ]; then
+            # Push to github
+            cd ${nb_output_repo}
+            git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
+            git add ${github_nb_outfile}
+            python ${src_dir}/build_notebook_readme.py ${github_nb_outdir}
+            git add ${github_nb_outdir}/README.md
+            lasturl=`python -c "readme = open('${github_nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
+            git commit -m "File calibration notebook for JD ${jd}" -m ${lasturl}
+            git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
+        else
+            echo ${github_nb_outfile} is too large to upload to github.
+        fi
     fi
 fi

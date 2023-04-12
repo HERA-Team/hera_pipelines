@@ -27,11 +27,14 @@ jupyter nbconvert --output=${nb_output_repo}/Season_Summary.html \
 echo Finished finished running season summary notebook at $(date)
 
 # If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_output_repo}/Season_Summary.html
-    git commit -m "Update season summary notebook."
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
+if [ "${git_push}" == "True" ]; then
+    if [ $(stat -c %s "${nb_output_repo}/Season_Summary.html") -lt 100000000 ]; then
+        cd ${nb_output_repo}
+        git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
+        git add ${nb_output_repo}/Season_Summary.html
+        git commit -m "Update season summary notebook."
+        git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
+    else
+        echo ${nb_output_repo}/Season_Summary.html is too large to upload to github.
+    fi
 fi
