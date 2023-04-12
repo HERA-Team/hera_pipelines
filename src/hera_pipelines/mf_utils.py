@@ -11,7 +11,7 @@ async def build(day: int, direc: Path):
     if not thisdir.exists():
         thisdir.mkdir()
 
-    toml = next(iter(thisdir.glob("*.toml")))
+    toml = next(iter(direc.glob("*.toml")))
     stage_day = direc / 'staging'
 
     # remove all previous wrapper files
@@ -32,7 +32,7 @@ build_makeflow_from_config.py -c {toml} -d {thisdir.absolute()} {stage_day}/{day
 async def run(day: int, direc: Path = '.'):
     print(f"Running makeflow for {day}")
     thisdir = direc / str(day)
-    toml = next(iter(thisdir.glob("*.toml")))
+    toml = next(iter(direc.glob("*.toml")))
     mf = thisdir / toml.with_suffix(".mf").name
     if not mf.exists():
         raise ValueError(f"{mf} not found in {thisdir}")
