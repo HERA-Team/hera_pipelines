@@ -12,7 +12,7 @@ async def build(day: int, direc: Path):
         thisdir.mkdir()
 
     toml = next(iter(direc.glob("*.toml")))
-    stage_day = direc / 'staging'
+    stage_day = direc / 'staging' / str(day)
 
     # remove all previous wrapper files
     for fl in thisdir.glob("wrapper*.sh"):
