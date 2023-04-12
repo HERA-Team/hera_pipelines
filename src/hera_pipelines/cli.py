@@ -1,3 +1,4 @@
+import asyncio
 import sys
 from pathlib import Path
 from subprocess import call
@@ -6,13 +7,15 @@ import click
 from hera_cal import utils
 from pyuvdata import UVBeam, UVCal, UVData
 
+from . import async_utils, librarian_utils, mf_utils
+
 main = click.Group()
 
 
 @main.command()
 @click.argument("direc", type=click.Path(exists=True, dir_okay=True, file_okay=False))
 def fix_autos(direc):
-    """Fix autos in a UVFITS file."""
+    """Extract autos from all sum/diff UVH5 files in DIREC."""
     direc = Path(direc)
 
     all_sums_and_diffs = list(direc.glob("zen.*.sum.uvh5"))
@@ -26,9 +29,9 @@ def fix_autos(direc):
 @click.argument("infile", type=click.Path(exists=True, dir_okay=False, file_okay=True))
 @click.argument("outfile", type=click.Path(exists=False, dir_okay=False, file_okay=True))
 def fix_beam(infile, outfile):
-    """Fix a beam file.
+    """Convert beamfits INFILE to hera_pspec-compatible format and save to OUTFILE.
 
-    Produces two files: output.fits and output_pstokes.fits.
+    Produces two files: OUTFILE.fits and OUTFILE_pstokes.fits.
     """
     output_file = f'{outfile}.fits'
     pstokes_output_file = f'{outfile}_pstokes.fits'
@@ -46,7 +49,7 @@ def fix_beam(infile, outfile):
 @click.argument("yamlfile", type=click.Path(exists=True, dir_okay=False, file_okay=True))
 @click.argument("infiles", type=click.Path(exists=True, dir_okay=False, file_okay=True), nargs=-1)
 def discard_flagged_ants(yamlfile, infiles):
-    """Discard flagged antennas from calibration or data files."""
+    """Discard antennas flagged in YAMLFILE from cal or data files given by INFILES."""
 
     for infile in infiles:
         if infile.endswith(".calfits"):
@@ -79,10 +82,63 @@ def gdrive_upload(data_folder, data_files, sleep_time, retry_time, clobber):
 @main.command()
 @click.argument("repo", type=click.Path(exists=True, dir_okay=True, file_okay=False))
 def notebook_readme(repo):
-    """Make a README.md file for a github repo with links to all notebooks.
+    """Make a README.md file for a github REPO with links to all notebooks.
 
     repo
         Path to folder in github repo to make a links README.md for.
     """
     from .repo_management import make_notebook_readme
     make_notebook_readme(repo)
+
+
+@main.command()
+@click.option("--max-simultaneous-days", "-n", type=int, default=10, help='maximum number of days to run simultaneously (save disk space)')
+@click.option("-f/-F", "--force/--no-force", help="rerun everything even if done before")
+@click.option("--start", type=int, default=2459847, help="start day")
+@click.option("--end", type=int, default=2460030, help="end day")
+@click.option("--direc", type=click.Path(exists=True, dir_okay=True, file_okay=False), default=".", help="directory to run in. Must contain a .toml file")
+@click.option("--skip-days-with-outs/'--no-skipping", default=False, help="skip days with output files already present. Note that just because output files exist, doesn't mean everything has been run correctly.")
+def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_with_outs):
+    """Run all days in parallel."""
+
+    async def run_day(day, direc, root_stage):
+        await librarian_utils.stage_day(direc / 'staging', root_stage, day)
+        await librarian_utils.run_makeflow(direc, day)
+
+    async def run_day_loop(days, stage_dir, root_stage, max_simultaneous_days):
+        all_coroutines = [run_day(day, stage_dir, root_stage) for day in days]
+        await async_utils.gather_with_concurrency(max_simultaneous_days, *all_coroutines)
+
+    direc = Path(direc)
+    toml = list(direc.glob("*.toml"))[0]
+    days = sorted(direc.glob("245*"))
+
+    if force:
+        print("REMOVING ALL OUTPUT FILES AND RESTARTING")
+        for day in days:
+            outs = sorted(day.glob("*.out"))
+            print(f"  Remove {len(outs)} completed jobs in {day.name}")
+            for out in outs:
+                out.unlink()
+            mflow = list(day.glob("*.makeflowlog"))
+            if mflow:
+                mflow[0].unlink()
+
+    for day in days:
+        errors = sorted(day.glob("*.error"))
+        for error in errors:
+            error.unlink()
+
+    days = range(start, end + 1)
+
+    # Skip all the days that are already done
+    if skip_days_with_outs:
+        days = [day for day in days if not list((direc / str(day)).glob("*.out"))]
+
+    stage_dir= direc / 'staging'
+    if not stage_dir.exists():
+        stage_dir.mkdir()
+
+    root_stage = Path('/lustre/aoc/projects/hera/H6C')
+
+    asyncio.run(run_day_loop(days, stage_dir, root_stage, max_simultaneous_days))
