@@ -31,4 +31,4 @@ fallback_version = "0.0.0"
 
 
 [project.scripts]
-hp = "hera_pipelines.cli:main"
+herapipes = "hera_pipelines.cli:main"
