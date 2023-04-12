@@ -23,8 +23,8 @@ def fix_autos(direc):
             call(["extract_autos.py", str(fl), str(auto_fl)])
 
 @main.command()
-@click.argument("infile", type=click.Path(exists=True, dir_okay=False, file_okay=True), help="Input beam file")
-@click.argument("outfile", type=click.Path(exists=False, dir_okay=False, file_okay=True), help="Output beam file, without suffix")
+@click.argument("infile", type=click.Path(exists=True, dir_okay=False, file_okay=True))
+@click.argument("outfile", type=click.Path(exists=False, dir_okay=False, file_okay=True))
 def fix_beam(infile, outfile):
     """Fix a beam file.
 
@@ -43,8 +43,8 @@ def fix_beam(infile, outfile):
     uvbeam.write_beamfits(pstokes_output_file, clobber=True)
 
 @main.command()
-@click.argument("yamlfile", type=click.Path(exists=True, dir_okay=False, file_okay=True), help="Antenna Flagger YAML file")
-@click.argument("infiles", type=click.Path(exists=True, dir_okay=False, file_okay=True), help="Input files", nargs=-1)
+@click.argument("yamlfile", type=click.Path(exists=True, dir_okay=False, file_okay=True))
+@click.argument("infiles", type=click.Path(exists=True, dir_okay=False, file_okay=True), nargs=-1)
 def discard_flagged_ants(yamlfile, infiles):
     """Discard flagged antennas from calibration or data files."""
 
@@ -63,8 +63,8 @@ def discard_flagged_ants(yamlfile, infiles):
             print(f"Unrecognized file type for {infile}")
 
 @main.command()
-@click.argument("data-folder", type=str, help="unique identifier for google drive folder containing observations. To find this, navigate to google drive folder and find string in url after '/folder/...'")
-@click.argument("data-files", type=click.Path(exists=True, dir_okay=False, file_okay=True), nargs=-1, help="List of datafiles to upload.'")
+@click.option("--data-folder", required=True, type=str, help="unique identifier for google drive folder containing observations. To find this, navigate to google drive folder and find string in url after '/folder/...'")
+@click.option("-i", "--data-files", required=True, type=click.Path(exists=True, dir_okay=False, file_okay=True), multiple=True, help="List of datafiles to upload.'")
 @click.option("--sleep-time", type=float, default=0., help="time interval to wait between uploading each file.")
 @click.option("--retry-time", type=float, default=60., help="time interval to wait on a failure to connect before retrying. ")
 @click.option("--clobber/--shy", default=False, help="Overwrite already uploaded files on gdrive. ")
@@ -77,8 +77,12 @@ def gdrive_upload(data_folder, data_files, sleep_time, retry_time, clobber):
     )
 
 @main.command()
-@click.argument("repo", type=click.Path(exists=True, dir_okay=True, file_okay=False), help="Path to folder in github repo to make a links README.md for.")
+@click.argument("repo", type=click.Path(exists=True, dir_okay=True, file_okay=False))
 def notebook_readme(repo):
-    """Make a README.md file for a github repo with links to all notebooks."""
+    """Make a README.md file for a github repo with links to all notebooks.
+
+    repo
+        Path to folder in github repo to make a links README.md for.
+    """
     from .repo_management import make_notebook_readme
     make_notebook_readme(repo)
