@@ -18,7 +18,7 @@ dependencies = [
     "click",
     "rich",
     "pyuvdata",
-    "hera_cal"
+    "hera-calibration"
 ]
 dynamic = [
     "version",
@@ -29,8 +29,6 @@ write_to = "src/hera_pipelines/_version.py"
 parentdir_prefix_version = "hera_pipelines-"
 fallback_version = "0.0.0"
 
-[tool.setuptools]
-packages = ["hera_pipelines"]
 
 [project.scripts]
 hp = "hera_pipelines.cli:main"
