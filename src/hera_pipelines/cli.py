@@ -103,7 +103,7 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 
     async def run_day(day, stage_dir, root_stage):
         await librarian_utils.stage_day(stage_dir, root_stage, day)
-        await librarian_utils.run_makeflow(stage_dir.parent, day)
+        await mf_utils.run_makeflow(stage_dir.parent, day)
 
     async def run_day_loop(days, stage_dir, root_stage, max_simultaneous_days):
         all_coroutines = [run_day(day, stage_dir, root_stage) for day in days]
