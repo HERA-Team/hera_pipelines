@@ -36,6 +36,7 @@ avg_z_thresh=${17}
 repeat_flag_z_thresh=${18}
 max_freq_flag_frac=${19}
 max_time_flag_frac=${20}
+path_to_a_priori_flags=${21}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -50,6 +51,7 @@ export DIFF_AUTOS_SUFFIX="diff.autos.uvh5"
 export CAL_SUFFIX="sum.omni.calfits"
 export ANT_CLASS_SUFFIX="sum.ant_class.csv"
 export OUT_FLAG_SUFFIX="sum.flag_waterfall.h5"
+export APRIORI_YAML_PATH=${path_to_a_priori_flags}/${jd}_apriori_flags.yaml
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
 export MAX_SOLAR_ALT=${max_solar_alt}

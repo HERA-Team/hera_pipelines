@@ -5,6 +5,7 @@ base_mem = 15500
 base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/analysis/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/analysis/apriori_flags"
 conda_env = "h6c_idr2"
 batch_system = "slurm"
 
@@ -200,6 +201,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:repeat_flag_z_thresh}",
         "${FULL_DAY_RFI_OPTS:max_freq_flag_frac}",
         "${FULL_DAY_RFI_OPTS:max_time_flag_frac}",
+        "${Options:path_to_a_priori_flags}",
         ]
         
 [FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
@@ -244,6 +246,7 @@ args = ["{basename}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_rfi_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:chisq_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:overall_max_flag_frac}",
+        "${Options:path_to_a_priori_flags}",
         ]
 
 [CALIBRATION_SMOOTHING_NOTEBOOK]
