@@ -47,7 +47,7 @@ do
 	else
 	    dset_pairs_str="${interleave_1}~${interleave_2}"
 	fi
-	# echo ${dset_pairs_str}
+        echo ${dset_pairs_str}
     done
 done
 

@@ -17,7 +17,12 @@ label="${3}"
 ninterleave="${4}"
 pstokes="${@:5}"
 
-
+# Echos help with debugging. I'm leaving them in.
+echo "fn=${fn}"
+echo "include_diffs=${include_diffs}"
+echo "label=${label}"
+echo "ninterleave=${ninterleave}"
+echo "pstokes=${pstokes}"
 
 jd=$(get_jd $fn)
 int_jd=${jd:0:7}
@@ -41,6 +46,7 @@ do
   do
       for ((ilabel=0; ilabel < ${ninterleave}; ilabel++))
       do
+	  echo ${ilabel}
 	  # compute pstokes of fr filtered files.
 	  input=zen.${jd}.${sd}.${label}.${ext}.tavg.interleave_${ilabel}.uvh5
 	  output=zen.${jd}.${sd}.${label}.${ext}_pstokes.tavg.interleave_${ilabel}.uvh5
