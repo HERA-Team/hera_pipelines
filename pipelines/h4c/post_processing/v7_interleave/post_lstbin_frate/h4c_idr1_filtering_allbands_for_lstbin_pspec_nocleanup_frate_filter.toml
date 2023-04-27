@@ -107,8 +107,7 @@ mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
-     "${Options:label}","${PSPEC_OPTS:pstokes}",
-     "${FR_OPTS:ninterleave}"]
+     "${Options:label}","${FR_OPTS:ninterleave}", "${PSPEC_OPTS:pstokes}"]
 
 [PSPEC]
 prereqs = "PSTOKES"
