@@ -42,10 +42,13 @@ async def run(day: int, direc: Path = '.'):
     )
 
 
-async def run_makeflow(direc, day):
+async def run_makeflow(direc, day, keep_day_if_failed=False):
     print(f"Running run_makeflow for {day}")
     day = str(day)
     await build(day, direc)
     await run(day, direc)
-    for fl in (direc/ day / day).glob("*"):
-        fl.unlink()
+    # Check if any makeflows failed
+    failed = day.glob("*.log.error")
+    if not failed or not keep_day_if_failed:
+        for fl in (direc/ day / day).glob("*"):
+            fl.unlink()
