@@ -99,12 +99,12 @@ def notebook_readme(repo):
 @click.option("--direc", type=click.Path(exists=True, dir_okay=True, file_okay=False), default=".", help="directory to run in. Must contain a .toml file")
 @click.option("--skip-days-with-outs/'--no-skipping", default=False, help="skip days with output files already present. Note that just because output files exist, doesn't mean everything has been run correctly.")
 @click.option("--keep-day-if-failed/--no-keep-day-if-failed", default=False, help="keep day directory if any makeflow for that day failed.")
-def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_with_outs):
+def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_with_outs, keep_day_if_failed):
     """Run all days in parallel."""
 
     async def run_day(day, stage_dir, root_stage):
         await librarian_utils.stage_day(stage_dir, root_stage, day)
-        await mf_utils.run_makeflow(stage_dir.parent, day)
+        await mf_utils.run_makeflow(stage_dir.parent, day, keep_day_if_failed=keep_day_if_failed)
 
     async def run_day_loop(days, stage_dir, root_stage, max_simultaneous_days):
         all_coroutines = [run_day(day, stage_dir, root_stage) for day in days]
