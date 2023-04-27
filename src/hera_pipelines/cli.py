@@ -112,6 +112,7 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 
     direc = Path(direc)
     days = sorted(direc.glob("245*"))
+    days = [day for day in days if start <= int(day.name) <= end]
 
     if force:
         print("REMOVING ALL OUTPUT FILES AND RESTARTING")

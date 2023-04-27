@@ -48,7 +48,7 @@ async def run_makeflow(direc, day, keep_day_if_failed=False):
     await build(day, direc)
     await run(day, direc)
     # Check if any makeflows failed
-    failed = day.glob("*.log.error")
+    failed = (direc/day).glob("*.log.error")
     if not failed or not keep_day_if_failed:
         for fl in (direc/ day / day).glob("*"):
             fl.unlink()
