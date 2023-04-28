@@ -6,11 +6,14 @@ from subprocess import call
 import click
 from hera_cal import utils
 from pyuvdata import UVBeam, UVCal, UVData
+from rich.console import Console
 
 from . import async_utils, librarian_utils, mf_utils
 
 main = click.Group()
 
+cns = Console()
+print = cns.print
 
 @main.command()
 @click.argument("direc", type=click.Path(exists=True, dir_okay=True, file_okay=False))
@@ -114,16 +117,20 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     direc = Path(direc)
     days = sorted(direc.glob("245*"))
     days = [day for day in days if start <= int(day.name) <= end]
-
-    print(include_day)
     if include_day:
         days = [day for day in days if int(day.name) in include_day]
 
+    cns.print(f"Requested days {', '.join(days)}")
+
+    if force and skip_days_with_outs:
+        cns.print("[bold red]You have set --force and --skip-days-with-outs, which are incompatible")
+        sys.exit(1)
+
     if force:
-        print("REMOVING ALL OUTPUT FILES AND RESTARTING")
+        cns.print("Forcing rerun of all days... removing .out files")
         for day in days:
             outs = sorted(day.glob("*.out"))
-            print(f"  Remove {len(outs)} completed jobs in {day.name}")
+            cns.print(f"  Removed {len(outs)} completed jobs in {day.name}")
             for out in outs:
                 out.unlink()
             mflow = list(day.glob("*.makeflowlog"))
@@ -139,7 +146,13 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 
     # Skip all the days that are already done
     if skip_days_with_outs:
-        days = [day for day in days if not list((direc / str(day)).glob("*.out"))]
+        _days = []
+        for day in days:
+            if list((direc / str(day)).glob("*.out")):
+                cns.print(f"Skipping day {day} because it has output files already, and --skip-days-with-outs was set.")
+            else:
+                _days.append(day)
+        days = _days
 
     stage_dir= direc / 'staging'
     if not stage_dir.exists():
@@ -147,4 +160,5 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 
     root_stage = Path('/lustre/aoc/projects/hera/H6C')
 
+    cns.print(f"[bold blue]Starting aynchronous loop over {len(days)} days with {max_simultaneous_days} simultaneous days")
     asyncio.run(run_day_loop(days, stage_dir, root_stage, max_simultaneous_days))
