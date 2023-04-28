@@ -115,6 +115,7 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     days = sorted(direc.glob("245*"))
     days = [day for day in days if start <= int(day.name) <= end]
 
+    print(include_day)
     if include_day:
         days = [day for day in days if int(day.name) in include_day]
 
@@ -134,7 +135,7 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
         for error in errors:
             error.unlink()
 
-    days = range(start, end + 1)
+    days = [day.name for day in days]
 
     # Skip all the days that are already done
     if skip_days_with_outs:
