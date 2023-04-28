@@ -98,7 +98,7 @@ def notebook_readme(repo):
 @click.option("--max-simultaneous-days", "-n", type=int, default=10, help='maximum number of days to run simultaneously (save disk space)')
 @click.option("-f/-F", "--force/--no-force", help="rerun everything even if done before")
 @click.option("--start", type=int, default=2459847, help="start day")
-@click.option("--end", type=int, default=2460030, help="end day")
+@click.option("--end", type=int, default=2460050, help="end day")
 @click.option("--direc", type=click.Path(exists=True, dir_okay=True, file_okay=False), default=".", help="directory to run in. Must contain a .toml file")
 @click.option("--skip-days-with-outs/'--no-skipping", default=False, help="skip days with output files already present. Note that just because output files exist, doesn't mean everything has been run correctly.")
 @click.option("--keep-day-if-failed/--no-keep-day-if-failed", default=False, help="keep day directory if any makeflow for that day failed.")
@@ -115,7 +115,7 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
         await async_utils.gather_with_concurrency(max_simultaneous_days, *all_coroutines)
 
     direc = Path(direc)
-    days = sorted(direc.glob("245*"))
+    days = sorted(direc.glob("24?????"))
     days = [day for day in days if start <= int(day.name) <= end]
     if include_day:
         days = [day for day in days if int(day.name) in include_day]
