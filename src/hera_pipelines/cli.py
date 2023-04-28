@@ -120,7 +120,7 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     if include_day:
         days = [day for day in days if int(day.name) in include_day]
 
-    cns.print(f"Requested days {', '.join(days)}")
+    cns.print(f"Requested days {', '.join(d.name for d in days)}")
 
     if force and skip_days_with_outs:
         cns.print("[bold red]You have set --force and --skip-days-with-outs, which are incompatible")
