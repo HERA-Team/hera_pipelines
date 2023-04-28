@@ -99,7 +99,8 @@ def notebook_readme(repo):
 @click.option("--direc", type=click.Path(exists=True, dir_okay=True, file_okay=False), default=".", help="directory to run in. Must contain a .toml file")
 @click.option("--skip-days-with-outs/'--no-skipping", default=False, help="skip days with output files already present. Note that just because output files exist, doesn't mean everything has been run correctly.")
 @click.option("--keep-day-if-failed/--no-keep-day-if-failed", default=False, help="keep day directory if any makeflow for that day failed.")
-def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_with_outs, keep_day_if_failed):
+@click.option('-i', '--include-day', type=int, multiple=True, help='run only these days')
+def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_with_outs, keep_day_if_failed, include_day: list[int]):
     """Run all days in parallel."""
 
     async def run_day(day, stage_dir, root_stage):
@@ -113,6 +114,9 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     direc = Path(direc)
     days = sorted(direc.glob("245*"))
     days = [day for day in days if start <= int(day.name) <= end]
+
+    if include_day:
+        days = [day for day in days if int(day.name) in include_day]
 
     if force:
         print("REMOVING ALL OUTPUT FILES AND RESTARTING")
