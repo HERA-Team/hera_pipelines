@@ -8,7 +8,7 @@ from hera_cal import utils
 from pyuvdata import UVBeam, UVCal, UVData
 from rich.console import Console
 
-from . import async_utils, librarian_utils, mf_utils
+from . import async_utils, librarian_utils, mf_utils, seasons
 
 main = click.Group()
 
@@ -103,8 +103,12 @@ def notebook_readme(repo):
 @click.option("--skip-days-with-outs/'--no-skipping", default=False, help="skip days with output files already present. Note that just because output files exist, doesn't mean everything has been run correctly.")
 @click.option("--keep-day-if-failed/--no-keep-day-if-failed", default=False, help="keep day directory if any makeflow for that day failed.")
 @click.option('-i', '--include-day', type=int, multiple=True, help='run only these days')
-def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_with_outs, keep_day_if_failed, include_day: list[int]):
+@click.option("-s", "--season", default='H6C', type=click.Choice(list(seasons.seasons.keys())), help="The season to use to provide default values for the other options.")
+@click.option("--root-stage", type=click.Path(exists=True, dir_okay=True, file_okay=False), default=None, help="root stage directory to use. If not provided, will use the default for the season.")
+def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_with_outs, keep_day_if_failed, include_day: list[int], season, root_stage):
     """Run all days in parallel."""
+    if root_stage is None:
+        root_stage = Path(seasons.seasons[season].root_stage)
 
     async def run_day(day, stage_dir, root_stage):
         await librarian_utils.stage_day(stage_dir, root_stage, day)
@@ -158,7 +162,6 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     if not stage_dir.exists():
         stage_dir.mkdir()
 
-    root_stage = Path('/lustre/aoc/projects/hera/H6C')
 
     cns.print(f"[bold blue]Starting aynchronous loop over {len(days)} days with {max_simultaneous_days} simultaneous days")
     asyncio.run(run_day_loop(days, stage_dir, root_stage, max_simultaneous_days))
