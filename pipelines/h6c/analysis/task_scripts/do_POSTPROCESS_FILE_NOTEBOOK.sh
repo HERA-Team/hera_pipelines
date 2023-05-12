@@ -61,7 +61,7 @@ echo Finished running file postprocessing notebook at $(date)
 for suffix in ${SUM_ABSCAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do
     outfile=${SUM_FILE%sum.uvh5}${suffix}
     if [ -f "$outfile" ]; then
-        echo Resulting $f found.
+        echo Resulting $outfile found.
     else
         echo $f not produced.
         exit 1
@@ -71,7 +71,7 @@ for suffix in ${DIFF_ABSCAL_RED_AVG_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_SUFFIX} ${
     DIFF_FILE=${SUM_FILE%sum.uvh5}diff.uvh5
     outfile=${DIFF_FILE%diff.uvh5}${suffix}
     if [ -f "$outfile" ]; then
-        echo Resulting $f found.
+        echo Resulting $outfile found.
     else
         echo $f not produced.
         exit 1
