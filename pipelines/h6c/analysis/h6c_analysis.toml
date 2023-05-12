@@ -99,6 +99,15 @@ dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
 
+[FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
+min_dly = 150 # in ns
+standoff = 50 # in ns
+xtalk_fr = 0.025 #in mHz
+inpaint_fr = 2.5 # in mHz
+eigenval_cutoff = 1e-12
+max_contiguous_flags = 20
+spectrum_chan_buffer = 25
+
 ############################################################################################################
 
 [WorkFlow]
@@ -110,6 +119,7 @@ actions = ["SETUP",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
            "POSTPROCESS_FILE_NOTEBOOK",
+           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
           ]
 
 [SETUP]
@@ -279,4 +289,26 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        ]
+
+[FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK]
+mem = 60000
+prereqs = "POSTPROCESS_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:min_dly}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:xtalk_fr}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:eigenval_cutoff}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]
