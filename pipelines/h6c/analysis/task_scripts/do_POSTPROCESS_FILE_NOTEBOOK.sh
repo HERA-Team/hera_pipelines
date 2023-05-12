@@ -21,7 +21,8 @@ dly_filt_horizon=${5}
 dly_filt_standoff=${6}
 dly_filt_min_dly=${7}
 dly_filt_eigenval_cutoff=${8}
-dly_filt_FM_cut_freq=${9}
+FM_low_freq=${9}
+FM_high_freq=${10}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -44,7 +45,8 @@ export DLY_FILT_HORIZON=${dly_filt_horizon}
 export DLY_FILT_STANDOFF=${dly_filt_standoff}
 export DLY_FILT_MIN_DLY=${dly_filt_min_dly}
 export DLY_FILT_EIGENVAL_CUTOFF=${dly_filt_eigenval_cutoff}
-export DLY_FILT_FM_CUT_FREQ=${dly_filt_FM_cut_freq}
+export FM_LOW_FREQ=${FM_low_freq}
+export FM_HIGH_FREQ=${FM_high_freq}
 
 nb_outfile=${SUM_FILE%.uvh5}.postprocessing_notebook.html
 

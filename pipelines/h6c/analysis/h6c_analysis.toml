@@ -98,7 +98,6 @@ dly_filt_horizon = 1.0
 dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
-dly_filt_FM_cut_freq = 100e6 # in Hz
 
 ############################################################################################################
 
@@ -278,5 +277,6 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
-        "${POSTPROCESS_FILE_OPTS:dly_filt_FM_cut_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         ]
