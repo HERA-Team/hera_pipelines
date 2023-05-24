@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hera_pipelines"
+description = "HERA pipeline management tools"
+authors = [
+    {name="HERA Team"},
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "click",
+    "rich",
+    "pyuvdata",
+    "hera-calibration"
+]
+dynamic = [
+    "version",
+]
+
+[tool.setuptools_scm]
+write_to = "src/hera_pipelines/_version.py"
+parentdir_prefix_version = "hera_pipelines-"
+fallback_version = "0.0.0"
+
+
+[project.scripts]
+herapipes = "hera_pipelines.cli:main"
