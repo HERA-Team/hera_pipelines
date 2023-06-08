@@ -64,7 +64,8 @@ jupyter nbconvert --output=${nb_outfile} \
 echo Finished running file postprocessing notebook at $(date)
 
 # Check to see that output files were correctly produced
-for suffix in ${SUM_ABSCAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do
+for suffix in ${SUM_ABSCAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX} ${SUM_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX} \
+              ${SUM_ABS_CAL_RED_AVG_INPAINT_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do
     outfile=${SUM_FILE%sum.uvh5}${suffix}
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
@@ -73,7 +74,8 @@ for suffix in ${SUM_ABSCAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${SU
         exit 1
     fi
 done
-for suffix in ${DIFF_ABSCAL_RED_AVG_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}; do
+for suffix in ${DIFF_ABSCAL_RED_AVG_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_SUFFIX} ${DIFF_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX} \
+              ${DIFF_ABS_CAL_RED_AVG_INPAINT_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX}; $do
     DIFF_FILE=${SUM_FILE%sum.uvh5}diff.uvh5
     outfile=${DIFF_FILE%diff.uvh5}${suffix}
     if [ -f "$outfile" ]; then
