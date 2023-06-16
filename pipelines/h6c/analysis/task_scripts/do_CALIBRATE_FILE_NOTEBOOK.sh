@@ -49,6 +49,7 @@ rfi_dpss_halfwidth=${33}
 rfi_nsig=${34}
 abscal_min_bl_len=${35}
 abscal_max_bl_len=${36}
+save_omni_vis=${37}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -84,6 +85,7 @@ export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
 export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
 export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
+export SAVE_OMNIVIS_FILE=${save_omni_vis}
 
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
@@ -98,8 +100,7 @@ echo Finished running file calibration notebook at $(date)
 am_file=${SUM_FILE%.uvh5}.ant_metrics.hdf5
 antclass_file=${SUM_FILE%.uvh5}.ant_class.csv
 omnical_file=${SUM_FILE%.uvh5}.omni.calfits
-omnivis_file=${SUM_FILE%.uvh5}.omni_vis.uvh5
-for f in ${am_file} ${antclass_file} ${omnical_file} ${omnivis_file}; do
+for f in ${am_file} ${antclass_file} ${omnical_file}; do
     if [ -f "$f" ]; then
         echo Resulting $f found.
     else
@@ -107,6 +108,16 @@ for f in ${am_file} ${antclass_file} ${omnical_file} ${omnivis_file}; do
         exit 1
     fi
 done
+
+omnivis_file=${SUM_FILE%.uvh5}.omni_vis.uvh5
+if [ "${save_omni_vis}" == "True" ]; then
+    if [ -f "${omnivis_file}" ]; then
+        echo Resulting $f found.
+    else
+        echo $f not produced.
+        exit 1
+    fi
+fi
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
