@@ -23,6 +23,10 @@ dly_filt_min_dly=${7}
 dly_filt_eigenval_cutoff=${8}
 FM_low_freq=${9}
 FM_high_freq=${10}
+save_diff_red_avg=${11}
+save_abs_cal_red_avg=${12}
+save_dly_filt_red_avg=${13}
+save_inpaint_red_avg=${14}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -53,6 +57,10 @@ export DLY_FILT_MIN_DLY=${dly_filt_min_dly}
 export DLY_FILT_EIGENVAL_CUTOFF=${dly_filt_eigenval_cutoff}
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
+export SAVE_DIFF_RED_AVG=${save_diff_red_avg}
+export SAVE_ABS_CAL_RED_AVG=${save_abs_cal_red_avg}
+export SAVE_DLY_FILT_RED_AVG=${save_dly_filt_red_avg}
+export SAVE_INPAINT_RED_AVG=${save_inpaint_red_avg}
 
 nb_outfile=${SUM_FILE%.uvh5}.postprocessing_notebook.html
 
@@ -63,9 +71,8 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/file_postprocessing.ipynb
 echo Finished running file postprocessing notebook at $(date)
 
-# Check to see that output files were correctly produced
-for suffix in ${SUM_ABSCAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX} ${SUM_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX} \
-              ${SUM_ABS_CAL_RED_AVG_INPAINT_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do
+# Check a representative set of files to see whether they were correctly produced
+for suffix in ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do 
     outfile=${SUM_FILE%sum.uvh5}${suffix}
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
@@ -74,17 +81,43 @@ for suffix in ${SUM_ABSCAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${SU
         exit 1
     fi
 done
-for suffix in ${DIFF_ABSCAL_RED_AVG_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_SUFFIX} ${DIFF_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX} \
-              ${DIFF_ABS_CAL_RED_AVG_INPAINT_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX}; do
-    DIFF_FILE=${SUM_FILE%sum.uvh5}diff.uvh5
-    outfile=${DIFF_FILE%diff.uvh5}${suffix}
+if [ "${save_abs_cal_red_avg}" == "True" ]; then
+    outfile=${SUM_FILE%sum.uvh5}${SUM_ABSCAL_RED_AVG_SUFFIX}
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
     else
         echo $f not produced.
         exit 1
     fi
-done
+fi
+if [ "${save_dly_filt_red_avg}" == "True" ]; then
+    outfile=${SUM_FILE%sum.uvh5}${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}
+    if [ -f "$outfile" ]; then
+        echo Resulting $outfile found.
+    else
+        echo $f not produced.
+        exit 1
+    fi
+fi
+if [ "${save_inpaint_red_avg}" == "True" ]; then
+    outfile=${SUM_FILE%sum.uvh5}${SUM_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX}
+    if [ -f "$outfile" ]; then
+        echo Resulting $outfile found.
+    else
+        echo $f not produced.
+        exit 1
+    fi
+fi
+if [ "${save_diff_red_avg}" == "True" ]; then
+    DIFF_FILE=${SUM_FILE%sum.uvh5}diff.uvh5
+    outfile=${DIFF_FILE%diff.uvh5}${DIFF_SMOOTH_CAL_RED_AVG_SUFFIX}
+    if [ -f "$outfile" ]; then
+        echo Resulting $outfile found.
+    else
+        echo $f not produced.
+        exit 1
+    fi
+fi
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
