@@ -1,13 +1,13 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
-conda_env = "hera3dev"
+path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_task_scripts"
+path_to_a_priori_flags = "/users/heramgr/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
+conda_env = "h4c_validation"
 source_script = "~/.bashrc"
 base_mem = 16000
 base_cpu = 1
 timeout = "24h"
-pbs_mail_user = "aaronew+nrao@berkeley.edu"
+pbs_mail_user = "lisaleemcb@gmail.com"
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks'
@@ -81,19 +81,19 @@ framesize = "1280x720"
 
 [WorkFlow]
 actions = [
-           "THROW_AWAY_FLAGGED_BASELINES",
+           #"THROW_AWAY_FLAGGED_BASELINES",
            "EXTRACT_AUTOS",
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL",
            "ABSCAL_INSPECT_NOTEBOOK",
            "XRFI",
-           "XRFI_DAY_THRESHOLD",
+           #"XRFI_DAY_THRESHOLD",
            "RFI_INSPECT_NOTEBOOK",
            "CAL_SMOOTH",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           "IMAGING",
-           "MOVIES",
+           #"IMAGING",
+           #"MOVIES",
            #"APPLY_CAL_REDUNDANT_AVERAGE",
            # "CLEAN_FILES", # TODO: add this back in
           ]
