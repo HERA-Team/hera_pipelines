@@ -21,6 +21,7 @@ parser.add_argument(
 parser.add_argument(
     "-o", "--outdir", type=str, default="", help="Absolute path to save directory."
 )
+# NOTE: we'll need to update this for H4C
 parser.add_argument(
     "--lst_wrap", type=float, default=4.711094445, help="Where to wrap in LST."
 )
@@ -96,10 +97,18 @@ if __name__ == "__main__":
     last_ind = np.argwhere(start_lsts <= np.round(ref_lsts.max() + dref_lsts, 7)).flatten()[-1]
 
     # Before loading in the files, figure out which antennas to select.
-    idr3_path = Path("/lustre/aoc/projects/hera/H1C_IDR3/IDR3_2")
-    pipeline_path = idr3_path / "h1c_idr3_software/hera_pipelines/pipelines/h1c/idr3/v2"
-    bad_ants_file = pipeline_path / f"bad_ants/{jd}.txt"
-    bad_ants = np.genfromtxt(bad_ants_file, dtype=int)
+    # NOTE: this is updated for H4C, but I still don't like that it's hardcoded.
+    # A better solution might be to have the user provide a path to the files with
+    # the a-priori flagging info, but the convention for storing this data changed
+    # between H1C (text file) and H4C (yaml file).
+    h4c_path = Path("/lustre/aoc/projects/hera/H4C")
+    pipeline_path = h4c_path / "h4c_software/hera_pipelines/pipelines/h4c/rtp/v2"
+    flag_file = pipeline_path / f"stage_2_a_priori_flags_include_variable/{jd}.yaml"
+    with open(flag_file, "r") as flag_info:
+        bad_ants = np.array(
+            yaml.load(flag_info.read(), Loader=yaml.SafeLoader)["ex_ants"]
+        ).astype(int)
+
     # We need separate antenna arrays since not all of the antennas will be present
     # in the data for compressed files, which can lead to read errors.
     sim_uvdata = UVData()
@@ -110,6 +119,7 @@ if __name__ == "__main__":
     ants_to_load = np.array(
         [ant for ant in data_ants if ant not in bad_ants]
     ) if not args.input_is_compressed else np.array(list(data_ants))
+    
     # If we're inflating, then we're going to need to make sure not to include any
     # bad antennas that may have been missed in the previous filter.
     ants_to_keep = np.array(
