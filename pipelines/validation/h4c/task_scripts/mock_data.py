@@ -213,6 +213,24 @@ if __name__ == "__main__":
         print("Min/Mean/Max before:")
         for attr in ("min", "mean", "max"):
             print(f"    {getattr(sim_uvdata.data.data_array, attr)()}")
+
+        # Read in the mutual coupling mixing matrix if a file is provided.
+        # NOTE: This is tuned to the particular format I used for saving the
+        # coupling matrix this time around. A better solution would probably
+        # be to use an h5 file and figure out a smart way to slice into the
+        # data without needing to actually read the full coupling matrix.
+        if component.lower() == "mutualcoupling" and "datafile" in parameters:
+            coupling_info = dict(np.load(parameters.pop("datafile")))
+            coupling_ants = np.sort(np.unique(coupling_info["ant_1_array"]))
+            sim_ants = set(sim_uvdata.antenna_numbers)
+            _select = np.array([ant in sim_ants for ant in coupling_ants])
+            select = np.zeros(2*_select.size, dtype=bool)
+            select[::2] = _select
+            select[1::2] = _select
+            parameters["coupling_matrix"] = (
+                coupling_info["coupling_matrix"][...,select,:][...,select]
+            )
+
         sim_uvdata.add(component, component_name=component_name, **parameters)
         print("Min/Mean/Max after:")
         for attr in ("min", "mean", "max"):
