@@ -202,7 +202,8 @@ args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
        ]
 
 [RFI_INSPECT_NOTEBOOK]
-prereqs = "XRFI_DAY_THRESHOLD"
+prereqs = "XRFI"
+#prereqs = "XRFI_DAY_THRESHOLD"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
