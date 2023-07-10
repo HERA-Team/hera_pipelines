@@ -102,7 +102,7 @@ actions = [
 args = ["{basename}", "${Options:path_to_a_priori_flags}"]
 
 [EXTRACT_AUTOS]
-prereqs = "THROW_AWAY_FLAGGED_BASELINES"
+#prereqs = "THROW_AWAY_FLAGGED_BASELINES"
 args = ["{basename}"]
 
 [REDCAL]
