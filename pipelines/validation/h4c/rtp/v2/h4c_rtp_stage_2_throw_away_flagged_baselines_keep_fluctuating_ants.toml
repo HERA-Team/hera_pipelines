@@ -216,7 +216,7 @@ args = ["{basename}",
         ]
 
 [CAL_SMOOTH]
-prereqs = "XFRI" # "XRFI_DAY_THRESHOLD"
+prereqs = "XRFI" # "XRFI_DAY_THRESHOLD"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
