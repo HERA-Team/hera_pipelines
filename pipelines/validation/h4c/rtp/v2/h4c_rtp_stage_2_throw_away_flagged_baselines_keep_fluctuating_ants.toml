@@ -2,7 +2,7 @@
 makeflow_type = "analysis"
 path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_task_scripts"
 path_to_a_priori_flags = "/users/heramgr/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
-conda_env = "h4c_validation"
+conda_env = "hera3dev"
 source_script = "~/.bashrc"
 base_mem = 16000
 base_cpu = 1
@@ -185,21 +185,21 @@ stride_length = 23
 time_centered = true
 collect_stragglers = true
 
-[XRFI_DAY_THRESHOLD]
-prereqs = ["XRFI",
-           "ABSCAL",
-          ]
-prereq_chunk_size = "all"
-chunk_size = "all"
-stride_length = "all"
-time_centered = false
-args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
-        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t}",
-        "${XRFI_DAY_THRESHOLD_OPTS:nsig_f_adj}",
-        "${XRFI_DAY_THRESHOLD_OPTS:nsig_t_adj}",
-        "${Options:path_to_a_priori_flags}",
-        "{obsid_list}"
-       ]
+# [XRFI_DAY_THRESHOLD]
+# prereqs = ["XRFI",
+#            "ABSCAL",
+#           ]
+# prereq_chunk_size = "all"
+# chunk_size = "all"
+# stride_length = "all"
+# time_centered = false
+# args = ["${XRFI_DAY_THRESHOLD_OPTS:nsig_f}",
+#         "${XRFI_DAY_THRESHOLD_OPTS:nsig_t}",
+#         "${XRFI_DAY_THRESHOLD_OPTS:nsig_f_adj}",
+#         "${XRFI_DAY_THRESHOLD_OPTS:nsig_t_adj}",
+#         "${Options:path_to_a_priori_flags}",
+#         "{obsid_list}"
+#        ]
 
 [RFI_INSPECT_NOTEBOOK]
 prereqs = "XRFI"
@@ -216,7 +216,7 @@ args = ["{basename}",
         ]
 
 [CAL_SMOOTH]
-prereqs = "XFRI" # "XRFI_DAY_THRESHOLD"
+prereqs = "XRFI" # "XRFI_DAY_THRESHOLD"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
