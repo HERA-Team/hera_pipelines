@@ -4,7 +4,7 @@ source_script = "~/.bashrc"
 base_mem = 12000 # TODO: Check if this is the right number for site
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h6c/rtp/v2/stage_1_task_scripts"
+path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h7c/rtp/v1/task_scripts"
 conda_env = "RTP"
 mandc_report = true
 batch_system = "slurm"
@@ -14,7 +14,6 @@ default_queue = "hera,bigmem,gpu"
 # These trigger which sets of files get added to the librarian
 upload_to_librarian = true # upload raw data to librarian, if false all below switches will be ignored.
 librarian_autos = true
-librarian_auto_metrics = true
 librarian_calibration_notebooks = true
 librarian_ant_metrics = true
 librarian_redcal = true
@@ -32,8 +31,8 @@ all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
-nb_output_repo = '/home/obs/src/H6C_Notebooks'
-git_push = true
+nb_output_repo = '/mnt/sn1/H7C_Notebooks'
+git_push = false
 
 [CALIBRATE_FILE_OPTS]
 am_corr_bad = 0.2
@@ -68,16 +67,6 @@ rfi_dpss_halfwidth = 300e-9
 rfi_nsig = 6
 abscal_min_bl_len = 1.0
 abscal_max_bl_len = 140.0
-
-[AUTO_METRICS_OPTS]
-median_round_modz_cut = 8.0
-mean_round_modz_cut = 4.0
-edge_cut = 50
-chan_thresh_frac = 0.05
-kt_size = 8
-kf_size = 8
-sig_init_mean = 5.0
-sig_adj_mean = 2.0
 
 [FULL_DAY_RFI_OPTS]
 FM_low_freq = 87.5 # in MHz
@@ -117,10 +106,7 @@ actions = ["SETUP",
            "LIBRARIAN_MAKE_SESSION",
            "ADD_RTP_PROCESS_RECORD",
            "EXTRACT_AUTOS",
-           "AUTO_METRICS",
            "CALIBRATE_FILE_NOTEBOOK",
-           "AUTO_METRICS_INSPECT_NOTEBOOK",
-           "RTP_SUMMARY_NOTEBOOK_1",
            "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "LIBRARIAN_CALIBRATION_NOTEBOOKS",
            "LIBRARIAN_REDCAL",
@@ -128,9 +114,6 @@ actions = ["SETUP",
            "FULL_DAY_RFI_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
-           "RTP_SUMMARY_NOTEBOOK_2",
-           "ANTENNA_REPORT_NOTEBOOKS",
-           "SEASON_SUMMARY_NOTEBOOK",
            # "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
            "ALL_SKY_IMAGE_SNAPSHOT",
            "ALL_SKY_IMAGE_MOVIE",
@@ -174,53 +157,7 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_autos}",
        ]
 
-[AUTO_METRICS]
-prereqs = "EXTRACT_AUTOS"
-prereq_chunk_size = "all"
-chunk_size = "all"
-stride_length = "all"
-time_centered = false
-mem = 120000
-args = ["${AUTO_METRICS_OPTS:median_round_modz_cut}",
-        "${AUTO_METRICS_OPTS:mean_round_modz_cut}",
-        "${AUTO_METRICS_OPTS:edge_cut}",
-        "${AUTO_METRICS_OPTS:kt_size}",
-        "${AUTO_METRICS_OPTS:kf_size}",
-        "${AUTO_METRICS_OPTS:sig_init_mean}",
-        "${AUTO_METRICS_OPTS:sig_adj_mean}",
-        "${AUTO_METRICS_OPTS:chan_thresh_frac}", 
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_auto_metrics}",
-        "{obsid_list}",
-        ]
-
-########## DATA/AUTO INSPECT NOTEBOOKS ##########
-
-[AUTO_METRICS_INSPECT_NOTEBOOK]
-prereqs = "AUTO_METRICS"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 120000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        ]
-
-[RTP_SUMMARY_NOTEBOOK_1]
-prereqs = "AUTO_METRICS"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${A_PRIORI_STATUS_OPTS:good_statuses}"
-        ]
+########## DATA INSPECT NOTEBOOK ##########
 
 [DATA_INSPECT_NOTEBOOK_ALL_ANTS]
 prereqs = "EXTRACT_AUTOS"
@@ -397,46 +334,6 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
         ]
 
-[RTP_SUMMARY_NOTEBOOK_2]
-prereqs = ["AUTO_METRICS", "CALIBRATE_FILE_NOTEBOOK"]
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${A_PRIORI_STATUS_OPTS:good_statuses}"
-        ]
-
-# TODO: daily calibration summary notebook
-
-########## UPDATE ANTENNA REPORTS AND SEASON SUMMARY ##########
-
-[ANTENNA_REPORT_NOTEBOOKS]
-prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2"]
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        ]
-
-[SEASON_SUMMARY_NOTEBOOK]
-prereqs = ["RTP_SUMMARY_NOTEBOOK_1", "RTP_SUMMARY_NOTEBOOK_2"]
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        ]
-
 ########## IMAGING AND MOVIES ##########
 
 [ALL_SKY_IMAGE_SNAPSHOT]
@@ -456,23 +353,6 @@ chunk_size = "all"
 args = ["{basename}",
         "${ALL_SKY_IMAGE_SNAPSHOT_OPTS:casa_env}"]
 
-
-########## DELAY SPECTRUM INSPECTION ##########
-
-# [DELAY_SPECTRUM_INSPECT_NOTEBOOK]
-# prereqs = "XRFI_DAY_THRESHOLD"
-# prereq_chunk_size = "all"
-# chunk_size = 1
-# stride_length = "all"
-# time_centered = false
-# mem = 120000
-# ncpu = 8
-# args = ["{basename}",
-#         "${NOTEBOOK_OPTS:nb_template_dir}",
-#         "${NOTEBOOK_OPTS:nb_output_repo}",
-#         "${NOTEBOOK_OPTS:git_push}",
-#         ]
-
 ########## DATA DOWNSELECTION ##########
 
 # [DATA_DOWNSELECT]
@@ -489,10 +369,7 @@ args = ["{basename}",
 ########## BACKUP NOTEBOOKS IN LIBRARIAN ##########
 
 [LIBRARIAN_ALL_NOTEBOOKS]
-prereqs = ["AUTO_METRICS_INSPECT_NOTEBOOK",
-           "DATA_INSPECT_NOTEBOOK_ALL_ANTS",
-           # "DELAY_SPECTRUM_INSPECT_NOTEBOOK",
-           "RTP_SUMMARY_NOTEBOOK_2",
+prereqs = ["DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "CALIBRATE_FILE_NOTEBOOK",
            "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
            "FULL_DAY_RFI_NOTEBOOK",
@@ -516,8 +393,6 @@ prereqs = ["LIBRARIAN_RAW_DATA",
            "LIBRARIAN_ANT_METRICS",
            "LIBRARIAN_REDCAL",
            "LIBRARIAN_ALL_NOTEBOOKS",
-           "ANTENNA_REPORT_NOTEBOOKS",
-           "SEASON_SUMMARY_NOTEBOOK",
            "ALL_SKY_IMAGE_MOVIE"]
 prereq_chunk_size = "all"
 chunk_size = 1
