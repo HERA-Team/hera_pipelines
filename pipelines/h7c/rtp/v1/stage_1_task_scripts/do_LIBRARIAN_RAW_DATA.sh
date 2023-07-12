@@ -20,23 +20,12 @@ if [ "${upload_to_librarian}" == "True" ]; then
         fn="$(basename "${fn_path}")"
         jd=$(get_int_jd ${fn})
 
-        # get the name of the diff file
-        fn_diff=$(inject_diff ${fn})
-
         if librarian locate-file local-rtp ${fn}; then
             echo ${fn} is already in the librarian. Skipping...
         else
             echo librarian upload local-rtp ${fn} ${jd}/${fn}
             librarian upload local-rtp ${fn} ${jd}/${fn}
             echo Finished uploading sum data to Librarian at $(date)
-        fi
-
-        if librarian locate-file local-rtp ${fn_diff}; then
-            echo ${fn_diff} is already in the librarian. Skipping...
-        else
-            echo librarian upload local-rtp ${fn_diff} ${jd}/${fn_diff}
-            librarian upload local-rtp ${fn_diff} ${jd}/${fn_diff}
-            echo Finished uploading diff data to Librarian at $(date)
         fi
     done
 fi
