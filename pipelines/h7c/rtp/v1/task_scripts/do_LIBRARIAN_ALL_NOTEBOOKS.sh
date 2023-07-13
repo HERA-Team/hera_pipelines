@@ -23,23 +23,15 @@ if [ "${upload_to_librarian}" == "True" ]; then
         decimal_jd=$(get_jd ${fn})
 
         declare -a nb_names=(
-            "auto_metrics_inspect"
             "data_inspect_all_ants"
-            "redcal_inspect_known_good"
-            "delay_spectrum_inspect"
-            "rtp_summary"
-            "file_inspect"
             "antenna_classification_summary"
             "full_day_rfi"
             "full_day_antenna_flagging"
+            "full_day_auto_checker"
         )
 
         for nb_name in ${nb_names[@]}; do
-            if [[ ${nb_name} == "rtp_summary" ]]; then
-                nb_outfile=${nb_output_repo}/_${nb_name}_/${nb_name}_${jd}.ipynb
-            else
-                nb_outfile=${nb_output_repo}/${nb_name}/${nb_name}_${jd}.ipynb
-            fi
+            nb_outfile=${nb_output_repo}/${nb_name}/${nb_name}_${jd}.ipynb
             # if the notebook doesn't exist, check to see whether there's an html file instead
             if [ ! -f "$nb_outfile" ]; then
                 nb_outfile=${nb_outfile%.ipynb}.html
