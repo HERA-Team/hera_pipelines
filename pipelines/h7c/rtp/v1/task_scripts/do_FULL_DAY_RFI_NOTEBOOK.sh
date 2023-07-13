@@ -64,6 +64,7 @@ export AVG_Z_THRESH=${avg_z_thresh}
 export REPEAT_FLAG_Z_THESH=${repeat_flag_z_thresh}
 export MAX_FREQ_FLAG_FRAC=${max_freq_flag_frac}
 export MAX_TIME_FLAG_FRAC=${max_time_flag_frac}
+export APRIORI_YAML_PATH=${jd}"_apriori_flags.yaml"
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \

@@ -64,6 +64,7 @@ export SUM_SUFFIX="sum.uvh5"
 export CAL_SUFFIX="sum.omni.calfits"
 export ANT_CLASS_SUFFIX="sum.ant_class.csv"
 export OUT_FLAG_SUFFIX="sum.antenna_flags.h5"
+export APRIORI_YAML_PATH=${jd}"_apriori_flags.yaml"
 
 export AM_CORR_BAD=${am_corr_bad}
 export AM_CORR_SUSPECT=${am_corr_suspect}
