@@ -1,3 +1,4 @@
+#! /bin/bash
 set -e
 
 #This script smashes a stack of jpgs into a movie. Used for widefield broadband RFI imaging.
