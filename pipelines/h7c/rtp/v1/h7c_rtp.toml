@@ -303,7 +303,7 @@ args = ["{basename}",
 
 [FULL_DAY_RFI_NOTEBOOK]
 mem = 120000
-prereqs = ["CALIBRATE_FILE_NOTEBOOK", "EXTRACT_AUTOS"]
+prereqs = ["CALIBRATE_FILE_NOTEBOOK", "EXTRACT_AUTOS", "FULL_DAY_AUTO_CHECKER_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -331,7 +331,7 @@ args = ["{basename}",
         ]
 
 [FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
-prereqs = "CALIBRATE_FILE_NOTEBOOK"
+prereqs = ["CALIBRATE_FILE_NOTEBOOK", "FULL_DAY_AUTO_CHECKER_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
