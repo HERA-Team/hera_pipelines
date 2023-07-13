@@ -28,6 +28,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
             "full_day_rfi"
             "full_day_antenna_flagging"
             "full_day_auto_checker"
+            "calibration_smoothing"
         )
 
         for nb_name in ${nb_names[@]}; do
