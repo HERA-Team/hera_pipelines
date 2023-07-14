@@ -37,6 +37,9 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/data_inspect.ipynb
 echo Finished running data_inspect notebook for all ants at $(date)
 
+# Rebuild index.html for this notebook's folder
+python ${src_dir}/build_notebook_index.py ${nb_outdir}
+
 # If desired, push results to github
 if [ "${git_push}" == "True" ]; then
     if [ $(stat -c %s "${nb_outfile}") -lt 100000000 ]; then

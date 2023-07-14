@@ -82,6 +82,9 @@ else
     exit 1
 fi
 
+# Rebuild index.html for this notebook's folder
+python ${src_dir}/build_notebook_index.py ${nb_outdir}
+
 # upload results to librarian if desired
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_full_day_rfi}" == "True" ]; then
