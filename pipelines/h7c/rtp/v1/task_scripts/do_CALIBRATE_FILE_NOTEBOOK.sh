@@ -109,19 +109,18 @@ for f in ${am_file} ${antclass_file} ${omnical_file} ${omnivis_file}; do
     fi
 done
 
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    # Get JD from filename
-    jd=$(get_int_jd ${fn})
-    is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
-    if [ "${is_middle_file}" == "True" ]
-    then
-        # Copy file to github repo
-        github_nb_outdir=${nb_output_repo}/file_calibration
-        github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
-        cp ${nb_outfile} ${github_nb_outfile}
 
+# Get JD from filename
+jd=$(get_int_jd ${fn})
+is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
+if [ "${is_middle_file}" == "True" ]; then
+    github_nb_outdir=${nb_output_repo}/file_calibration
+    github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
+    cp ${nb_outfile} ${github_nb_outfile}
+
+    # If desired, push results to github
+    if [ "${git_push}" == "True" ]; then
+        # Copy file to github repo
         if [ $(stat -c %s "${github_nb_outfile}") -lt 100000000 ]; then
             # Push to github
             cd ${nb_output_repo}
