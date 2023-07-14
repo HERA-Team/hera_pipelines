@@ -27,15 +27,15 @@ for file in files:
     JD_strs = re.findall(r"2\d{6}", file)
 
     date_str = ''
-    if JD_strs > 0:
+    if len(JD_strs) > 0:
         utc = Time(JD_strs[-1], format='jd').datetime
         date_str = f' ({utc.year}-{utc.month}-{utc.day})'
-    links.append(f'<li><a href="{file}">{file}{date_str}</a>/li>')
+    links.append(f'    <li><a href="{file}">{file}{date_str}</a></li>')
 
 with open('index.html', 'w') as f:
-    f.write(f'<html>\n<title>{title}</title>\n<body>\n<ul>\n')
+    f.write(f'<html>\n<title>{title}</title>\n<header>\n<h1>{title}</h1>\n</header>\n<body>\n<ul>\n')
     f.write('\n'.join(links))
-    f.write('</ul>\n</body>\n</html>')
+    f.write('\n</ul>\n</body>\n</html>')
 
 # move back to starting location
 os.chdir(starting_dir)
