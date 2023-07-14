@@ -35,7 +35,6 @@ export OC_SKIP_OUTRIGGERS=${oc_skip_outriggers}
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
---ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/antenna_classification_summary.ipynb
 echo Finished finished antenna classification summary notebook at $(date)

@@ -101,7 +101,6 @@ export OVERALL_MAX_FLAG_FRAC=${overall_max_flag_frac}
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
---ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/full_day_antenna_flagging.ipynb
 echo Finished full-day antenna flagging notebook at $(date)

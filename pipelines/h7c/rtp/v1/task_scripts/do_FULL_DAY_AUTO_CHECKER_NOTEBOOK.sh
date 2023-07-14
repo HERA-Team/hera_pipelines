@@ -63,7 +63,6 @@ out_yaml_file=${jd}${OUT_YAML_SUFFIX}
 # Execute jupyter notebook
 cmd="jupyter nbconvert --output=${nb_outfile} \
 --to html \
---ExecutePreprocessor.allow_errors=False \
 --ExecutePreprocessor.timeout=-1 \
 --ExecutePreprocessor.kernel_name=${conda_env} \
 --execute ${nb_template_dir}/full_day_auto_checker.ipynb"

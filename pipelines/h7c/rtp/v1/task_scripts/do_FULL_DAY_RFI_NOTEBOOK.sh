@@ -69,7 +69,6 @@ export APRIORI_YAML_PATH="$(cd "$(dirname "$fn")" && pwd)/"${jd}"_apriori_flags.
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
---ExecutePreprocessor.allow_errors=True \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/full_day_rfi.ipynb
 echo Finished full-day rfi notebook at $(date)
