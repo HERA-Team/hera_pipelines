@@ -116,6 +116,7 @@ is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.
 if [ "${is_middle_file}" == "True" ]; then
     github_nb_outdir=${nb_output_repo}/file_calibration
     github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
+    echo cp ${nb_outfile} ${github_nb_outfile}
     cp ${nb_outfile} ${github_nb_outfile}
 
     # If desired, push results to github
