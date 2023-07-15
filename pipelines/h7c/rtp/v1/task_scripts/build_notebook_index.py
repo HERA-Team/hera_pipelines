@@ -45,9 +45,11 @@ with open('index.html', 'w') as f:
 
 
 all_html_files = glob.glob(os.path.join(args.target_dir, "../*/*.html"))
+print(all_html_files[0:10])
 mod_times = [os.path.getmtime(f) for f in all_html_files]
 file_time_pairs = list(zip(all_html_files, mod_times))
 recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)[0:20]]
+print(recent_html_files[0:10])
 
 links = make_links(recent_html_files)
 overall_index = '<html>\n<title>H7C_Notebooks</title>\n<header>\n<h1>H7C_Notebooks</h1>\n</header>\n<body>\n<ul>\n'
