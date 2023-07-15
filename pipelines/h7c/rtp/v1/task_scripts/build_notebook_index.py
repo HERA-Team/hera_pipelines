@@ -63,7 +63,7 @@ overall_index += '<h2>Most Recent Notebooks:</h2>\n<ul>\n'
 overall_index += '\n'.join(links)
 overall_index += "\n</ul>\n</body>\n</html>"
 
-print(os.path.join(args.target_dir, '../index.html'))
+print(os.path.realpath(os.path.join(args.target_dir, '../index.html')))
 
 with open(os.path.join(args.target_dir, '../index.html'), 'w') as f:
     f.write(overall_index)
