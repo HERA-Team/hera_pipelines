@@ -25,7 +25,7 @@ title = os.path.realpath(args.target_dir).split('/')[-1]
 def make_links(files):
     links = []
     for file in files:
-        if os.path.basename(file) == 'index.html':
+        if str(os.path.basename(file)) == 'index.html':
             continue
         JD_strs = re.findall(r"2\d{6}", file)
 
