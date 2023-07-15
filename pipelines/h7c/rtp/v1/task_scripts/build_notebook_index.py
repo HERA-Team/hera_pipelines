@@ -23,7 +23,6 @@ files = sorted(os.listdir(args.target_dir))
 title = os.path.realpath(args.target_dir).split('/')[-1]
 
 def make_links(files):
-
     links = []
     for file in files:
         if os.path.basename(file) == 'index.html':
@@ -35,6 +34,7 @@ def make_links(files):
             utc = Time(JD_strs[-1], format='jd').datetime
             date_str = f' ({utc.year}-{utc.month}-{utc.day})'
         links.append(f'    <li><a href="{file}">{file}{date_str}</a></li>')
+    return links
 
 links = make_links(files)
 with open('index.html', 'w') as f:
