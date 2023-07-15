@@ -34,6 +34,7 @@ for file in files:
 
 with open('index.html', 'w') as f:
     f.write(f'<html>\n<title>{title}</title>\n<header>\n<h1>{title}</h1>\n</header>\n<body>\n<ul>\n')
+    f.write('<li><a href="..">Back to all notebooks</a></li>')
     f.write('\n'.join(links))
     f.write('\n</ul>\n</body>\n</html>')
 
