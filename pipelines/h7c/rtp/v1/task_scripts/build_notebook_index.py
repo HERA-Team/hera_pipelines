@@ -44,9 +44,7 @@ with open('index.html', 'w') as f:
     f.write('\n</ul>\n</body>\n</html>')
 
 
-os.chdir('..')
-
-all_html_files = glob.glob(f"./*/*.html", recursive=True)
+all_html_files = glob.glob(os.path.join(args.target_dir, "../*/*.html"))
 mod_times = [os.path.getmtime(f) for f in all_html_files]
 file_time_pairs = list(zip(all_html_files, mod_times))
 recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)[0:20]]
@@ -65,7 +63,9 @@ overall_index += '<h2>Most Recent Notebooks:</h2>\n<ul>\n'
 overall_index += '\n'.join(links)
 overall_index += "\n</ul>\n</body>\n</html>"
 
-with open('index.html', 'w') as f:
+print(os.path.join(args.target_dir, '../index.html'))
+
+with open(os.path.join(args.target_dir, '../index.html'), 'w') as f:
     f.write(overall_index)
 
 # move back to starting location
