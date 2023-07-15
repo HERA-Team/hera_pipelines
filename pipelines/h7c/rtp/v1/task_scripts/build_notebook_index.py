@@ -25,7 +25,7 @@ title = os.path.realpath(args.target_dir).split('/')[-1]
 def make_links(files):
     links = []
     for file in files:
-        if str(os.path.basename(file)) == 'index.html':
+        if os.path.basename(file) == 'index.html':
             continue
         JD_strs = re.findall(r"2\d{6}", file)
 
@@ -49,7 +49,7 @@ os.chdir('..')
 all_html_files = glob.glob(f"./*/*.html", recursive=True)
 mod_times = [os.path.getmtime(f) for f in all_html_files]
 file_time_pairs = list(zip(all_html_files, mod_times))
-recent_html_files = sorted(file_time_pairs, key=lambda x: x[1], reverse=True)[0:20]
+recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)[0:20]]
 
 links = make_links(recent_html_files)
 overall_index = '<html>\n<title>H7C_Notebooks</title>\n<header>\n<h1>H7C_Notebooks</h1>\n</header>\n<body>\n<ul>\n'
