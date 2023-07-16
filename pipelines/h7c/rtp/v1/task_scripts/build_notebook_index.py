@@ -62,7 +62,7 @@ overall_index += '    <li><a href="full_day_auto_checker">full_day_auto_checker<
 overall_index += '    <li><a href="full_day_rfi">full_day_rfi</a></li>\n'
 overall_index += '</ul>\n</h3>\n<h2>Most Recent Notebooks:</h2>\n'
 for jd in recent_jds[0:7]:
-    overall_index += f'<h2>{jd}:</h2>\n<ul>\n' + '\n'.join([link for link in links if str(jd) in link]) + '\n</ul>\n'
+    overall_index += f'<h3>{jd}:</h3>\n<ul>\n' + '\n'.join([link for link in links if str(jd) in link]) + '\n</ul>\n'
 overall_index += "</body>\n</html>"
 
 with open('index.html', 'w') as f:
