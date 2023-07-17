@@ -44,7 +44,7 @@ with open(os.path.join(args.target_dir, 'index.html'), 'w') as f:
 starting_dir = os.getcwd()
 os.chdir(os.path.join(args.target_dir, '..'))
 
-all_html_files = glob.glob(os.path.join(args.target_dir, "../*/*.html"))
+all_html_files = [os.path.relpath(f) for f in glob.glob(os.path.join(args_target_dir, "../*/*.html"))]
 mod_times = [os.path.getmtime(f) for f in all_html_files]
 file_time_pairs = list(zip(all_html_files, mod_times))
 recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)][0:100]
