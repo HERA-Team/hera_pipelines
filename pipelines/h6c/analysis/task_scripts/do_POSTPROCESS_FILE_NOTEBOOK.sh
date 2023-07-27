@@ -77,7 +77,7 @@ for suffix in ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_A
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
     else
-        echo $f not produced.
+        echo $outfile not produced.
         exit 1
     fi
 done
@@ -86,7 +86,7 @@ if [ "${save_abs_cal_red_avg}" == "True" ]; then
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
     else
-        echo $f not produced.
+        echo $outfile not produced.
         exit 1
     fi
 fi
@@ -95,7 +95,7 @@ if [ "${save_dly_filt_red_avg}" == "True" ]; then
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
     else
-        echo $f not produced.
+        echo $outfile not produced.
         exit 1
     fi
 fi
@@ -104,7 +104,7 @@ if [ "${save_inpaint_red_avg}" == "True" ]; then
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
     else
-        echo $f not produced.
+        echo $outfile not produced.
         exit 1
     fi
 fi
@@ -114,7 +114,7 @@ if [ "${save_diff_red_avg}" == "True" ]; then
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
     else
-        echo $f not produced.
+        echo $outfile not produced.
         exit 1
     fi
 fi
