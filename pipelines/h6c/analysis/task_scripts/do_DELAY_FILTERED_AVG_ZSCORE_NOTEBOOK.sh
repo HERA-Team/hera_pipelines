@@ -40,8 +40,8 @@ nb_outfile=${SUM_FILE%.uvh5}.delay_filtered_average_zscore_notebook.html
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/file_postprocessing.ipynb
-echo Finished running file postprocessing notebook at $(date)
+--execute ${nb_template_dir}/delay_filtered_average_zscore.ipynb
+echo Finished running file delay-filtered average z-score notebook at $(date)
 
 # check that output metric file was produced as expected
 outfile=${SUM_FILE%sum.uvh5}${ZSCORE_SUFFIX}
