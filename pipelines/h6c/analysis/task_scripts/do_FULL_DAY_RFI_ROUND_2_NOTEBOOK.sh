@@ -30,8 +30,8 @@ max_time_flag_frac=${11}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-nb_outdir=${nb_output_repo}/full_day_rfi
-nb_outfile=${nb_outdir}/full_day_rfi_${jd}.html
+nb_outdir=${nb_output_repo}/full_day_rfi_round_2
+nb_outfile=${nb_outdir}/full_day_rfi_round_2_${jd}.html
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
