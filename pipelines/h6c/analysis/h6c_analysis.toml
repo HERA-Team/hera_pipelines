@@ -99,6 +99,13 @@ min_samp_frac = 0.05
 filter_delay = 500 # in ns
 eigenval_cutoff = 1e-12
 
+[FULL_DAY_RFI_OPTS_ROUND_2]
+z_thresh = 5.0
+ws_z_thresh = 4.0
+avg_z_thresh =  1.0
+max_freq_flag_frac = 0.25
+max_time_flag_frac = 0.1
+
 [POSTPROCESS_FILE_OPTS]
 dly_filt_horizon = 1.0
 dly_filt_standoff = 0.0 # in ns
@@ -129,6 +136,7 @@ actions = ["SETUP",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
            "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK",
+           "FULL_DAY_RFI_ROUND_2_NOTEBOOK",
            "POSTPROCESS_FILE_NOTEBOOK",
            "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
           ]
@@ -302,8 +310,27 @@ args = ["{basename}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
         ]
 
+[FULL_DAY_RFI_ROUND_2_NOTEBOOK]
+prereqs = "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_full_day_rfi}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:ws_z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:max_freq_flag_frac}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:max_time_flag_frac}",
+        ]
+
 [POSTPROCESS_FILE_NOTEBOOK]
-prereqs = "CALIBRATION_SMOOTHING_NOTEBOOK"
+prereqs = "FULL_DAY_RFI_ROUND_2_NOTEBOOK"
 prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
