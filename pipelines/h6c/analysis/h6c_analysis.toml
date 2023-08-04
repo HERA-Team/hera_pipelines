@@ -111,6 +111,7 @@ dly_filt_horizon = 1.0
 dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
+inpaint_min_dly = 750.0 # in ns
 save_diff_red_avg = false
 save_abs_cal_red_avg = true
 save_dly_filt_red_avg = true
@@ -340,6 +341,7 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
+        "${POSTPROCESS_FILE_OPTS:inpaint_min_dly}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${POSTPROCESS_FILE_OPTS:save_diff_red_avg}",

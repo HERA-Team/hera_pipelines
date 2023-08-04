@@ -21,12 +21,13 @@ dly_filt_horizon=${5}
 dly_filt_standoff=${6}
 dly_filt_min_dly=${7}
 dly_filt_eigenval_cutoff=${8}
-FM_low_freq=${9}
-FM_high_freq=${10}
-save_diff_red_avg=${11}
-save_abs_cal_red_avg=${12}
-save_dly_filt_red_avg=${13}
-save_inpaint_red_avg=${14}
+inpaint_min_dly=${9}
+FM_low_freq=${10}
+FM_high_freq=${11}
+save_diff_red_avg=${12}
+save_abs_cal_red_avg=${13}
+save_dly_filt_red_avg=${14}
+save_inpaint_red_avg=${15}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -55,6 +56,7 @@ export DLY_FILT_HORIZON=${dly_filt_horizon}
 export DLY_FILT_STANDOFF=${dly_filt_standoff}
 export DLY_FILT_MIN_DLY=${dly_filt_min_dly}
 export DLY_FILT_EIGENVAL_CUTOFF=${dly_filt_eigenval_cutoff}
+export INPAINT_MIN_DLY=${inpaint_min_dly}
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
 export SAVE_DIFF_RED_AVG=${save_diff_red_avg}
