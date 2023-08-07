@@ -71,7 +71,7 @@ jupyter nbconvert --output=${nb_outfile} \
 echo Finished running file postprocessing notebook at $(date)
 
 # Check a representative set of files to see whether they were correctly produced
-for suffix in ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do 
+for suffix in ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do 
     outfile=${SUM_FILE%sum.uvh5}${suffix}
     if [ -f "$outfile" ]; then
         echo Resulting $outfile found.
@@ -108,13 +108,14 @@ if [ "${save_inpaint_red_avg}" == "True" ]; then
     fi
 fi
 if [ "${save_diff_red_avg}" == "True" ]; then
-    DIFF_FILE=${SUM_FILE%sum.uvh5}diff.uvh5
-    outfile=${DIFF_FILE%diff.uvh5}${DIFF_SMOOTH_CAL_RED_AVG_SUFFIX}
-    if [ -f "$outfile" ]; then
-        echo Resulting $outfile found.
-    else
-        echo $outfile not produced.
-        exit 1
+    if [ "${save_dly_filt_red_avg}" == "True" ]; then
+        outfile=${SUM_FILE%sum.uvh5}${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}
+        if [ -f "$outfile" ]; then
+            echo Resulting $outfile found.
+        else
+            echo $outfile not produced.
+            exit 1
+        fi
     fi
 fi
 
