@@ -80,15 +80,6 @@ for suffix in ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFI
         exit 1
     fi
 done
-if [ "${save_abs_cal_red_avg}" == "True" ]; then
-    outfile=${SUM_FILE%sum.uvh5}${SUM_ABSCAL_RED_AVG_SUFFIX}
-    if [ -f "$outfile" ]; then
-        echo Resulting $outfile found.
-    else
-        echo $outfile not produced.
-        exit 1
-    fi
-fi
 if [ "${save_dly_filt_red_avg}" == "True" ]; then
     outfile=${SUM_FILE%sum.uvh5}${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}
     if [ -f "$outfile" ]; then
@@ -96,6 +87,24 @@ if [ "${save_dly_filt_red_avg}" == "True" ]; then
     else
         echo $outfile not produced.
         exit 1
+    fi
+    if [ "${save_abs_cal_red_avg}" == "True" ]; then
+        outfile=${SUM_FILE%sum.uvh5}${SUM_ABSCAL_RED_AVG_SUFFIX}
+        if [ -f "$outfile" ]; then
+            echo Resulting $outfile found.
+        else
+            echo $outfile not produced.
+            exit 1
+        fi
+    fi
+    if [ "${save_diff_red_avg}" == "True" ]; then
+        outfile=${SUM_FILE%sum.uvh5}${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}
+        if [ -f "$outfile" ]; then
+            echo Resulting $outfile found.
+        else
+            echo $outfile not produced.
+            exit 1
+        fi
     fi
 fi
 if [ "${save_inpaint_red_avg}" == "True" ]; then
@@ -107,17 +116,8 @@ if [ "${save_inpaint_red_avg}" == "True" ]; then
         exit 1
     fi
 fi
-if [ "${save_diff_red_avg}" == "True" ]; then
-    if [ "${save_dly_filt_red_avg}" == "True" ]; then
-        outfile=${SUM_FILE%sum.uvh5}${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}
-        if [ -f "$outfile" ]; then
-            echo Resulting $outfile found.
-        else
-            echo $outfile not produced.
-            exit 1
-        fi
-    fi
-fi
+
+
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
