@@ -89,7 +89,7 @@ if [ "${save_dly_filt_red_avg}" == "True" ]; then
         exit 1
     fi
     if [ "${save_abs_cal_red_avg}" == "True" ]; then
-        outfile=${SUM_FILE%sum.uvh5}${SUM_ABSCAL_RED_AVG_SUFFIX}
+        outfile=${SUM_FILE%sum.uvh5}${SUM_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX}
         if [ -f "$outfile" ]; then
             echo Resulting $outfile found.
         else
