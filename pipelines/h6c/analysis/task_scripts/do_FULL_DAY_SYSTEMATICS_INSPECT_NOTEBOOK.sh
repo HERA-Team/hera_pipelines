@@ -19,15 +19,16 @@ fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
 git_push=${4}
-min_dly=${5}
-standoff=${6}
-xtalk_fr=${7}
-inpaint_fr=${8}
-eigenval_cutoff=${9}
-FM_low_freq=${10}
-FM_high_freq=${11}
-max_contiguous_flags=${12}
-spectrum_chan_buffer=${13}
+filter_dly_min=${5}
+inpaint_dly_min=${6}
+standoff=${7}
+xtalk_fr=${8}
+inpaint_fr=${9}
+eigenval_cutoff=${10}
+FM_low_freq=${11}
+FM_high_freq=${12}
+max_contiguous_flags=${13}
+spectrum_chan_buffer=${14}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -36,8 +37,9 @@ nb_outfile=${nb_outdir}/full_day_systematics_inspect_${jd}.html
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
-export RED_AVG_SUFFIX="sum.smooth_calibrated.red_avg.uvh5"
-export MIN_DLY=${min_dly}
+export RED_AVG_SUFFIX="sum.smooth_calibrated.red_avg.inpaint.uvh5"
+export FILT_MIN_DLY=${filter_dly_min}
+export INPAINT_MIN_DLY=${inpaint_dly_min}
 export STANDOFF=${standoff}
 export XTALK_FR=${xtalk_fr}
 export INPAINT_FR=${inpaint_fr}
