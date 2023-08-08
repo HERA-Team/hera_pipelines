@@ -48,9 +48,9 @@ all_html_files = [os.path.relpath(f) for f in glob.glob(os.path.join(args.target
 mod_times = [os.path.getmtime(f) for f in all_html_files]
 file_time_pairs = list(zip(all_html_files, mod_times))
 recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)][0:100]
+links = make_links(recent_html_files)
 recent_jds = sorted(list(set([int(jd) for link in links for jd in re.findall(r"2\d{6}", link)])), reverse=True)
 
-links = make_links(recent_html_files)
 overall_index = '<html>\n<title>H7C_Notebooks</title>\n<header>\n<h1>H7C_Notebooks</h1>\n</header>\n<body>\n<h3><ul>\n'
 overall_index += '    <li><a href=".."><b>Back to all seasons.</b></a></li>\n'
 overall_index += '    <li><a href="antenna_classification_summary">antenna_classification_summary</a></li>\n'
