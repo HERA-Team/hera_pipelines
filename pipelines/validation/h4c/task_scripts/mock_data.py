@@ -90,7 +90,7 @@ if __name__ == "__main__":
     ref_times, sort_inds = np.unique(ref_uvdata.time_array, return_index=True)
     ref_lsts = ref_uvdata.lst_array[sort_inds]
     ref_lsts[ref_lsts<args.lst_wrap] += 2 * np.pi
-    
+
     # Note that data LSTs will always be entirely to one side of the wrap.
     dref_lsts = np.median(np.diff(ref_lsts))
     first_ind = np.argwhere(start_lsts <= np.round(ref_lsts.min(), 7)).flatten()[-1]
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     ants_to_load = np.array(
         [ant for ant in data_ants if ant not in bad_ants]
     ) if not args.input_is_compressed else np.array(list(data_ants))
-    
+
     # If we're inflating, then we're going to need to make sure not to include any
     # bad antennas that may have been missed in the previous filter.
     ants_to_keep = np.array(
@@ -164,6 +164,7 @@ if __name__ == "__main__":
 
     # Inflate the data if it's compressed
     if args.inflate:
+        print('using future array shape:', sim_uvdata.future_array_shapes)
         t1 = time.time()
         sim_uvdata.inflate_by_redundancy()
         t2 = time.time()
