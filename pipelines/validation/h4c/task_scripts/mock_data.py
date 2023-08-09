@@ -138,6 +138,9 @@ if __name__ == "__main__":
         antenna_nums=ants_to_load,
         keep_all_metadata=not trim_on_read,
     )
+    if not sim_uvdata.future_array_shapes:
+        sim_uvdata.use_future_array_shapes()
+    print('using future array shape:', sim_uvdata.future_array_shapes)
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Reading simulation data took {dt:.2f} minutes.")
