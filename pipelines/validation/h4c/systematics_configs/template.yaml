@@ -27,4 +27,6 @@ reflection_spectrum:
         - -3
         - -4
     dly_jitter: 30
-    amp_jitter: 0.01
+    amp_jitter: 0.
+
+    # /lustre/aoc/projects/hera/Validation/H4C/IDR2/configs/base_config.yaml
