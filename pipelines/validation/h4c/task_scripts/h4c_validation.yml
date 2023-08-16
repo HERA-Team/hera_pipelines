@@ -1,4 +1,4 @@
-name: h4c_validation_test
+name: h4c_validation
 channels:
   - defaults
   - conda-forge

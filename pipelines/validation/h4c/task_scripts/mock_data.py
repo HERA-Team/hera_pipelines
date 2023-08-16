@@ -192,6 +192,13 @@ if __name__ == "__main__":
 
     # Now apply the systematics.
     sim_uvdata = Simulator(data=sim_uvdata)
+
+    # For debugging purposes.
+    ant_1_array = sim_uvdata.ant_1_array
+    ant_2_array = sim_uvdata.ant_2_array
+    auto_inds = ant_1_array == ant_2_array
+    pols = sim_uvdata.pols
+    pol_inds = np.array([pol[0] == pol[1] for pol in pols])
     print("Simulating and applying systematics.")
     print("====================================\n")
     for component_name, parameters in config.items():
@@ -216,7 +223,12 @@ if __name__ == "__main__":
                 parameters[param] = np.array(value)
         print("Min/Mean/Max before:")
         for attr in ("min", "mean", "max"):
-            print(f"    {getattr(sim_uvdata.data.data_array, attr)()}")
+            print(f"    {getattr(sim_uvdata.data_array, attr)()}")
+
+        autos = sim_uvdata.data_array[auto_inds][...,pol_inds]
+        print("Min/Mean/Max of autos before:")
+        for attr in ("min", "mean", "max"):
+            print(f"    {getattr(autos, attr)()}")
 
         # Read in the mutual coupling mixing matrix if a file is provided.
         # NOTE: This is tuned to the particular format I used for saving the
@@ -239,6 +251,12 @@ if __name__ == "__main__":
         print("Min/Mean/Max after:")
         for attr in ("min", "mean", "max"):
             print(f"    {getattr(sim_uvdata.data.data_array, attr)()}")
+
+        autos = sim_uvdata.data_array[auto_inds][...,pol_inds]
+        print("Min/Mean/Max of autos after:")
+        for attr in ("min", "mean", "max"):
+            print(f"    {getattr(autos, attr)()}")
+
         t2 = time.time()
         dt = t2 - t1
         print(f"Done in {dt:.5f} seconds.\n")
