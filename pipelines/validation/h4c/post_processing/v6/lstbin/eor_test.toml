@@ -1,0 +1,41 @@
+[Options]
+makeflow_type = "lstbin"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/validation/h4c/post_processing/v6/lstbin/task_scripts/"
+source_script = "~/.bashrc"
+conda_env = "hera3dev"
+base_mem = 16000
+base_cpu = 1
+timeout = "48h"
+mail_user = "lisaleemcb@gmail.com"
+
+[LSTBIN_OPTS]
+sig_clip = "False"
+Nbls_to_load = 50
+sigma = 5
+min_N = 5
+rephase = "True"
+ntimes_per_file = 2
+dlst = 0.0007046864745507975
+lst_start = 5.17301381 # this is before the first LST on 2459114 and after the last LST on 2459139
+fixed_lst_start = "False"
+vis_units = "Jy"
+parallelize = "True"
+average_redundant_baselines = "False"
+file_ext = "{type}.{time:7.5f}.eor.uvh5"
+outdir = "/lustre/aoc/projects/hera/H4C/lstbin/validation_test/"
+parent_dir = "/lustre/aoc/projects/hera/H4C/makeflow/validation_test/"
+data_files = [
+              "/lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/eor/zen.LST.*.eor.uvh5"
+              ]
+calibration = "''"
+flag_thresh = 0.8
+yaml_dir = "/users/lmcbride/lustre/hera_software/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/stage_2_a_priori_flags_include_variable_with_expanded_flags/"
+
+
+[WorkFlow]
+actions = ["LSTBIN"]
+
+[LSTBIN]
+args = ["sig_clip", "sigma", "min_N", "rephase", "ntimes_per_file", "lst_start",
+        "fixed_lst_start", "dlst", "vis_units", "output_file_select", "file_ext",
+        "outdir", "Nbls_to_load", "flag_thresh", "average_redundant_baselines", "yaml_dir", "calibration"]
