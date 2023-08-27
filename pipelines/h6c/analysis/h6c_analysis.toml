@@ -120,8 +120,9 @@ save_dly_filt_red_avg = true
 save_inpaint_red_avg = true
 
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
-filter_dly_min = 150 # in ns
-inpaint_dly_min = 750 # in ns
+filter_dly_min = 150.0 # in ns
+inpaint_dly_min = 500.0 # in ns
+inpaint_regularization = 1e-3
 standoff = 50 # in ns
 xtalk_fr = 0.025 #in mHz
 inpaint_fr = 2.5 # in mHz
@@ -368,6 +369,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:git_push}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:filter_dly_min}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:xtalk_fr}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
