@@ -22,3 +22,5 @@ dependencies:
     - hera-filters
     - hera-qm
     - hera-pspec
+    - hera-opm
+  
