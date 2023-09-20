@@ -1,7 +1,7 @@
 [Options]
 makeflow_type = "analysis"
 path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v6/post_lstbin_frate/task_scripts"
-conda_env = "hera3dev"
+conda_env = "h4c_validation"
 source_script = "~/.bashrc"
 base_mem = 8000
 base_cpu = 1
