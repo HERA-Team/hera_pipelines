@@ -45,10 +45,13 @@ oc_min_bl_len=${29}
 oc_max_bl_len=${30}
 oc_maxiter=${31}
 oc_max_rerun=${32}
-rfi_dpss_halfwidth=${33}
-rfi_nsig=${34}
-abscal_min_bl_len=${35}
-abscal_max_bl_len=${36}
+oc_rerun_maxiter=${33}
+oc_use_prior_sol=${34}
+oc_prior_sol_flag_thresh=${35}
+rfi_dpss_halfwidth=${36}
+rfi_nsig=${37}
+abscal_min_bl_len=${38}
+abscal_max_bl_len=${39}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -80,6 +83,9 @@ export OC_MIN_BL_LEN=${oc_min_bl_len}
 export OC_MAX_BL_LEN=${oc_max_bl_len}
 export OC_MAXITER=${oc_maxiter}
 export OC_MAX_RERUN=${oc_max_rerun}
+export OC_RERUN_MAXITER=${oc_rerun_maxiter}
+export OC_USE_PRIOR_SOL=${oc_use_prior_sol}
+export OC_PRIOR_SOL_FLAG_THRESH=${oc_prior_sol_flag_thresh}
 export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
 export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
