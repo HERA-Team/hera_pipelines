@@ -418,7 +418,6 @@ args = ["{basename}",
 
 [ALL_SKY_IMAGE_SNAPSHOT]
 prereqs = ["CALIBRATE_FILE_NOTEBOOK"]
-mem = 7000
 chunk_size = "1"
 stride_length = "10"
 args = ["{basename}",
