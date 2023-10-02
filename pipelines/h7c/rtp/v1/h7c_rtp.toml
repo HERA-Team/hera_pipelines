@@ -195,7 +195,7 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-mem = 36000
+mem = 48000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
