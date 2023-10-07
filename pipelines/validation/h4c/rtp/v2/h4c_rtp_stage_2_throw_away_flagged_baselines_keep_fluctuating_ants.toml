@@ -201,7 +201,7 @@ collect_stragglers = true
 #         "{obsid_list}"
 #        ]
 [XRFI_TRANSFER]
-prereqs = "XRFI"]
+prereqs = "XRFI"
 args = ["${XRFI_OPTS:kt_size}",
        "${XRFI_OPTS:kf_size}",
        "${XRFI_OPTS:sig_init_med}",
