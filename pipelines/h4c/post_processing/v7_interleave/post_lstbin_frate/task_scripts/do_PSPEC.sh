@@ -32,7 +32,9 @@ fi
 
 exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
 
-pol_pair_list=("XX~XX,YY~YY" "pI~pI")
+
+#pol_pair_list=("XX~XX,YY~YY" "pI~pI")
+pol_pair_list=("pI~pI")
 pol_label_list=("" "_pstokes")
 polnums=(0 1)
 # Create dset_pairs string.
