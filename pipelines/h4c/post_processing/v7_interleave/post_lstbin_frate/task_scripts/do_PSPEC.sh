@@ -34,9 +34,11 @@ exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
 
 
 #pol_pair_list=("XX~XX,YY~YY" "pI~pI")
+#pol_label_lis=("" "_pstokes")
+#polnums=(0 1)
 pol_pair_list=("pI~pI")
-pol_label_list=("" "_pstokes")
-polnums=(0 1)
+pol_label_list=("_pstokes")
+polnums=(0)
 # Create dset_pairs string.
 dset_pairs_str=""
 for ((interleave_1=0; interleave_1 < ${ninterleave}; interleave_1++))
