@@ -308,7 +308,7 @@ args = ["{basename}",
         ]
 
 [FULL_DAY_RFI_NOTEBOOK]
-mem = 120000
+mem = 192000
 prereqs = ["CALIBRATE_FILE_NOTEBOOK", "EXTRACT_AUTOS", "FULL_DAY_AUTO_CHECKER_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
