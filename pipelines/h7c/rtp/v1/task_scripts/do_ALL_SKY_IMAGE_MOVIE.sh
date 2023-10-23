@@ -5,6 +5,7 @@ set -e
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
+echo Host: `hostname`
 
 # >>> conda initialize >>>
 # contents within this block must be kept matching those in ~/.bashrc

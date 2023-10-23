@@ -5,6 +5,7 @@ set -e
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
+echo Host: `hostname`
 
 # 1 - (raw) filename
 # 2 - nb_template_dir: where to look for the notebook template

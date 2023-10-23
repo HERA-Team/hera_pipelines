@@ -2,7 +2,7 @@
 set -e
 
 echo "do_ALL_SKY_IMAGE_SNAPSHOT"
-hostname
+echo Host: `hostname`
 #This script generates an all-sky image of the sky as a jpg
 # a subsequent job collects them all into an image
 

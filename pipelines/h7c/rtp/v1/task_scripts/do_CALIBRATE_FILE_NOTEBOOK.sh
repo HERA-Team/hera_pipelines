@@ -5,6 +5,7 @@ set -e
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
+echo Host: `hostname`
 
 # Parameters are set in the configuration file. Here we define their positions,
 # which must be consistent with the config.
