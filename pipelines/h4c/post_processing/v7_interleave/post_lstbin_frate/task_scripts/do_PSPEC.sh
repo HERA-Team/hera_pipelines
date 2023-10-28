@@ -82,40 +82,27 @@ do
       then
           output=zen.${jd}.${sd}.${label}.${ext}${pol_label}.tavg.pspec.h5
           # average all times incoherently
-          echo pspec_run.py ${inputs} ${output}\
+	  cmd="pspec_run.py ${inputs} ${output}\
             --overwrite --dset_pairs ${dset_pairs_str}\
             --pol_pairs ${pol_pairs} --verbose\
             --Jy2mK --beam ${beam_file} --exclude_permutations\
             --file_type uvh5 --xant_flag_thresh 1.1\
-            --taper bh --spw_ranges ${spw_ranges}
-
-            pspec_run.py ${inputs} ${output}\
-              --overwrite --dset_pairs ${dset_pairs_str}\
-              --pol_pairs ${pol_pairs} --verbose\
-              --Jy2mK --beam ${beam_file} --exclude_permutations\
-              --file_type uvh5  --xant_flag_thresh 1.1\
-              --taper bh --spw_ranges ${spw_ranges}
-
+            --taper bh --spw_ranges ${spw_ranges}"
+	   echo ${cmd}
+	   ${cmd}
             if [ "${ext}" = "foreground_filled.xtalk_filtered.chunked" ]
             then
               # auto power spectra
-              output=zen.${jd}.${sd}.${label}.autos.${ext}${pol_label}.tavg.pspec.h5
-              echo pspec_run.py ${inputs} ${output}\
+		output=zen.${jd}.${sd}.${label}.autos.${ext}${pol_label}.tavg.pspec.h5
+	        cmd="pspec_run.py ${inputs} ${output}\
                 --overwrite --dset_pairs ${dset_pairs_str}\
                 --pol_pairs ${pol_pairs} --verbose\
                 --Jy2mK --beam ${beam_file}\
                 --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
                 --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-                --exclude_cross_bls --exclude_crosscorrs
-
-
-              pspec_run.py ${input} ${output}\
-                --overwrite --dset_pairs ${dset_pairs_str}\
-                --pol_pairs ${pol_pairs} --verbose\
-                --Jy2mK --beam ${beam_file}\
-                --file_type uvh5 --include_autocorrs --xant_flag_thresh 1.1\
-                --taper bh --broadcast_dset_flags --spw_ranges ${spw_ranges}\
-                --exclude_cross_bls --exclude_crosscorrs
+                --exclude_cross_bls --exclude_crosscorrs"
+	        echo ${cmd}
+	      ${cmd}
           fi
       else
         echo "${input} does not exist!"
