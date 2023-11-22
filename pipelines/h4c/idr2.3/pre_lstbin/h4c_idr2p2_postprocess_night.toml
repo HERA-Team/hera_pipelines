@@ -28,7 +28,7 @@ chunk_size = 8
 # channels not included in these ranges will be thrown out of the analysis.
 # this saves memory, storage, and time for the analysis steps and intermediate products
 # I chose these based on bands heavily contaminated by RFI across all baselines.
-spw_ranges='10~105,150~320,515~615,665~717,770~1090'
+spw_ranges='35~326,515~631,650~730,754~869,896~1147,1243~1418'
 # all intermediate data products and final pipeline outputs will have this label attached to them
 label = "include-variable-ants-interleave-4-way"
 # This is a temporary directory where temporary filter cache files will be written too
@@ -71,7 +71,7 @@ filter_mode = "DPSS"
 # Note that these channels are indexed relative to the channels left over after selection
 # channels with Options:spw_ranges so this is why the "bottom of the FM" shows up as
 # one channel away from the "top of the FM" since the FM was already removed by Options:spw_ranges
-spw_ranges = "0~265,265~737"
+spw_ranges = "0~291,291~1028"
 
 # we may want to consider another flagging round after delay filtering.
 [FR_OPTS]
@@ -106,7 +106,7 @@ pstokes="pI"
 beam_file="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix"
 # spw_ranges to use for power spectrum estimation. Indices are referenced to the subbands
 # from Options;spw_ranges
-spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
+spw_ranges="0~91,97~193,196~291,291~407,407~487,487~540,547~602,602~672,672~755,760~853,853~933,938~1028"
 # These parameters are only used for calculating boot-strap error bars.
 # (if the do_BOOTSTRAP_ERRORS) step is uncommented.
 nsamples=100
@@ -145,7 +145,7 @@ nb_template_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_temp
 nb_output_repo = "/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/"
 git_push = "False"
 # spws to include in the nightly power spectrum notebook.
-spws = "0,1,2,3,4,5,6,7,8"
+spws = "0,1,2,3,4,5,6,7,8,9,10,11"
 # LST hour ranges of the fields
 lst_fields = "1~3,4.2~6.2"
 # number of baseline groups to skip over in waterfall plots
