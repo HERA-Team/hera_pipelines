@@ -62,18 +62,24 @@ do
     then
       # split up spw_range
       spw_range="${spw_range/\~/ }"
-      #if [ "${clobber}" = "true" ] && [ ! -e "${CLEAN_outfilename}" ]
-      #  then
+
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
-      --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "uvbeam" ${pf_arg} --param_file ${filter_file}
+      --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} \
+      --percentile_low ${percentile_low} --percentile_high ${percentile_high} \
+      --fr_freq_skip 10 --clobber --verbose --mode dpss_leastsq \
+      --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 \
+      --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "param_file" \
+      ${pf_arg} --param_file ${filter_file}
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
-      --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "uvbeam" ${pf_arg} --param_file ${filter_file}
-      #fi
+      --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} \
+      --percentile_low ${percentile_low} --percentile_high ${percentile_high} \
+      --fr_freq_skip 10 --clobber --verbose --mode dpss_leastsq \
+      --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 \
+      --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "param_file" \
+      ${pf_arg} --param_file ${filter_file}
     else
       echo "${fn_in} does not exist!"
     fi
