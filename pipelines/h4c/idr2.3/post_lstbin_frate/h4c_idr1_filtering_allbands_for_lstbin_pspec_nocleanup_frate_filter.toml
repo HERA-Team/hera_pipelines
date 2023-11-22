@@ -27,6 +27,8 @@ tol=1e-9
 # use this uvbeam object to filter main-lobe.
 uvbeam="/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
 spw_ranges="0~95,95~180,180~265,265~365,365~417,417~497,497~577,577~657,657~737"
+filter_dir="/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/idr2.3/post_lstbin_frate/filter_params"
+file_basename="spw_"
 percentile_low=5.0
 percentile_high=95.0
 prefilter_zero_frate="false"
@@ -80,7 +82,8 @@ args=["{basename}", "${Options:include_diffs}",
       "${Options:label}", "${FR_OPTS:tol}", "${FR_OPTS:uvbeam}",
       "${FR_OPTS:percentile_low}", "${FR_OPTS:percentile_high}",
       "${FR_OPTS:spw_ranges}", "${FR_OPTS:prefilter_zero_frate}",
-      "${FR_OPTS:ninterleave}"]
+      "${FR_OPTS:ninterleave}", "${FR_OPTS:filter_dir}",
+      "${FR_OPTS:file_basename}"]
 
 [TIME_AVERAGE]
 prereqs = "FR_FILTER"

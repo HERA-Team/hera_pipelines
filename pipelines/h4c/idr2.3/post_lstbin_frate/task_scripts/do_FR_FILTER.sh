@@ -17,6 +17,8 @@ percentile_high="${7}"
 spw_ranges="${8}"
 prefilter_zero_frate="${9}"
 ninterleave="${10}"
+filter_dir="${11}"
+file_basename="${12}"
 #clobber="true"
 
 jd=$(get_jd $fn)
@@ -49,11 +51,13 @@ fi
 for sd in ${sumdiff[@]}
 do
   fn_in=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.chunked.uvh5
-  for spw_range in ${spw_ranges[@]}
+  for spw in ${!spw_ranges[@]}
   do
+    spw_range=${spw_ranges[spw]}
     # pull out tilde delimiter.
     fg_files=`echo zen.*.${sd}.${label}.foreground_filled.xtalk_filtered.chunked.uvh5`
     fn_out=zen.${jd}.${sd}.${label}.frf.spw_range_${spw_range}.waterfall.uvh5
+    filter_file="${filter_dir}/${file_basename}${spw}.yaml"
     if [ -e "${fn_in}" ]
     then
       # split up spw_range
@@ -63,12 +67,12 @@ do
       echo tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "uvbeam" ${pf_arg}
+      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "uvbeam" ${pf_arg} --param_file ${filter_file}
 
       tophat_frfilter_run.py ${fg_files}  --tol ${tol} \
       --CLEAN_outfilename ${fn_out} \
       --cornerturnfile ${fn_in} --beamfitsfile ${uvbeam} --percentile_low ${percentile_low} --percentile_high ${percentile_high} --fr_freq_skip 10\
-      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "uvbeam" ${pf_arg}
+      --clobber --verbose --mode dpss_leastsq --spw_range ${spw_range} --skip_autos --frate_standoff 0.05 --min_frate_half_width 0.15 --ninterleave ${ninterleave} --case "uvbeam" ${pf_arg} --param_file ${filter_file}
       #fi
     else
       echo "${fn_in} does not exist!"
