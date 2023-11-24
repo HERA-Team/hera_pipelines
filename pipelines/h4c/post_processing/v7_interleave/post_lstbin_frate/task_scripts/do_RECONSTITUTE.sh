@@ -43,18 +43,20 @@ do
     time_chunk_template=zen.${jd}.${sd}.${label}.foreground_filled.xtalk_filtered.chunked.uvh5
     if [ -e "${time_chunk_template}" ]
     then
-	echo ${ilabel}
-        # reconstitute frf files
-        outfilename=zen.${jd}.${sd}.${label}.${ext}.tavg.uvh5
-        baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.waterfall.tavg.interleave_*.uvh5`
-        if echo x"$baseline_chunk_files" | grep '*' > /dev/null; then
-	    echo "No waterfall files exist with ${jd}. This is probably because there are more times then baseline groups."
-        else
-	    cmd="time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds --outfilename ${outfilename}"
-	    echo ${cmd}
-	    ${cmd}
-	fi
-  
+	for ((ilabel=0; ilabel < ${ninterleave}; ilabel++))
+	do
+	    echo ${ilabel}
+            # reconstitute frf files
+            outfilename=zen.${jd}.${sd}.${label}.${ext}.tavg.uvh5
+            baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.waterfall.tavg.interleave_${ilabel}.uvh5`
+            if echo x"$baseline_chunk_files" | grep '*' > /dev/null; then
+		echo "No waterfall files exist with ${jd}. This is probably because there are more times then baseline groups."
+            else
+		cmd="time_chunk_from_baseline_chunks_run.py ${time_chunk_template} --baseline_chunk_files ${baseline_chunk_files} --clobber --time_bounds --outfilename ${outfilename}"
+		echo ${cmd}
+		${cmd}
+	    fi
+	done  
     else
 	echo "${time_chunk_template} does not exist!"
     fi
