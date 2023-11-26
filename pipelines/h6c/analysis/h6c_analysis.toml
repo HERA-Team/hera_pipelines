@@ -5,6 +5,7 @@ base_mem = 15500
 base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/analysis/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/analysis/apriori_flags"
 conda_env = "h6c_idr2"
 batch_system = "slurm"
 
@@ -56,10 +57,14 @@ oc_min_bl_len = 1
 oc_max_bl_len = 1e100
 oc_maxiter = 50
 oc_max_rerun = 4
+oc_rerun_maxiter = 25
+oc_use_prior_sol = true
+oc_prior_sol_flag_thresh = 0.95
 rfi_dpss_halfwidth = 300e-9
 rfi_nsig = 6
 abscal_min_bl_len = 1.0
 abscal_max_bl_len = 140.0
+save_omni_vis = false
 
 [FULL_DAY_RFI_OPTS]
 FM_low_freq = 87.5 # in MHz
@@ -92,12 +97,41 @@ freq_smoothing_scale = 10.0 # in MHz
 time_smoothing_scale = 6e5 # in seconds
 eigenval_cutoff = 1e-12
 
+[DELAY_FILTERED_AVG_ZSCORE_OPTS]
+min_samp_frac = 0.05
+filter_delay = 500 # in ns
+eigenval_cutoff = 1e-12
+
+[FULL_DAY_RFI_OPTS_ROUND_2]
+z_thresh = 5.0
+ws_z_thresh = 4.0
+avg_z_thresh =  1.0
+max_freq_flag_frac = 0.25
+max_time_flag_frac = 0.1
+
 [POSTPROCESS_FILE_OPTS]
 dly_filt_horizon = 1.0
 dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
-dly_filt_FM_cut_freq = 100e6 # in Hz
+inpaint_min_dly = 500.0 # in ns
+inpaint_regularization = 1e-3
+inpaint_max_gap_factor = 2.0
+save_diff_red_avg = false
+save_abs_cal_red_avg = true
+save_dly_filt_red_avg = true
+save_inpaint_red_avg = true
+
+[FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
+filter_dly_min = 150.0 # in ns
+inpaint_dly_min = 500.0 # in ns
+inpaint_regularization = 1e-3
+standoff = 50 # in ns
+xtalk_fr = 0.025 #in mHz
+inpaint_fr = 2.5 # in mHz
+eigenval_cutoff = 1e-12
+max_contiguous_flags = 20
+spectrum_chan_buffer = 25
 
 ############################################################################################################
 
@@ -109,7 +143,10 @@ actions = ["SETUP",
            "FULL_DAY_RFI_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
+           "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK",
+           "FULL_DAY_RFI_ROUND_2_NOTEBOOK",
            "POSTPROCESS_FILE_NOTEBOOK",
+           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
           ]
 
 [SETUP]
@@ -154,10 +191,14 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:oc_max_bl_len}",
         "${CALIBRATE_FILE_OPTS:oc_maxiter}",
         "${CALIBRATE_FILE_OPTS:oc_max_rerun}",
+        "${CALIBRATE_FILE_OPTS:oc_rerun_maxiter}",
+        "${CALIBRATE_FILE_OPTS:oc_use_prior_sol}",
+        "${CALIBRATE_FILE_OPTS:oc_prior_sol_flag_thresh}",
         "${CALIBRATE_FILE_OPTS:rfi_dpss_halfwidth}",
         "${CALIBRATE_FILE_OPTS:rfi_nsig}",
         "${CALIBRATE_FILE_OPTS:abscal_min_bl_len}",
         "${CALIBRATE_FILE_OPTS:abscal_max_bl_len}",
+        "${CALIBRATE_FILE_OPTS:save_omni_vis}",
         ]
 
 [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
@@ -200,6 +241,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:repeat_flag_z_thresh}",
         "${FULL_DAY_RFI_OPTS:max_freq_flag_frac}",
         "${FULL_DAY_RFI_OPTS:max_time_flag_frac}",
+        "${Options:path_to_a_priori_flags}",
         ]
         
 [FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
@@ -244,6 +286,7 @@ args = ["{basename}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_rfi_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:chisq_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:overall_max_flag_frac}",
+        "${Options:path_to_a_priori_flags}",
         ]
 
 [CALIBRATION_SMOOTHING_NOTEBOOK]
@@ -264,8 +307,41 @@ args = ["{basename}",
         "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
         ]
 
-[POSTPROCESS_FILE_NOTEBOOK]
+[DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK]
 prereqs = "CALIBRATION_SMOOTHING_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:min_samp_frac}",
+        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
+        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
+        ]
+
+[FULL_DAY_RFI_ROUND_2_NOTEBOOK]
+prereqs = "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_full_day_rfi}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:ws_z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:max_freq_flag_frac}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:max_time_flag_frac}",
+        ]
+
+[POSTPROCESS_FILE_NOTEBOOK]
+prereqs = "FULL_DAY_RFI_ROUND_2_NOTEBOOK"
 prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
@@ -275,5 +351,37 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
-        "${POSTPROCESS_FILE_OPTS:dly_filt_FM_cut_freq}",
+        "${POSTPROCESS_FILE_OPTS:inpaint_min_dly}",
+        "${POSTPROCESS_FILE_OPTS:inpaint_regularization}",
+        "${POSTPROCESS_FILE_OPTS:inpaint_max_gap_factor}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${POSTPROCESS_FILE_OPTS:save_diff_red_avg}",
+        "${POSTPROCESS_FILE_OPTS:save_abs_cal_red_avg}",
+        "${POSTPROCESS_FILE_OPTS:save_dly_filt_red_avg}",
+        "${POSTPROCESS_FILE_OPTS:save_inpaint_red_avg}",
+        ]
+
+[FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK]
+mem = 60000
+prereqs = "POSTPROCESS_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:filter_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:xtalk_fr}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:eigenval_cutoff}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]

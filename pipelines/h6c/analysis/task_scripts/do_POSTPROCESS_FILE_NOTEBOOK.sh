@@ -21,7 +21,15 @@ dly_filt_horizon=${5}
 dly_filt_standoff=${6}
 dly_filt_min_dly=${7}
 dly_filt_eigenval_cutoff=${8}
-dly_filt_FM_cut_freq=${9}
+inpaint_min_dly=${9}
+inpaint_regularization=${10}
+inpaint_max_gap_factor=${11}
+FM_low_freq=${12}
+FM_high_freq=${13}
+save_diff_red_avg=${14}
+save_abs_cal_red_avg=${15}
+save_dly_filt_red_avg=${16}
+save_inpaint_red_avg=${17}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -29,13 +37,17 @@ export SUM_SUFFIX="sum.uvh5"
 export DIFF_SUFFIX="diff.uvh5"
 export ABS_CAL_SUFFIX="sum.omni.calfits"
 export SMOOTH_CAL_SUFFIX="sum.smooth.calfits"
-export ANT_FLAG_SUFFIX="sum.antenna_flags.h5"
-export SUM_ABSCAL_RED_AVG_SUFFIX="sum.abs_calibrated.red_avg.uvh5"
-export DIFF_ABSCAL_RED_AVG_SUFFIX="diff.abs_calibrated.red_avg.uvh5"
-export SUM_SMOOTH_CAL_RED_AVG_SUFFIX="sum.smooth_calibrated.red_avg.uvh5"
-export DIFF_SMOOTH_CAL_RED_AVG_SUFFIX="diff.smooth_calibrated.red_avg.uvh5"
+export APOSTERIORI_YAML_SUFFIX="_aposteriori_flags.yaml"
+export FILTER_CACHE="filter_cache"
+export SUM_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX="sum.abs_calibrated.red_avg.dly_filt.uvh5"
+export DIFF_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX="diff.abs_calibrated.red_avg.dly_filt.uvh5"
 export SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX="sum.smooth_calibrated.red_avg.dly_filt.uvh5"
 export DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX="diff.smooth_calibrated.red_avg.dly_filt.uvh5"
+export SUM_ABS_CAL_RED_AVG_INPAINT_SUFFIX="sum.abs_calibrated.red_avg.inpaint.uvh5"
+export DIFF_ABS_CAL_RED_AVG_INPAINT_SUFFIX="diff.abs_calibrated.red_avg.inpaint.uvh5"
+export SUM_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX="sum.smooth_calibrated.red_avg.inpaint.uvh5"
+export DIFF_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX="diff.smooth_calibrated.red_avg.inpaint.uvh5"
+export WHERE_INPAINTED_SUFFIX="where_inpainted.h5"
 export AVG_ABS_ALL_SUFFIX="sum.smooth_calibrated.avg_abs_all.uvh5"
 export AVG_ABS_AUTO_SUFFIX="sum.smooth_calibrated.avg_abs_auto.uvh5"
 export AVG_ABS_CROSS_SUFFIX="sum.smooth_calibrated.avg_abs_cross.uvh5"
@@ -43,7 +55,15 @@ export DLY_FILT_HORIZON=${dly_filt_horizon}
 export DLY_FILT_STANDOFF=${dly_filt_standoff}
 export DLY_FILT_MIN_DLY=${dly_filt_min_dly}
 export DLY_FILT_EIGENVAL_CUTOFF=${dly_filt_eigenval_cutoff}
-export DLY_FILT_FM_CUT_FREQ=${dly_filt_FM_cut_freq}
+export INPAINT_MIN_DLY=${inpaint_min_dly}
+export INPAINT_REGULARIZATION=${inpaint_regularization}
+export INPAINT_MAX_GAP_FACTOR=${inpaint_max_gap_factor}
+export FM_LOW_FREQ=${FM_low_freq}
+export FM_HIGH_FREQ=${FM_high_freq}
+export SAVE_DIFF_RED_AVG=${save_diff_red_avg}
+export SAVE_ABS_CAL_RED_AVG=${save_abs_cal_red_avg}
+export SAVE_DLY_FILT_RED_AVG=${save_dly_filt_red_avg}
+export SAVE_INPAINT_RED_AVG=${save_inpaint_red_avg}
 
 nb_outfile=${SUM_FILE%.uvh5}.postprocessing_notebook.html
 
@@ -54,26 +74,54 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/file_postprocessing.ipynb
 echo Finished running file postprocessing notebook at $(date)
 
-# Check to see that output files were correctly produced
-for suffix in ${SUM_ABSCAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_SUFFIX} ${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX} ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do
+# Check a representative set of files to see whether they were correctly produced
+for suffix in ${AVG_ABS_ALL_SUFFIX} ${AVG_ABS_AUTO_SUFFIX} ${AVG_ABS_CROSS_SUFFIX}; do 
     outfile=${SUM_FILE%sum.uvh5}${suffix}
     if [ -f "$outfile" ]; then
-        echo Resulting $f found.
+        echo Resulting $outfile found.
     else
-        echo $f not produced.
+        echo $outfile not produced.
         exit 1
     fi
 done
-for suffix in ${DIFF_ABSCAL_RED_AVG_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_SUFFIX} ${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}; do
-    DIFF_FILE=${SUM_FILE%sum.uvh5}diff.uvh5
-    outfile=${DIFF_FILE%diff.uvh5}${suffix}
+if [ "${save_dly_filt_red_avg}" == "True" ]; then
+    outfile=${SUM_FILE%sum.uvh5}${SUM_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}
     if [ -f "$outfile" ]; then
-        echo Resulting $f found.
+        echo Resulting $outfile found.
     else
-        echo $f not produced.
+        echo $outfile not produced.
         exit 1
     fi
-done
+    if [ "${save_abs_cal_red_avg}" == "True" ]; then
+        outfile=${SUM_FILE%sum.uvh5}${SUM_ABS_CAL_RED_AVG_DLY_FILT_SUFFIX}
+        if [ -f "$outfile" ]; then
+            echo Resulting $outfile found.
+        else
+            echo $outfile not produced.
+            exit 1
+        fi
+    fi
+    if [ "${save_diff_red_avg}" == "True" ]; then
+        outfile=${SUM_FILE%sum.uvh5}${DIFF_SMOOTH_CAL_RED_AVG_DLY_FILT_SUFFIX}
+        if [ -f "$outfile" ]; then
+            echo Resulting $outfile found.
+        else
+            echo $outfile not produced.
+            exit 1
+        fi
+    fi
+fi
+if [ "${save_inpaint_red_avg}" == "True" ]; then
+    outfile=${SUM_FILE%sum.uvh5}${SUM_SMOOTH_CAL_RED_AVG_INPAINT_SUFFIX}
+    if [ -f "$outfile" ]; then
+        echo Resulting $outfile found.
+    else
+        echo $outfile not produced.
+        exit 1
+    fi
+fi
+
+
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})

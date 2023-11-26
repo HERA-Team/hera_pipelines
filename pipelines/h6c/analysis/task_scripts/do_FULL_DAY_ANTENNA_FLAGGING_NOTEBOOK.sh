@@ -52,6 +52,7 @@ auto_slope_max_flag_frac=${33}
 auto_rfi_max_flag_frac=${34}
 chisq_max_flag_frac=${35}
 overall_max_flag_frac=${36}
+path_to_a_priori_flags=${37}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -64,7 +65,7 @@ export SUM_SUFFIX="sum.uvh5"
 export CAL_SUFFIX="sum.omni.calfits"
 export ANT_CLASS_SUFFIX="sum.ant_class.csv"
 export OUT_FLAG_SUFFIX="sum.antenna_flags.h5"
-
+export APRIORI_YAML_PATH=${path_to_a_priori_flags}/${jd}_apriori_flags.yaml
 export AM_CORR_BAD=${am_corr_bad}
 export AM_CORR_SUSPECT=${am_corr_suspect}
 export AM_XPOL_BAD=${am_xpol_bad}
