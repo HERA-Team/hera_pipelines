@@ -96,7 +96,7 @@ prereqs = "TIME_AVERAGE"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 16000
+mem = 24000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:ninterleave}"]
 
