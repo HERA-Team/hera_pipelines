@@ -54,8 +54,8 @@ max_plots_per_row = 10
 
 [WorkFlow]
 actions = [
-           "PRE_CHUNK",
-           "FR_FILTER",
+           #"PRE_CHUNK",
+           #"FR_FILTER",
            "TIME_AVERAGE",
            "RECONSTITUTE",
            "PSTOKES",
@@ -83,8 +83,8 @@ args=["{basename}", "${Options:include_diffs}",
       "${FR_OPTS:ninterleave}"]
 
 [TIME_AVERAGE]
-prereqs = "FR_FILTER"
-prereq_chunk_size="all"
+#prereqs = "FR_FILTER"
+#prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
 mem = 16000
