@@ -47,7 +47,7 @@ do
 	do
 	    echo ${ilabel}
             # reconstitute frf files
-            outfilename=zen.${jd}.${sd}.${label}.${ext}.tavg.uvh5
+            outfilename=zen.${jd}.${sd}.${label}.${ext}.tavg.interleave_${ilabel}.uvh5
             baseline_chunk_files=`echo zen.${int_jd}.*.${sd}.${label}.${ext}.waterfall.tavg.interleave_${ilabel}.uvh5`
             if echo x"$baseline_chunk_files" | grep '*' > /dev/null; then
 		echo "No waterfall files exist with ${jd}. This is probably because there are more times then baseline groups."
