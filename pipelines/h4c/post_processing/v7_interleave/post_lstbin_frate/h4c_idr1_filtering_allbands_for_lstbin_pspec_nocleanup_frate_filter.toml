@@ -73,7 +73,7 @@ args=["{basename}", "${Options:include_diffs}", "${Options:label}",
 [FR_FILTER]
 prereqs = "PRE_CHUNK"
 prereq_chunk_size="all"
-mem=24000
+mem=16000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}",
@@ -87,7 +87,7 @@ prereqs = "FR_FILTER"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 16000
+mem = 24000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${Options:t_avg}", "${FR_OPTS:ninterleave}"]
 
@@ -96,7 +96,7 @@ prereqs = "TIME_AVERAGE"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length="${Options:chunk_size}"
-mem = 16000
+mem = 24000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${FR_OPTS:ninterleave}"]
 
