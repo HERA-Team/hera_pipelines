@@ -1,0 +1,26 @@
+name: h4c_validation
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9.16
+  - numpy=1.23.5
+  - numba=0.56.4
+  - astropy
+  - h5py
+  - hdf5plugin
+  - pip
+  - git
+  - scipy
+  - pyuvdata=2.2.12
+  - pip:
+    - git+https://github.com/hera-team/uvtools.git
+    - pyuvsim
+    - healpy
+    - hera-sim
+    - hera-calibration
+    - hera-filters
+    - hera-qm
+    - hera-pspec
+    - hera-opm
+  
