@@ -14,8 +14,9 @@ sim_type="${2}" # simulation type (e.g. diffuse, eor, point_src) must match name
 
 jd=$(get_int_jd ${fn})
 refdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/${jd}/
-outdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/mocked_data/${sim_type}/${jd}/
-mkdir -p ${outdir} # the -p only makes dir it not existing
+outdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/${jd}/
+#outdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/mocked_data/${sim_type}/${jd}/
+#mkdir -p ${outdir} # the -p only makes dir it not existing
 
 config_file="/lustre/aoc/projects/hera/Validation/H4C/IDR2/configs/${jd}.yaml"
 
