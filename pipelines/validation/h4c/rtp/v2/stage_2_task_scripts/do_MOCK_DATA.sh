@@ -13,7 +13,7 @@ sim_type="${2}" # simulation type (e.g. diffuse, eor, point_src) must match name
 #path= currently hardcoded instead "${3}"   path to data folders (e.g. <path>/2459122/)
 
 jd=$(get_int_jd ${fn})
-refdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/${jd}/
+ref_path=/lustre/aoc/projects/hera/Validation/H4C/IDR2/${jd}/${reffile}
 outdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/${jd}/
 #outdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/mocked_data/${sim_type}/${jd}/
 #mkdir -p ${outdir} # the -p only makes dir it not existing
@@ -31,7 +31,7 @@ echo "using config file: ${config_file}"
 # reffile=$(basename ${f});
 # echo ${name};
 echo "using ${reffile}";
-python mock_data.py ${reffile} ${simtype} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/ -o ${outdir} --lst_wrap 3.1419561 ----input_is_compressed --inflate
-echo "saved file ${reffile} to ${outdir}"
+python mock_data.py ${ref_path} ${simtype} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/ -o ${outdir} --lst_wrap 3.1419561 ----input_is_compressed --inflate
+echo "saved file to ${outdir}"
 
 done
