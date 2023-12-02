@@ -109,7 +109,7 @@ args = ["{basename}", "${Options:path_to_a_priori_flags}"]
 prereqs = "THROW_AWAY_FLAGGED_BASELINES"
 args = ["{basename}",
         "${MOCK_DATA_OPTS:sim_type}",
-        "${MOCK_DATA_OPTS:config_files_dir}",
+#        "${MOCK_DATA_OPTS:config_files_dir}",
        ]
 
 # [EXTRACT_AUTOS]
