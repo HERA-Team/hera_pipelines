@@ -85,7 +85,7 @@ framesize = "1280x720"
 [WorkFlow]
 actions = [
            "THROW_AWAY_FLAGGED_BASELINES",
-           "MOCK_DATA"
+           "MOCK_DATA",
            #"EXTRACT_AUTOS",
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
