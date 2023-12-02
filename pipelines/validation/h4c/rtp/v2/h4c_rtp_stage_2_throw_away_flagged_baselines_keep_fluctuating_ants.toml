@@ -117,7 +117,7 @@ args = ["{basename}",
 # args = ["{basename}"]
 
 [REDCAL]
-prereqs = "EXTRACT_AUTOS"
+prereqs = "MOCK_DATA"
 prereq_chunk_size = 1
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
