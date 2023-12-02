@@ -177,7 +177,7 @@ args = ["{basename}",
 [XRFI]
 prereqs = ["REDCAL",
           "ABSCAL",
-          "EXTRACT_AUTOS",
+          "MOCK_DATA",
          ]
 args = ["${XRFI_OPTS:kt_size}",
        "${XRFI_OPTS:kf_size}",
