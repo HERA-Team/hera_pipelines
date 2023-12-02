@@ -85,7 +85,7 @@ framesize = "1280x720"
 [WorkFlow]
 actions = [
            "THROW_AWAY_FLAGGED_BASELINES",
-           "MOCK_DATA"
+           "MOCK_DATA",
            #"EXTRACT_AUTOS",
            "REDCAL",
            "REDCAL_INSPECT_NOTEBOOK",
@@ -117,7 +117,7 @@ args = ["{basename}",
 # args = ["{basename}"]
 
 [REDCAL]
-prereqs = "EXTRACT_AUTOS"
+prereqs = "MOCK_DATA"
 prereq_chunk_size = 1
 args = ["{basename}",
         "${REDCAL_OPTS:ant_z_thresh}",
