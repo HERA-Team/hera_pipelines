@@ -164,6 +164,7 @@ args = ["${LIBRARIAN_OPTS:upload_to_librarian}"]
 [ADD_RTP_PROCESS_RECORD]
 prereqs = "LIBRARIAN_MAKE_SESSION"
 prereq_chunk_size = "all"
+mem = 1000
 args = ["{basename}", 
         "${WorkFlow:actions}"]
 
