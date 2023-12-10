@@ -31,7 +31,7 @@ echo "using config file: ${config_file}"
 # reffile=$(basename ${f});
 # echo ${name};
 echo "using ${reffile}";
-python mock_data.py ${ref_path} ${simtype} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/ -o ${outdir} --lst_wrap 3.1419561 ----input_is_compressed --inflate
+python /users/heramgr/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_task_scripts/mock_data.py ${ref_path} ${simtype} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/ -o ${outdir} --lst_wrap 3.1419561 ----input_is_compressed --inflate
 echo "saved file to ${outdir}"
 
 done

@@ -112,7 +112,7 @@ args=["{basename}", "${Options:include_diffs}",
 [PSPEC]
 prereqs = "PSTOKES"
 prereq_chunk_size = 1
-mem=16000
+mem=24000
 chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}",
