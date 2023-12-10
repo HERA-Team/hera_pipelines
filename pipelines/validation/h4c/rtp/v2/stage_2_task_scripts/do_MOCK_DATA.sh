@@ -5,8 +5,7 @@ src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
 # source bash profile
-source /users/lmcbride/.bashrc
-conda activate hera3dev
+#conda activate hera3dev
 
 reffile="${1}" # reference file used to mock up the simulated data (has form *sum.uvh5)
 sim_type="${2}" # simulation type (e.g. diffuse, eor, point_src) must match name in file (e.g. zen.LST.123333.<sim_type>.uvh5)
