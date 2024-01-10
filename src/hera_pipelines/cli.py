@@ -5,6 +5,7 @@ from subprocess import call
 
 import click
 from hera_cal import utils
+from jinja2 import Template
 from pyuvdata import UVBeam, UVCal, UVData
 from rich.console import Console
 
@@ -165,3 +166,77 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 
     cns.print(f"[bold blue]Starting aynchronous loop over {len(days)} days with {max_simultaneous_days} simultaneous days")
     asyncio.run(run_day_loop(days, stage_dir, root_stage, max_simultaneous_days))
+
+
+@main.command()
+@click.argument("season", type=click.Choice(list(seasons.seasons.keys())))
+@click.argument("idr", type=int)
+@click.argument("generation", type=int)
+@click.argument("repodir", type=click.Path(exists=True, dir_okay=True, file_okay=False))
+@click.option("-f/-F", "--force/--no-force", help="overwrite existing")
+@click.option(
+    "--cases", multiple=True,
+    type=click.Tuple([click.Choice(['redavg', 'nonavg']), click.Choice(['abscal', 'smoothcal']), click.Choice(['dlyfilt', 'inpaint'])]),
+    help="triplet of [redavg/nonavg, abscal/smoothcal, dlyfilt/inpaint]"
+)
+@click.option("--setup-analysis/--only-repo", default=True, help="whether to also softlink output tomls to the analysis dir")
+def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis):
+    """Setup lstbin TOML files for a range of cases for a specific SEASON, IDR, and GENERATION.
+
+    Example for SEASON is "h6c" (which is also the first season this script works for).
+    The IDR is specified as "IDR.GENERATION" (eg. IDR 2.1)
+    """
+    template = Path(repodir) / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/lstbin-template.toml"
+
+    if not template.exists():
+        print(f"Template {template} does not exist")
+        sys.exit(1)
+
+    for case in cases:
+        redavg, abscal, dlyfilt = case
+        toml_file = Path(repodir) / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/{redavg}-{abscal}-{dlyfilt}/lstbin.toml"
+        if toml_file.exists() and not force:
+            print(f":warning: File '{toml_file}' exists and --force was not set. [red]Skipping[/].")
+            continue
+
+        toml_file.parent.mkdir(exist_ok=True, parents=True)
+        with open(template) as f:
+            toml = Template(f.read())
+
+        casename = f"{redavg}-{abscal}-{dlyfilt}"
+        rendered = toml.render(
+            REPODIR = repodir,
+            SEASON = season,
+            IDR = idr,
+            GENERATION = generation,
+            ANALYSISDIR = seasons.seasons[season]['analysis_dir'],
+            CASENAME = casename,
+            INPAINT_EXTENSION="none" if dlyfilt == "dlyfilt" else ".where_inpainted.h5",
+            DATA_EXTENSION="uvh5" if redavg=='nonavg' else (
+                "abs_calibrated.red_avg.inpaint.uvh5" if abscal=='abscal' else "smooth_calibrated.red_avg.inpaint.uvh5"
+            ),
+            INPAINT_FORMAT="{inpaint_mode}/" if dlyfilt == "inpaint" else "",
+            CALEXT=".smooth.calfits" if abscal == "smoothcal" and redavg=='nonavg' else (
+                ".abs.calfits" if abscal=='abscal' and redavg=='nonavg' else 'none'
+            )
+        )
+
+        new = ""
+        for line in rendered.splitlines():
+            if line.strip().startswith("#!"):
+                continue
+            new += line + "\n"
+
+        with open(toml_file, 'w') as f:
+            f.write(new)
+
+        print(f"[green]✓[/] Wrote case [blue]{casename}[/] to '{toml_file}'")
+
+        if setup_analysis:
+            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/{redavg}-{abscal}-{dlyfilt}"
+            if not anldir.exists():
+                anldir.mkdir(parents=True)
+            anlfile = anldir / "lstbin.toml"
+            if not anlfile.exists():
+                anlfile.symlink_to(toml_file.absolute())
+                print(f"[green]✓[/] Linked {anlfile} to {toml_file}")
