@@ -115,7 +115,7 @@ dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
 inpaint_min_dly = 500.0 # in ns
-inpaint_regularization = 1e-3
+inpaint_regularization = 1e-5
 inpaint_max_gap_factor = 2.0
 save_diff_red_avg = false
 save_abs_cal_red_avg = true
@@ -125,7 +125,7 @@ save_inpaint_red_avg = true
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
 filter_dly_min = 150.0 # in ns
 inpaint_dly_min = 500.0 # in ns
-inpaint_regularization = 1e-3
+inpaint_regularization = 1e-5
 standoff = 50 # in ns
 xtalk_fr = 0.025 #in mHz
 inpaint_fr = 2.5 # in mHz
