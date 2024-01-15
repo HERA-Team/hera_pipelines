@@ -55,6 +55,10 @@ if __name__ == "__main__":
     start_lsts = np.array(
         [float(lst_re.findall(str(fn))[0]) for fn in sim_files]
     )  # We'll need these later.
+    start_lsts[start_lsts<args.lst_wrap] += 2 * np.pi
+    sort = np.argsort(start_lsts)
+    start_lsts = start_lsts[sort]
+    sim_files = list(np.array(sim_files)[sort])
 
     # Find the appropriate configuration file if not provided.
     jd = re.findall("\d{7}", args.infile)[0]
