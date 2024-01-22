@@ -11,5 +11,5 @@ fn=${1}
 out_folder=$(dirname "$fn")/single_baseline_files
 file_glob=`echo $(dirname "$fn")/zen.LST.*`
 
-echo corner_turn.py ${fn} ${out_folder} ${file_glob}
-corner_turn.py ${fn} ${out_folder} ${file_glob}
+echo corner_turn.py ${fn} ${file_glob} ${out_folder}
+corner_turn.py ${fn} ${file_glob} ${out_folder}
