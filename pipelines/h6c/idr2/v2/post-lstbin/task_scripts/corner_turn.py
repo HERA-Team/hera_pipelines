@@ -15,7 +15,7 @@ args = parser.parse_args()
 if not os.path.exists(args.out_folder):
     os.makedirs(args.out_folder)
 
-all_files = sorted(glob.glob(args.file_glob))
+all_files = sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), args.file_glob.split('/')[-1])))
 out_yaml = os.path.join(os.path.dirname(args.file_glob), 'file_to_baseline_map.yaml')
 hd = None
 if os.path.exists(out_yaml):
