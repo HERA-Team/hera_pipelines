@@ -16,6 +16,7 @@ if not os.path.exists(args.out_folder):
 
 glob_str = '.'.join(['*' if part.isdigit() else part for part in os.path.basename(args.this_file).split('.')])
 all_files = sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), glob_str)))
+assert args.this_file in all_files, f'{args.this_file} not in {all_files}'
 out_yaml = os.path.join(os.path.dirname(args.this_file), 'file_to_baseline_map.yaml')
 hd = None
 if os.path.exists(out_yaml):
