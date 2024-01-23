@@ -6,8 +6,8 @@ import argparse
 
 # create an argparser for file_glob, this_file, and out_folder
 parser = argparse.ArgumentParser()
-parser.add_argument("file_glob", help="glob for all files to corner turn")
 parser.add_argument("this_file", help="this particular file, used to index into the file_to_baseline_map.yaml")
+parser.add_argument("file_glob", help="glob for all files to corner turn")
 parser.add_argument("out_folder", help="output folder")
 args = parser.parse_args()
 
