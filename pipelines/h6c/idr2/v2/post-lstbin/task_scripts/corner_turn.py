@@ -34,7 +34,7 @@ else:
     # write file and try to avoid collisions/race conditions
     if not os.path.exists(out_yaml):
         with open(args.this_file + '_temp_yaml', 'w') as file:
-            yaml.dump(files_to_bls, file)
+            yaml.dump(files_to_bls_map, file)
         os.rename(args.this_file + '_temp_yaml', out_yaml)
     
 # load all baselines corresponding to this_file and then write them out to uvh5
