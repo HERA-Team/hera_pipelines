@@ -33,15 +33,15 @@ else:
     
     # write file and try to avoid collisions/race conditions
     if not os.path.exists(out_yaml):
-        with open(this_file + '_temp_yaml', 'w') as file:
+        with open(args.this_file + '_temp_yaml', 'w') as file:
             yaml.dump(files_to_bls, file)
-        os.rename(this_file + '_temp_yaml', out_yaml)
+        os.rename(args.this_file + '_temp_yaml', out_yaml)
     
 # load all baselines corresponding to this_file and then write them out to uvh5
-if len(files_to_bls_map[this_file]) > 0:
+if len(files_to_bls_map[args.this_file]) > 0:
     if hd is None:
         hd = io.HERAData(all_files)
-    for bl_pair in files_to_bls_map[this_file]:
+    for bl_pair in files_to_bls_map[args.this_file]:
         hd.read(bls=bl_pair, return_data=False, axis='blt')
         outfile = os.path.join(args.out_folder, f'zen.LST.baseline.{bl_pair[0][0]}_{bl_pair[0][1]}.sum.uvh5')
         hd.write_uvh5(outfile, clobber=True)
