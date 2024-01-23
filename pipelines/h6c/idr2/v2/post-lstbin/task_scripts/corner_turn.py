@@ -46,3 +46,5 @@ if len(files_to_bls_map[args.this_file]) > 0:
         hd.read(bls=bl_pair, return_data=False, axis='blt')
         outfile = os.path.join(args.out_folder, f'zen.LST.baseline.{bl_pair[0][0]}_{bl_pair[0][1]}.sum.uvh5')
         hd.write_uvh5(outfile, clobber=True)
+else:
+    print(f'No baselines correspond to {args.this_file}')
