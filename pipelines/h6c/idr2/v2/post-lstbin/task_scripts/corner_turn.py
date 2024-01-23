@@ -43,8 +43,10 @@ if len(files_to_bls_map[args.this_file]) > 0:
     if hd is None:
         hd = io.HERAData(all_files)
     for bl_pair in files_to_bls_map[args.this_file]:
+        print(f'Now working on {bl_pair}')
         hd.read(bls=bl_pair, return_data=False, axis='blt')
         outfile = os.path.join(args.out_folder, f'zen.LST.baseline.{bl_pair[0][0]}_{bl_pair[0][1]}.sum.uvh5')
+        print(f'\tWriting {outfile}')
         hd.write_uvh5(outfile, clobber=True)
 else:
     print(f'No baselines correspond to {args.this_file}')
