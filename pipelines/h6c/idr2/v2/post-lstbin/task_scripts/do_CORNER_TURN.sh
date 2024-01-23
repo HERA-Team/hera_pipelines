@@ -8,9 +8,8 @@ source ${src_dir}/_common.sh
 echo Host: `hostname`
 
 fn=${1}
-file_dir=$(dirname "$fn")
-out_folder="${file_dir}/single_baseline_files"
-file_glob="${file_dir}/zen.LST.*"
+out_folder="single_baseline_files"
+file_glob="zen.LST.*"
 
 echo python ${src_dir}/corner_turn.py ${fn} ${file_glob} ${out_folder}
 python ${src_dir}/corner_turn.py ${fn} ${file_glob} ${out_folder}
