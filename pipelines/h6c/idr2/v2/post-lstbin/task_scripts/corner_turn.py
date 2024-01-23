@@ -4,10 +4,9 @@ from hera_cal import io
 import os
 import argparse
 
-# create an argparser for file_glob, this_file, and out_folder
+# create an argparser for this_file and out_folder
 parser = argparse.ArgumentParser()
 parser.add_argument("this_file", help="this particular file, used to index into the file_to_baseline_map.yaml")
-parser.add_argument("file_glob", help="glob for all files to corner turn")
 parser.add_argument("out_folder", help="output folder")
 args = parser.parse_args()
 
@@ -15,8 +14,9 @@ args = parser.parse_args()
 if not os.path.exists(args.out_folder):
     os.makedirs(args.out_folder)
 
-all_files = sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), args.file_glob.split('/')[-1])))
-out_yaml = os.path.join(os.path.dirname(args.file_glob), 'file_to_baseline_map.yaml')
+glob_str = '.'.join(['*' if part.isdigit() for part in os.path.basename(args.this_file).split('.') else part])
+all_files = sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), glob_str))
+out_yaml = os.path.join(os.path.dirname(args.this_file), 'file_to_baseline_map.yaml')
 hd = None
 if os.path.exists(out_yaml):
     # read in yaml file if it exists
