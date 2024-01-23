@@ -9,7 +9,7 @@ echo Host: `hostname`
 
 fn=${1}
 out_folder=$(dirname "$fn")/single_baseline_files
-file_glob=`echo $(dirname "$fn")'/zen.LST.*'`
+file_glob="$(dirname "$fn")'/zen.LST.*'"
 
 echo python ${src_dir}/corner_turn.py ${fn} ${file_glob} ${out_folder}
 python ${src_dir}/corner_turn.py ${fn} ${file_glob} ${out_folder}
