@@ -45,16 +45,14 @@ if len(files_to_bls_map[args.this_file]) > 0:
         if hd is None:
             hd = io.HERAData(all_files)
         print(f'Now working on {bl_pair}')
-        try:
-            hd.read(bls=bl_pair, return_data=False, axis='blt')
-            print(f'\tWriting {outfile}')
-            hd.write_uvh5(outfile, clobber=True)
-        except ValueError:
-            usable_files = [f for f in hd.filepaths if np.all([bl in hd.bls[f] for bl in bl_pair])]
+        usable_files = [f for f in hd.filepaths if all([bl in hd.bls[f] for bl in bl_pair])]
+        if len(usable_files) < len(all_files):
+            print(f'Only {len(usable_files)} out of {len(all_files)} files have {bl_pair}')
             hd = io.HERAData(usable_files)
-            hd.read(bls=bl_pair, return_data=False, axis='blt')
-            print(f'\tWriting {outfile}')
-            hd.write_uvh5(outfile, clobber=True)
+        hd.read(bls=bl_pair, return_data=False, axis='blt')
+        print(f'\tWriting {outfile}')
+        hd.write_uvh5(outfile, clobber=True)
+        if len(usable_files) < len(all_files):
             hd = None # forces reinitialization for the next bl_pair
 else:
     print(f'No baselines correspond to {args.this_file}')
