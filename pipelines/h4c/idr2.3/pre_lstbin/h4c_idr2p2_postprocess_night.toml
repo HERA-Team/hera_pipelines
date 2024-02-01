@@ -71,7 +71,9 @@ filter_mode = "DPSS"
 # Note that these channels are indexed relative to the channels left over after selection
 # channels with Options:spw_ranges so this is why the "bottom of the FM" shows up as
 # one channel away from the "top of the FM" since the FM was already removed by Options:spw_ranges
-spw_ranges = "0~291,291~1028"
+# KFC: Separate into three delay windows
+# Originally: spw_ranges = "0~291,291~1028"
+spw_ranges = "0~291,291~853,853~1028"
 
 # we may want to consider another flagging round after delay filtering.
 [FR_OPTS]
