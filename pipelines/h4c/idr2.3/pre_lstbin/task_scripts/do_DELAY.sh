@@ -93,12 +93,12 @@ do
       then
         # Command for DPSS inpainting
         echo delay_filter_run.py ${fn_in}  \
-          --filled_outfilename ${fn_out} --clobber \
+          --filled_outfilename ${fn_out} --clobber --apply_flag_to_nsample\
           --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
           --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges} --flag_yaml ${flag_yaml}
         delay_filter_run.py ${fn_in}  \
-          --filled_outfilename ${fn_out} --clobber  \
+          --filled_outfilename ${fn_out} --clobber  --apply_flag_to_nsample\
           --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
           --tol ${tol} --cache_dir ${cache_dir} --standoff ${standoff}  \
           --min_dly ${min_dly}  --mode dpss_leastsq --filter_spw_ranges ${spw_ranges} --flag_yaml ${flag_yaml}
@@ -107,13 +107,13 @@ do
         # Command for CLEAN inpainting
         npad=$((${spw1}-${spw0}))
         echo delay_filter_run.py ${fn_in}  \
-        --filled_outfilename ${fn_out} --clobber \
+        --filled_outfilename ${fn_out} --clobber --apply_flag_to_nsample\
         --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
         --tol ${tol} --standoff ${standoff}   --filter_spw_ranges ${spw_ranges}\
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean --flag_yaml ${flag_yaml}
 
         delay_filter_run.py ${fn_in} \
-        --filled_outfilename ${fn_out} --clobber \
+        --filled_outfilename ${fn_out} --clobber --apply_flag_to_nsample\
         --res_outfilename ${fn_res} --CLEAN_outfilename ${fn_cln}  \
         --tol ${tol} --standoff ${standoff}   --filter_spw_ranges ${spw_ranges}\
         --min_dly ${min_dly} --edgecut_low ${npad} --edgecut_hi ${npad} --zeropad ${npad} --mode clean --flag_yaml ${flag_yaml}
