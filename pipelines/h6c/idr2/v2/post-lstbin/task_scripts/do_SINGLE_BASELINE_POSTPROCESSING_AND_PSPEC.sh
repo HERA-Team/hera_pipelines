@@ -77,7 +77,7 @@ export INCLUDE_INTERLEAVE_AUTO_PS=${include_interleave_auto_ps}
 export STORE_WINDOW_FUNCTIONS=${store_window_functions}
 
 # Execute jupyter notebook
-nb_outfile=${fn%.uvh5}.single_baseline_postprocessing_and_pspec.html
+nb_outfile=${full_file_path%.uvh5}.single_baseline_postprocessing_and_pspec.html
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.allow_errors=False \
