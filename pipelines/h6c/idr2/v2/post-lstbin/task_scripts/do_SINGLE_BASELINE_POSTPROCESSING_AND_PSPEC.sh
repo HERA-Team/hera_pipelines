@@ -76,19 +76,23 @@ export TAPER=${taper}
 export INCLUDE_INTERLEAVE_AUTO_PS=${include_interleave_auto_ps}
 export STORE_WINDOW_FUNCTIONS=${store_window_functions}
 
-# Execute jupyter notebook
-nb_outfile=${full_file_path%.uvh5}.single_baseline_postprocessing_and_pspec.html
-jupyter nbconvert --output=${nb_outfile} \
---to html \
---ExecutePreprocessor.allow_errors=False \
---ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/single_baseline_postprocessing_and_pspec.ipynb
-echo Finished running single baseline postprocessing and power spectrum estimation notebook for ${fn} at $(date) and writing results to ${nb_outfile}
+python check_single_bl_file.py ${full_file_path} --skip_autos
 
-# Check to see that output file was correctly produced
-if [ -f "${fn%.uvh5}.pspec.h5" ]; then
-    echo Resulting $f found.
-else
-    echo $f not produced.
-    exit 1
+if [ $? -eq 0 ]; then
+    # Execute jupyter notebook
+    nb_outfile=${full_file_path%.uvh5}.single_baseline_postprocessing_and_pspec.html
+    jupyter nbconvert --output=${nb_outfile} \
+    --to html \
+    --ExecutePreprocessor.allow_errors=False \
+    --ExecutePreprocessor.timeout=-1 \
+    --execute ${nb_template_dir}/single_baseline_postprocessing_and_pspec.ipynb
+    echo Finished running single baseline postprocessing and power spectrum estimation notebook for ${fn} at $(date) and writing results to ${nb_outfile}
+
+    # Check to see that output file was correctly produced
+    if [ -f "${fn%.uvh5}.pspec.h5" ]; then
+        echo Resulting $f found.
+    else
+        echo $f not produced.
+        exit 1
+    fi
 fi
