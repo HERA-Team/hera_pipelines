@@ -96,4 +96,7 @@ if [ $? -eq 0 ]; then
         echo $f not produced.
         exit 1
     fi
+else
+    echo "File ${full_file_path} is either just autocorrelations or has a fully flagged polarization. Skipping the power spectrum notebook."
+    exit 0
 fi
