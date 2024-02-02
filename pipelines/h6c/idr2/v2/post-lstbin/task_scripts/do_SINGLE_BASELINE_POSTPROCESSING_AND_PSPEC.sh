@@ -43,8 +43,10 @@ include_interleave_auto_ps=${29}
 store_window_functions=${30}
 
 # Export variables used by the notebook
-export SINGLE_BL_FILE=${fn}
-export OUT_PSPEC_FILE=${fn%.uvh5}.pspec.h5
+full_file_path="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
+echo "Performing single baseline postprocessing and power spectrum estimation on ${full_file_path}"
+export SINGLE_BL_FILE=${full_file_path}
+export OUT_PSPEC_FILE=${full_file_path%.uvh5}.pspec.h5
 export BAND_STR=${band_str}
 export ALREADY_INPAINTED=${already_inpainted}
 export PERFORM_INPAINT=${perform_inpaint}
