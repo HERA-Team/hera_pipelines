@@ -1,6 +1,7 @@
 import argparse
 from hera_cal import io
 import numpy as np
+import sys
 
 # argparser for getting path to file to check
 parser = argparse.ArgumentParser()
@@ -15,9 +16,11 @@ _, flags, _ = hd.read()
 # check if all baselines are autocorrelaitons
 if args.skip_autos:
     if np.all([bl[0] == bl[1] for bl in flags]):
-        raise ValueError("This file has only autocorrelations and so we shouldn't use it for power spectrum estimation.")
+        print("This file has only autocorrelations and so we shouldn't use it for power spectrum estimation.")
+        sys.exit(1)
 
 # check if either polarization is completely flagged
 for pol in hd.pols:
     if np.all([flags[bl] for bl in flags if bl[2] == pol]):
-        raise ValueError(f"All baselines for pol {pol} are flagged, so it isn't appropriate for power spectrum estimation.")
+        print(f"All baselines for pol {pol} are flagged, so it isn't appropriate for power spectrum estimation.")
+        sys.exit(1)
