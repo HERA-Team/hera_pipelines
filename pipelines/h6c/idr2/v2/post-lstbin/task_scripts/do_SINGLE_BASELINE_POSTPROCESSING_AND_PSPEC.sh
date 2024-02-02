@@ -77,9 +77,7 @@ export INCLUDE_INTERLEAVE_AUTO_PS=${include_interleave_auto_ps}
 export STORE_WINDOW_FUNCTIONS=${store_window_functions}
 
 # check if file is not just autocorrelaitons and that neither polarization is fully flagged
-python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos
-
-if [ $? -eq 0 ]; then
+if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos; then
     # Execute jupyter notebook
     nb_outfile=${full_file_path%.uvh5}.single_baseline_postprocessing_and_pspec.html
     jupyter nbconvert --output=${nb_outfile} \
@@ -98,5 +96,4 @@ if [ $? -eq 0 ]; then
     fi
 else
     echo "File ${full_file_path} is either just autocorrelations or has a fully flagged polarization. Skipping the power spectrum notebook."
-    exit 0
 fi
