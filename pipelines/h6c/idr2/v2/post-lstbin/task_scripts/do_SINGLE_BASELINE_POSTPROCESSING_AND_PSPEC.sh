@@ -76,7 +76,8 @@ export TAPER=${taper}
 export INCLUDE_INTERLEAVE_AUTO_PS=${include_interleave_auto_ps}
 export STORE_WINDOW_FUNCTIONS=${store_window_functions}
 
-python check_single_bl_file.py ${full_file_path} --skip_autos
+# check if file is not just autocorrelaitons and that neither polarization is fully flagged
+python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos
 
 if [ $? -eq 0 ]; then
     # Execute jupyter notebook
