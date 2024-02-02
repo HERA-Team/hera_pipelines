@@ -107,10 +107,10 @@ fi
 echo lstbin_run.py --flag_thresh ${flag_thresh}  ${red_arg} --dlst ${dlst} --file_ext ${file_ext}\
  --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma}\
   --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units}\
-   --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load}\
+   --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} --weight_only_by_flags\
    ${yaml_arg} ${input_cals} --overwrite ${data_files[@]}
 lstbin_run.py --flag_thresh ${flag_thresh}  ${red_arg} --dlst ${dlst} --file_ext ${file_ext}\
     --outdir ${outdir} --ntimes_per_file ${ntimes_per_file} ${rephase} ${sig_clip} --sigma ${sigma}\
      --min_N ${min_N} --lst_start ${lst_start} ${fixed_lst_start} --vis_units ${vis_units}\
-      --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load}\
+      --output_file_select ${output_file_select} --Nbls_to_load ${Nbls_to_load} --weight_only_by_flags\
       ${yaml_arg} ${input_cals} --overwrite ${data_files[@]}
