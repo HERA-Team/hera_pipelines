@@ -77,7 +77,7 @@ export INCLUDE_INTERLEAVE_AUTO_PS=${include_interleave_auto_ps}
 export STORE_WINDOW_FUNCTIONS=${store_window_functions}
 
 # check if file is not just autocorrelaitons and that neither polarization is fully flagged
-if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos; then
+if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --skip_outriggers; then
     # Execute jupyter notebook
     nb_outfile=${full_file_path%.uvh5}.single_baseline_postprocessing_and_pspec.html
     jupyter nbconvert --output=${nb_outfile} \
