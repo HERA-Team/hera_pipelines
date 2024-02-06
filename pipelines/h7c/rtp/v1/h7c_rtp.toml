@@ -515,6 +515,7 @@ prereqs = ["DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "FULL_DAY_RFI_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
+           "FULL_DAY_RFI_ROUND_2_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -533,6 +534,7 @@ prereqs = ["LIBRARIAN_RAW_DATA",
            "LIBRARIAN_CALIBRATION_NOTEBOOKS",
            "LIBRARIAN_ANT_METRICS",
            "LIBRARIAN_REDCAL",
+           "LIBRARIAN_SMOOTHCAL",
            "LIBRARIAN_ALL_NOTEBOOKS",
            "ALL_SKY_IMAGE_MOVIE"]
 prereq_chunk_size = "all"
