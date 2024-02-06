@@ -413,7 +413,7 @@ args = ["{basename}",
 ########## SMOOTHING AND POST-PROCESSING ##########
 
 [CALIBRATION_SMOOTHING_NOTEBOOK]
-mem = 120000
+mem = 240000
 prereqs = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
