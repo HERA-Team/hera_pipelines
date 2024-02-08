@@ -55,6 +55,7 @@ max_plots_per_row = 10
 [WorkFlow]
 actions = [
            "PRE_CHUNK",
+           "EXTRACT_AUTOS",
            "FR_FILTER",
            "TIME_AVERAGE",
            "RECONSTITUTE",
@@ -69,6 +70,12 @@ chunk_size=1
 stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:include_diffs}", "${Options:label}",
     "${Options:chunk_size}"]
+
+[EXTRACT_AUTOS]
+prereqs = "PRE_CHUNK"
+prereq_chunk_size="all"
+mem=16000
+args=["${Options:label}"]
 
 [FR_FILTER]
 prereqs = "PRE_CHUNK"
