@@ -74,6 +74,7 @@ args=["{basename}", "${Options:include_diffs}", "${Options:label}",
 [EXTRACT_AUTOS]
 prereqs = "PRE_CHUNK"
 prereq_chunk_size="all"
+chunk_size="all"
 mem=16000
 args=["${Options:label}"]
 
