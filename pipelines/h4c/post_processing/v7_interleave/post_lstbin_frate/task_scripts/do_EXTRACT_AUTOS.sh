@@ -16,5 +16,5 @@ do
     
     echo "python extract_autos_post_lstbin.py ${sd} ${label} --clobber --axis blt --flist ${flist}"
     
-    python extract_autos.post_listbin.py ${sd} ${label} --clobber --axis blt --flist ${flist}
+    python extract_autos_post_lstbin.py ${sd} ${label} --clobber --axis blt --flist ${flist}
 done
