@@ -16,7 +16,7 @@ git_push = false
 
 [MOCK_DATA_OPTS]
 config_files_dir = '/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/validation/h4c/systematics_configs'
-sim_type = 'eor'
+sky_cmp = 'sum'
 
 [REDCAL_OPTS]
 ant_z_thresh = 1e100
@@ -108,7 +108,7 @@ args = ["{basename}", "${Options:path_to_a_priori_flags}"]
 [MOCK_DATA]
 prereqs = "THROW_AWAY_FLAGGED_BASELINES"
 args = ["{basename}",
-        "${MOCK_DATA_OPTS:sim_type}",
+        "${MOCK_DATA_OPTS:sky_cmp}",
 #        "${MOCK_DATA_OPTS:config_files_dir}",
        ]
 

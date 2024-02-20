@@ -41,7 +41,7 @@ source ${src_dir}/_common.sh
 fn="${1}"
 include_diffs="${2}"
 label="${3}"
-pstokes="${@:3}"
+pstokes="${@:4}"
 
 
 

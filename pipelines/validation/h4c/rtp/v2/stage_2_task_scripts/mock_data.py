@@ -234,6 +234,8 @@ if __name__ == "__main__":
         for attr in ("min", "mean", "max"):
             print(f"    {getattr(autos, attr)()}")
 
+        print("I am the new version I swear!!")
+
         # Read in the mutual coupling mixing matrix if a file is provided.
         # NOTE: This is tuned to the particular format I used for saving the
         # coupling matrix this time around. A better solution would probably
@@ -265,8 +267,19 @@ if __name__ == "__main__":
         dt = t2 - t1
         print(f"Done in {dt:.5f} seconds.\n")
 
+    # NOTE: this should be updated to something more robust in the future,
+    # but we're currently in a weird place where the x-orientation in the
+    # simulated beam doesn't match what we use in the data, and sometimes
+    # the beam files don't actually have an x-orientation set.
+    sim_uvdata.data.x_orientation = "east"
+
     # We should be done. Now just write the contents to disk.
     t1 = time.time()
+
+    # This is a little bit of a hack to ensure we don't overwrite
+    # the file that is linked to.
+    if outfile.is_symlink():
+        outfile.unlink()
     sim_uvdata.write(str(outfile), save_format="uvh5", clobber=args.clobber)
     t2 = time.time()
     dt = (t2 - t1) / 60
