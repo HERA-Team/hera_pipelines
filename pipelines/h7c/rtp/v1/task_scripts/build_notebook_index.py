@@ -56,12 +56,14 @@ overall_index += '    <li><a href=".."><b>Back to all seasons.</b></a></li>\n'
 overall_index += '    <li><a href="antenna_classification_summary">antenna_classification_summary</a></li>\n'
 overall_index += '    <li><a href="calibration_smoothing">calibration_smoothing</a></li>\n'
 overall_index += '    <li><a href="data_inspect_all_ants">data_inspect_all_ants</a></li>\n'
+overall_index += '    <li><a href="delay_filtered_average_zscore">delay_filtered_average_zscore</a></li>\n'
 overall_index += '    <li><a href="file_calibration">file_calibration</a></li>\n'
 overall_index += '    <li><a href="full_day_antenna_flagging">full_day_antenna_flagging</a></li>\n'
 overall_index += '    <li><a href="full_day_auto_checker">full_day_auto_checker</a></li>\n'
 overall_index += '    <li><a href="full_day_rfi">full_day_rfi</a></li>\n'
+overall_index += '    <li><a href="full_day_rfi_round_2">full_day_rfi_round_2</a></li>\n'
 overall_index += '</ul>\n</h3>\n<h2>Most Recent Notebooks:</h2>\n'
-for jd in recent_jds[0:7]:
+for jd in recent_jds[0:14]:
     overall_index += f'<h3>{jd}:</h3>\n<ul>\n' + '\n'.join([link for link in links if str(jd) in link]) + '\n</ul>\n'
 overall_index += "</body>\n</html>"
 
