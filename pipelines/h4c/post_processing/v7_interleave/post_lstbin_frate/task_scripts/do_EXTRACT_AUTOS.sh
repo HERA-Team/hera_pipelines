@@ -16,5 +16,5 @@ do
     
     echo "python extract_autos_post_lstbin.py ${sd} ${label} --flist ${flist}"
     
-    python extract_autos.py ${flist}
+    python extract_autos.post_listbin.py ${flist}
 done
