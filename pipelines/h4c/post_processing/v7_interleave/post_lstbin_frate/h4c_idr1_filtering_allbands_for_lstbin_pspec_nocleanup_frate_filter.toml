@@ -76,7 +76,7 @@ prereqs = "PRE_CHUNK"
 prereq_chunk_size="all"
 chunk_size="all"
 mem=16000
-args=["${Options:label}"]
+args=["${Options:label}", "${Options:include_diffs}"]
 
 [FR_FILTER]
 prereqs = "PRE_CHUNK"
