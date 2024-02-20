@@ -12,9 +12,9 @@ sumdiff=("sum" "diff")
 
 for sd in ${sumdiff[@]}
 do
-    flist=$(ls *${sd}*chunked.uvh5)
+    flist=$(ls *${sd}.${label}.*chunked.uvh5)
     
-    echo "python extract_autos_post_lstbin.py ${sd} ${label} --flist ${flist}"
+    echo "python extract_autos_post_lstbin.py ${sd} ${label} --clobber --axis blt --flist ${flist}"
     
-    python extract_autos.post_listbin.py ${flist}
+    python extract_autos.post_listbin.py ${sd} ${label} --clobber --axis blt --flist ${flist}
 done
