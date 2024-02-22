@@ -19,6 +19,7 @@ args = a.parse_args()
 files = sorted(os.listdir(args.target_dir))
 title = os.path.realpath(args.target_dir).split('/')[-1]
 
+date_str_cache = {}
 def make_links(files):
     links = []
     for file in files:
@@ -28,8 +29,12 @@ def make_links(files):
 
         date_str = ''
         if len(JD_strs) > 0:
-            utc = Time(JD_strs[-1], format='jd').datetime
-            date_str = f' ({utc.year}-{utc.month}-{utc.day})'
+            if JD_strs[-1] in date_str_cache:
+                date_str = date_str_cache[JD_strs[-1]]
+            else:
+                utc = Time(JD_strs[-1], format='jd').datetime
+                date_str = f' ({utc.year}-{utc.month}-{utc.day})'
+                date_str_cache[JD_strs[-1]] = date_str
         links.append(f'    <li><a href="{file}">{file.split("/")[-1]}{date_str}</a></li>')
     return links
 
