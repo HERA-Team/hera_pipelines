@@ -57,14 +57,15 @@ fi
 jd=$(get_int_jd ${fn})
 is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
 if [ "${is_middle_file}" == "True" ]; then
-    # Rebuild index.html for this notebook's folder
-    python ${src_dir}/build_notebook_index.py ${nb_outdir}
 
     # Copy file to github repo
     github_nb_outdir=${nb_output_repo}/delay_filtered_average_zscore
     github_nb_outfile=${github_nb_outdir}/delay_filtered_average_zscore_${jd}.html
     cp ${nb_outfile} ${github_nb_outfile}
-    
+
+    # Rebuild index.html for this notebook's folder
+    python ${src_dir}/build_notebook_index.py ${github_nb_outdir}
+
     # If desired, push results to github
     if [ "${git_push}" == "True" ]; then
         # Push to github
