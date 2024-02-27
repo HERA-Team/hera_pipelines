@@ -138,9 +138,9 @@ actions = ["SETUP",
            "CALIBRATE_FILE_NOTEBOOK",
            "LIBRARIAN_CALIBRATION_NOTEBOOKS",
            "LIBRARIAN_REDCAL",
-           "LIBRARIAN_ANT_METRICS",
            "FULL_DAY_RFI_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
+           "LIBRARIAN_ANT_METRICS",
            "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
            "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK",
@@ -302,17 +302,6 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:librarian_calibration_notebooks}",
         ]
 
-[LIBRARIAN_ANT_METRICS]
-prereqs = "CALIBRATE_FILE_NOTEBOOK"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_ant_metrics}",
-        ]
-
 [LIBRARIAN_REDCAL]
 prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
@@ -395,6 +384,17 @@ args = ["{basename}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_rfi_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:chisq_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:overall_max_flag_frac}",
+        ]
+
+[LIBRARIAN_ANT_METRICS]
+prereqs = ["CALIBRATE_FILE_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_ant_metrics}",
         ]
 
 [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
