@@ -31,10 +31,10 @@ def main(args):
         Check that a file being read is part of the intended group. Error if not,
         since something has been passed incorrectly.
         """
-        if not args.sumdiff in file:
+        if args.sumdiff not in file:
             raise ValueError(f"Supposedly processing {args.sumdiff} files but "
                              f"{args.sumdiff} not in the filename.")
-        if not args.label in file:
+        if args.label not in file:
             raise ValueError(f"Supposedly processing {args.label} files but "
                              f"{args.label} not in the filename.")
         return
@@ -43,15 +43,13 @@ def main(args):
     files_with_autos = []
     for file in args.flist:
         check_for_sumdiff_label(file)
-        test_uvd = UVData()
-        test_uvd.read(file, read_data=False)
+        test_uvd = UVData.from_file(file, read_data=False)
         if np.any(test_uvd.ant_1_array == test_uvd.ant_2_array):
             files_with_autos.append(file)
     
     assert len(files_with_autos) > 0, "No files with autos found. Check inputs."
 
-    auto_uvd = UVData() 
-    auto_uvd.read(files_with_autos, ant_str="auto", axis=args.axis)
+    auto_uvd = UVData.from_file(files_with_autos, ant_str="auto", axis=args.axis)
     
     # Just formatting this string so it doesn't make a long line
     prefix = "zen.LST.0.00000"
