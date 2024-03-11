@@ -39,9 +39,13 @@ def main(args):
                              f"{args.label} not in the filename.")
         return
     
+
+    # Sort this list so axis=blt doesn't break
+    flist = sorted(args.flist) if args.axis == "blt" else args.flist
+
     # Go through and find all files that have autos using metadata reads
     files_with_autos = []
-    for file in args.flist:
+    for file in flist:
         check_for_sumdiff_label(file)
         test_uvd = UVData.from_file(file, read_data=False)
         if np.any(test_uvd.ant_1_array == test_uvd.ant_2_array):
@@ -52,7 +56,7 @@ def main(args):
     auto_uvd = UVData.from_file(files_with_autos, ant_str="auto", axis=args.axis)
     
     # Just formatting this string so it doesn't make a long line
-    prefix = "zen.LST.0.00000."
+    prefix = "zen.LST.0.00000"
     suffix = "foreground_filled.waterfall.autos.uvh5"
     outfile = f"{prefix}.{args.sumdiff}.{args.label}.{suffix}"
     auto_uvd.write_uvh5(outfile, clobber=args.clobber)
