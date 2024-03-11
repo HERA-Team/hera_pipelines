@@ -52,8 +52,8 @@ def main(args):
     auto_uvd = UVData.from_file(files_with_autos, ant_str="auto", axis=args.axis)
     
     # Just formatting this string so it doesn't make a long line
-    prefix = "zen.LST.0.00000"
-    suffix = "foreground_filled.xtalk_filtered.chunked.waterfall.autos.uvh5"
+    prefix = "zen.LST.0.00000."
+    suffix = "foreground_filled.waterfall.autos.uvh5"
     outfile = f"{prefix}.{args.sumdiff}.{args.label}.{suffix}"
     auto_uvd.write_uvh5(outfile, clobber=args.clobber)
 
