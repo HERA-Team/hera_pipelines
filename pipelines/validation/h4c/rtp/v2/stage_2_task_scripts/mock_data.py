@@ -234,7 +234,7 @@ if __name__ == "__main__":
         for attr in ("min", "mean", "max"):
             print(f"    {getattr(autos, attr)()}")
 
-        print("I am the new version I swear!!")
+        print("I am the new version I swear!! Bobby swears too!")
 
         # Read in the mutual coupling mixing matrix if a file is provided.
         # NOTE: This is tuned to the particular format I used for saving the

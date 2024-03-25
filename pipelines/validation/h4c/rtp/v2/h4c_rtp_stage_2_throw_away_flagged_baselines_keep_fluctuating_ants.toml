@@ -32,7 +32,7 @@ check_every = 50
 check_after = 500
 
 [ABSCAL_OPTS]
-model_files_glob = "'/lustre/aoc/projects/hera/zmartino/hera_calib_model/H3C/abscal_files_unique_baselines/zen.2458894.?????.uvh5'"
+model_files_glob = "'/lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/sum/*.uvh5'"
 nInt_to_load = 6
 min_bl_cut = 60.0
 max_bl_cut = 140.0
@@ -174,27 +174,27 @@ args = ["{basename}",
         "${CAL_SMOOTH_OPTS:lst_blacklists}",
        ]
 
-[XRFI]
-prereqs = ["REDCAL",
-          "ABSCAL",
-          "MOCK_DATA",
-         ]
-args = ["${XRFI_OPTS:kt_size}",
-       "${XRFI_OPTS:kf_size}",
-       "${XRFI_OPTS:sig_init_med}",
-       "${XRFI_OPTS:sig_adj_med}",
-       "${XRFI_OPTS:sig_init_mean}",
-       "${XRFI_OPTS:sig_adj_mean}",
-       "${Options:path_to_a_priori_flags}",
-       "${XRFI_OPTS:Nwf_per_load}",
-       "{obsid_list}"
-      ]
+#[XRFI]
+#prereqs = ["REDCAL",
+#          "ABSCAL",
+#          "MOCK_DATA",
+#         ]
+#args = ["${XRFI_OPTS:kt_size}",
+#       "${XRFI_OPTS:kf_size}",
+#       "${XRFI_OPTS:sig_init_med}",
+#       "${XRFI_OPTS:sig_adj_med}",
+#       "${XRFI_OPTS:sig_init_mean}",
+#       "${XRFI_OPTS:sig_adj_mean}",
+#       "${Options:path_to_a_priori_flags}",
+#       "${XRFI_OPTS:Nwf_per_load}",
+#       "{obsid_list}"
+#      ]
 # xrfi will drop data within kt_size of time edge. Total integrations read in
 # must be greater than 2 * kt_size.
-chunk_size = 31
-stride_length = 23
-time_centered = true
-collect_stragglers = true
+#chunk_size = 31
+#stride_length = 23
+#time_centered = true
+#collect_stragglers = true
 
 # [XRFI_DAY_THRESHOLD]
 # prereqs = ["XRFI",
@@ -212,7 +212,7 @@ collect_stragglers = true
 #         "{obsid_list}"
 #        ]
 [XRFI_TRANSFER]
-prereqs = "XRFI"
+#prereqs = "XRFI"
 args = ["${XRFI_OPTS:kt_size}",
        "${XRFI_OPTS:kf_size}",
        "${XRFI_OPTS:sig_init_med}",
@@ -224,22 +224,22 @@ args = ["${XRFI_OPTS:kt_size}",
        "{obsid_list}"
       ]
 
-[RFI_INSPECT_NOTEBOOK]
-prereqs = "XRFI"
+#[RFI_INSPECT_NOTEBOOK]
+#prereqs = "XRFI"
 #prereqs = "XRFI_DAY_THRESHOLD"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        ]
+#prereq_chunk_size = "all"
+#chunk_size = 1
+#stride_length = "all"
+#time_centered = false
+#mem = 128000
+#args = ["{basename}",
+#        "${NOTEBOOK_OPTS:nb_template_dir}",
+#        "${NOTEBOOK_OPTS:nb_output_repo}",
+#        "${NOTEBOOK_OPTS:git_push}",
+#        ]
 
 [CAL_SMOOTH]
-prereqs = "XRFI" # "XRFI_DAY_THRESHOLD"
+#prereqs = "XRFI" # "XRFI_DAY_THRESHOLD"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
