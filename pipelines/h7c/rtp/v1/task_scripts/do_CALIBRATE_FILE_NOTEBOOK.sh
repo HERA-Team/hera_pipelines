@@ -97,7 +97,7 @@ nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
---ExecutePreprocessor.allow_errors=True \
+--ExecutePreprocessor.allow_errors=False \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/file_calibration.ipynb
 echo Finished running file calibration notebook at $(date)
