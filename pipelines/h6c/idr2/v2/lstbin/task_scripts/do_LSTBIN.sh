@@ -164,6 +164,7 @@ cmd="lstbin_simple.py ${outdir}/file-config.yaml --fname-format ${fname_format}\
  ${yaml_arg} ${calibration} ${ignorecf} --profile ${profilestr} \
  --profile-output lineprof-${output_file_select}.txt \
  ${sigma_clip_thresh} --sigma-clip-min-N ${sigma_clip_min_N}\
+ --sigma-clip-type ${sigma_clip_type} --sigma-clip-subbands ${sigma_clip_subbands}\
  ${lastfile} ${freqmin} ${freqmax} --overwrite ${glsts} ${savestr}\
  ${write_med_mad} ${inpaint_rules} ${sigma_clip_in_inpaint}"
    
