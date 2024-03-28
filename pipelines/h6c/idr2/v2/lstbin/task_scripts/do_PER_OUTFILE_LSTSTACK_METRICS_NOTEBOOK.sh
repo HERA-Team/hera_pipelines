@@ -17,9 +17,9 @@ makeplots=${5}
 
 if [ "${makeplots}" == "True" ]
 then
-    makeplots="--make-plots"
+    makeplots="--make-plots true"
 else
-    makeplots=""
+    makeplots="--make-plots false"
 fi
 
 outname="lststack.${outfile_idx}"
