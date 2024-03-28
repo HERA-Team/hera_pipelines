@@ -188,7 +188,8 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
     Example for SEASON is "h6c" (which is also the first season this script works for).
     The IDR is specified as "IDR.GENERATION" (eg. IDR 2.1)
     """
-    template = Path(repodir) / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/lstbin-template.toml"
+    repodir = Path(repodir).absolute()
+    template = repodir / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/lstbin-template.toml"
 
     if not template.exists():
         print(f"Template {template} does not exist")
@@ -207,7 +208,7 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
         redavg, abscal, dlyfilt = case
 
         casename = f"{prefix}{redavg}-{abscal}-{dlyfilt}"
-        toml_file = Path(repodir) / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/{casename}/lstbin.toml"
+        toml_file = repodir / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/{casename}/lstbin.toml"
         if toml_file.exists() and not force:
             print(f":warning: File '{toml_file}' exists and --force was not set. [red]Skipping[/].")
             continue

@@ -16,7 +16,7 @@
 
 [Options]
 makeflow_type = "lstbin-notebook"
-path_to_do_scripts = "{{ REPODIR }}/pipelines/{{ SEASON }}/idr{ IDR }}/v{ GENERATION }}/lstbin/task_scripts/"                                                                                           source_script = "~/.bashrc"
+path_to_do_scripts = "{{ REPODIR }}/pipelines/{{ SEASON }}/idr{{ IDR }}/v{{ GENERATION }}/lstbin/task_scripts/"                                                                                           source_script = "~/.bashrc"
 conda_env = "{{ SEASON }}"
 base_mem = 12000
 base_cpu = 1
@@ -24,7 +24,8 @@ timeout = "48h"
 
 [LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                                                                               # ---- Parameters used by hera_opm to build the makeflow ----
 outdir = "${LSTAVG_OPTS:outdir}"                                                                                                                                                                      parallelize = true
-
+parallelize = true
+plot_every=180  # about 1 hour
            
 [FILE_CFG]
 # This section specifies a file configuration for LST-binning.
@@ -32,7 +33,6 @@ outdir = "${LSTAVG_OPTS:outdir}"                                                
 # LSTBinConfiguration class in hera_cal.lst_stack.config.
 # The 'datafiles' section can contain any parameter that is
 # passed to the `.find_datafiles()` method of that class.
-
 nlsts_per_file = 2
 lst_start = 0.0
 antpairs_from_last_file_each_night = true
