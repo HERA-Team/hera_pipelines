@@ -17,7 +17,7 @@ kernel=${4}
 
 outname="lststack.${outfile_idx}"
  
-cmd="hnote run --output-dir ${outdir} -k ${kernel} lststack -o ${outname} --toml ${tomlfile}"
+cmd="hnote run --output-dir ${outdir} -k ${kernel} --toml ${tomlfile} lststack -o ${outname}"
 
 echo $cmd
 eval $cmd
