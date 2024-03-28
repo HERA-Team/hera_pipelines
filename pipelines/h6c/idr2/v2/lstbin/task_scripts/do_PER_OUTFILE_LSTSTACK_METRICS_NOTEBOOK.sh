@@ -12,7 +12,7 @@ source ${src_dir}/_common.sh
 outdir=${1}
 tomlfile=${2}
 outfile_idx=${3}
-
+kernel=${4}
 
 
 outname="lststack.${outfile_idx}"
