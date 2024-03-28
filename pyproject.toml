@@ -18,7 +18,9 @@ dependencies = [
     "click",
     "rich",
     "pyuvdata",
-    "hera-calibration"
+    "hera-calibration",
+    "jinja2",
+    "hera_librarian",
 ]
 dynamic = [
     "version",

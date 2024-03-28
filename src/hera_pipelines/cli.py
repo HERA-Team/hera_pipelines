@@ -181,7 +181,8 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 )
 @click.option("--setup-analysis/--only-repo", default=True, help="whether to also softlink output tomls to the analysis dir")
 @click.option('--prefix', type=str, default='', help='a prefix to add to the casenames')
-def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis, prefix):
+@click.option("--all-cases/--specify-cases")
+def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis, prefix, all_cases):
     """Setup lstbin TOML files for a range of cases for a specific SEASON, IDR, and GENERATION.
 
     Example for SEASON is "h6c" (which is also the first season this script works for).
@@ -192,6 +193,15 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
     if not template.exists():
         print(f"Template {template} does not exist")
         sys.exit(1)
+
+    if all_cases:
+        cases = [
+            ('redavg', 'abscal', 'dlyfilt'),
+            ('redavg', 'abscal', 'inpaint'),
+            ('redavg', 'smoothcal', 'dlyfilt'),
+            ('redavg', 'smoothcal', 'inpaint'),
+            ('nonavg', 'smoothcal', 'inpaint'),
+        ]
 
     for case in cases:
         redavg, abscal, dlyfilt = case
