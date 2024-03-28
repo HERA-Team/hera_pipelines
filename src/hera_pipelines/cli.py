@@ -180,7 +180,8 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     help="triplet of [redavg/nonavg, abscal/smoothcal, dlyfilt/inpaint]"
 )
 @click.option("--setup-analysis/--only-repo", default=True, help="whether to also softlink output tomls to the analysis dir")
-def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis):
+@click.option('--prefix', type=str, default='', help='a prefix to add to the casenames')
+def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis, prefix):
     """Setup lstbin TOML files for a range of cases for a specific SEASON, IDR, and GENERATION.
 
     Example for SEASON is "h6c" (which is also the first season this script works for).
@@ -194,7 +195,9 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis)
 
     for case in cases:
         redavg, abscal, dlyfilt = case
-        toml_file = Path(repodir) / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/{redavg}-{abscal}-{dlyfilt}/lstbin.toml"
+
+        casename = f"{prefix}{redavg}-{abscal}-{dlyfilt}"
+        toml_file = Path(repodir) / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/{casename}/lstbin.toml"
         if toml_file.exists() and not force:
             print(f":warning: File '{toml_file}' exists and --force was not set. [red]Skipping[/].")
             continue
@@ -203,8 +206,7 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis)
         with open(template) as f:
             toml = Template(f.read())
 
-        casename = f"{redavg}-{abscal}-{dlyfilt}"
-        rendered = toml.render(
+        kw = dict(
             REPODIR = repodir,
             SEASON = season,
             IDR = idr,
@@ -220,6 +222,7 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis)
                 ".abs.calfits" if abscal=='abscal' and redavg=='nonavg' else 'none'
             )
         )
+        rendered = toml.render(**kw)
 
         new = ""
         for line in rendered.splitlines():
@@ -233,7 +236,7 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis)
         print(f"[green]✓[/] Wrote case [blue]{casename}[/] to '{toml_file}'")
 
         if setup_analysis:
-            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/{redavg}-{abscal}-{dlyfilt}"
+            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/{casename}"
             if not anldir.exists():
                 anldir.mkdir(parents=True)
             anlfile = anldir / "lstbin.toml"
