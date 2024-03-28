@@ -13,11 +13,21 @@ outdir=${1}
 tomlfile=${2}
 outfile_idx=${3}
 kernel=${4}
+makeplots=${5}
 
+if [ "${makeplots}" == "True" ]
+then
+    makeplots="--make-plots"
+else
+    makeplots=""
+fi
 
 outname="lststack.${outfile_idx}"
+
+runopts="--output-dir ${outdir} -k ${kernel} --toml ${tomlfile}"
+cfg="-o ${outname} --fileidx ${outfile_idx} ${makeplots}"
  
-cmd="hnote run --output-dir ${outdir} -k ${kernel} --toml ${tomlfile} lststack -o ${outname}"
+cmd="hnote run ${runopts} lststack ${cfg}"
 
 echo $cmd
 eval $cmd
