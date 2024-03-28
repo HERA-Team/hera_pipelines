@@ -16,14 +16,17 @@
 
 [Options]
 makeflow_type = "lstbin-notebook"
-path_to_do_scripts = "{{ REPODIR }}/pipelines/{{ SEASON }}/idr{{ IDR }}/v{{ GENERATION }}/lstbin/task_scripts/"                                                                                           source_script = "~/.bashrc"
+path_to_do_scripts = "{{ REPODIR }}/pipelines/{{ SEASON }}/idr{{ IDR }}/v{{ GENERATION }}/lstbin/task_scripts/"
+source_script = "~/.bashrc"
 conda_env = "{{ SEASON }}"
 base_mem = 12000
 base_cpu = 1
 timeout = "48h"
 
-[LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                                                                               # ---- Parameters used by hera_opm to build the makeflow ----
-outdir = "${LSTAVG_OPTS:outdir}"                                                                                                                                                                      parallelize = true
+[LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                                                                               
+# ---- Parameters used by hera_opm to build the makeflow ----
+outdir = "${LSTAVG_OPTS:outdir}"
+parallelize = true
 parallelize = true
 plot_every=180  # about 1 hour
            
@@ -40,7 +43,8 @@ where_inpainted_file_rules = [
   [".sum.*.uvh5", ".where_inpainted.h5"]
 ]
 
-[FILE_CFG.datafiles]                                                                                                                                                                                # Arguments to specify input files.
+[FILE_CFG.datafiles]                                                                                                                                                                                
+# Arguments to specify input files.
 # Files to be read will be:
 #    {datadir}/{nightdir}/zen.{jdglob}.{sd}.{label}[.]{extension}
 datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/"
@@ -48,10 +52,11 @@ nightdirs=[
              "2459861", "2459862", "2459863", "2459864",
   "2459866", "2459867", "2459868", "2459869",
   "2459870", "2459871", "2459872", "2459873", "2459874",
-             "2459876"                                                                                                                                                                                ]
+             "2459876"                                                                                                                                                                                
+]
 label = "{{ DATA_EXTENSION }}"
 sum_or_diff = "sum"
-jdglob = "*"                                                                                                                                                                                           plot_every=180  # about 1 hour
+jdglob = "*" 
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
@@ -61,7 +66,7 @@ fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.sum.uvh5"
 overwrite=true
 write_med_mad=true
 
-                                                                                                                                                                                                      # ========================================= THE WORKFLOW ========================
+# ========================================= THE WORKFLOW ========================
 [WorkFlow]
 actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
 
