@@ -10,10 +10,11 @@ source ${src_dir}/_common.sh
 # Parameters are set in the configuration file, here we define their positions,
 # which must be consistent with the config.
 outdir=${1}
-tomlfile=${2}
-outfile_idx=${3}
-kernel=${4}
-makeplots=${5}
+lstconfig=${2}
+tomlfile=${3}
+outfile_idx=${4}
+kernel=${5}
+makeplots=${6}
 
 if [ "${makeplots}" == "True" ]
 then
@@ -25,7 +26,7 @@ fi
 outname="lststack.${outfile_idx}"
 
 runopts="--output-dir ${outdir} -k ${kernel} --toml ${tomlfile}"
-cfg="-o ${outname} --fileidx ${outfile_idx} ${makeplots}"
+cfg="-o ${outname} --fileconf ${lstconfig} --fileidx ${outfile_idx} ${makeplots}"
  
 cmd="hnote run ${runopts} lststack ${cfg}"
 
