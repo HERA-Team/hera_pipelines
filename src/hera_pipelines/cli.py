@@ -247,7 +247,7 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
         print(f"[green]✓[/] Wrote case [blue]{casename}[/] to '{toml_file}'")
 
         if setup_analysis:
-            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/{casename}"
+            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/v{generation}/{casename}"
             if not anldir.exists():
                 anldir.mkdir(parents=True)
             anlfile = anldir / "lstbin.toml"
