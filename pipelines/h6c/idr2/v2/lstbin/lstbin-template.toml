@@ -23,13 +23,13 @@ base_mem = 12000
 base_cpu = 1
 timeout = "48h"
 
-[LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                                                                               
+[LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                               
 # ---- Parameters used by hera_opm to build the makeflow ----
 outdir = "${LSTAVG_OPTS:outdir}"
 parallelize = true
 parallelize = true
 plot_every=180  # about 1 hour
-           
+
 [FILE_CFG]
 # This section specifies a file configuration for LST-binning.
 # The possible parameters here any input attribute of the
@@ -43,7 +43,7 @@ where_inpainted_file_rules = [
   [".sum.*.uvh5", ".where_inpainted.h5"]
 ]
 
-[FILE_CFG.datafiles]                                                                                                                                                                                
+[FILE_CFG.datafiles]                                                                                                                                                                 
 # Arguments to specify input files.
 # Files to be read will be:
 #    {datadir}/{nightdir}/zen.{jdglob}.{sd}.{label}[.]{extension}
@@ -52,11 +52,11 @@ nightdirs=[
              "2459861", "2459862", "2459863", "2459864",
   "2459866", "2459867", "2459868", "2459869",
   "2459870", "2459871", "2459872", "2459873", "2459874",
-             "2459876"                                                                                                                                                                                
+             "2459876"
 ]
 label = "{{ DATA_EXTENSION }}"
 sum_or_diff = "sum"
-jdglob = "*" 
+jdglob = "*"
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
