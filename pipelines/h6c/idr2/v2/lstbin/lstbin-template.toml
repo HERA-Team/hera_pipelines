@@ -27,7 +27,6 @@ timeout = "48h"
 # ---- Parameters used by hera_opm to build the makeflow ----
 outdir = "${LSTAVG_OPTS:outdir}"
 parallelize = true
-parallelize = true
 plot_every=180  # about 1 hour
 
 [FILE_CFG]
