@@ -27,7 +27,7 @@ timeout = "48h"
 # ---- Parameters used by hera_opm to build the makeflow ----
 outdir = "${LSTAVG_OPTS:outdir}"
 parallelize = true
-plot_every=180  # about 1 hour
+
 
 [FILE_CFG]
 # This section specifies a file configuration for LST-binning.
@@ -64,6 +64,7 @@ bl_chunk_size = 5000
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.sum.uvh5"
 overwrite=true
 write_med_mad=true
+plot_every=180  # about 1 hour
 
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
@@ -71,5 +72,5 @@ actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
 
 [PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK]
 args = [
-  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel", "make_plots"
+  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel",
 ]
