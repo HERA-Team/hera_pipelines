@@ -32,7 +32,7 @@ check_every = 50
 check_after = 500
 
 [ABSCAL_OPTS]
-model_files_glob = "'/lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/sum/*.uvh5'"
+model_files_glob = "'/lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/foregrounds/*.uvh5'"
 nInt_to_load = 6
 min_bl_cut = 60.0
 max_bl_cut = 140.0
@@ -91,7 +91,7 @@ actions = [
            "REDCAL_INSPECT_NOTEBOOK",
            "ABSCAL",
            "ABSCAL_INSPECT_NOTEBOOK",
-           "XRFI",
+#           "XRFI",
            "XRFI_TRANSFER",
            "RFI_INSPECT_NOTEBOOK",
            "CAL_SMOOTH",
@@ -212,7 +212,7 @@ args = ["{basename}",
 #         "{obsid_list}"
 #        ]
 [XRFI_TRANSFER]
-#prereqs = "XRFI"
+prereqs = "ABSCAL"
 args = ["${XRFI_OPTS:kt_size}",
        "${XRFI_OPTS:kf_size}",
        "${XRFI_OPTS:sig_init_med}",
@@ -239,7 +239,7 @@ args = ["${XRFI_OPTS:kt_size}",
 #        ]
 
 [CAL_SMOOTH]
-#prereqs = "XRFI" # "XRFI_DAY_THRESHOLD"
+prereqs = "XRFI_TRANSFER"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
