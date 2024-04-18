@@ -93,7 +93,7 @@ actions = [
            "ABSCAL_INSPECT_NOTEBOOK",
 #           "XRFI",
            "XRFI_TRANSFER",
-           "RFI_INSPECT_NOTEBOOK",
+#           "RFI_INSPECT_NOTEBOOK",
            "CAL_SMOOTH",
            "SMOOTH_CAL_INSPECT_NOTEBOOK",
            #"IMAGING",
@@ -213,16 +213,17 @@ args = ["{basename}",
 #        ]
 [XRFI_TRANSFER]
 prereqs = "ABSCAL"
-args = ["${XRFI_OPTS:kt_size}",
-       "${XRFI_OPTS:kf_size}",
-       "${XRFI_OPTS:sig_init_med}",
-       "${XRFI_OPTS:sig_adj_med}",
-       "${XRFI_OPTS:sig_init_mean}",
-       "${XRFI_OPTS:sig_adj_mean}",
-       "${Options:path_to_a_priori_flags}",
-       "${XRFI_OPTS:Nwf_per_load}",
-       "{obsid_list}"
-      ]
+args = []
+# args = ["${XRFI_OPTS:kt_size}",
+#        "${XRFI_OPTS:kf_size}",
+#        "${XRFI_OPTS:sig_init_med}",
+#        "${XRFI_OPTS:sig_adj_med}",
+#        "${XRFI_OPTS:sig_init_mean}",
+#        "${XRFI_OPTS:sig_adj_mean}",
+#        "${Options:path_to_a_priori_flags}",
+#        "${XRFI_OPTS:Nwf_per_load}",
+#        "{obsid_list}"
+#       ]
 
 #[RFI_INSPECT_NOTEBOOK]
 #prereqs = "XRFI"
