@@ -1,7 +1,7 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
+path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_task_scripts"
+path_to_a_priori_flags = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
 base_mem = 16000
