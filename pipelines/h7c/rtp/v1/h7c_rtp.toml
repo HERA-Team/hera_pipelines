@@ -33,7 +33,7 @@ all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
-nb_output_repo = '/mnt/sn1/H7C_Notebooks'
+nb_output_repo = '/mnt/sn1/data1/H7C_Notebooks'
 git_push = false # notebooks are instead mirrored to https://heranow.reionization.org/notebooks/H7C_Notebooks/
 
 [CALIBRATE_FILE_OPTS]
