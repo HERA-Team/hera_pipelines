@@ -38,7 +38,7 @@ nb_outfile=${nb_outdir}/full_day_systematics_inspect_${jd}.html
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
-export RED_AVG_SUFFIX="sum.smooth_calibrated.red_avg.inpaint.uvh5"
+export RED_AVG_SUFFIX="sum.smooth_calibrated.red_avg.uvh5"
 export FILT_MIN_DLY=${filter_dly_min}
 export INPAINT_MIN_DLY=${inpaint_dly_min}
 export INPAINT_REGULARIZATION=${inpaint_regularization}
