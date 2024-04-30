@@ -102,7 +102,7 @@ args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${Options:t_avg}", "${FR_OPTS:ninterleave}"]
 
 [FRF_COV]
-prereqs = "EXTRACT_AUTOS"
+prereqs = ["EXTRACT_AUTOS", "FR_FILTER"]
 prereq_chunk_size="all"
 mem=16000
 chunk_size=1
