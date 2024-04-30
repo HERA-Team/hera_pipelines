@@ -58,6 +58,7 @@ actions = [
            "EXTRACT_AUTOS",
            "FR_FILTER",
            "TIME_AVERAGE",
+           "FRF_COV",
            "RECONSTITUTE",
            "PSTOKES",
            "PSPEC",
@@ -99,6 +100,15 @@ stride_length="${Options:chunk_size}"
 mem = 24000
 args = ["{basename}", "${Options:include_diffs}",
        "${Options:label}", "${Options:t_avg}", "${FR_OPTS:ninterleave}"]
+
+[FRF_COV]
+prereqs = "EXTRACT_AUTOS"
+prereq_chunk_size="all"
+mem=16000
+chunk_size=1
+stride_length=${Options:chunk_size}$
+args=["{basename}", "${Options:label}", "${FR_OPTS:tol}","${FR_opts:spw_ranges}",
+      "${FR_OPTS:prefilter_zero_frate}", "${FR_OPTS:ninterleave}"]
 
 [RECONSTITUTE]
 prereqs = "TIME_AVERAGE"
