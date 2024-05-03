@@ -8,6 +8,7 @@ path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipel
 path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
 conda_env = "h6c_idr2"
 batch_system = "slurm"
+extra_batch_options = "--nice=1000"
 
 [LIBRARIAN_OPTS]
 # These trigger which sets of files get added to the librarian
