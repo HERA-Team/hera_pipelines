@@ -8,7 +8,6 @@ path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipel
 path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
 conda_env = "h6c_idr2"
 batch_system = "slurm"
-extra_batch_options = "--nice=1000"
 
 [LIBRARIAN_OPTS]
 # These trigger which sets of files get added to the librarian
@@ -154,6 +153,7 @@ args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_autos}",
        ]
+extra_batch_options = "--nice=1000"
 
 [CALIBRATE_FILE_NOTEBOOK]
 args = ["{basename}",
@@ -197,6 +197,7 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:abscal_max_bl_len}",
         "${CALIBRATE_FILE_OPTS:save_omni_vis}",
         ]
+extra_batch_options = "--nice=1000"
 
 [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
 prereqs = "CALIBRATE_FILE_NOTEBOOK"
@@ -317,6 +318,7 @@ args = ["{basename}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
         ]
+extra_batch_options = "--nice=1000"
 
 [FULL_DAY_RFI_ROUND_2_NOTEBOOK]
 prereqs = "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK"
@@ -354,6 +356,7 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:save_abs_cal_red_avg}",
         "${POSTPROCESS_FILE_OPTS:save_dly_filt_red_avg}",
         ]
+extra_batch_options = "--nice=1000"
 
 [FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK]
 mem = 60000
