@@ -316,6 +316,7 @@ time_centered = false
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_redcal}",
+        "${CALIBRATE_FILE_OPTS:save_omni_vis}",
         ]
 
 [FULL_DAY_RFI_NOTEBOOK]
