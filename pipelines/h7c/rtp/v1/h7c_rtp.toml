@@ -52,8 +52,8 @@ auto_slope_good_low = -0.4
 auto_slope_good_high = 0.4
 auto_slope_suspect_low = -0.6
 auto_slope_suspect_high = 0.6
-auto_rfi_good = 0.015
-auto_rfi_suspect = 0.03
+auto_rfi_good = 1.5
+auto_rfi_suspect = 2.0
 auto_shape_good = 0.1
 auto_shape_suspect = 0.2
 bad_xengine_zcut = 10.0
@@ -65,14 +65,16 @@ oc_skip_outriggers = true
 oc_min_bl_len = 1
 oc_max_bl_len = 1e100
 oc_maxiter = 50
-oc_max_rerun = 4
+oc_max_rerun = 10
 oc_rerun_maxiter = 25
+oc_max_chisq_flagging_dynamic_range = 1.5
 oc_use_prior_sol = true
 oc_prior_sol_flag_thresh = 0.95
 rfi_dpss_halfwidth = 300e-9
-rfi_nsig = 6
+rfi_nsig = 4
 abscal_min_bl_len = 1.0
 abscal_max_bl_len = 140.0
+save_omni_vis = false
 
 [FULL_DAY_RFI_OPTS]
 FM_low_freq = 87.5 # in MHz
@@ -273,6 +275,7 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
         "${CALIBRATE_FILE_OPTS:auto_shape_good}",
         "${CALIBRATE_FILE_OPTS:auto_shape_suspect}",
+        "${CALIBRATE_FILE_OPTS:bad_xengine_zcut}",
         "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
         "${CALIBRATE_FILE_OPTS:oc_cspa_suspect}",
         "${CALIBRATE_FILE_OPTS:oc_max_dims}",
@@ -283,12 +286,14 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:oc_maxiter}",
         "${CALIBRATE_FILE_OPTS:oc_max_rerun}",
         "${CALIBRATE_FILE_OPTS:oc_rerun_maxiter}",
+        "${CALIBRATE_FILE_OPTS:oc_max_chisq_flagging_dynamic_range}",
         "${CALIBRATE_FILE_OPTS:oc_use_prior_sol}",
         "${CALIBRATE_FILE_OPTS:oc_prior_sol_flag_thresh}",
         "${CALIBRATE_FILE_OPTS:rfi_dpss_halfwidth}",
         "${CALIBRATE_FILE_OPTS:rfi_nsig}",
         "${CALIBRATE_FILE_OPTS:abscal_min_bl_len}",
         "${CALIBRATE_FILE_OPTS:abscal_max_bl_len}",
+        "${CALIBRATE_FILE_OPTS:save_omni_vis}",
         ]
 
 [LIBRARIAN_CALIBRATION_NOTEBOOKS]
