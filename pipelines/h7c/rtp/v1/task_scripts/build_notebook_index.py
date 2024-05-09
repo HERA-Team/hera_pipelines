@@ -67,6 +67,8 @@ overall_index += '    <li><a href="full_day_antenna_flagging">full_day_antenna_f
 overall_index += '    <li><a href="full_day_auto_checker">full_day_auto_checker</a></li>\n'
 overall_index += '    <li><a href="full_day_rfi">full_day_rfi</a></li>\n'
 overall_index += '    <li><a href="full_day_rfi_round_2">full_day_rfi_round_2</a></li>\n'
+overall_index += '    <li><a href="file_postprocessing">file_postprocessing</a></li>\n'
+overall_index += '    <li><a href="full_day_systematics_inspect">full_day_systematics_inspect</a></li>\n'
 overall_index += '</ul>\n</h3>\n<h2>Most Recent Notebooks:</h2>\n'
 for jd in recent_jds[0:14]:
     overall_index += f'<h3>{jd}:</h3>\n<ul>\n' + '\n'.join([link for link in links if str(jd) in link]) + '\n</ul>\n'
