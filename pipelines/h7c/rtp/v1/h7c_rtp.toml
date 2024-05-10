@@ -622,6 +622,8 @@ prereqs = ["LIBRARIAN_RAW_DATA",
            "LIBRARIAN_REDCAL",
            "LIBRARIAN_SMOOTHCAL",
            "LIBRARIAN_ALL_NOTEBOOKS",
+           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
+           "LIBRARIAN_RED_AVG_VIS",
            "ALL_SKY_IMAGE_MOVIE"]
 prereq_chunk_size = "all"
 chunk_size = 1
