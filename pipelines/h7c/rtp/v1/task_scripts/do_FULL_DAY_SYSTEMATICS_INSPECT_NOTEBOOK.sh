@@ -58,6 +58,9 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/full_day_systematics_inspect.ipynb
 echo Finished full-day systematics inspect notebook at $(date)
 
+# Rebuild index.html for this notebook's folder
+python ${src_dir}/build_notebook_index.py ${nb_outdir}
+
 # If desired, push results to github
 if [ "${git_push}" == "True" ]
 then
