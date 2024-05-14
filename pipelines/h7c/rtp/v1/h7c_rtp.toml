@@ -602,6 +602,7 @@ prereqs = ["DATA_INSPECT_NOTEBOOK_ALL_ANTS",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
            "FULL_DAY_RFI_ROUND_2_NOTEBOOK",
+           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
           ]
 prereq_chunk_size = "all"
 chunk_size = 1
