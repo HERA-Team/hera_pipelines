@@ -1,7 +1,7 @@
 # This is the lstbin TOML file for the redavg-abscal-dlyfilt case.
 
 [Options]
-makeflow_type = "lstbin-notebook"
+makeflow_type = "lstbin"
 path_to_do_scripts = "/home/steven/work/hera/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "h6c"
