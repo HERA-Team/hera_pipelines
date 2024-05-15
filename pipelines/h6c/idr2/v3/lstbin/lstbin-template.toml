@@ -68,6 +68,8 @@ plot_every=180  # about 1 hour
 save_metric_data = false  # this should be updated for the real runs
 do_extra_flagging = false
 inpaint_cache_dir = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/inpaint_cache"
+do_simultaneous_inpainting = {% 'False' if FLAGGED_AVERAGE else 'True' %}
+
 
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]

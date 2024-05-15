@@ -196,13 +196,21 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
         sys.exit(1)
 
     if all_cases:
-        cases = [
-            ('redavg', 'abscal', 'dlyfilt'),
-            ('redavg', 'abscal', 'inpaint'),
-            ('redavg', 'smoothcal', 'dlyfilt'),
-            ('redavg', 'smoothcal', 'inpaint'),
-            ('nonavg', 'smoothcal', 'inpaint'),
-        ]
+        if generation < 3:
+            cases = [
+                ('redavg', 'abscal', 'dlyfilt'),
+                ('redavg', 'abscal', 'inpaint'),
+                ('redavg', 'smoothcal', 'dlyfilt'),
+                ('redavg', 'smoothcal', 'inpaint'),
+                ('nonavg', 'smoothcal', 'inpaint'),
+            ]
+        else:
+            cases = [
+                ('redavg', 'abscal', 'dlyfilt'),
+                ('redavg', 'abscal', 'inpaint'),
+                ('redavg', 'smoothcal', 'dlyfilt'),
+                ('redavg', 'smoothcal', 'inpaint'),
+            ]
 
     for case in cases:
         redavg, abscal, dlyfilt = case
@@ -217,6 +225,13 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
         with open(template) as f:
             toml = Template(f.read())
 
+        if dlyfilt == 'dlyfilt':
+            EXTENSION = "dly_filt."
+        elif dlyfilt=='inpaint' and (idr <=2 and generation < 3):
+            EXTENSION = "inpaint."
+        else:
+            EXTENSION = ""
+
         kw = dict(
             REPODIR = repodir,
             SEASON = season,
@@ -226,12 +241,13 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
             CASENAME = casename,
             INPAINT_EXTENSION="none" if dlyfilt == "dlyfilt" else ".where_inpainted.h5",
             DATA_EXTENSION="uvh5" if redavg=='nonavg' else (
-                "abs_calibrated.red_avg.inpaint.uvh5" if abscal=='abscal' else "smooth_calibrated.red_avg.inpaint.uvh5"
+                f"abs_calibrated.red_avg.{EXTENSION}uvh5" if abscal=='abscal' else f"smooth_calibrated.red_avg.{EXTENSION}uvh5"
             ),
             INPAINT_FORMAT="{inpaint_mode}/" if dlyfilt == "inpaint" else "",
             CALEXT=".smooth.calfits" if abscal == "smoothcal" and redavg=='nonavg' else (
                 ".abs.calfits" if abscal=='abscal' and redavg=='nonavg' else 'none'
-            )
+            ),
+            FLAGGED_AVERAGE = dlyfilt=='dlyfilt'
         )
         rendered = toml.render(**kw)
 
