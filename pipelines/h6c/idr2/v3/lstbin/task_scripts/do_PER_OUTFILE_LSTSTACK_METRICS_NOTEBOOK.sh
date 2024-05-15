@@ -24,3 +24,11 @@ cmd="hnote run ${runopts} lststack ${cfg}"
 
 echo $cmd
 eval $cmd
+
+# If a marker file was saved indicating that plots were made, move the notebook to the 
+# appropriate directory so that it can be viewed on the web.
+if [ -f "${outdir}/${outname}.ipynb.hasplots" ]
+then
+    cp "${outdir}/${outname}.ipynb" /lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks/lstbin/
+    rm "${outdir}/${outname}.ipynb.hasplots"
+fi
