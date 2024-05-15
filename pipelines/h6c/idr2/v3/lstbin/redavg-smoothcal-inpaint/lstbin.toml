@@ -38,7 +38,7 @@ nights=[
   "2459867", "2459868", "2459869", "2459870", "2459871", 
   "2459872", "2459873", "2459874", "2459876"
 ]
-fileglob = "{night}/zen.{night}.?????.sum.smooth_calibrated.red_avg..uvh5"
+fileglob = "{night}/zen.{night}.?????.sum.smooth_calibrated.red_avg.uvh5"
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.

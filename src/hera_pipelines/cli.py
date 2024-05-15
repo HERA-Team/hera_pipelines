@@ -226,9 +226,9 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
             toml = Template(f.read())
 
         if dlyfilt == 'dlyfilt':
-            EXTENSION = "dly_filt."
+            EXTENSION = ".dly_filt"
         elif dlyfilt=='inpaint' and (idr <=2 and generation < 3):
-            EXTENSION = "inpaint."
+            EXTENSION = ".inpaint"
         else:
             EXTENSION = ""
 
@@ -241,7 +241,7 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
             CASENAME = casename,
             INPAINT_EXTENSION="none" if dlyfilt == "dlyfilt" else ".where_inpainted.h5",
             DATA_EXTENSION="" if redavg=='nonavg' else (
-                f".abs_calibrated.red_avg.{EXTENSION}" if abscal=='abscal' else f".smooth_calibrated.red_avg.{EXTENSION}"
+                f".abs_calibrated.red_avg{EXTENSION}" if abscal=='abscal' else f".smooth_calibrated.red_avg{EXTENSION}"
             ),
             INPAINT_FORMAT="{inpaint_mode}/" if dlyfilt == "inpaint" else "",
             CALEXT=".smooth.calfits" if abscal == "smoothcal" and redavg=='nonavg' else (
