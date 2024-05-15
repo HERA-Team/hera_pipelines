@@ -65,6 +65,9 @@ fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.sum.uvh5"
 overwrite=true
 write_med_mad=false
 plot_every=180  # about 1 hour
+save_metric_data = false  # this should be updated for the real runs
+do_extra_flagging = false
+inpaint_cache_dir = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/inpaint_cache"
 
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
