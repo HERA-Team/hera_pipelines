@@ -15,7 +15,7 @@
 # This is the lstbin TOML file for the {{ CASENAME }} case.
 
 [Options]
-makeflow_type = "lstbin-notebook"
+makeflow_type = "lstbin"
 path_to_do_scripts = "{{ REPODIR }}/pipelines/{{ SEASON }}/idr{{ IDR }}/v{{ GENERATION }}/lstbin/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "{{ SEASON }}"
