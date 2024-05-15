@@ -47,15 +47,12 @@ where_inpainted_file_rules = [
 # Files to be read will be:
 #    {datadir}/{nightdir}/zen.{jdglob}.{sd}.{label}[.]{extension}
 datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/"
-nightdirs=[
-             "2459861", "2459862", "2459863", "2459864",
-  "2459866", "2459867", "2459868", "2459869",
-  "2459870", "2459871", "2459872", "2459873", "2459874",
-             "2459876"
+nights=[
+  "2459861", "2459862", "2459863", "2459864", "2459866", 
+  "2459867", "2459868", "2459869", "2459870", "2459871", 
+  "2459872", "2459873", "2459874", "2459876"
 ]
-label = "{{ DATA_EXTENSION }}"
-sum_or_diff = "sum"
-jdglob = "*"
+fileglob = "{night}/zen.{night}.?????.sum{{ DATA_EXTENSION }}.uvh5"
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.

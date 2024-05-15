@@ -240,8 +240,8 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
             ANALYSISDIR = seasons.seasons[season]['analysis_dir'],
             CASENAME = casename,
             INPAINT_EXTENSION="none" if dlyfilt == "dlyfilt" else ".where_inpainted.h5",
-            DATA_EXTENSION="uvh5" if redavg=='nonavg' else (
-                f"abs_calibrated.red_avg.{EXTENSION}uvh5" if abscal=='abscal' else f"smooth_calibrated.red_avg.{EXTENSION}uvh5"
+            DATA_EXTENSION="" if redavg=='nonavg' else (
+                f".abs_calibrated.red_avg.{EXTENSION}" if abscal=='abscal' else f".smooth_calibrated.red_avg.{EXTENSION}"
             ),
             INPAINT_FORMAT="{inpaint_mode}/" if dlyfilt == "inpaint" else "",
             CALEXT=".smooth.calfits" if abscal == "smoothcal" and redavg=='nonavg' else (
