@@ -1,24 +1,10 @@
-#! This is a *template* file for the lstbin makeflow. Use `herapipes lstbin-setup` to 
-#! generate specific lstbin makeflows for different cases. This template has a few 
-#! variables that can be used to generate a makeflow for a specific case. These are:
-#!   {{ REPODIR }}    : the directory of the hera-pipelines repo 
-#!   {{ SEASON }}     : the season to process
-#!   {{ IDR }}        : the IDR major number
-#!   {{ GENERATION }} : the IDR generation number
-#!   {{ ANALYSISDIR }}: the top-level directory where the analysis is being done
-#!   {{ CASENAME }}   : the name of the case (e.g. "redavg-abscal-inpaint")
-#!   {{ INPAINT_EXTENSION }} : the extension of the where_inpainted files: eiter "none" or ".where_inpainted.h5", depending on the case.
-#!   {{ DATA_EXTENSION }} : the extension of the data files -- set by the case (e.g. "abs_calibrated.red_avg.inpaint.uvh5")
-#!   {{ INPAINT_FORMAT }} : this gets set to "{inpaint_mode}/" if the case uses inpaint mode
-#!   {{ CALEXT }}     : specifies the calfits file extension, or none if datafiles are already calibrated (e.g. ".smooth.calfits")
-#! Note that all lines starting with '#!' will be removed in the created TOML file.
-# This is the lstbin TOML file for the {{ CASENAME }} case.
+# This is the lstbin TOML file for the redavg-smoothcal-inpaint case.
 
 [Options]
 makeflow_type = "lstbin-notebook"
-path_to_do_scripts = "{{ REPODIR }}/pipelines/{{ SEASON }}/idr{{ IDR }}/v{{ GENERATION }}/lstbin/task_scripts/"
+path_to_do_scripts = "/home/steven/work/hera/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
 source_script = "~/.bashrc"
-conda_env = "{{ SEASON }}"
+conda_env = "h6c"
 base_mem = 12000
 base_cpu = 1
 timeout = "48h"
@@ -46,20 +32,20 @@ where_inpainted_file_rules = [
 # Arguments to specify input files.
 # Files to be read will be:
 #    {datadir}/{nightdir}/zen.{jdglob}.{sd}.{label}[.]{extension}
-datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/"
+datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/"
 nightdirs=[
              "2459861", "2459862", "2459863", "2459864",
   "2459866", "2459867", "2459868", "2459869",
   "2459870", "2459871", "2459872", "2459873", "2459874",
              "2459876"
 ]
-label = "{{ DATA_EXTENSION }}"
+label = "smooth_calibrated.red_avg.uvh5"
 sum_or_diff = "sum"
 jdglob = "*"
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
-outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ CASENAME }}/"
+outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/redavg-smoothcal-inpaint/"
 bl_chunk_size = 5000
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.sum.uvh5"
 overwrite=true
@@ -67,12 +53,10 @@ write_med_mad=false
 plot_every=180  # about 1 hour
 save_metric_data = false  # this should be updated for the real runs
 do_extra_flagging = false
-inpaint_cache_dir = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/inpaint_cache"
-{% if FLAGGED_AVERAGE -%}
-do_simultaneous_inpainting = false
-{% else %}
+inpaint_cache_dir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/inpaint_cache"
+
 do_simultaneous_inpainting = true
-{% endif %}
+
 
 
 # ========================================= THE WORKFLOW ========================
