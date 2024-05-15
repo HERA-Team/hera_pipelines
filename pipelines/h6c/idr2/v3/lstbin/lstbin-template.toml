@@ -38,9 +38,6 @@ parallelize = true
 nlsts_per_file = 2
 lst_start = 0.0
 antpairs_from_last_file_each_night = true
-where_inpainted_file_rules = [
-  [".sum.*.uvh5", ".where_inpainted.h5"]
-]
 
 [FILE_CFG.datafiles]                                                                                                                                                                 
 # Arguments to specify input files.
