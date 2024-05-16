@@ -29,7 +29,7 @@ eval $cmd
 # appropriate directory so that it can be viewed on the web.
 if [ -f "${outdir}/${outname}.ipynb.hasplots" ]
 then
-    casename=$(basename $(builtin cd $outdir; pwd))
+    casename=$(basename $(builtin cd ${outdir}; pwd))
     htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks/lstbin/${casename}"
     mkdir -p "${htmldir}"
     cp "${outdir}/${outname}.html" "${htmldir}/"
