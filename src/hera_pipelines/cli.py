@@ -185,8 +185,14 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis, prefix, all_cases):
     """Setup lstbin TOML files for a range of cases for a specific SEASON, IDR, and GENERATION.
 
+    The TOML file created contains *both* the appropriate configuration for the
+    LSTBin Configurator setup, as well as the standard hera_opm config, and also the
+    configuration for the actual averaging using the notebook.
+
     Example for SEASON is "h6c" (which is also the first season this script works for).
     The IDR is specified as "IDR.GENERATION" (eg. IDR 2.1)
+
+    This creates the
     """
     repodir = Path(repodir).absolute()
     template = repodir / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/lstbin-template.toml"
