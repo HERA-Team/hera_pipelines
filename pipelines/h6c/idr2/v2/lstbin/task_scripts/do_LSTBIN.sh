@@ -25,9 +25,6 @@ source ${src_dir}/_common.sh
 # 15+ - series of glob-parsable search strings (in quotations!) to files to LSTBIN
 
 # get positional arguments
-# sig_clip=${1}
-# sigma=${2}
-# min_N=${3}
 rephase=${1}
 vis_units=${2}
 output_file_select=${3}
@@ -42,15 +39,17 @@ save_channels=${11}
 golden_lsts=${12}
 sigma_clip_thresh=${13}
 sigma_clip_min_N=${14}
-only_last_file_per_night=${15}
-freq_min=${16}
-freq_max=${17}
-inpaint_extension=${18}
-sum_or_diff=${19}
-datafile_extension=${20}
-sigma_clip_in_inpaint=${21}
-write_med_mad=${22}
-datafile_label=${23}
+sigma_clip_type=${15}
+sigma_clip_subbands=${16}
+only_last_file_per_night=${17}
+freq_min=${18}
+freq_max=${19}
+inpaint_extension=${20}
+sum_or_diff=${21}
+datafile_extension=${22}
+sigma_clip_in_inpaint=${23}
+write_med_mad=${24}
+datafile_label=${25}
 
 if [ "${datafile_label}" != "" ]
 then
@@ -165,6 +164,7 @@ cmd="lstbin_simple.py ${outdir}/file-config.yaml --fname-format ${fname_format}\
  ${yaml_arg} ${calibration} ${ignorecf} --profile ${profilestr} \
  --profile-output lineprof-${output_file_select}.txt \
  ${sigma_clip_thresh} --sigma-clip-min-N ${sigma_clip_min_N}\
+ --sigma-clip-type ${sigma_clip_type} --sigma-clip-subbands ${sigma_clip_subbands}\
  ${lastfile} ${freqmin} ${freqmax} --overwrite ${glsts} ${savestr}\
  ${write_med_mad} ${inpaint_rules} ${sigma_clip_in_inpaint}"
    
