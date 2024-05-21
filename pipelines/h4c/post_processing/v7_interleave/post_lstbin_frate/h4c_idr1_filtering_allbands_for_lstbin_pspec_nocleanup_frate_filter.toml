@@ -77,7 +77,7 @@ prereqs = "PRE_CHUNK"
 prereq_chunk_size="all"
 chunk_size=1
 stride_length=215
-mem=16000
+mem=64000
 args=["${Options:label}", "${Options:include_diffs}"]
 
 [FR_FILTER]
