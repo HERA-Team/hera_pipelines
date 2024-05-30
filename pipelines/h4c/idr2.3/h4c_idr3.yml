@@ -1,0 +1,23 @@
+# conda environment for running the h4c_idr3 (i.e. production run) version of the h4c pipeline
+name: h4c_idr3
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12.3
+  - numpy=1.26
+  - matplotlib=3.9
+  - jupyter # not versioned??
+  - ipython=8.24.0
+  - scipy=1.13.1
+  - astropy=6.1
+  - toml >= 0.9.4
+  - pip
+  - pip:
+      - hera_cal
+      - hera-calibration
+      - hera_filters
+      - hera_qm
+      - git+https://github.com/HERA-Team/librarian.git
+      - git+https://github.com/HERA-Team/hera_opm.git
+      - git+https://github.com/HERA-Team/hera_pspec.git
