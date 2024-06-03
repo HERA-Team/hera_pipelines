@@ -37,22 +37,25 @@ auto_rfi_good=${20}
 auto_rfi_suspect=${21}
 auto_shape_good=${22}
 auto_shape_suspect=${23}
-oc_cspa_good=${24}
-oc_cspa_suspect=${25}
-oc_max_dims=${26}
-oc_min_dim_size=${27}
-oc_skip_outriggers=${28}
-oc_min_bl_len=${29}
-oc_max_bl_len=${30}
-oc_maxiter=${31}
-oc_max_rerun=${32}
-oc_rerun_maxiter=${33}
-oc_use_prior_sol=${34}
-oc_prior_sol_flag_thresh=${35}
-rfi_dpss_halfwidth=${36}
-rfi_nsig=${37}
-abscal_min_bl_len=${38}
-abscal_max_bl_len=${39}
+bad_xengine_zcut=${24}
+oc_cspa_good=${25}
+oc_cspa_suspect=${26}
+oc_max_dims=${27}
+oc_min_dim_size=${28}
+oc_skip_outriggers=${29}
+oc_min_bl_len=${30}
+oc_max_bl_len=${31}
+oc_maxiter=${32}
+oc_max_rerun=${33}
+oc_rerun_maxiter=${34}
+oc_max_chisq_flagging_dynamic_range=${35}
+oc_use_prior_sol=${36}
+oc_prior_sol_flag_thresh=${37}
+rfi_dpss_halfwidth=${38}
+rfi_nsig=${39}
+abscal_min_bl_len=${40}
+abscal_max_bl_len=${41}
+save_omni_vis=${42}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -75,6 +78,7 @@ export AUTO_RFI_GOOD=${auto_rfi_good}
 export AUTO_RFI_SUSPECT=${auto_rfi_suspect}
 export AUTO_SHAPE_GOOD=${auto_shape_good}
 export AUTO_SHAPE_SUSPECT=${auto_shape_suspect}
+export BAD_XENGINE_ZCUT=${bad_xengine_zcut}
 export OC_CSPA_GOOD=${oc_cspa_good}
 export OC_CSPA_SUSPECT=${oc_cspa_suspect}
 export OC_MAX_DIMS=${oc_max_dims}
@@ -85,19 +89,21 @@ export OC_MAX_BL_LEN=${oc_max_bl_len}
 export OC_MAXITER=${oc_maxiter}
 export OC_MAX_RERUN=${oc_max_rerun}
 export OC_RERUN_MAXITER=${oc_rerun_maxiter}
+export OC_MAX_CHISQ_FLAGGING_DYNAMIC_RANGE=${oc_max_chisq_flagging_dynamic_range}
 export OC_USE_PRIOR_SOL=${oc_use_prior_sol}
 export OC_PRIOR_SOL_FLAG_THRESH=${oc_prior_sol_flag_thresh}
 export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
 export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
 export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
+export SAVE_OMNI_VIS=${save_omni_vis}
 
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
---ExecutePreprocessor.allow_errors=True \
+--ExecutePreprocessor.allow_errors=False \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/file_calibration.ipynb
 echo Finished running file calibration notebook at $(date)

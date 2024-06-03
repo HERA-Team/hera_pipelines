@@ -13,9 +13,11 @@ echo Host: `hostname`
 # 1 - filename
 # 2 - upload_to_librarian: global boolean trigger
 # 3 - librarian_redcal: boolean trigger for this step
+# 4 - save_omni_vis: boolean trigger for saving omni_vis files
 fn="${1}"
 upload_to_librarian="${2}"
 librarian_redcal="${3}"
+save_omni_vis="${4}"
 
 bn=`basename ${fn}`
 jd=$(get_int_jd ${fn})
@@ -27,8 +29,11 @@ if [ "${upload_to_librarian}" == "True" ]; then
         # Compress all redcal files per output type into one with a JD corresponding to $fn
         declare -a exts=(
             ".omni.calfits"
-            ".omni_vis.uvh5"
         )
+        if [ "${save_omni_vis}" == "True" ]; then
+            exts+=(".omni_vis.uvh5")
+        fi
+        
         for ext in ${exts[@]}; do
             compressed_file=`echo ${fn%.uvh5}${ext}.tar.gz`
             echo tar czfv ${compressed_file} zen.${jd}*${ext}

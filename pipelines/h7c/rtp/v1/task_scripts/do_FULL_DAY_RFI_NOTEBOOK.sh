@@ -90,7 +90,7 @@ python ${src_dir}/build_notebook_index.py ${nb_outdir}
 if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_full_day_rfi}" == "True" ]; then
 
-        # Compress all ant_metrics files into one with a JD corresponding to $fn
+        # Compress all flag_waterfall files into one with a JD corresponding to $fn
         compressed_file=`echo ${fn%.uvh5}.flag_waterfall.h5.tar.gz`
         echo tar czfv ${compressed_file} zen.${jd}*.flag_waterfall.h5
         tar czfv ${compressed_file} zen.${jd}*.flag_waterfall.h5

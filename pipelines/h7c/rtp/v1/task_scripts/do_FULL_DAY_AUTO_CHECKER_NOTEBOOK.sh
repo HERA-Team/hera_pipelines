@@ -87,7 +87,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
     if [ "${librarian_full_day_auto_checker}" == "True" ]; then
         yaml_for_librarian=`echo ${fn%.uvh5}${OUT_YAML_SUFFIX}`
         yaml_for_librarian=`basename ${yaml_for_librarian}`
-        echo librarian upload local-rtp ${out_yaml_file} ${jd}/${librarian_file}
+        echo librarian upload local-rtp ${out_yaml_file} ${jd}/${yaml_for_librarian}
         librarian upload local-rtp ${out_yaml_file} ${jd}/${yaml_for_librarian}
         echo Finished uploading ${yaml_for_librarian} to the Librarian at ${jd}/${librarian_file} at $(date)
     fi

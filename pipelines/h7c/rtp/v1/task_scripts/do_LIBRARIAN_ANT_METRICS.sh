@@ -35,5 +35,17 @@ if [ "${upload_to_librarian}" == "True" ]; then
         echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
         librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
         echo Finished uploading ${compressed_file} to the Librarian at $(date)
+
+        # Compress all antenna flags files into one with a JD corresponding to $fn
+        compressed_file=`echo ${fn%.uvh5}.antenna_flags.h5.tar.gz`
+        echo tar czfv ${compressed_file} zen.${jd}*.antenna_flags.h5
+        tar czfv ${compressed_file} zen.${jd}*.antenna_flags.h5
+
+        # Upload gzipped file to the librarian
+        librarian_file=`basename ${compressed_file}`
+        echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
+        librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
+        echo Finished uploading ${compressed_file} to the Librarian at $(date)
+
     fi
 fi

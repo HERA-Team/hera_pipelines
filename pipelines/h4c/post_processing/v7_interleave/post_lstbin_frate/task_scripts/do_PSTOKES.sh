@@ -41,7 +41,8 @@ fi
 
 for sd in ${sumdiff[@]}
 do
-  exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
+    exts=("foreground_filled.xtalk_filtered.chunked")
+ # exts=("frf" "foreground_filled.xtalk_filtered.chunked" )
   for ext in ${exts[@]}
   do
       for ((ilabel=0; ilabel < ${ninterleave}; ilabel++))

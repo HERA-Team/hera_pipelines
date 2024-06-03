@@ -21,11 +21,9 @@ fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
 git_push=${4}
-upload_to_librarian=${5}
-librarian_smooth_cal=${6}
-freq_smoothing_scale=${7}
-time_smoothing_scale=${8}
-eigenval_cutoff=${9}
+freq_smoothing_scale=${5}
+time_smoothing_scale=${6}
+eigenval_cutoff=${7}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -62,23 +60,6 @@ fi
 
 # Rebuild index.html for this notebook's folder
 python ${src_dir}/build_notebook_index.py ${nb_outdir}
-
-# upload results to librarian if desired
-if [ "${upload_to_librarian}" == "True" ]; then
-    if [ "${librarian_smooth_cal}" == "True" ]; then
-
-        # Compress all ant_metrics files into one with a JD corresponding to $fn
-        compressed_file=`echo ${fn%.uvh5}.smooth.calfits.tar.gz`
-        echo tar czfv ${compressed_file} zen.${jd}*.smooth.calfits
-        tar czfv ${compressed_file} zen.${jd}*.smooth.calfits
-
-        # Upload gzipped file to the librarian
-        librarian_file=`basename ${compressed_file}`
-        echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        echo Finished uploading ${compressed_file} to the Librarian at $(date)
-    fi
-fi
 
 # If desired, push results to github
 if [ "${git_push}" == "True" ]

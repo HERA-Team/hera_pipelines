@@ -1,0 +1,32 @@
+noise:
+    simulator: "thermal_noise"
+    Trx: 100
+    omega_p: !Beam
+        datafile: "/lustre/aoc/projects/hera/Validation/H1C_IDR3/configs/omegas.npz"
+        interp_kwargs:
+            interpolator: "interp1d"
+            kind: "cubic"
+    seed: "initial"
+bandpass:
+    simulator: "bandpass_gain"
+    seed: 887765121
+short_reflection:
+    simulator: "reflections"
+    amp: 0.005
+    dly: 180
+    amp_jitter: 0.2
+    dly_jitter: 10
+    seed: 3077452711
+reflection_spectrum:
+    seed: 3857895474
+    n_copies: 20
+    dly_range:
+        - 200
+        - 1000
+    amp_range:
+        - -3
+        - -4
+    dly_jitter: 30
+    amp_jitter: 0.
+
+    # /lustre/aoc/projects/hera/Validation/H4C/IDR2/configs/base_config.yaml

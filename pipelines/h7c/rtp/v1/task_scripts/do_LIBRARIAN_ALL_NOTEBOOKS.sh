@@ -30,6 +30,10 @@ if [ "${upload_to_librarian}" == "True" ]; then
             "full_day_antenna_flagging"
             "full_day_auto_checker"
             "calibration_smoothing"
+            "delay_filtered_average_zscore"
+            "full_day_rfi_round_2"
+            "file_postprocessing"
+            "full_day_systematics_inspect"
         )
 
         for nb_name in ${nb_names[@]}; do

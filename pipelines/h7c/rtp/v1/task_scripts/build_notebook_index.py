@@ -19,6 +19,7 @@ args = a.parse_args()
 files = sorted(os.listdir(args.target_dir))
 title = os.path.realpath(args.target_dir).split('/')[-1]
 
+date_str_cache = {}
 def make_links(files):
     links = []
     for file in files:
@@ -28,8 +29,12 @@ def make_links(files):
 
         date_str = ''
         if len(JD_strs) > 0:
-            utc = Time(JD_strs[-1], format='jd').datetime
-            date_str = f' ({utc.year}-{utc.month}-{utc.day})'
+            if JD_strs[-1] in date_str_cache:
+                date_str = date_str_cache[JD_strs[-1]]
+            else:
+                utc = Time(JD_strs[-1], format='jd').datetime
+                date_str = f' ({utc.year}-{utc.month}-{utc.day})'
+                date_str_cache[JD_strs[-1]] = date_str
         links.append(f'    <li><a href="{file}">{file.split("/")[-1]}{date_str}</a></li>')
     return links
 
@@ -47,7 +52,7 @@ os.chdir(os.path.join(args.target_dir, '..'))
 all_html_files = [os.path.relpath(f) for f in glob.glob(os.path.join(args.target_dir, "../*/*.html"))]
 mod_times = [os.path.getmtime(f) for f in all_html_files]
 file_time_pairs = list(zip(all_html_files, mod_times))
-recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)][0:100]
+recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)][0:200]
 links = make_links(recent_html_files)
 recent_jds = sorted(list(set([int(jd) for link in links for jd in re.findall(r"2\d{6}", link)])), reverse=True)
 
@@ -56,12 +61,16 @@ overall_index += '    <li><a href=".."><b>Back to all seasons.</b></a></li>\n'
 overall_index += '    <li><a href="antenna_classification_summary">antenna_classification_summary</a></li>\n'
 overall_index += '    <li><a href="calibration_smoothing">calibration_smoothing</a></li>\n'
 overall_index += '    <li><a href="data_inspect_all_ants">data_inspect_all_ants</a></li>\n'
+overall_index += '    <li><a href="delay_filtered_average_zscore">delay_filtered_average_zscore</a></li>\n'
 overall_index += '    <li><a href="file_calibration">file_calibration</a></li>\n'
 overall_index += '    <li><a href="full_day_antenna_flagging">full_day_antenna_flagging</a></li>\n'
 overall_index += '    <li><a href="full_day_auto_checker">full_day_auto_checker</a></li>\n'
 overall_index += '    <li><a href="full_day_rfi">full_day_rfi</a></li>\n'
+overall_index += '    <li><a href="full_day_rfi_round_2">full_day_rfi_round_2</a></li>\n'
+overall_index += '    <li><a href="file_postprocessing">file_postprocessing</a></li>\n'
+overall_index += '    <li><a href="full_day_systematics_inspect">full_day_systematics_inspect</a></li>\n'
 overall_index += '</ul>\n</h3>\n<h2>Most Recent Notebooks:</h2>\n'
-for jd in recent_jds[0:7]:
+for jd in recent_jds[0:14]:
     overall_index += f'<h3>{jd}:</h3>\n<ul>\n' + '\n'.join([link for link in links if str(jd) in link]) + '\n</ul>\n'
 overall_index += "</body>\n</html>"
 
