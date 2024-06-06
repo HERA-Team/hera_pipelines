@@ -21,6 +21,7 @@ dependencies:
   - healpy
   - ipympl
   - ipython
+  - ipykernel
   - jax
   - jaxlib
   - jupyter
