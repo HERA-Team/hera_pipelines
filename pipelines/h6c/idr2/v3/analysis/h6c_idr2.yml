@@ -32,6 +32,7 @@ dependencies:
   - numpy
   - optax
   - pandas
+  - papermill
   - pip
   - pre-commit
   - psutil
