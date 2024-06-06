@@ -2,9 +2,9 @@
 
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines_steven/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
 source_script = "~/.bashrc"
-conda_env = "h6c"
+conda_env = "h6c_idr2"
 base_mem = 12000
 base_cpu = 1
 timeout = "48h"
@@ -24,9 +24,9 @@ parallelize = true
 nlsts_per_file = 2
 lst_start = 0.0
 antpairs_from_last_file_each_night = true
-where_inpainted_file_rules = [
-  [".sum.*.uvh5", ".where_inpainted.h5"]
-]
+# where_inpainted_file_rules = [
+#   [".sum.*.uvh5", ".where_inpainted.h5"]
+# ]
 
 [FILE_CFG.datafiles]                                                                                                                                                                 
 # Arguments to specify input files.
@@ -50,7 +50,7 @@ write_med_mad=false
 plot_every=180  # about 1 hour
 save_metric_data = false  # this should be updated for the real runs
 do_extra_flagging = false
-inpaint_cache_dir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/inpaint_cache"
+# inpaint_cache_dir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/inpaint_cache"
 
 do_simultaneous_inpainting = true
 
