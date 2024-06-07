@@ -115,13 +115,9 @@ dly_filt_horizon = 1.0
 dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
-inpaint_min_dly = 500.0 # in ns
-inpaint_regularization = 1e-5
-inpaint_max_gap_factor = 2.0
 save_diff_red_avg = false
 save_abs_cal_red_avg = true
 save_dly_filt_red_avg = true
-save_inpaint_red_avg = true
 
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
 filter_dly_min = 150.0 # in ns
@@ -356,15 +352,11 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
-        "${POSTPROCESS_FILE_OPTS:inpaint_min_dly}",
-        "${POSTPROCESS_FILE_OPTS:inpaint_regularization}",
-        "${POSTPROCESS_FILE_OPTS:inpaint_max_gap_factor}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${POSTPROCESS_FILE_OPTS:save_diff_red_avg}",
         "${POSTPROCESS_FILE_OPTS:save_abs_cal_red_avg}",
         "${POSTPROCESS_FILE_OPTS:save_dly_filt_red_avg}",
-        "${POSTPROCESS_FILE_OPTS:save_inpaint_red_avg}",
         ]
 extra_batch_options = "--nice=1000"
 
