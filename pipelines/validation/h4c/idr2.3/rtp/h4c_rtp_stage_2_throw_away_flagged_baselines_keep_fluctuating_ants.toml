@@ -1,7 +1,7 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/validation/h4c/idr2.3/rtp/stage_2_task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/validation/h4c/idr2.3/rtp/stage_2_a_priori_flags_include_variable"
 conda_env = "h4c_idr3"
 source_script = "~/.bashrc"
 base_mem = 16000
@@ -121,7 +121,7 @@ args = [
 
 
 [REDCAL]
-prereqs = "EXTRACT_AUTOS"
+prereqs = "MOCK_DATA"
 prereq_chunk_size = 1
 args = [
     "{basename}",
@@ -248,7 +248,7 @@ args = []
 #        ]
 
 [CAL_SMOOTH]
-prereqs = "XRFI_DAY_THRESHOLD"
+prereqs = "XRFI_TRANSFER"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
