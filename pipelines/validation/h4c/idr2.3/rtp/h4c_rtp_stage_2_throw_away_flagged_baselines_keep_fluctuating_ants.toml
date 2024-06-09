@@ -1,8 +1,8 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
-conda_env = "hera3dev"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
+conda_env = "h4c_idr3"
 source_script = "~/.bashrc"
 base_mem = 16000
 base_cpu = 1
@@ -11,7 +11,7 @@ pbs_mail_user = "lisaleemcb@gmail.com"
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks'
-nb_output_repo = '/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/'
+nb_output_repo = '/lustre/aoc/projects/hera/Validation/H4C/IDR3/RTPstage_notebooks'
 git_push = false
 
 [MOCK_DATA_OPTS]
@@ -32,13 +32,14 @@ check_every = 50
 check_after = 500
 
 [ABSCAL_OPTS]
-model_files_glob = "'/lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/foregrounds/*.uvh5'"
+model_files_glob = "'/lustre/aoc/projects/hera/zmartino/hera_calib_model/H3C/abscal_files_unique_baselines/zen.2458894.?????.uvh5'"
 nInt_to_load = 6
 min_bl_cut = 60.0
 max_bl_cut = 140.0
 phs_max_iter = 100
 phs_conv_crit = 1e-6
 edge_cut = 100
+
 
 [XRFI_OPTS]
 kt_size = 8
@@ -102,6 +103,7 @@ actions = [
     # "CLEAN_FILES", # TODO: add this back in
 ]
 
+
 [THROW_AWAY_FLAGGED_BASELINES]
 args = ["{basename}", "${Options:path_to_a_priori_flags}"]
 
@@ -117,8 +119,9 @@ args = [
 # #prereqs = "THROW_AWAY_FLAGGED_BASELINES"
 # args = ["{basename}"]
 
+
 [REDCAL]
-prereqs = "MOCK_DATA"
+prereqs = "EXTRACT_AUTOS"
 prereq_chunk_size = 1
 args = [
     "{basename}",
@@ -245,7 +248,7 @@ args = []
 #        ]
 
 [CAL_SMOOTH]
-prereqs = "XRFI_TRANSFER"
+prereqs = "XRFI_DAY_THRESHOLD"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -282,36 +285,36 @@ args = [
     "${CAL_SMOOTH_OPTS:lst_blacklists}",
 ]
 
-# [IMAGING]
-# prereqs = "CAL_SMOOTH"
-# prereq_chunk_size = "all"
-# args = ["{basename}",
-#         "${IMAGING_OPTS:casa}",
-#         "${IMAGING_OPTS:casa_imaging_scripts}",
-#         "${IMAGING_OPTS:spw}",
-#         "${ABSCAL_OPTS:model_files_glob}",
-#         "${IMAGING_OPTS:calibration}"
-#        ]
-#
-# [MOVIES]
-# prereqs = "IMAGING"
-# prereq_chunk_size = "all"
-# chunk_size = 1
-# stride_length = "all"
-# time_centered = false
-# args = ["{basename}",
-#         "${IMAGING_OPTS:spw}",
-#         "${IMAGING_OPTS:ffmpeg}",
-#         "${IMAGING_OPTS:framerate}",
-#         "${IMAGING_OPTS:framesize}",
-#        ]
-#
-# [APPLY_CAL_REDUNDANT_AVERAGE]
-# prereqs = "CAL_SMOOTH"
-# prereq_chunk_size = "all"
-# args = ["{basename}",
-#         "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}"
-#        ]
+[IMAGING]
+prereqs = "CAL_SMOOTH"
+prereq_chunk_size = "all"
+args = [
+    "{basename}",
+    "${IMAGING_OPTS:casa}",
+    "${IMAGING_OPTS:casa_imaging_scripts}",
+    "${IMAGING_OPTS:spw}",
+    "${ABSCAL_OPTS:model_files_glob}",
+    "${IMAGING_OPTS:calibration}",
+]
+
+[MOVIES]
+prereqs = "IMAGING"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = [
+    "{basename}",
+    "${IMAGING_OPTS:spw}",
+    "${IMAGING_OPTS:ffmpeg}",
+    "${IMAGING_OPTS:framerate}",
+    "${IMAGING_OPTS:framesize}",
+]
+
+[APPLY_CAL_REDUNDANT_AVERAGE]
+prereqs = "CAL_SMOOTH"
+prereq_chunk_size = "all"
+args = ["{basename}", "${APPLY_CAL_REDUNDANT_AVERAGE_OPTS:nbl_per_load}"]
 
 # [CLEAN_FILES]
 # prereqs = ["DATA_INSPECT_NOTEBOOK_KNOWN_GOOD",
