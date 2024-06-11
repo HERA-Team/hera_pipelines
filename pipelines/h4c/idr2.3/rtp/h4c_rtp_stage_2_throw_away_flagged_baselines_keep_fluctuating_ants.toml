@@ -92,8 +92,8 @@ actions = [
     "RFI_INSPECT_NOTEBOOK",
     "CAL_SMOOTH",
     "SMOOTH_CAL_INSPECT_NOTEBOOK",
-    "IMAGING",
-    "MOVIES",
+    #"IMAGING",
+    #"MOVIES",
     #"APPLY_CAL_REDUNDANT_AVERAGE",
     # "CLEAN_FILES", # TODO: add this back in
 ]
