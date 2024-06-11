@@ -106,7 +106,7 @@ prereqs = ["EXTRACT_AUTOS", "FR_FILTER"]
 prereq_chunk_size="all"
 mem=16000
 chunk_size=1
-stride_length=${Options:chunk_size}"
+stride_length="${Options:chunk_size}"
 args=["{basename}", "${Options:label}", "${FR_OPTS:tol}","${FR_opts:spw_ranges}",
       "${FR_OPTS:prefilter_zero_frate}", "${FR_OPTS:ninterleave}"]
 
