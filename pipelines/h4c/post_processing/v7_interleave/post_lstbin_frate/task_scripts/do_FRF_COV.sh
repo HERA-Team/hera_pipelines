@@ -43,7 +43,7 @@ if echo x"$waterfall_files" | grep '*' > /dev/null; then
 else
     echo ${ilabel}
     # Calculate FRF cov
-    fn_out=zen.${jd}.sum.${label}.frf.tavg.cov.interleave_${ilabel}.npy
+    fn_out=zen.${jd}.sum.${label}.frf.tavg.cov.npy
 	
     cmd="FRF_noise_cov_run.py ${waterfall_files}  --tol ${tol} \
       --fn_out ${fn_out} --clobber --verbose --spw_range ${spw_range} \
