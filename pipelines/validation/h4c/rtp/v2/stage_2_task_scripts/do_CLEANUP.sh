@@ -24,7 +24,7 @@ int_jd=${jd:0:7}
 rm -rf zen.${jd}.*.${label}*.sum.abs.calfits
 # remove omni calibration files
 rm -rf zen.${jd}.*.${label}*.sum.omni.calfits
-# remove omin calibration vis files
+# remove omni calibration vis files
 rm -rf zen.${jd}.*.${label}*.omni_vis.uvh5
 # remove redundant calibration meta data
-rm -rf zen.${jd}.*.${label}*.sum.redcal_meta.hdf
+rm -rf zen.${jd}.*.${label}*.sum.redcal_meta.hdf5
