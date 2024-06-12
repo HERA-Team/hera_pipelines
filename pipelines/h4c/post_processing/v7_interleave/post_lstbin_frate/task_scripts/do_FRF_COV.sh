@@ -31,7 +31,7 @@ else
   pf_arg=""
 fi
 
-for spw_range in spw_ranges
+for spw_range in ${spw_ranges[@]}
 do
   waterfall_file=`echo zen.${jd}.sum.${label}.frf.spw_range_${spw_range}.waterfall.uvh5`
   if echo x"$waterfall_files" | grep '*' > /dev/null; then
