@@ -15,7 +15,8 @@ prefilter_zero_frate="${5}"
 ninterleave="${6}"
 #clobber="true"
 
-jd=$(get_jd $fn)
+jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
+jd="LST.${jd}"
 
 
 # split up spw ranges.
@@ -37,7 +38,7 @@ do
 		echo "No waterfall files exist with ${jd}. This is probably because there are more times than baseline groups."
   else
     # Calculate FRF cov
-    fn_out=zen.${jd}.sum.${label}.frf.tavg.cov.npy
+    fn_out=zen.${jd}.sum.${label}.frf.tavg.spw_range_${spw_range}.cov.npy
 	
     cmd="FRF_noise_cov_run.py ${waterfall_files}  --tol ${tol} \
       --fn_out ${fn_out} --clobber --verbose --spw_range ${spw_range} \
