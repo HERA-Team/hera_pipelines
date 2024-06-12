@@ -40,7 +40,7 @@ do
     # Calculate FRF cov
     fn_out=zen.${jd}.sum.${label}.frf.tavg.spw_range_${spw_range}.cov.npy
 	
-    cmd="FRF_noise_cov_run.py ${waterfall_files}  --tol ${tol} \
+    cmd="FRF_noise_cov_run.py ${waterfall_file}  --tol ${tol} \
       --fn_out ${fn_out} --clobber --verbose --spw_range ${spw_range} \
       --ninterleave ${ninterleave} ${pf_arg}"		   
     echo ${cmd}
