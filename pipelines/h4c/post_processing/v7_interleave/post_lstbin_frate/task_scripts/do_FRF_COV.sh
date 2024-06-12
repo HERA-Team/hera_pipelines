@@ -16,12 +16,6 @@ ninterleave="${6}"
 #clobber="true"
 
 jd=$(get_jd $fn)
-int_jd=${jd:0:7}
-if [[ "$int_jd" == *"."* ]]; then
-  jd=`echo ${fn} | grep -o "[0-9]\{1,2\}.[0-9]\{5\}"`
-  int_jd="LST"
-  jd="LST.${jd}"
-fi
 
 
 # split up spw ranges.
@@ -36,12 +30,12 @@ else
   pf_arg=""
 fi
 
-
-waterfall_files=`echo zen.${int_jd}.*.sum.${label}.frf.waterfall.uvh5`
-if echo x"$waterfall_files" | grep '*' > /dev/null; then
+for spw_range in spw_ranges
+do
+  waterfall_file=`echo zen.${jd}.sum.${label}.frf.spw_range_${spw_range}.waterfall.uvh5`
+  if echo x"$waterfall_files" | grep '*' > /dev/null; then
 		echo "No waterfall files exist with ${jd}. This is probably because there are more times than baseline groups."
-else
-    echo ${ilabel}
+  else
     # Calculate FRF cov
     fn_out=zen.${jd}.sum.${label}.frf.tavg.cov.npy
 	
@@ -50,6 +44,6 @@ else
       --ninterleave ${ninterleave} ${pf_arg}"		   
     echo ${cmd}
 	${cmd}  
-fi
-	    
+  fi
+done	    
 
