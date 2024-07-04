@@ -28,6 +28,8 @@ timeout = "48h"
 outdir = "${LSTAVG_OPTS:outdir}"
 {% if REDAVG -%}
 bl_chunk_size = 5000
+{% else %}
+bl_chunk_size = 0
 {% endif %}
 
 parallelize = true
@@ -58,7 +60,7 @@ fileglob = "{night}/zen.{night}.?????.sum{{ DATA_EXTENSION }}.uvh5"
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
 outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ CASENAME }}/"
-bl_chunk_size = 5000
+bl_chunk_size = ${LSTBIN_OPTS:bl_chunk_size}
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.sum.uvh5"
 overwrite=true
 write_med_mad=false
@@ -79,5 +81,5 @@ actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
 
 [PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK]
 args = [
-  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel",
+  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel", "output_blchnk_select"
 ]
