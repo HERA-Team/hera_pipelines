@@ -202,21 +202,13 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
         sys.exit(1)
 
     if all_cases:
-        if generation < 3:
-            cases = [
-                ('redavg', 'abscal', 'dlyfilt'),
-                ('redavg', 'abscal', 'inpaint'),
-                ('redavg', 'smoothcal', 'dlyfilt'),
-                ('redavg', 'smoothcal', 'inpaint'),
-                ('nonavg', 'smoothcal', 'inpaint'),
-            ]
-        else:
-            cases = [
-                ('redavg', 'abscal', 'dlyfilt'),
-                ('redavg', 'abscal', 'inpaint'),
-                ('redavg', 'smoothcal', 'dlyfilt'),
-                ('redavg', 'smoothcal', 'inpaint'),
-            ]
+        cases = [
+            ('redavg', 'abscal', 'dlyfilt'),
+            ('redavg', 'abscal', 'inpaint'),
+            ('redavg', 'smoothcal', 'dlyfilt'),
+            ('redavg', 'smoothcal', 'inpaint'),
+            ('nonavg', 'smoothcal', 'inpaint'),
+        ]
 
     for case in cases:
         redavg, abscal, dlyfilt = case
