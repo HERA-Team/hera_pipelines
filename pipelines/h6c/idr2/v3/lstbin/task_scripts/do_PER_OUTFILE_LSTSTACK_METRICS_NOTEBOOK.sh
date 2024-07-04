@@ -14,11 +14,12 @@ lstconfig=${2}
 tomlfile=${3}
 outfile_idx=${4}
 kernel=${5}
+outfile_blchunk=${6}
 
-outname="lststack.${outfile_idx}"
+outname="lststack.${outfile_idx}.${outfile_blchunk}"
 
 runopts="--output-dir ${outdir} -k ${kernel} --toml ${tomlfile}"
-cfg="-o ${outname} --fileconf ${lstconfig} --fileidx ${outfile_idx}"
+cfg="-o ${outname} --fileconf ${lstconfig} --fileidx ${outfile_idx} --blchunk ${outfile_blchunk}" 
  
 cmd="hnote run ${runopts} lststack ${cfg}"
 
