@@ -31,7 +31,6 @@ bl_chunk_size = 5000
 {% else %}
 bl_chunk_size = 0
 {% endif %}
-
 parallelize = true
 
 
@@ -60,7 +59,7 @@ fileglob = "{night}/zen.{night}.?????.sum{{ DATA_EXTENSION }}.uvh5"
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
 outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ CASENAME }}/"
-bl_chunk_size = ${LSTBIN_OPTS:bl_chunk_size}
+bl_chunk_size = "${LSTBIN_OPTS:bl_chunk_size}"
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.sum.uvh5"
 overwrite=true
 write_med_mad=false
