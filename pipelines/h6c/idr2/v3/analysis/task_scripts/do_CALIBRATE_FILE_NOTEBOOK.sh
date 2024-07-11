@@ -54,6 +54,7 @@ rfi_nsig=${38}
 abscal_min_bl_len=${39}
 abscal_max_bl_len=${40}
 save_omni_vis=${41}
+calibrate_cross_pols=${42}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -94,6 +95,7 @@ export RFI_NSIG=${rfi_nsig}
 export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
 export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
 export SAVE_OMNIVIS_FILE=${save_omni_vis}
+export CALIBRATE_CROSS_POLS=${calibrate_cross_pols}
 
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
