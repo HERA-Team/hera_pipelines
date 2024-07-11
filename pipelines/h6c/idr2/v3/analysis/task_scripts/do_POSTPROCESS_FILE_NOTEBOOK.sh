@@ -26,6 +26,7 @@ FM_high_freq=${10}
 save_diff_red_avg=${11}
 save_abs_cal_red_avg=${12}
 save_dly_filt_red_avg=${13}
+calibrate_cross_pols=${14}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -55,6 +56,7 @@ export FM_HIGH_FREQ=${FM_high_freq}
 export SAVE_DIFF_RED_AVG=${save_diff_red_avg}
 export SAVE_ABS_CAL_RED_AVG=${save_abs_cal_red_avg}
 export SAVE_DLY_FILT_RED_AVG=${save_dly_filt_red_avg}
+export SAVE_CROSS_POLS=${calibrate_cross_pols}
 
 nb_outfile=${SUM_FILE%.uvh5}.postprocessing_notebook.html
 

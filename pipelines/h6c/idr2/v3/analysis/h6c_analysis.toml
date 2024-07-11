@@ -360,6 +360,7 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:save_diff_red_avg}",
         "${POSTPROCESS_FILE_OPTS:save_abs_cal_red_avg}",
         "${POSTPROCESS_FILE_OPTS:save_dly_filt_red_avg}",
+        "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
         ]
 extra_batch_options = "--nice=1000"
 
