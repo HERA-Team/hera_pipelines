@@ -307,6 +307,7 @@ args = ["{basename}",
         "${CALIBRATION_SMOOTHING_OPTS:freq_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:time_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
+        "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
         ]
 
 [DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK]

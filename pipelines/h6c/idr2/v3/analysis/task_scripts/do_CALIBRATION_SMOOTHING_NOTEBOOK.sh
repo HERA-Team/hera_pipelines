@@ -25,6 +25,7 @@ librarian_smooth_cal=${6}
 freq_smoothing_scale=${7}
 time_smoothing_scale=${8}
 eigenval_cutoff=${9}
+calibrate_cross_pols=${10}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -41,6 +42,11 @@ export RFI_FLAG_SUFFIX="sum.flag_waterfall.h5"
 export FREQ_SMOOTHING_SCALE=${freq_smoothing_scale}
 export TIME_SMOOTHING_SCALE=${time_smoothing_scale}
 export EIGENVAL_CUTOFF=${eigenval_cutoff}
+if [ "${calibrate_cross_pols}" == "True" ]; then
+    export PER_POL_REFANT="False"
+else
+    export PER_POL_REFANT="True"
+fi
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
