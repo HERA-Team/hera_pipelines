@@ -1,5 +1,5 @@
-#! This is a *template* file for the lstbin makeflow. Use `herapipes lstbin-setup` to 
-#! generate specific lstbin makeflows for different cases. This template has a few 
+#! This is a Jinja2 *template* file for the lstbin makeflow. Use `herapipes lstbin-setup` 
+#! to generate specific lstbin makeflows for different cases. This template has a few 
 #! variables that can be used to generate a makeflow for a specific case. These are:
 #!   {{ REPODIR }}    : the directory of the hera-pipelines repo 
 #!   {{ SEASON }}     : the season to process
@@ -12,6 +12,7 @@
 #!   {{ INPAINT_FORMAT }} : this gets set to "{inpaint_mode}/" if the case uses inpaint mode
 #!   {{ CALEXT }}     : specifies the calfits file extension, or none if datafiles are already calibrated (e.g. ".smooth.calfits")
 #! Note that all lines starting with '#!' will be removed in the created TOML file.
+#! Further note that you can use conditional statements using {% if VARIABLE -%}.
 # This is the lstbin TOML file for the {{ CASENAME }} case.
 
 [Options]
