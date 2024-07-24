@@ -246,7 +246,7 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
                 ".abs.calfits" if abscal=='abscal' and redavg=='nonavg' else 'none'
             ),
             FLAGGED_AVERAGE = dlyfilt=='dlyfilt',
-            REDAVG=redavg == 'redavg',
+            REDAVG=redavg=='redavg',
         )
         rendered = toml.render(**kw)
 
