@@ -44,7 +44,7 @@ fileglob = "{night}/zen.{night}.?????.sum.smooth_calibrated.red_avg.uvh5"
 # Options for the notebook running -- i.e. the metrics and averaging.
 outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/redavg-smoothcal-inpaint/"
 bl_chunk_size = 5000
-fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.sum.uvh5"
+fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.{blchunk}.sum.uvh5"
 overwrite=true
 write_med_mad=false
 plot_every=180  # about 1 hour
