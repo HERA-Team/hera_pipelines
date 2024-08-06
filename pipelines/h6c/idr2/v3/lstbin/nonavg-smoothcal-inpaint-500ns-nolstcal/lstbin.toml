@@ -3,7 +3,7 @@
 
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/home/sgm/work/hera/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "h6c_idr2"
 base_mem = 32000

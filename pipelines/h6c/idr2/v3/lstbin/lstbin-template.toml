@@ -35,7 +35,7 @@ timeout = "48h"
 [LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                               
 # ---- Parameters used by hera_opm to build the makeflow ----
 outdir = "${LSTAVG_OPTS:outdir}"
-bl_chunk_size = {{ 0 if REDAVG else 2000 }}
+bl_chunk_size = 2000
 parallelize = true
 
 
