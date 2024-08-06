@@ -14,7 +14,7 @@ lstconfig=${2}
 tomlfile=${3}
 printf -v outfile_idx "%04d" ${4}
 kernel=${5}
-printf -v outfile_blchunk "$03d" ${6}
+printf -v outfile_blchunk "%03d" ${6}
 
 outname="lststack.${outfile_idx}.${outfile_blchunk}"
 
