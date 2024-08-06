@@ -6,7 +6,7 @@ makeflow_type = "lstbin"
 path_to_do_scripts = "/home/sgm/work/hera/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "h6c_idr2"
-base_mem = 24000
+base_mem = 28000
 base_cpu = 1
 timeout = "48h"
 
