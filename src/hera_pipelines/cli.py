@@ -182,7 +182,7 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     ]),
     help="quintuplet of [redavg/nonavg, abscal/smoothcal, dlyfilt/inpaint, inpaintdelay (e.g. '500ns'), lstcal/nolstcal]"
 )
-@click.option("--setup-analysis/--only-repo", default=True, help="whether to also softlink output tomls to the analysis dir")
+@click.option("--setup-analysis/--only-repo", default=None, help="whether to also softlink output tomls to the analysis dir")
 @click.option('--prefix', type=str, default='', help='a prefix to add to the casenames')
 @click.option("--all-cases/--specify-cases", default=True,)
 def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix, all_cases):
@@ -199,6 +199,15 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
     """
     repodir = Path(repodir).absolute()
     template = repodir / f"pipelines/{season}/idr{idr}/v{gen}/lstbin/lstbin-template.toml"
+
+    if not seasons.seasons[season]['analysis_dir'].exists():
+        if setup_analysis:
+            print(":warning-emoji: [red]You specified --setup-analysis but the analysis directory does not exist[/]")
+
+        # Can't setup the analysis directory because we're not on lustre.
+        setup_analysis = False
+    elif setup_analysis is None:
+        setup_analysis = True
 
     if not template.exists():
         print(f"Template {template} does not exist")
