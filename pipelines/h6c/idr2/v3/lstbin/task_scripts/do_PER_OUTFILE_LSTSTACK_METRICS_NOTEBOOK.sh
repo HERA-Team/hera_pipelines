@@ -12,9 +12,9 @@ source ${src_dir}/_common.sh
 outdir=${1}
 lstconfig=${2}
 tomlfile=${3}
-outfile_idx=${4}
+printf -v outfile_idx "%04d" ${4}
 kernel=${5}
-outfile_blchunk=${6}
+printf -v outfile_blchunk "$03d" ${6}
 
 outname="lststack.${outfile_idx}.${outfile_blchunk}"
 
