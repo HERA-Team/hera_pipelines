@@ -1,17 +1,19 @@
-# This is the lstbin TOML file for the redavg-smoothcal-inpaint case.
+
+# This is the lstbin TOML file for the nonavg-smoothcal-inpaint-500ns-nolstcal case.
 
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
+path_to_do_scripts = "/home/sgm/work/hera/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "h6c_idr2"
-base_mem = 24000
+base_mem = 32000
 base_cpu = 1
 timeout = "48h"
 
 [LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                               
 # ---- Parameters used by hera_opm to build the makeflow ----
 outdir = "${LSTAVG_OPTS:outdir}"
+bl_chunk_size = 2000
 parallelize = true
 
 
@@ -24,9 +26,17 @@ parallelize = true
 nlsts_per_file = 2
 lst_start = 0.0
 antpairs_from_last_file_each_night = true
-# where_inpainted_file_rules = [
-#   [".sum.*.uvh5", ".where_inpainted.h5"]
-# ]
+
+# The following rules replace parts of the data file names to match their associated
+# calibration file. Curiously, since the FastUVH5Meta object does a path.resolve() on
+# the data file, the symlinks in the IDR2 directory get resolved back to the main
+# folder where we download the raw data from the librarian, but the calibration solutions
+# do not exist there, and so are not found. So we forcibly also replace the main path.
+calfile_rules = [
+  ["/lustre/aoc/projects/hera/H6C/", "/lustre/aoc/projects/hera/h6c-analysis/IDR2/"],
+  [".uvh5", ".smooth.calfits"]
+]
+
 
 [FILE_CFG.datafiles]                                                                                                                                                                 
 # Arguments to specify input files.
@@ -38,30 +48,26 @@ nights=[
   "2459867", "2459868", "2459869", "2459870", "2459871", 
   "2459872", "2459873", "2459874", "2459876"
 ]
-fileglob = "{night}/zen.{night}.?????.sum.smooth_calibrated.red_avg.uvh5"
+fileglob = "{night}/zen.{night}.?????.sum.uvh5"
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
-outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/redavg-smoothcal-inpaint-no-lstcal/"
-bl_chunk_size = 5000
+outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/nonavg-smoothcal-inpaint-500ns-nolstcal/"
+bl_chunk_size = "${LSTBIN_OPTS:bl_chunk_size}"
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.{blchunk}.sum.uvh5"
 overwrite=true
 write_med_mad=false
 plot_every=180  # about 1 hour
-save_metric_data = false  # this should be updated for the real runs
+save_metric_data = true  # this should be updated for the real runs
 do_extra_flagging = false
-# inpaint_cache_dir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/inpaint_cache"
-
 do_simultaneous_inpainting = true
+inpaint_mindelay = 500
 do_lstcal = false
-
-
-
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
 actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
 
 [PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK]
 args = [
-  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel", "output_blchnk_select", "output_blchnk_select",
+  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel", "output_blchnk_select"
 ]

@@ -169,20 +169,23 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
 
 
 @main.command()
-@click.argument("season", type=click.Choice(list(seasons.seasons.keys())))
-@click.argument("idr", type=int)
-@click.argument("generation", type=int)
-@click.argument("repodir", type=click.Path(exists=True, dir_okay=True, file_okay=False))
+@click.option("--season", type=click.Choice(list(seasons.seasons.keys())))
+@click.option("--idr", type=int)
+@click.option("--gen", type=int)
+@click.option("--repodir", default='.', type=click.Path(exists=True, dir_okay=True, file_okay=False))
 @click.option("-f/-F", "--force/--no-force", help="overwrite existing")
 @click.option(
     "--cases", multiple=True,
-    type=click.Tuple([click.Choice(['redavg', 'nonavg']), click.Choice(['abscal', 'smoothcal']), click.Choice(['dlyfilt', 'inpaint'])]),
-    help="triplet of [redavg/nonavg, abscal/smoothcal, dlyfilt/inpaint]"
+    type=click.Tuple([
+        click.Choice(['redavg', 'nonavg']), click.Choice(['abscal', 'smoothcal']), click.Choice(['dlyfilt', 'inpaint']),
+        str, click.Choice(['lstcal', 'nolstcal'])
+    ]),
+    help="quintuplet of [redavg/nonavg, abscal/smoothcal, dlyfilt/inpaint, inpaintdelay (e.g. '500ns'), lstcal/nolstcal]"
 )
 @click.option("--setup-analysis/--only-repo", default=True, help="whether to also softlink output tomls to the analysis dir")
 @click.option('--prefix', type=str, default='', help='a prefix to add to the casenames')
-@click.option("--all-cases/--specify-cases")
-def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis, prefix, all_cases):
+@click.option("--all-cases/--specify-cases", default=True,)
+def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix, all_cases):
     """Setup lstbin TOML files for a range of cases for a specific SEASON, IDR, and GENERATION.
 
     The TOML file created contains *both* the appropriate configuration for the
@@ -195,26 +198,27 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
     This creates the
     """
     repodir = Path(repodir).absolute()
-    template = repodir / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/lstbin-template.toml"
+    template = repodir / f"pipelines/{season}/idr{idr}/v{gen}/lstbin/lstbin-template.toml"
 
     if not template.exists():
         print(f"Template {template} does not exist")
         sys.exit(1)
 
-    if all_cases:
+    if all_cases and len(cases)==0:
         cases = [
-            ('redavg', 'abscal', 'dlyfilt'),
-            ('redavg', 'abscal', 'inpaint'),
-            ('redavg', 'smoothcal', 'dlyfilt'),
-            ('redavg', 'smoothcal', 'inpaint'),
-            ('nonavg', 'smoothcal', 'inpaint'),
+            ('redavg', 'smoothcal', 'inpaint', '500ns', 'lstcal'),  # Default case
+            ('redavg', 'abscal', 'inpaint', '500ns', 'lstcal'), 
+            ('redavg', 'smoothcal', 'dlyfilt', '500ns', 'lstcal'),
+            ('redavg', 'smoothcal', 'inpaint', '1000ns', 'lstcal'),
+            ('redavg', 'smoothcal', 'inpaint', '500ns', 'nolstcal'),
+            ('nonavg', 'smoothcal', 'inpaint', '500ns', 'nolstcal'), # no LST cal possible
         ]
 
     for case in cases:
-        redavg, abscal, dlyfilt = case
+        redavg, callevel, mdltype, inpdelay, lstcal = case
 
-        casename = f"{prefix}{redavg}-{abscal}-{dlyfilt}"
-        toml_file = repodir / f"pipelines/{season}/idr{idr}/v{generation}/lstbin/{casename}/lstbin.toml"
+        casename = f"{prefix}{redavg}-{callevel}-{mdltype}-{inpdelay}-{lstcal}"
+        toml_file = repodir / f"pipelines/{season}/idr{idr}/v{gen}/lstbin/{casename}/lstbin.toml"
         if toml_file.exists() and not force:
             print(f":warning: File '{toml_file}' exists and --force was not set. [red]Skipping[/].")
             continue
@@ -223,9 +227,9 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
         with open(template) as f:
             toml = Template(f.read())
 
-        if dlyfilt == 'dlyfilt':
+        if mdltype == 'dlyfilt':
             EXTENSION = ".dly_filt"
-        elif dlyfilt=='inpaint' and (idr <=2 and generation < 3):
+        elif mdltype=='inpaint' and (idr <=2 and gen < 3):
             EXTENSION = ".inpaint"
         else:
             EXTENSION = ""
@@ -234,35 +238,31 @@ def lstbin_setup(season, idr, generation, repodir, cases, force, setup_analysis,
             REPODIR = repodir,
             SEASON = season,
             IDR = idr,
-            GENERATION = generation,
+            GENERATION = gen,
             ANALYSISDIR = seasons.seasons[season]['analysis_dir'],
             CASENAME = casename,
-            INPAINT_EXTENSION="none" if dlyfilt == "dlyfilt" else ".where_inpainted.h5",
-            DATA_EXTENSION="" if redavg=='nonavg' else (
-                f".abs_calibrated.red_avg{EXTENSION}" if abscal=='abscal' else f".smooth_calibrated.red_avg{EXTENSION}"
+            INPAINT_EXT="none" if mdltype == "dlyfilt" else ".where_inpainted.h5",
+            DATA_EXT="" if redavg=='nonavg' else (
+                f".abs_calibrated.red_avg{EXTENSION}" if callevel=='abscal' else f".smooth_calibrated.red_avg{EXTENSION}"
             ),
-            INPAINT_FORMAT="{inpaint_mode}/" if dlyfilt == "inpaint" else "",
-            CALEXT=".smooth.calfits" if abscal == "smoothcal" and redavg=='nonavg' else (
-                ".abs.calfits" if abscal=='abscal' and redavg=='nonavg' else 'none'
+            INPAINT_FORMAT="{inpaint_mode}/" if mdltype == "inpaint" else "",
+            CALEXT=".smooth.calfits" if callevel == "smoothcal" and redavg=='nonavg' else (
+                ".abs.calfits" if callevel=='abscal' and redavg=='nonavg' else 'none'
             ),
-            FLAGGED_AVERAGE = dlyfilt=='dlyfilt',
+            FLAGGED_AVERAGE = mdltype=='dlyfilt',
             REDAVG=redavg=='redavg',
+            INPAINT_DELAY = inpdelay[:-2],
+            DO_LSTCAL = lstcal=='lstcal',
         )
         rendered = toml.render(**kw)
 
-        new = ""
-        for line in rendered.splitlines():
-            if line.strip().startswith("#!"):
-                continue
-            new += line + "\n"
-
         with open(toml_file, 'w') as f:
-            f.write(new)
+            f.write(rendered)
 
         print(f"[green]✓[/] Wrote case [blue]{casename}[/] to '{toml_file}'")
 
         if setup_analysis:
-            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/v{generation}/{casename}"
+            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/v{gen}/{casename}"
             if not anldir.exists():
                 anldir.mkdir(parents=True)
             anlfile = anldir / "lstbin.toml"

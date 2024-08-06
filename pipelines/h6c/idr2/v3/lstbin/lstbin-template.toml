@@ -1,37 +1,41 @@
-#! This is a Jinja2 *template* file for the lstbin makeflow. Use `herapipes lstbin-setup` 
-#! to generate specific lstbin makeflows for different cases. This template has a few 
-#! variables that can be used to generate a makeflow for a specific case. These are:
-#!   {{ REPODIR }}    : the directory of the hera-pipelines repo 
-#!   {{ SEASON }}     : the season to process
-#!   {{ IDR }}        : the IDR major number
-#!   {{ GENERATION }} : the IDR generation number
-#!   {{ ANALYSISDIR }}: the top-level directory where the analysis is being done
-#!   {{ CASENAME }}   : the name of the case (e.g. "redavg-abscal-inpaint")
-#!   {{ INPAINT_EXTENSION }} : the extension of the where_inpainted files: eiter "none" or ".where_inpainted.h5", depending on the case.
-#!   {{ DATA_EXTENSION }} : the extension of the data files -- set by the case (e.g. "abs_calibrated.red_avg.inpaint.uvh5")
-#!   {{ INPAINT_FORMAT }} : this gets set to "{inpaint_mode}/" if the case uses inpaint mode
-#!   {{ CALEXT }}     : specifies the calfits file extension, or none if datafiles are already calibrated (e.g. ".smooth.calfits")
-#! Note that all lines starting with '#!' will be removed in the created TOML file.
-#! Further note that you can use conditional statements using {% if VARIABLE -%}.
+{# 
+   This is a Jinja2 *template* file for the lstbin makeflow. Use `herapipes lstbin-setup` 
+   to generate specific lstbin makeflows for different cases. This template has a few 
+   variables that can be used to generate a makeflow for a specific case. These are:
+   
+   {{ REPODIR }}     : the directory of the hera-pipelines repo 
+   {{ SEASON }}      : the season to process
+   {{ IDR }}         : the IDR major number
+   {{ GENERATION }}  : the IDR generation number
+   {{ ANALYSISDIR }} : the top-level directory where the analysis is being done
+   {{ CASENAME }}    : the name of the case (e.g. "redavg-abscal-inpaint")
+   {{ INPAINT_EXT }} : the extension of the where_inpainted files: eiter "none" or ".where_inpainted.h5", depending on the case.
+   {{ DATA_EXT }}    : the extension of the data files -- set by the case (e.g. "abs_calibrated.red_avg.inpaint.uvh5")
+   {{ INPAINT_FORMAT }} : this gets set to "{inpaint_mode}/" if the case uses inpaint mode
+   {{ CALEXT }}      : specifies the calfits file extension, or none if datafiles are already calibrated (e.g. ".smooth.calfits")
+   {{ FLAGGED_AVERAGE }} : True if doing a flagged averaged, False otherwise
+   {{ REDAVG }}      : True if using redundantly averaged data, False otherwise
+   {{ INPAINT_DELAY }} : The minimum inpaint delay in ns (e.g. 1000.0)
+   {{ DO_LSTCAL }}   : True if using lstcal, False otherwise.
+ 
+  Note that all lines starting with '#!' will be removed in the created TOML file.
+  Further note that you can use conditional statements using {% if VARIABLE -%}.
+#}
 # This is the lstbin TOML file for the {{ CASENAME }} case.
 
 [Options]
 makeflow_type = "lstbin"
 path_to_do_scripts = "{{ REPODIR }}/pipelines/{{ SEASON }}/idr{{ IDR }}/v{{ GENERATION }}/lstbin/task_scripts/"
 source_script = "~/.bashrc"
-conda_env = "{{ SEASON }}"
-base_mem = 12000
+conda_env = "h6c_idr2"
+base_mem = {{ 24000 if REDAVG else 32000 }}
 base_cpu = 1
 timeout = "48h"
 
 [LSTBIN_OPTS]                                                                                                                                                                                                                                                                                                                                               
 # ---- Parameters used by hera_opm to build the makeflow ----
 outdir = "${LSTAVG_OPTS:outdir}"
-{% if REDAVG -%}
-bl_chunk_size = 5000
-{% else %}
-bl_chunk_size = 0
-{% endif %}
+bl_chunk_size = {{ 0 if REDAVG else 2000 }}
 parallelize = true
 
 
@@ -44,6 +48,17 @@ parallelize = true
 nlsts_per_file = 2
 lst_start = 0.0
 antpairs_from_last_file_each_night = true
+{% if not REDAVG %}
+# The following rules replace parts of the data file names to match their associated
+# calibration file. Curiously, since the FastUVH5Meta object does a path.resolve() on
+# the data file, the symlinks in the IDR2 directory get resolved back to the main
+# folder where we download the raw data from the librarian, but the calibration solutions
+# do not exist there, and so are not found. So we forcibly also replace the main path.
+calfile_rules = [
+  ["/lustre/aoc/projects/hera/H6C/", "/lustre/aoc/projects/hera/h6c-analysis/IDR2/"],
+  [".uvh5", ".smooth.calfits"]
+]
+{% endif %}
 
 [FILE_CFG.datafiles]                                                                                                                                                                 
 # Arguments to specify input files.
@@ -55,7 +70,7 @@ nights=[
   "2459867", "2459868", "2459869", "2459870", "2459871", 
   "2459872", "2459873", "2459874", "2459876"
 ]
-fileglob = "{night}/zen.{night}.?????.sum{{ DATA_EXTENSION }}.uvh5"
+fileglob = "{night}/zen.{night}.?????.sum{{ DATA_EXT }}.uvh5"
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
@@ -65,16 +80,11 @@ fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.{blchunk}.sum.uvh5"
 overwrite=true
 write_med_mad=false
 plot_every=180  # about 1 hour
-save_metric_data = false  # this should be updated for the real runs
+save_metric_data = true  # this should be updated for the real runs
 do_extra_flagging = false
-inpaint_cache_dir = "" # "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/inpaint_cache"
-{% if FLAGGED_AVERAGE -%}
-do_simultaneous_inpainting = false
-{% else %}
-do_simultaneous_inpainting = true
-{% endif %}
-
-
+do_simultaneous_inpainting = {{ (not FLAGGED_AVERAGE)|string|lower}}
+inpaint_mindelay = {{ INPAINT_DELAY}}
+do_lstcal = {{ DO_LSTCAL|string|lower }}
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
 actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
