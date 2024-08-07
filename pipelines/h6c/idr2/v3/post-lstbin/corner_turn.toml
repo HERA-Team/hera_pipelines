@@ -8,9 +8,16 @@ path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipel
 conda_env = "h6c_idr2"
 batch_system = "slurm"
 
+[MINI_DATASET_OPTS]
+files_to_average = 5
+chans_to_average = 4
+ints_per_output_file = 36
+
 [WorkFlow]
-actions = ["CORNER_TURN",
-          ]
+actions = ["CORNER_TURN", "MAKE_MINI_DATASET",]
 
 [CORNER_TURN]
 args = ["{basename}",]
+
+[MAKE_MINI_DATASET]
+args = ["{basename}", "${MINI_DATASET_OPTS:files_to_average}", "${MINI_DATASET_OPTS:chans_to_average}", "${MINI_DATASET_OPTS:ints_per_output_file}",]
