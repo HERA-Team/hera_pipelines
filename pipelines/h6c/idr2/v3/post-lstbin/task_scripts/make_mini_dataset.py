@@ -29,7 +29,7 @@ if args.this_file not in all_files:
     raise ValueError(f'{args.this_file} not in {os.path.join(os.path.dirname(args.this_file), glob_str)}')
 
 # get all files of the same baseline group, which assumes that the first two numerical entires upon a split on '.' in a basename are the LST, e.g. zen.LST.5.41217.000.sum.uvh5
-all_same_blg_files = sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), re.sub(r'\b\d+\b', '*', os.path.basename(args.this_file), count=2)))))
+all_same_blg_files = sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), re.sub(r'\b\d+\b', '*', os.path.basename(args.this_file), count=2))))
 
 # Get the file lsts from the filenames, using that same assumption
 file_lsts = sorted(set(['.'.join([part for part in os.path.basename(f).split('.') if part.isdigit()][0:2]) for f in all_files]))
