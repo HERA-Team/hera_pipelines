@@ -97,9 +97,9 @@ for chunk in chunks_to_load:
     
     # attach relevant quantities to datacontainer
     for dc in (avg_data, avg_flags, avg_nsamples):
-        dc.freqs = 
+        dc.freqs = avg_freqs
         dc.lsts = avg_lsts
-        dc.times = 
+        dc.times = extra['avg_times']
     # downselect to first time and a subset of frequencies so that the new HERAData object's shape matches the averaged data
     hd.select(frequencies=[hd.freq_array[:len(avg_freqs)]], times=np.unique(hd.time_array)[0], inplace=True)
     hd.update(data=avg_data, flags=avg_flags, nsamples=avg_nsamples)
