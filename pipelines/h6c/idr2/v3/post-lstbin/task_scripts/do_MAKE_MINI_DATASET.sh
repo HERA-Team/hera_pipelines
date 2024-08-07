@@ -13,5 +13,5 @@ chans_to_average=${3}
 ints_per_output_file=${4}
 out_folder="mini_dataset"
 
-echo python ${src_dir}/corner_turn.py ${fn} ${out_folder} --files_to_average ${files_to_average} --chans_to_average ${chans_to_average} --ints_per_output_file ${ints_per_output_file}
-python ${src_dir}/corner_turn.py ${fn} ${out_folder} --files_to_average ${files_to_average} --chans_to_average ${chans_to_average} --ints_per_output_file ${ints_per_output_file}
+echo python ${src_dir}/make_mini_dataset.py ${fn} ${out_folder} --files_to_average ${files_to_average} --chans_to_average ${chans_to_average} --ints_per_output_file ${ints_per_output_file}
+python ${src_dir}/make_mini_dataset.py ${fn} ${out_folder} --files_to_average ${files_to_average} --chans_to_average ${chans_to_average} --ints_per_output_file ${ints_per_output_file}
