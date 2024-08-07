@@ -35,7 +35,7 @@ all_same_blg_files = sorted(glob.glob(os.path.join(os.path.dirname(args.this_fil
 file_lsts = sorted(set(['.'.join([part for part in os.path.basename(f).split('.') if part.isdigit()][0:2]) for f in all_files]))
 
 # get lists of LSTs that are going to go into the same output file
-outfile_lst_groups = [file_lsts[i:i + ints_per_output_file * files_to_average] for i in range(0, len(all_same_blg_files), ints_per_output_file * files_to_average)]
+outfile_lst_groups = [file_lsts[i:i + args.ints_per_output_file * args.files_to_average] for i in range(0, len(all_same_blg_files), args.ints_per_output_file * args.files_to_average)]
 
 # check if this file's index is not one that requires any action
 if all_same_blg_files.index(args.this_file) >= len(outfile_lst_groups):
@@ -46,13 +46,13 @@ if all_same_blg_files.index(args.this_file) >= len(outfile_lst_groups):
 # break the output LST groups into chunks of files to average together
 lst_chunk = outfile_lst_groups[all_same_blg_files.index(this_file)]
 print(f'Now averaging togther files from {lst_chunk[0]} to {lst_chunk[-1]}.')
-chunks_to_load = [lst_chunk[i:i + files_to_average] for i in range(0, len(lst_chunk), files_to_average)]
+chunks_to_load = [lst_chunk[i:i + args.files_to_average] for i in range(0, len(lst_chunk), args.files_to_average)]
 
 # loop over chunks of files, averaging down to a single integration and appending the new HERAData object to out_hd
 out_hd = None
 for chunk in chunks_to_load:
     # skip chunks that would have fewer than files_to_average files in them
-    if len(chunk) < files_to_average:
+    if len(chunk) < args.files_to_average:
         continue 
     
     # get all files to load, regardless of baseline group
@@ -90,10 +90,10 @@ for chunk in chunks_to_load:
         avg_flags[bl][0, np.any(flags[bl], axis=0)] = True
         
         # frequency average: mean of data, OR of flags, sum of nsamples
-        avg_data[bl] = np.mean(avg_data[bl].reshape(avg_data[bl].shape[0], -1, chans_to_average), axis=-1)
-        avg_flags[bl] = np.any(avg_flags[bl].reshape(avg_flags[bl].shape[0], -1, chans_to_average), axis=-1)
-        avg_nsamples[bl] = np.sum(avg_nsamples[bl].reshape(avg_nsamples[bl].shape[0], -1, chans_to_average), axis=-1)
-        avg_freqs = np.mean(data.freqs.reshape(-1, chans_to_average), axis=-1)
+        avg_data[bl] = np.mean(avg_data[bl].reshape(avg_data[bl].shape[0], -1, args.chans_to_average), axis=-1)
+        avg_flags[bl] = np.any(avg_flags[bl].reshape(avg_flags[bl].shape[0], -1, args.chans_to_average), axis=-1)
+        avg_nsamples[bl] = np.sum(avg_nsamples[bl].reshape(avg_nsamples[bl].shape[0], -1, args.chans_to_average), axis=-1)
+        avg_freqs = np.mean(data.freqs.reshape(-1, args.chans_to_average), axis=-1)
     
     # attach relevant quantities to datacontainer
     for dc in (avg_data, avg_flags, avg_nsamples):
