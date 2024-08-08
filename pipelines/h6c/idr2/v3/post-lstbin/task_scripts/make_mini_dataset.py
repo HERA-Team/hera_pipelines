@@ -120,6 +120,6 @@ for chunk in chunks_to_load:
 
 # write out the new HERAData object
 outfile = re.sub(r'\b\d+\b', '%',re.sub(r'\b\d+\b', '*', os.path.basename(args.this_file), count=2), count=1).replace('autos', '%')
-outfile = os.path.join(args.out_folder, outfile.replace('*.*', f'{float(lst_chunk[0]) * 12 / np.pi:.2f}_hours.mini_dataset').replace('.%.', '.'))
+outfile = os.path.join(args.out_folder, outfile.replace('*.*', f'{(float(lst_chunk[0]) * 12 / np.pi) % 24:.2f}_hours.mini_dataset').replace('.%.', '.'))
 print(f'Now writing results to {outfile}.')
 out_hd.write_uvh5(outfile, clobber=True, fix_autos=True)
