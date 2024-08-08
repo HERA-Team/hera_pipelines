@@ -86,7 +86,7 @@ do_extra_flagging = false
 do_simultaneous_inpainting = {{ (not FLAGGED_AVERAGE)|string|lower}}
 inpaint_mindelay = {{ INPAINT_DELAY}}
 do_lstcal = {{ DO_LSTCAL|string|lower }}
-{% if REDAVG -%}
+{% if not REDAVG -%}
 lstcal_path = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ LSTCAL_CASE }}"
 {% endif %}
 
