@@ -90,11 +90,12 @@ for chunk in chunks_to_load:
         avg_flags[bl][0, np.any(flags[bl], axis=0)] = True
         
         # frequency average: mean of data, OR of flags, sum of nsamples
+        avg_freqs = np.mean(data.freqs.reshape(-1, args.chans_to_average), axis=-1)
         avg_data[bl] = np.mean(avg_data[bl].reshape(avg_data[bl].shape[0], -1, args.chans_to_average), axis=-1)
         avg_flags[bl] = np.any(avg_flags[bl].reshape(avg_flags[bl].shape[0], -1, args.chans_to_average), axis=-1)
         avg_nsamples[bl] = np.sum(avg_nsamples[bl].reshape(avg_nsamples[bl].shape[0], -1, args.chans_to_average), axis=-1)
-        avg_freqs = np.mean(data.freqs.reshape(-1, args.chans_to_average), axis=-1)
-    
+        avg_flags[bl][~np.isfinite(avg_data[bl])] = True
+
     # attach relevant quantities to datacontainer
     for dc in (avg_data, avg_flags, avg_nsamples):
         dc.freqs = avg_freqs
@@ -121,4 +122,4 @@ for chunk in chunks_to_load:
 outfile = re.sub(r'\b\d+\b', '%',re.sub(r'\b\d+\b', '*', os.path.basename(args.this_file), count=2), count=1).replace('autos', '%')
 outfile = os.path.join(args.out_folder, outfile.replace('*.*', f'{float(lst_chunk[0]) * 12 / np.pi:.2f}_hours.mini_dataset').replace('.%.', '.'))
 print(f'Now writing results to {outfile}.')
-out_hd.write_uvh5(outfile, clobber=True)
+out_hd.write_uvh5(outfile, clobber=True, fix_autos=True)
