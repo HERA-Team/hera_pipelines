@@ -220,7 +220,7 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
             ('redavg', 'smoothcal', 'dlyfilt', '500ns', 'lstcal'),
             ('redavg', 'smoothcal', 'inpaint', '1000ns', 'lstcal'),
             ('redavg', 'smoothcal', 'inpaint', '500ns', 'nolstcal'),
-            ('nonavg', 'smoothcal', 'inpaint', '500ns', 'nolstcal'), # no LST cal possible
+            ('nonavg', 'smoothcal', 'inpaint', '500ns', 'lstcal'),
         ]
 
     for case in cases:
