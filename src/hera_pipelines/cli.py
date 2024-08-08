@@ -223,10 +223,15 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
             ('nonavg', 'smoothcal', 'inpaint', '500ns', 'lstcal'),
         ]
 
+    def get_casename(case):
+        redavg, callevel, mdltype, inpdelay, lstcal = case
+
+        return f"{prefix}{redavg}-{callevel}-{mdltype}-{inpdelay}-{lstcal}"
+        
     for case in cases:
         redavg, callevel, mdltype, inpdelay, lstcal = case
 
-        casename = f"{prefix}{redavg}-{callevel}-{mdltype}-{inpdelay}-{lstcal}"
+        casename = get_casename(case)
         toml_file = repodir / f"pipelines/{season}/idr{idr}/v{gen}/lstbin/{casename}/lstbin.toml"
         if toml_file.exists() and not force:
             print(f":warning: File '{toml_file}' exists and --force was not set. [red]Skipping[/].")
@@ -262,6 +267,7 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
             REDAVG=redavg=='redavg',
             INPAINT_DELAY = inpdelay[:-2],
             DO_LSTCAL = lstcal=='lstcal',
+            LSTCAL_CASE = get_casename(cases[0])
         )
         rendered = toml.render(**kw)
 

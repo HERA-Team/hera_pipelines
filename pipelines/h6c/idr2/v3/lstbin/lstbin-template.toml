@@ -17,6 +17,7 @@
    {{ REDAVG }}      : True if using redundantly averaged data, False otherwise
    {{ INPAINT_DELAY }} : The minimum inpaint delay in ns (e.g. 1000.0)
    {{ DO_LSTCAL }}   : True if using lstcal, False otherwise.
+   {{ LSTCAL_CASE }} : The name of the lstbin case to be used for lstcal for cases that need to be broken into chunks.
  
   Note that all lines starting with '#!' will be removed in the created TOML file.
   Further note that you can use conditional statements using {% if VARIABLE -%}.
@@ -85,6 +86,10 @@ do_extra_flagging = false
 do_simultaneous_inpainting = {{ (not FLAGGED_AVERAGE)|string|lower}}
 inpaint_mindelay = {{ INPAINT_DELAY}}
 do_lstcal = {{ DO_LSTCAL|string|lower }}
+{% if REDAVG -%}
+lstcal_path = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ LSTCAL_CASE }}"
+{% endif %}
+
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
 actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
