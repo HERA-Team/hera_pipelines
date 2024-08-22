@@ -53,6 +53,8 @@ do_extra_flagging = false
 do_simultaneous_inpainting = false
 inpaint_mindelay = 500
 do_lstcal = true
+
+
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
 actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
