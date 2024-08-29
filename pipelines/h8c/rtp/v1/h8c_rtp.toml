@@ -31,8 +31,7 @@ all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
-nb_output_repo = '/mnt/sn1/data1/H7C_Notebooks'
-git_push = false # notebooks are instead mirrored to https://heranow.reionization.org/notebooks/H7C_Notebooks/
+nb_output_repo = '/mnt/sn1/data2/H8C_Notebooks'
 
 [CALIBRATE_FILE_OPTS]
 am_corr_bad = 0.2
@@ -225,7 +224,6 @@ mem = 120000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${A_PRIORI_STATUS_OPTS:all_statuses}"
         ]
 
@@ -239,7 +237,6 @@ mem = 48000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_full_day_auto_checker}",
         "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
@@ -276,7 +273,6 @@ mem = 14000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${CALIBRATE_FILE_OPTS:am_corr_bad}",
         "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
         "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
@@ -350,7 +346,6 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_full_day_rfi}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
@@ -378,7 +373,6 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_full_day_antenna_flagging}",
         "${CALIBRATE_FILE_OPTS:am_corr_bad}",
@@ -433,7 +427,6 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
         ]
 
@@ -449,7 +442,6 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${CALIBRATION_SMOOTHING_OPTS:freq_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:time_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
@@ -461,7 +453,6 @@ prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:min_samp_frac}",
@@ -478,7 +469,6 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_full_day_rfi}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:z_thresh}",
@@ -505,7 +495,6 @@ prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_horizon}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
@@ -527,7 +516,6 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:filter_dly_min}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
