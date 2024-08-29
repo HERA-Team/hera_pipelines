@@ -26,9 +26,6 @@ librarian_red_avg_vis = true
 librarian_notebooks = true
 
 [A_PRIORI_STATUS_OPTS]
-# TODO: these will need to be updated as commissioning gets underway
-# Antennas considered "good" and thus likely candidates for LST-binning
-good_statuses = "digital_ok,calibration_maintenance,calibration_triage,calibration_ok"
 # All antennas that are on and worth running ant_metrics and the data_inspect notebook on.
 all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital_maintenance,calibration_maintenance,calibration_triage,calibration_ok"
 
