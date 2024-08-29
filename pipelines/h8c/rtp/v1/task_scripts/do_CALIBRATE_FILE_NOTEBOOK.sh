@@ -137,5 +137,5 @@ is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.
 if [ "${is_middle_file}" == "True" ]; then
     # Copy file to notebook directory and rebuild html
     cp ${nb_outfile} ${nb_output_repo}/file_calibration/file_calibration_${jd}.html
-    python ${src_dir}/build_notebook_index.py ${nb_output_repo}
+    python ${src_dir}/build_notebook_index.py ${nb_output_repo}/file_calibration
 fi
