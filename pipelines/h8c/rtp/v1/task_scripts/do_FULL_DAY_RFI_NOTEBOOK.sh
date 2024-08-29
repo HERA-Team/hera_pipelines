@@ -20,23 +20,22 @@ echo Host: `hostname`
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-upload_to_librarian=${5}
-librarian_full_day_rfi=${6}
-FM_low_freq=${7}
-FM_high_freq=${8}
-max_solar_alt=${9}
-freq_filter_scale=${10}
-time_filter_scale=${11}
-eigenval_cutoff=${12}
-min_frac_of_autos=${13}
-max_auto_L2=${14}
-z_thresh=${15}
-ws_z_thresh=${16}
-avg_z_thresh=${17}
-repeat_flag_z_thresh=${18}
-max_freq_flag_frac=${19}
-max_time_flag_frac=${20}
+upload_to_librarian=${4}
+librarian_full_day_rfi=${5}
+FM_low_freq=${6}
+FM_high_freq=${7}
+max_solar_alt=${8}
+freq_filter_scale=${9}
+time_filter_scale=${10}
+eigenval_cutoff=${11}
+min_frac_of_autos=${12}
+max_auto_L2=${13}
+z_thresh=${14}
+ws_z_thresh=${15}
+avg_z_thresh=${16}
+repeat_flag_z_thresh=${17}
+max_freq_flag_frac=${18}
+max_time_flag_frac=${19}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -100,21 +99,5 @@ if [ "${upload_to_librarian}" == "True" ]; then
         echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
         librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
         echo Finished uploading ${compressed_file} to the Librarian at $(date)
-    fi
-fi
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]; then
-    if [ $(stat -c %s "${nb_outfile}") -lt 100000000 ]; then
-        cd ${nb_output_repo}
-        git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-        git add ${nb_outfile}
-        python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-        git add ${nb_outdir}/README.md
-        lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-        git commit -m "Full-day RFI notebook for JD ${jd}" -m ${lasturl}
-        git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
-    else
-        echo ${nb_outfile} is too large to upload to github.
     fi
 fi
