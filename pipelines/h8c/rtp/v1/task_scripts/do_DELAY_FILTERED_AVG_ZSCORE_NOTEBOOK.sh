@@ -12,17 +12,15 @@ echo Host: `hostname`
 # 1 - (raw) filename
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
-# 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5+ - various settings
+# 4+ - various settings
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-FM_low_freq=${5}
-FM_high_freq=${6}
-min_samp_frac=${7}
-filter_delay=${8}
-eigenval_cutoff=${9}
+FM_low_freq=${4}
+FM_high_freq=${5}
+min_samp_frac=${6}
+filter_delay=${7}
+eigenval_cutoff=${8}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -57,25 +55,7 @@ fi
 jd=$(get_int_jd ${fn})
 is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
 if [ "${is_middle_file}" == "True" ]; then
-
-    # Copy file to github repo
-    github_nb_outdir=${nb_output_repo}/delay_filtered_average_zscore
-    github_nb_outfile=${github_nb_outdir}/delay_filtered_average_zscore_${jd}.html
-    cp ${nb_outfile} ${github_nb_outfile}
-
-    # Rebuild index.html for this notebook's folder
-    python ${src_dir}/build_notebook_index.py ${github_nb_outdir}
-
-    # If desired, push results to github
-    if [ "${git_push}" == "True" ]; then
-        # Push to github
-        cd ${nb_output_repo}
-        git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-        git add ${github_nb_outfile}
-        python ${src_dir}/build_notebook_readme.py ${github_nb_outdir}
-        git add ${github_nb_outdir}/README.md
-        lasturl=`python -c "readme = open('${github_nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-        git commit -m "File post-processing notebook for JD ${jd}" -m ${lasturl}
-        git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
-    fi
+    # Copy file to notebook directory and rebuild html
+    cp ${nb_outfile} ${nb_output_repo}/delay_filtered_average_zscore/delay_filtered_average_zscore${jd}.html
+    python ${src_dir}/build_notebook_index.py ${nb_output_repo}/delay_filtered_average_zscore
 fi
