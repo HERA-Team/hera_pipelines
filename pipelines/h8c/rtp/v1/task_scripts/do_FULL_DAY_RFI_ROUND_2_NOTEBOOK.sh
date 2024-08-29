@@ -20,14 +20,13 @@ echo Host: `hostname`
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-upload_to_librarian=${5}
-librarian_full_day_rfi=${6}
-z_thresh=${7}
-ws_z_thresh=${8}
-avg_z_thresh=${9}
-max_freq_flag_frac=${10}
-max_time_flag_frac=${11}
+upload_to_librarian=${4}
+librarian_full_day_rfi=${5}
+z_thresh=${6}
+ws_z_thresh=${7}
+avg_z_thresh=${8}
+max_freq_flag_frac=${9}
+max_time_flag_frac=${10}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -81,17 +80,4 @@ if [ "${upload_to_librarian}" == "True" ]; then
         librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
         echo Finished uploading ${compressed_file} to the Librarian at $(date)
     fi
-fi
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_outfile}
-    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-    git add ${nb_outdir}/README.md
-    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "Full-Day RFI Round 2 notebook for JD ${jd}" -m ${lasturl}
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi
