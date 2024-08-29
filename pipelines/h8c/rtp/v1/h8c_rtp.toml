@@ -72,6 +72,7 @@ rfi_nsig = 4
 abscal_min_bl_len = 1.0
 abscal_max_bl_len = 140.0
 save_omnivis_file = false
+calibrate_cross_pols = true
 
 [FULL_DAY_RFI_OPTS]
 FM_low_freq = 87.5 # in MHz
@@ -311,6 +312,7 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:abscal_min_bl_len}",
         "${CALIBRATE_FILE_OPTS:abscal_max_bl_len}",
         "${CALIBRATE_FILE_OPTS:save_omnivis_file}",
+        "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
         ]
 
 [LIBRARIAN_CALIBRATION_NOTEBOOKS]
