@@ -30,6 +30,7 @@ if [ "${upload_to_librarian}" == "True" ]; then
 
         # Compress all red_avg files per output type into one with a JD corresponding to $fn
         declare -a exts=(
+            ".reds_used.p"
             ".sum.smooth_calibrated.avg_abs_all.uvh5"
             ".sum.smooth_calibrated.avg_abs_auto.uvh5"
             ".sum.smooth_calibrated.avg_abs_cross.uvh5"
