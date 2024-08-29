@@ -20,10 +20,11 @@ echo Host: `hostname`
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-freq_smoothing_scale=${5}
-time_smoothing_scale=${6}
-eigenval_cutoff=${7}
+freq_smoothing_scale=${4}
+time_smoothing_scale=${5}
+eigenval_cutoff=${6}
+calibrate_cross_pols=${7}
+
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -41,6 +42,11 @@ export OUT_YAML_SUFFIX="_aposteriori_flags.yaml"
 export FREQ_SMOOTHING_SCALE=${freq_smoothing_scale}
 export TIME_SMOOTHING_SCALE=${time_smoothing_scale}
 export EIGENVAL_CUTOFF=${eigenval_cutoff}
+if [ "${calibrate_cross_pols}" == "True" ]; then
+    export PER_POL_REFANT="False"
+else
+    export PER_POL_REFANT="True"
+fi
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
@@ -60,16 +66,3 @@ fi
 
 # Rebuild index.html for this notebook's folder
 python ${src_dir}/build_notebook_index.py ${nb_outdir}
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_outfile}
-    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-    git add ${nb_outdir}/README.md
-    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "Calibration smoothing notebook for JD ${jd}" -m ${lasturl}
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
-fi
