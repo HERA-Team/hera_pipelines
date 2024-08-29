@@ -65,4 +65,4 @@ else
 fi
 
 # Rebuild index.html for this notebook's folder
-python ${src_dir}/build_notebook_index.py ${nb_outdir}
+python ${src_dir}/build_notebook_index.py ${nb_output_repo}
