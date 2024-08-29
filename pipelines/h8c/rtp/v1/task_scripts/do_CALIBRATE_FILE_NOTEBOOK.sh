@@ -17,45 +17,45 @@ echo Host: `hostname`
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-am_corr_bad=${5}
-am_corr_suspect=${6}
-am_xpol_bad=${7}
-am_xpol_suspect=${8}
-suspect_solar_alt=${9}
-zeros_per_spec_good=${10}
-zeros_per_spec_suspect=${11}
-auto_power_good_low=${12}
-auto_power_good_high=${13}
-auto_power_suspect_low=${14}
-auto_power_suspect_high=${15}
-auto_slope_good_low=${16}
-auto_slope_good_high=${17}
-auto_slope_suspect_low=${18}
-auto_slope_suspect_high=${19}
-auto_rfi_good=${20}
-auto_rfi_suspect=${21}
-auto_shape_good=${22}
-auto_shape_suspect=${23}
-bad_xengine_zcut=${24}
-oc_cspa_good=${25}
-oc_cspa_suspect=${26}
-oc_max_dims=${27}
-oc_min_dim_size=${28}
-oc_skip_outriggers=${29}
-oc_min_bl_len=${30}
-oc_max_bl_len=${31}
-oc_maxiter=${32}
-oc_max_rerun=${33}
-oc_rerun_maxiter=${34}
-oc_max_chisq_flagging_dynamic_range=${35}
-oc_use_prior_sol=${36}
-oc_prior_sol_flag_thresh=${37}
-rfi_dpss_halfwidth=${38}
-rfi_nsig=${39}
-abscal_min_bl_len=${40}
-abscal_max_bl_len=${41}
-save_omnivis_file=${42}
+am_corr_bad=${4}
+am_corr_suspect=${5}
+am_xpol_bad=${6}
+am_xpol_suspect=${7}
+suspect_solar_alt=${8}
+zeros_per_spec_good=${9}
+zeros_per_spec_suspect=${10}
+auto_power_good_low=${11}
+auto_power_good_high=${12}
+auto_power_suspect_low=${13}
+auto_power_suspect_high=${14}
+auto_slope_good_low=${15}
+auto_slope_good_high=${16}
+auto_slope_suspect_low=${17}
+auto_slope_suspect_high=${18}
+auto_rfi_good=${19}
+auto_rfi_suspect=${20}
+auto_shape_good=${21}
+auto_shape_suspect=${22}
+bad_xengine_zcut=${23}
+oc_cspa_good=${24}
+oc_cspa_suspect=${25}
+oc_max_dims=${26}
+oc_min_dim_size=${27}
+oc_skip_outriggers=${28}
+oc_min_bl_len=${29}
+oc_max_bl_len=${30}
+oc_maxiter=${31}
+oc_max_rerun=${32}
+oc_rerun_maxiter=${33}
+oc_max_chisq_flagging_dynamic_range=${34}
+oc_use_prior_sol=${35}
+oc_prior_sol_flag_thresh=${36}
+rfi_dpss_halfwidth=${37}
+rfi_nsig=${38}
+abscal_min_bl_len=${39}
+abscal_max_bl_len=${40}
+save_omnivis_file=${41}
+calibrate_cross_pols=${42}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -97,6 +97,7 @@ export RFI_NSIG=${rfi_nsig}
 export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
 export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
 export SAVE_OMNIVIS_FILE=${save_omnivis_file}
+export CALIBRATE_CROSS_POLS=${calibrate_cross_pols}
 
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
@@ -112,8 +113,7 @@ echo Finished running file calibration notebook at $(date)
 am_file=${SUM_FILE%.uvh5}.ant_metrics.hdf5
 antclass_file=${SUM_FILE%.uvh5}.ant_class.csv
 omnical_file=${SUM_FILE%.uvh5}.omni.calfits
-omnivis_file=${SUM_FILE%.uvh5}.omni_vis.uvh5
-for f in ${am_file} ${antclass_file} ${omnical_file} ${omnivis_file}; do
+for f in ${am_file} ${antclass_file} ${omnical_file}; do
     if [ -f "$f" ]; then
         echo Resulting $f found.
     else
@@ -121,34 +121,22 @@ for f in ${am_file} ${antclass_file} ${omnical_file} ${omnivis_file}; do
         exit 1
     fi
 done
-
+omnivis_file=${SUM_FILE%.uvh5}.omni_vis.uvh5
+if [ "${save_omnivis_file}" == "True" ]; then
+    if [ -f "${omnivis_file}" ]; then
+        echo Resulting $f found.
+    else
+        echo $f not produced.
+        exit 1
+    fi
+fi
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
 is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
 if [ "${is_middle_file}" == "True" ]; then
-    github_nb_outdir=${nb_output_repo}/file_calibration
-    github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
-    echo cp ${nb_outfile} ${github_nb_outfile}
-    cp ${nb_outfile} ${github_nb_outfile}
-    # Rebuild index.html for this notebook's folder
-    python ${src_dir}/build_notebook_index.py ${github_nb_outdir}
-
-    # If desired, push results to github
-    if [ "${git_push}" == "True" ]; then
-        # Copy file to github repo
-        if [ $(stat -c %s "${github_nb_outfile}") -lt 100000000 ]; then
-            # Push to github
-            cd ${nb_output_repo}
-            git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-            git add ${github_nb_outfile}
-            python ${src_dir}/build_notebook_readme.py ${github_nb_outdir}
-            git add ${github_nb_outdir}/README.md
-            lasturl=`python -c "readme = open('${github_nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-            git commit -m "File calibration notebook for JD ${jd}" -m ${lasturl}
-            git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
-        else
-            echo ${github_nb_outfile} is too large to upload to github.
-        fi
-    fi
+    # Copy file to github repo
+    nb_outdir=${nb_output_repo}/file_calibration
+    nb_outfile=${nb_outdir}/file_calibration_${jd}.html
+    cp ${nb_outfile} ${nb_outfile}
 fi
