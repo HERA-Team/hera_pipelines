@@ -55,7 +55,7 @@ rfi_dpss_halfwidth=${38}
 rfi_nsig=${39}
 abscal_min_bl_len=${40}
 abscal_max_bl_len=${41}
-save_omni_vis=${42}
+save_omnivis_file=${42}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -96,7 +96,7 @@ export RFI_DPSS_HALFWIDTH=${rfi_dpss_halfwidth}
 export RFI_NSIG=${rfi_nsig}
 export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
 export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
-export SAVE_OMNI_VIS=${save_omni_vis}
+export SAVE_OMNIVIS_FILE=${save_omnivis_file}
 
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 

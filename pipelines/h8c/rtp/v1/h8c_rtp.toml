@@ -71,7 +71,7 @@ rfi_dpss_halfwidth = 300e-9
 rfi_nsig = 4
 abscal_min_bl_len = 1.0
 abscal_max_bl_len = 140.0
-save_omni_vis = false
+save_omnivis_file = false
 
 [FULL_DAY_RFI_OPTS]
 FM_low_freq = 87.5 # in MHz
@@ -310,7 +310,7 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:rfi_nsig}",
         "${CALIBRATE_FILE_OPTS:abscal_min_bl_len}",
         "${CALIBRATE_FILE_OPTS:abscal_max_bl_len}",
-        "${CALIBRATE_FILE_OPTS:save_omni_vis}",
+        "${CALIBRATE_FILE_OPTS:save_omnivis_file}",
         ]
 
 [LIBRARIAN_CALIBRATION_NOTEBOOKS]
@@ -333,7 +333,7 @@ time_centered = false
 args = ["{basename}",
         "${LIBRARIAN_OPTS:upload_to_librarian}",
         "${LIBRARIAN_OPTS:librarian_redcal}",
-        "${CALIBRATE_FILE_OPTS:save_omni_vis}",
+        "${CALIBRATE_FILE_OPTS:save_omnivis_file}",
         ]
 
 [FULL_DAY_RFI_NOTEBOOK]
