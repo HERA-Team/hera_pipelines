@@ -135,8 +135,7 @@ fi
 jd=$(get_int_jd ${fn})
 is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
 if [ "${is_middle_file}" == "True" ]; then
-    # Copy file to github repo
-    nb_outdir=${nb_output_repo}/file_calibration
-    nb_outfile=${nb_outdir}/file_calibration_${jd}.html
-    cp ${nb_outfile} ${nb_outfile}
+    # Copy file to notebook directory and rebuild html
+    cp ${nb_outfile} ${nb_output_repo}/file_calibration/file_calibration_${jd}.html
+    python ${src_dir}/build_notebook_index.py ${nb_output_repo}
 fi
