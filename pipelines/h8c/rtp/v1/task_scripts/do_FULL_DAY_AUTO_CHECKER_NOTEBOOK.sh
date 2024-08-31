@@ -43,8 +43,8 @@ export EIGENVAL_CUTOFF=${25}
 export FM_LOW_FREQ=${26}
 export FM_HIGH_FREQ=${27}
 export MAX_SOLAR_ALT=${28}
-export SMOOTHED_ABS_Z_THRESH=${30}
-export WHOLE_DAY_FLAG_THRESH=${31}
+export SMOOTHED_ABS_Z_THRESH=${29}
+export WHOLE_DAY_FLAG_THRESH=${30}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
