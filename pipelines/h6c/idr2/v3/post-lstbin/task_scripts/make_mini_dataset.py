@@ -111,6 +111,7 @@ for chunk in chunks_to_load:
         hd.time_array[blt_slice] = extra['avg_times']
         hd.lst_array[blt_slice] = avg_lsts
     hd.freq_array = avg_freqs
+    hd.channel_width = np.ones_like(hd.channel_width) * np.median(np.diff(avg_freqs))
     
     # concatenate the new HERAData object to the out_hd
     if out_hd is None:
