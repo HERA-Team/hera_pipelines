@@ -550,7 +550,7 @@ args = ["{basename}",
 ########## IMAGING AND MOVIES ##########
 
 [ALL_SKY_IMAGE_SNAPSHOT]
-mem = 16000
+mem = 24000
 prereqs = ["CALIBRATE_FILE_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = "1"
