@@ -100,8 +100,8 @@ time_smoothing_scale = 6e5 # in seconds
 eigenval_cutoff = 1e-12
 
 [DELAY_FILTERED_AVG_ZSCORE_OPTS]
-min_samp_frac = 0.05
-filter_delay = 500 # in ns
+min_samp_frac = 0.15
+filter_delay = 750 # in ns
 eigenval_cutoff = 1e-12
 
 [FULL_DAY_RFI_OPTS_ROUND_2]
@@ -110,6 +110,10 @@ ws_z_thresh = 4.0
 avg_z_thresh =  1.0
 max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.1
+avg_spectrum_filter_delay = 250.0 # in ns
+eigenval_cutoff = 1e-12
+time_avg_delay_filt_snr_thresh = 4.0
+time_avg_delay_filt_snr_dynamic_range = 1.5
 
 [POSTPROCESS_FILE_OPTS]
 dly_filt_horizon = 1.0
@@ -342,6 +346,10 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:max_freq_flag_frac}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:max_time_flag_frac}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:avg_spectrum_filter_delay}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:eigenval_cutoff}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_dynamic_range}",
         ]
 
 [POSTPROCESS_FILE_NOTEBOOK]

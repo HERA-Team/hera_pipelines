@@ -27,6 +27,10 @@ ws_z_thresh=${8}
 avg_z_thresh=${9}
 max_freq_flag_frac=${10}
 max_time_flag_frac=${11}
+avg_spectrum_filter_delay=${12}
+eigenval_cutoff=${13}
+time_avg_delay_filt_snr_thresh=${14}
+time_avg_delay_filt_snr_dynamic_range=${15}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -45,6 +49,10 @@ export WS_Z_THRESH=${ws_z_thresh}
 export AVG_Z_THRESH=${avg_z_thresh}
 export MAX_FREQ_FLAG_FRAC=${max_freq_flag_frac}
 export MAX_TIME_FLAG_FRAC=${max_time_flag_frac}
+export AVG_SPECTRUM_FILTER_DELAY=${avg_spectrum_filter_delay}
+export EIGENVAL_CUTOFF=${eigenval_cutoff}
+export TIME_AVG_DELAY_FILT_SNR_THRESH=${time_avg_delay_filt_snr_thresh}
+export TIME_AVG_DELAY_FILT_SNR_DYNAMIC_RANGE=${time_avg_delay_filt_snr_dynamic_range}
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
