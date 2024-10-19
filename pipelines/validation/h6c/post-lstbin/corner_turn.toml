@@ -1,0 +1,23 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 15500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/post-lstbin/task_scripts"
+conda_env = "h6c_idr2"
+batch_system = "slurm"
+
+[MINI_DATASET_OPTS]
+files_to_average = 5
+chans_to_average = 4
+ints_per_output_file = 36
+
+[WorkFlow]
+actions = ["CORNER_TURN", "MAKE_MINI_DATASET",]
+
+[CORNER_TURN]
+args = ["{basename}",]
+
+[MAKE_MINI_DATASET]
+args = ["{basename}", "${MINI_DATASET_OPTS:files_to_average}", "${MINI_DATASET_OPTS:chans_to_average}", "${MINI_DATASET_OPTS:ints_per_output_file}",]
