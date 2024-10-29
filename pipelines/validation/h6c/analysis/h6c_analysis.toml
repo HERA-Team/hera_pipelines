@@ -4,10 +4,11 @@ source_script = "~/.bashrc"
 base_mem = 15500
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/task_scripts"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts"
 path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
 conda_env = "h6c_idr2"
 batch_system = "slurm"
+sim_env = "h6c_validation"
 
 [LIBRARIAN_OPTS]
 # These trigger which sets of files get added to the librarian
@@ -68,52 +69,10 @@ abscal_max_bl_len = 140.0
 save_omni_vis = false
 calibrate_cross_pols = true
 
-[FULL_DAY_RFI_OPTS]
-FM_low_freq = 87.5 # in MHz
-FM_high_freq = 108.0 # in MHz
-max_solar_alt = 0.0 # in degrees
-freq_filter_scale = 5.0 # in MHz
-time_filter_scale = 450 # in s
-eigenval_cutoff = 1e-12
-min_frac_of_autos = 0.25
-max_auto_L2 = 1.2
-z_thresh = 5.0
-ws_z_thresh = 4.0
-avg_z_thresh =  1.5
-repeat_flag_z_thresh = 0.0
-max_freq_flag_frac = 0.25
-max_time_flag_frac = 0.1
-
-[FULL_DAY_ANTENNA_FLAGGING_OPTS]
-smoothing_scale_nfiles = 30
-max_flag_gap_nfiles = 30
-auto_power_max_flag_frac = 0.5
-auto_shape_max_flag_frac = 0.25
-auto_slope_max_flag_frac = 0.25
-auto_rfi_max_flag_frac = 0.25
-chisq_max_flag_frac = 0.5
-overall_max_flag_frac = 0.5
-
 [CALIBRATION_SMOOTHING_OPTS]
 freq_smoothing_scale = 10.0 # in MHz
 time_smoothing_scale = 6e5 # in seconds
 eigenval_cutoff = 1e-12
-
-[DELAY_FILTERED_AVG_ZSCORE_OPTS]
-min_samp_frac = 0.15
-filter_delay = 750 # in ns
-eigenval_cutoff = 1e-12
-
-[FULL_DAY_RFI_OPTS_ROUND_2]
-z_thresh = 5.0
-ws_z_thresh = 4.0
-avg_z_thresh =  1.0
-max_freq_flag_frac = 0.25
-max_time_flag_frac = 0.1
-avg_spectrum_filter_delay = 250.0 # in ns
-eigenval_cutoff = 1e-12
-time_avg_delay_filt_snr_thresh = 4.0
-time_avg_delay_filt_snr_dynamic_range = 1.5
 
 [POSTPROCESS_FILE_OPTS]
 dly_filt_horizon = 1.0
@@ -140,13 +99,12 @@ spectrum_chan_buffer = 25
 [WorkFlow]
 actions = ["SETUP",
            "EXTRACT_AUTOS",
+           "MOCK_DATA",
            "CALIBRATE_FILE_NOTEBOOK",
            "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
-           "FULL_DAY_RFI_NOTEBOOK",
-           "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
+           "ROUND_1_RFI_TRANSFER",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
-           "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK",
-           "FULL_DAY_RFI_ROUND_2_NOTEBOOK",
+           "ROUND_2_RFI_TRANSFER",
            "POSTPROCESS_FILE_NOTEBOOK",
            "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
           ]
@@ -220,80 +178,11 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
         ]
 
-[FULL_DAY_RFI_NOTEBOOK]
-mem = 120000
-prereqs = ["CALIBRATE_FILE_NOTEBOOK", "EXTRACT_AUTOS"]
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_full_day_rfi}",
-        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
-        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
-        "${FULL_DAY_RFI_OPTS:max_solar_alt}",
-        "${FULL_DAY_RFI_OPTS:freq_filter_scale}",
-        "${FULL_DAY_RFI_OPTS:time_filter_scale}",
-        "${FULL_DAY_RFI_OPTS:eigenval_cutoff}",
-        "${FULL_DAY_RFI_OPTS:min_frac_of_autos}",
-        "${FULL_DAY_RFI_OPTS:max_auto_L2}",
-        "${FULL_DAY_RFI_OPTS:z_thresh}",
-        "${FULL_DAY_RFI_OPTS:ws_z_thresh}",
-        "${FULL_DAY_RFI_OPTS:avg_z_thresh}",
-        "${FULL_DAY_RFI_OPTS:repeat_flag_z_thresh}",
-        "${FULL_DAY_RFI_OPTS:max_freq_flag_frac}",
-        "${FULL_DAY_RFI_OPTS:max_time_flag_frac}",
-        "${Options:path_to_a_priori_flags}",
-        ]
-        
-[FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
+[ROUND_1_RFI_TRANSFER]
 prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
 args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_full_day_antenna_flagging}",
-        "${CALIBRATE_FILE_OPTS:am_corr_bad}",
-        "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
-        "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
-        "${CALIBRATE_FILE_OPTS:am_xpol_suspect}",
-        "${CALIBRATE_FILE_OPTS:suspect_solar_alt}",
-        "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
-        "${CALIBRATE_FILE_OPTS:zeros_per_spec_suspect}",
-        "${CALIBRATE_FILE_OPTS:auto_power_good_low}",
-        "${CALIBRATE_FILE_OPTS:auto_power_good_high}",
-        "${CALIBRATE_FILE_OPTS:auto_power_suspect_low}",
-        "${CALIBRATE_FILE_OPTS:auto_power_suspect_high}",
-        "${CALIBRATE_FILE_OPTS:auto_slope_good_low}",
-        "${CALIBRATE_FILE_OPTS:auto_slope_good_high}",
-        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_low}",
-        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_high}",
-        "${CALIBRATE_FILE_OPTS:auto_rfi_good}",
-        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
-        "${CALIBRATE_FILE_OPTS:auto_shape_good}",
-        "${CALIBRATE_FILE_OPTS:auto_shape_suspect}",
-        "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
-        "${CALIBRATE_FILE_OPTS:oc_cspa_suspect}",
-        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:smoothing_scale_nfiles}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:max_flag_gap_nfiles}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_power_max_flag_frac}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_shape_max_flag_frac}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_slope_max_flag_frac}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_rfi_max_flag_frac}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:chisq_max_flag_frac}",
-        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:overall_max_flag_frac}",
-        "${Options:path_to_a_priori_flags}",
-        ]
+       ]
 
 [CALIBRATION_SMOOTHING_NOTEBOOK]
 mem = 120000
@@ -314,43 +203,10 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
         ]
 
-[DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK]
+[ROUND_2_RFI_TRANSFER]
 prereqs = "CALIBRATION_SMOOTHING_NOTEBOOK"
-prereq_chunk_size = "all"
 args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
-        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
-        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:min_samp_frac}",
-        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
-        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
-        ]
-extra_batch_options = "--nice=1000"
-
-[FULL_DAY_RFI_ROUND_2_NOTEBOOK]
-prereqs = "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_full_day_rfi}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:z_thresh}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:ws_z_thresh}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:max_freq_flag_frac}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:max_time_flag_frac}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:avg_spectrum_filter_delay}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:eigenval_cutoff}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_thresh}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_dynamic_range}",
-        ]
+       ]
 
 [POSTPROCESS_FILE_NOTEBOOK]
 prereqs = "FULL_DAY_RFI_ROUND_2_NOTEBOOK"
