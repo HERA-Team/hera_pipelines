@@ -38,10 +38,12 @@ fr_quantile_high=${24}
 fr_eigenval_cutoff=${25}
 target_averaging_time=${26}
 use_corr_matrix=${27}
-efield_healpix_beam_file=${28}
-taper=${29}
-include_interleave_auto_ps=${30}
-store_window_functions=${31}
+corr_matrix_freq_decimation=${28}
+corr_matrix_notch_cutoff=${29}
+efield_healpix_beam_file=${30}
+taper=${31}
+include_interleave_auto_ps=${32}
+store_window_functions=${33}
 
 # Export variables used by the notebook
 full_file_path="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -73,6 +75,8 @@ export FR_QUANTILE_HIGH=${fr_quantile_high}
 export FR_EIGENVAL_CUTOFF=${fr_eigenval_cutoff}
 export TARGET_AVERAGING_TIME=${target_averaging_time}
 export USE_CORR_MATRIX=${use_corr_matrix}
+export CORR_MATRIX_FREQ_DECIMATION=${corr_matrix_freq_decimation}
+export CORR_MATRIX_NOTCH_CUTOFF=${corr_matrix_notch_cutoff}
 export EFIELD_HEALPIX_BEAM_FILE=${efield_healpix_beam_file}
 export TAPER=${taper}
 export INCLUDE_INTERLEAVE_AUTO_PS=${include_interleave_auto_ps}
