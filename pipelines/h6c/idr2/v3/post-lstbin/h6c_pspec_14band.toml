@@ -39,6 +39,8 @@ fr_quantile_high = 0.95
 fr_eigenval_cutoff = 1e-12
 target_averaging_time = 300  # seconds
 use_corr_matrix = true
+corr_matrix_freq_decimation = 10
+corr_matrix_notch_cutoff = 30  # m
 
 [PSPEC_OPTS]
 efield_healpix_beam_file = "/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
@@ -78,6 +80,8 @@ args = ["{basename}",
         "${TEMPORAL_POSTPROCESSING_OPTS:fr_eigenval_cutoff}",
         "${TEMPORAL_POSTPROCESSING_OPTS:target_averaging_time}",
         "${TEMPORAL_POSTPROCESSING_OPTS:use_corr_matrix}",
+        "${TEMPORAL_POSTPROCESSING_OPTS:corr_matrix_freq_decimation}",
+        "${TEMPORAL_POSTPROCESSING_OPTS:corr_matrix_notch_cutoff}",
         "${PSPEC_OPTS:efield_healpix_beam_file}",
         "${PSPEC_OPTS:taper}",
         "${PSPEC_OPTS:include_interleave_auto_ps}",
