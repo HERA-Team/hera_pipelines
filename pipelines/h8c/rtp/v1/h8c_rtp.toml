@@ -501,6 +501,7 @@ args = ["{basename}",
         ]
 
 [POSTPROCESS_FILE_NOTEBOOK]
+mem = 16000
 prereqs = "FULL_DAY_RFI_ROUND_2_NOTEBOOK"
 prereq_chunk_size = "all"
 args = ["{basename}",
