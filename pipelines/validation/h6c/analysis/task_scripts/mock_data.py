@@ -37,15 +37,21 @@ parser.add_argument(
     action="store_true",
     help="Whether the input files are compressed by redundancy.",
 )
+parser.add_argument(
+    "--flag_file",
+    default="",
+    help="Path to file containing apriori flags for this day.",
+)
 
 if __name__ == "__main__":
-    print('making mock data...')
-    init_time = time.time()
     # Setup
+    print("Beginning mock data routine...")
+    init_time = time.time()
     args = parser.parse_args()
 
     # Get the perfectly-calibrated simulation files.
     t1 = time.time()
+    print("Determining filing parameters...")
     base_path = Path(args.sim_dir)
     sim_dir = base_path / args.sky_cmp
     lst_re = re.compile("\d+\.\d+")
@@ -101,17 +107,13 @@ if __name__ == "__main__":
     last_ind = np.argwhere(start_lsts <= np.round(ref_lsts.max() + dref_lsts, 7)).flatten()[-1]
 
     # Before loading in the files, figure out which antennas to select.
-    # NOTE: this is updated for H6C, but I still don't like that it's hardcoded.
-    # A better solution might be to have the user provide a path to the files with
-    # the a-priori flagging info, but the convention for storing this data changed
-    # between H1C (text file) and H4C (yaml file).
-    h6c_path = Path("/lustre/aoc/projects/hera/h6c-analysis")
-    pipeline_path = h4c_path / "h4c_software/hera_pipelines/pipelines/h4c/rtp/v2"
-    flag_file = pipeline_path / f"stage_2_a_priori_flags_include_variable/{jd}.yaml"
-    with open(flag_file, "r") as flag_info:
-        bad_ants = np.array(
-            yaml.load(flag_info.read(), Loader=yaml.SafeLoader)["ex_ants"]
-        ).astype(int)
+    if args.flag_file:
+        with open(args.flag_file, "r") as flag_info:
+            bad_ants = np.array(
+                yaml.load(flag_info.read(), Loader=yaml.SafeLoader)["ex_ants"]
+            ).astype(int)
+    else:
+        bad_ants = np.array([], dtype=int)
 
     # We need separate antenna arrays since not all of the antennas will be present
     # in the data for compressed files, which can lead to read errors.
@@ -144,7 +146,6 @@ if __name__ == "__main__":
     )
     if not sim_uvdata.future_array_shapes:
         sim_uvdata.use_future_array_shapes()
-    print('using future array shape:', sim_uvdata.future_array_shapes)
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Reading simulation data took {dt:.2f} minutes.")
@@ -152,7 +153,8 @@ if __name__ == "__main__":
     # Now interpolate the simulation data to the reference data times.
     t1 = time.time()
     if np.any(ref_lsts > (2 * np.pi)):
-    # if the refererence LSTs span the phase wrap, the sim lsts must also span that wrap
+        # If the refererence LSTs span the phase wrap,
+        # then the simulation LSTs must also span that wrap.
         sim_uvdata.lst_array[sim_uvdata.lst_array < args.lst_wrap] += 2 * np.pi
     sim_uvdata = hera_sim.adjustment.interpolate_to_reference(
         sim_uvdata,
@@ -171,7 +173,6 @@ if __name__ == "__main__":
 
     # Inflate the data if it's compressed
     if args.inflate:
-        print('using future array shape:', sim_uvdata.future_array_shapes)
         t1 = time.time()
         sim_uvdata.inflate_by_redundancy()
         t2 = time.time()
@@ -234,7 +235,6 @@ if __name__ == "__main__":
         for attr in ("min", "mean", "max"):
             print(f"    {getattr(autos, attr)()}")
 
-        print("I am the new version I swear!! Bobby swears too!")
 
         # Read in the mutual coupling mixing matrix if a file is provided.
         # NOTE: This is tuned to the particular format I used for saving the
