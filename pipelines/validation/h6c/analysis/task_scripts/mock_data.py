@@ -42,6 +42,12 @@ parser.add_argument(
     default="",
     help="Path to file containing apriori flags for this day.",
 )
+parser.add_argument(
+    "--include_outriggers",
+    default=False,
+    action="store_true",
+    help="Whether to include the outriggers in simulation.",
+)
 
 if __name__ == "__main__":
     # Setup
@@ -104,45 +110,70 @@ if __name__ == "__main__":
     # Note that data LSTs will always be entirely to one side of the wrap.
     dref_lsts = np.median(np.diff(ref_lsts))
     first_ind = np.argwhere(start_lsts <= np.round(ref_lsts.min(), 7)).flatten()[-1]
-    last_ind = np.argwhere(start_lsts <= np.round(ref_lsts.max() + dref_lsts, 7)).flatten()[-1]
+    last_ind = np.argwhere(
+        start_lsts <= np.round(ref_lsts.max() + dref_lsts, 7)
+    ).flatten()[-1]
 
     # Before loading in the files, figure out which antennas to select.
+    # The code for retrieving the flags assumes the H6C format for apriori flags.
     if args.flag_file:
         with open(args.flag_file, "r") as flag_info:
             bad_ants = np.array(
                 yaml.load(flag_info.read(), Loader=yaml.SafeLoader)["ex_ants"]
-            ).astype(int)
+            )[:,0].astype(int)
     else:
         bad_ants = np.array([], dtype=int)
+    bad_ants = set(bad_ants)
 
-    # We need separate antenna arrays since not all of the antennas will be present
-    # in the data for compressed files, which can lead to read errors.
+    # The basic idea: we want to use all of the antennas that collected data
+    # to try to make the mutual coupling as representative of the real thing
+    # as possible. After systematics simulation, we want to downselect to
+    # antennas that weren't completely flagged. Since the simulations have
+    # more antennas than the data, we will need to downselect on antennas
+    # twice: once before systematics simulation, and once after.
     sim_uvdata = UVData()
     sim_uvdata.read(sim_files[0], read_data=False)
-    data_ants = set(sim_uvdata.ant_1_array.tolist()).union(
-        sim_uvdata.ant_2_array.tolist()
+    sim_ants = sorted(
+        set(sim_uvdata.ant_1_array).union(sim_uvdata.ant_2_array)
     )
-    ants_to_load = np.array(
-        [ant for ant in data_ants if ant not in bad_ants]
-    ) if not args.input_is_compressed else np.array(list(data_ants))
+    data_ants = sorted(
+        set(ref_uvdata.ant_1_array).union(ref_uvdata.ant_2_array)
+    )
+    if not args.include_outriggers:
+        data_ants = [ant for ant in data_ants if ant < 320]
+        sim_ants = [ant for ant in sim_ants if ant < 320]
 
-    # If we're inflating, then we're going to need to make sure not to include any
-    # bad antennas that may have been missed in the previous filter.
-    ants_to_keep = np.array(
-        [ant for ant in ref_uvdata.antenna_numbers if ant not in bad_ants]
+    # Figure out which antennas to use for systematics simulation.
+    ants_to_load = np.array(
+        [ant for ant in sim_ants if ant in data_ants]
     )
-    trim_on_read = set(ants_to_keep.tolist()) == set(ants_to_load.tolist())
+
+    # Figure out which antennas to keep *after* systematics simulation.
+    # NOTE: Here I'm assuming that the simulation antennas are a superset
+    # of the data antennas. This should work for H6C and beyond, but it will
+    # not necessarily be backwards-compatible with old validation simulations.
+    # I'm sure there's a general solution that can handle all the corner cases
+    # of pairs of array layouts (data:sim), but I don't want to figure out
+    # the general solution right now.
+    ants_to_keep = np.array(
+        [ant for ant in data_ants if ant not in bad_ants]
+    )
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"File selection took {dt:.2f} minutes.")
 
     # Now load in the files.
+    print("Loading simulation data...")
     t1 = time.time()
     sim_uvdata = UVData()
+    # If the simulation data is compressed by redundancy, then we're going to
+    # severely mess things up if we remove antenna-based metadata before
+    # inflating by redundancy. Otherwise, only load in antennas that have data
+    # and remove any extra antenna-based metadata.
     sim_uvdata.read(
         sim_files[first_ind:last_ind+1],
-        antenna_nums=ants_to_load,
-        keep_all_metadata=not trim_on_read,
+        antenna_nums=None if args.input_is_compressed else ants_to_load,
+        keep_all_metadata=args.input_is_compressed,
     )
     if not sim_uvdata.future_array_shapes:
         sim_uvdata.use_future_array_shapes()
@@ -151,6 +182,7 @@ if __name__ == "__main__":
     print(f"Reading simulation data took {dt:.2f} minutes.")
 
     # Now interpolate the simulation data to the reference data times.
+    print("Interpolating simulation to observed times...")
     t1 = time.time()
     if np.any(ref_lsts > (2 * np.pi)):
         # If the refererence LSTs span the phase wrap,
@@ -173,27 +205,17 @@ if __name__ == "__main__":
 
     # Inflate the data if it's compressed
     if args.inflate:
+        print("Inflating data by redundancy...")
         t1 = time.time()
         sim_uvdata.inflate_by_redundancy()
         t2 = time.time()
         dt = (t2 - t1) / 60
         print(f"Inflating data took {dt:.2f} minutes.")
 
-    if not trim_on_read:
-        sim_uvdata.select(antenna_nums=ants_to_keep, keep_all_metadata=False)
-
-    # Make sure the antennas are ordered the same way as in the configuration file.
-    t1 = time.time()
-    antnum_diffs = ants_to_keep[:,None] - np.array(sim_uvdata.antenna_numbers)[None,:]
-    index_map = np.argwhere(antnum_diffs == 0)[:,1]
-    assert np.all(ants_to_keep == np.array(sim_uvdata.antenna_numbers[index_map]))
-    sim_uvdata.antenna_numbers = np.array(sim_uvdata.antenna_numbers)[index_map]
-    sim_uvdata.antenna_names = np.array(sim_uvdata.antenna_names)[index_map]
-    sim_uvdata.antenna_positions = sim_uvdata.antenna_positions[index_map,:]
-    sim_uvdata.antenna_diameters = np.array(sim_uvdata.antenna_diameters)[index_map]
-    t2 = time.time()
-    dt = (t2 - t1) / 60
-    print(f"Fixing antenna ordering took {dt:.2f} minutes.")
+    # If the input data was compressed, then we need to do the downselect
+    # to data-only antennas *after* inflation.
+    if args.inflate and args.input_is_compressed:
+        sim_uvdata.select(antenna_nums=ants_to_load, keep_all_metadata=False)
 
     # Now apply the systematics.
     sim_uvdata = Simulator(data=sim_uvdata)
@@ -243,7 +265,7 @@ if __name__ == "__main__":
         # data without needing to actually read the full coupling matrix.
         if component.lower() == "mutualcoupling" and "datafile" in parameters:
             coupling_info = dict(np.load(parameters.pop("datafile")))
-            coupling_ants = np.sort(np.unique(coupling_info["ant_1_array"]))
+            coupling_ants = coupling_info["antenna_numbers"]
             sim_ants = set(sim_uvdata.antenna_numbers)
             _select = np.array([ant in sim_ants for ant in coupling_ants])
             select = np.zeros(2*_select.size, dtype=bool)
@@ -273,6 +295,10 @@ if __name__ == "__main__":
     # the beam files don't actually have an x-orientation set.
     sim_uvdata.data.x_orientation = "east"
 
+    # Now remove antennas that were fully flagged in the real data.
+    if set(ants_to_load) != set(ants_to_keep):
+        sim_uvdata.data.select(antenna_nums=ants_to_keep, keep_all_metadata=False)
+
     # We should be done. Now just write the contents to disk.
     t1 = time.time()
 
@@ -280,7 +306,9 @@ if __name__ == "__main__":
     # the file that is linked to.
     if outfile.is_symlink():
         outfile.unlink()
-    sim_uvdata.write(str(outfile), save_format="uvh5", clobber=args.clobber)
+    sim_uvdata.write(
+        str(outfile), save_format="uvh5", clobber=args.clobber, fix_autos=True
+    )
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Writing data to disk took {dt:.2f} minutes.")
