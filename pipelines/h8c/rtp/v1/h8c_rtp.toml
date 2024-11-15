@@ -343,7 +343,7 @@ args = ["{basename}",
         ]
 
 [FULL_DAY_RFI_NOTEBOOK]
-mem = 192000
+mem = 225000
 prereqs = ["CALIBRATE_FILE_NOTEBOOK", "EXTRACT_AUTOS", "FULL_DAY_AUTO_CHECKER_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -439,7 +439,7 @@ args = ["{basename}",
 ########## SMOOTHING AND POST-PROCESSING ##########
 
 [CALIBRATION_SMOOTHING_NOTEBOOK]
-mem = 240000
+mem = 250000
 prereqs = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
