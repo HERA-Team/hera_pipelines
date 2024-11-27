@@ -32,9 +32,13 @@ diff_autos_file=`echo ${fn%.sum.uvh5}.diff.autos.uvh5`
 if [ -f "$diff_autos_file" ]; then
     echo ${diff_autos_file} already exists... skipping extraction.
 else
-    echo extract_autos.py ${diff_file} ${diff_autos_file} --clobber
-    extract_autos.py ${diff_file} ${diff_autos_file} --clobber
-    echo Finished extracting autos from diff data at $(date)
+    if [ -f "$diff_file" ]; then
+        echo extract_autos.py ${diff_file} ${diff_autos_file} --clobber
+        extract_autos.py ${diff_file} ${diff_autos_file} --clobber
+        echo Finished extracting autos from diff data at $(date)
+    else
+        echo ${diff_file} does not exist... skipping extraction.
+    fi
 fi
 
 # now delete .dat files, since we've already shown that they are readable

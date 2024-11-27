@@ -97,6 +97,11 @@ export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
 export SAVE_OMNIVIS_FILE=${save_omni_vis}
 export CALIBRATE_CROSS_POLS=${calibrate_cross_pols}
 
+# if SUM_FILE with .sum. replaced with .diff. does not exist, export USE_DIFF=False
+if [ ! -e "${SUM_FILE/.sum./.diff.}" ]; then
+    export USE_DIFF=False
+fi
+
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
 # Execute jupyter notebook
