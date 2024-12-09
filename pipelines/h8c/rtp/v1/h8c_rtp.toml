@@ -3,7 +3,7 @@ makeflow_type = "analysis"
 source_script = "~/.bashrc"
 base_mem = 12000 # TODO: Check if this is the right number for site
 base_cpu = 1
-timeout = "24h"
+timeout = "48h"
 path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h8c/rtp/v1/task_scripts"
 conda_env = "RTP"
 mandc_report = true
@@ -237,7 +237,7 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-mem = 48000
+mem = 96000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
