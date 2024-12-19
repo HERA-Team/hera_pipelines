@@ -1,0 +1,27 @@
+noise:
+    simulator: "thermal_noise"
+    Trx: 100
+    omega_p: !Beam
+        datafile: "/lustre/aoc/projects/hera/Validation/H6C_IDR2/configs/omegas.npz"
+        interp_kwargs:
+            interpolator: "interp1d"
+            kind: "cubic"
+    seed: "initial"
+bandpass:
+    simulator: "bandpass_gain"
+    gain_spread: 0.08
+    bp_poly: !Bandpass
+        datafile: "/lustre/aoc/projects/hera/Validation/H6C_IDR2/configs/bandpass.npz"
+        interp_kwargs:
+            interpolator: "interp1d"
+            kind: "cubic"
+    taper: "tanh"
+    taper_kwds:  # Parameter settings here chosen by playing around with things
+        x_min: 0.04  # Frequency of lower edge rolloff, GHz
+        x_max: 0.262  # Frequency of upper edge rolloff, GHz
+        scale_low: 0.008  # Steepness of the rolloff (smaller == steeper)
+        scale_high: 0.0125  # Steepness of the rolloff at upper edge
+    seed: 3505742311
+mutual_coupling:
+    simulator: "MutualCoupling"
+    datafile: "/lustre/aoc/projects/hera/Validation/H6C_IDR2/configs/hera_350_coupling_matrix.npz"
