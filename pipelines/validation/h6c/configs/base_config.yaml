@@ -1,15 +1,6 @@
 mutual_coupling:
     simulator: "MutualCoupling"
     datafile: "/lustre/aoc/projects/hera/Validation/H6C_IDR2/configs/hera_350_coupling_matrix.npz"
-noise:
-    simulator: "thermal_noise"
-    Trx: 100
-    omega_p: !Beam
-        datafile: "/lustre/aoc/projects/hera/Validation/H6C_IDR2/configs/omegas.npz"
-        interp_kwargs:
-            interpolator: "interp1d"
-            kind: "cubic"
-    seed: "initial"
 bandpass:
     simulator: "bandpass_gain"
     gain_spread: 0.08
@@ -25,3 +16,12 @@ bandpass:
         scale_low: 0.008  # Steepness of the rolloff (smaller == steeper)
         scale_high: 0.0125  # Steepness of the rolloff at upper edge
     seed: "once"
+noise:
+    simulator: "thermal_noise"
+    Trx: 100
+    omega_p: !Beam
+        datafile: "/lustre/aoc/projects/hera/Validation/H6C_IDR2/configs/omegas.npz"
+        interp_kwargs:
+            interpolator: "interp1d"
+            kind: "cubic"
+    seed: "initial"
