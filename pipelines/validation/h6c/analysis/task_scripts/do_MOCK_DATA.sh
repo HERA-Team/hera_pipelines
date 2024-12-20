@@ -14,7 +14,7 @@ sky_cmp="${2}" # simulation type (e.g. diffuse, eor, point_src) must match name 
 jd=$(get_int_jd ${reffile})
 echo "jd is ${jd}"
 ref_path=/lustre/aoc/projects/hera/h6c-analysis/IDR2/${jd}/${reffile}
-outdir=/lustre/aoc/projects/hera/Validation/H6C_IDR/${jd}/
+outdir=/lustre/aoc/projects/hera/Validation/H6C_IDR2/${jd}/
 #outdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/mocked_data/${sky_cmp}/${jd}/
 #mkdir -p ${outdir} # the -p only makes dir it not existing
 
