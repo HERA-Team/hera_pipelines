@@ -4,8 +4,8 @@ source_script = "~/.bashrc"
 base_mem = 15500
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
 conda_env = "h6c_idr2_validation"
 batch_system = "slurm"
 sim_env = "h6c_idr2_validation"
@@ -25,8 +25,8 @@ librarian_downselected_data = false
 librarian_notebooks = false
 
 [NOTEBOOK_OPTS]
-nb_template_dir = '/lustre/aoc/projects/hera/Validation/H6C_IDR2/notebooks'
-nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks'
+nb_template_dir = '/lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/Validation/H6C_IDR2/notebooks'
 git_push = false
 
 [MOCK_DATA_OPTS]
