@@ -6,9 +6,9 @@ base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts"
 path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
-conda_env = "h6c_idr2"
+conda_env = "h6c_idr2_validation"
 batch_system = "slurm"
-sim_env = "h6c_validation"
+sim_env = "h6c_idr2_validation"
 
 [LIBRARIAN_OPTS]
 # These trigger which sets of files get added to the librarian
@@ -25,9 +25,12 @@ librarian_downselected_data = false
 librarian_notebooks = false
 
 [NOTEBOOK_OPTS]
-nb_template_dir = '/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_notebook_templates/notebooks'
+nb_template_dir = '/lustre/aoc/projects/hera/Validation/H6C_IDR2/notebooks'
 nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks'
 git_push = false
+
+[MOCK_DATA_OPTS]
+sky_cmp = "sum"
 
 [CALIBRATE_FILE_OPTS]
 am_corr_bad = 0.2
@@ -80,8 +83,8 @@ dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
 save_diff_red_avg = false
-save_abs_cal_red_avg = true
-save_dly_filt_red_avg = true
+save_abs_cal_red_avg = false
+save_dly_filt_red_avg = false
 
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
 filter_dly_min = 150.0 # in ns
@@ -98,28 +101,26 @@ spectrum_chan_buffer = 25
 
 [WorkFlow]
 actions = ["SETUP",
-           "EXTRACT_AUTOS",
            "MOCK_DATA",
            "CALIBRATE_FILE_NOTEBOOK",
-           "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
-           "ROUND_1_RFI_TRANSFER",
-           "CALIBRATION_SMOOTHING_NOTEBOOK",
-           "ROUND_2_RFI_TRANSFER",
-           "POSTPROCESS_FILE_NOTEBOOK",
-           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
+        #    "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
+        #    "CALIBRATION_SMOOTHING_NOTEBOOK",
+        #    "ROUND_2_RFI_TRANSFER",
+        #    "POSTPROCESS_FILE_NOTEBOOK",
+        #    "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
           ]
 
 [SETUP]
 args = []
 
-[EXTRACT_AUTOS]
+[MOCK_DATA]
 args = ["{basename}",
-        "${LIBRARIAN_OPTS:upload_to_librarian}",
-        "${LIBRARIAN_OPTS:librarian_autos}",
+        "${MOCK_DATA_OPTS:sky_cmp}",
        ]
-extra_batch_options = "--nice=1000"
+
 
 [CALIBRATE_FILE_NOTEBOOK]
+prereqs = "MOCK_DATA"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
@@ -186,7 +187,7 @@ args = ["{basename}",
 
 [CALIBRATION_SMOOTHING_NOTEBOOK]
 mem = 120000
-prereqs = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+prereqs = "ROUND_1_RFI_TRANSFER"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -209,8 +210,7 @@ args = ["{basename}",
        ]
 
 [POSTPROCESS_FILE_NOTEBOOK]
-prereqs = "FULL_DAY_RFI_ROUND_2_NOTEBOOK"
-prereq_chunk_size = "all"
+prereqs = "ROUND_2_RFI_TRANSFER"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
