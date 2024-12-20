@@ -31,7 +31,7 @@ echo "using config file: ${config_file}"
 # reffile=$(basename ${f});
 # echo ${name};
 echo "using ${reffile}";
-echo "python /lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber"
-python /lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H4C/IDR2/chunked_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber
+echo "python /lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H6C_IDR2/sim_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber"
+python /lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H6C_IDR2/sim_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber
 echo "saved file to ${outdir}"
 
