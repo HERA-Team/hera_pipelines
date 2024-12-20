@@ -114,6 +114,7 @@ actions = ["SETUP",
 args = []
 
 [MOCK_DATA]
+mem = 36000
 args = ["{basename}",
         "${MOCK_DATA_OPTS:sky_cmp}",
        ]
