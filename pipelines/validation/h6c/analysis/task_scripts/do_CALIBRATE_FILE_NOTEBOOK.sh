@@ -97,6 +97,9 @@ export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
 export SAVE_OMNIVIS_FILE=${save_omni_vis}
 export CALIBRATE_CROSS_POLS=${calibrate_cross_pols}
 
+# for purposes of validation, just ignore the diffs and use the relevant antenna metrics from the real data
+export USE_DIFF=False
+
 nb_outfile=${SUM_FILE%.uvh5}.calibration_notebook.html
 
 # Execute jupyter notebook
