@@ -96,6 +96,7 @@ export ABSCAL_MIN_BL_LEN=${abscal_min_bl_len}
 export ABSCAL_MAX_BL_LEN=${abscal_max_bl_len}
 export SAVE_OMNIVIS_FILE=${save_omni_vis}
 export CALIBRATE_CROSS_POLS=${calibrate_cross_pols}
+export VALIDATION=True # This tells the notebook to use validation simulations to perform abscal
 
 # for purposes of validation, just ignore the diffs and use the relevant antenna metrics from the real data
 export USE_DIFF=False
