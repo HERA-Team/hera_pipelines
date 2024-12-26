@@ -103,11 +103,11 @@ spectrum_chan_buffer = 25
 actions = ["SETUP",
            "MOCK_DATA",
            "CALIBRATE_FILE_NOTEBOOK",
-        #    "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
-        #    "CALIBRATION_SMOOTHING_NOTEBOOK",
-        #    "ROUND_2_RFI_TRANSFER",
-        #    "POSTPROCESS_FILE_NOTEBOOK",
-        #    "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
+           "ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK",
+           "CALIBRATION_SMOOTHING_NOTEBOOK",
+           "ROUND_2_RFI_TRANSFER",
+           "POSTPROCESS_FILE_NOTEBOOK",
+           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
           ]
 
 [SETUP]
@@ -180,15 +180,9 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
         ]
 
-[ROUND_1_RFI_TRANSFER]
-prereqs = "CALIBRATE_FILE_NOTEBOOK"
-prereq_chunk_size = "all"
-args = ["{basename}",
-       ]
-
 [CALIBRATION_SMOOTHING_NOTEBOOK]
 mem = 120000
-prereqs = "ROUND_1_RFI_TRANSFER"
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
