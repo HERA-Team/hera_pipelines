@@ -72,6 +72,10 @@ abscal_max_bl_len = 140.0
 save_omni_vis = false
 calibrate_cross_pols = true
 
+[FULL_DAY_RFI_OPTS]
+FM_low_freq = 87.5 # in MHz
+FM_high_freq = 108.0 # in MHz
+
 [CALIBRATION_SMOOTHING_OPTS]
 freq_smoothing_scale = 10.0 # in MHz
 time_smoothing_scale = 6e5 # in seconds
