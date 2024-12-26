@@ -205,6 +205,7 @@ args = ["{basename}",
 
 [ROUND_2_RFI_TRANSFER]
 prereqs = "CALIBRATION_SMOOTHING_NOTEBOOK"
+prereq_chunk_size = "all"
 args = ["{basename}",
        ]
 
