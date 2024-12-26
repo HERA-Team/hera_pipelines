@@ -37,6 +37,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/antenna_classification_summary.ipynb
+--allow-errors
 echo Finished finished antenna classification summary notebook at $(date)
 
 # If desired, push results to github
