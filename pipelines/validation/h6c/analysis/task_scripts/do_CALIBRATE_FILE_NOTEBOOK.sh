@@ -111,10 +111,9 @@ jupyter nbconvert --output=${nb_outfile} \
 echo Finished running file calibration notebook at $(date)
 
 # Check to see that output files were correctly produced
-am_file=${SUM_FILE%.uvh5}.ant_metrics.hdf5
 antclass_file=${SUM_FILE%.uvh5}.ant_class.csv
 omnical_file=${SUM_FILE%.uvh5}.omni.calfits
-for f in ${am_file} ${antclass_file} ${omnical_file}; do
+for f in ${antclass_file} ${omnical_file}; do
     if [ -f "$f" ]; then
         echo Resulting $f found.
     else
