@@ -1,3 +1,6 @@
+mutual_coupling:
+    simulator: "MutualCoupling"
+    datafile: "/lustre/aoc/projects/hera/Validation/H6C_IDR2/configs/hera_350_coupling_matrix.npz"
 noise:
     simulator: "thermal_noise"
     Trx: 100
