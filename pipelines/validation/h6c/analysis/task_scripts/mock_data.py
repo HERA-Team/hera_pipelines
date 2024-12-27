@@ -8,6 +8,7 @@ from pathlib import Path
 import hera_sim
 from hera_sim import Simulator
 from pyuvdata import UVData
+from hera_cal.utils import LST2JD
 
 parser = argparse.ArgumentParser()
 parser.add_argument("infile", type=str, help="Data file to be referenced for sims")
@@ -188,6 +189,16 @@ if __name__ == "__main__":
         # If the refererence LSTs span the phase wrap,
         # then the simulation LSTs must also span that wrap.
         sim_uvdata.lst_array[sim_uvdata.lst_array < args.lst_wrap] += 2 * np.pi
+    if np.max(np.abs(np.diff(sim_uvdata.time_array))) > .5:
+    # there's a discontinuity in JD, which will create problems for interpolate_to_reference
+        latitude, longitude, altitude = sim_uvdata.telescope.location_lat_lon_alt_degrees
+        sim_uvdata.time_array = LST2JD(sim_uvdata.lst_array, 
+                                       start_jd=int(np.floor(np.min(sim_uvdata.time_array))),
+                                       allow_other_jd=True,
+                                       lst_branch_cut=args.lst_wrap,
+                                       latitude=latitude,
+                                       longitude=longitude,
+                                       altitude=altitude)
     sim_uvdata = hera_sim.adjustment.interpolate_to_reference(
         sim_uvdata,
         ref_times=ref_times,
