@@ -4,6 +4,7 @@ from pathlib import Path
 H6C = {
     'root_stage': Path('/lustre/aoc/projects/hera/H6C'),
     'analysis_dir': Path('/lustre/aoc/projects/hera/h6c-analysis'),
+    'validation_dir': Path("/lustre/aoc/projects/hera/Validation/H6C_IDR2")
 }
 
 

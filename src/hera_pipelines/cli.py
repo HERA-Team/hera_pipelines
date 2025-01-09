@@ -183,9 +183,10 @@ def run_days_async(max_simultaneous_days, force, start, end, direc, skip_days_wi
     help="quintuplet of [redavg/nonavg, abscal/smoothcal, dlyfilt/inpaint, inpaintdelay (e.g. '500ns'), lstcal/nolstcal]"
 )
 @click.option("--setup-analysis/--only-repo", default=None, help="whether to also softlink output tomls to the analysis dir")
+@click.option("--validation/--analysis", default=False, help="whether to setup validation pipelines instead of analysis")
 @click.option('--prefix', type=str, default='', help='a prefix to add to the casenames')
 @click.option("--all-cases/--specify-cases", default=True,)
-def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix, all_cases):
+def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix, all_cases, validation: bool):
     """Setup lstbin TOML files for a range of cases for a specific SEASON, IDR, and GENERATION.
 
     The TOML file created contains *both* the appropriate configuration for the
@@ -198,11 +199,16 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
     This creates the
     """
     repodir = Path(repodir).absolute()
-    template = repodir / f"pipelines/{season}/idr{idr}/v{gen}/lstbin/lstbin-template.toml"
+    if validation:
+        template = repodir / f"pipelines/validation/{season}/lstbin/lstbin-template.toml"
+    else:
+        template = repodir / f"pipelines/{season}/idr{idr}/v{gen}/lstbin/lstbin-template.toml"
 
-    if not seasons.seasons[season]['analysis_dir'].exists():
+    writedir = seasons.seasons[season]['validation_dir'] if validation else seasons.seasons[season]['analysis_dir']
+    
+    if not writedir.exists():
         if setup_analysis:
-            print(":warning-emoji: [red]You specified --setup-analysis but the analysis directory does not exist[/]")
+            print(f":warning-emoji: [red]You specified --setup-analysis but the analysis directory '{writedir}' does not exist[/]")
 
         # Can't setup the analysis directory because we're not on lustre.
         setup_analysis = False
@@ -232,7 +238,7 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
         redavg, callevel, mdltype, inpdelay, lstcal = case
 
         casename = get_casename(case)
-        toml_file = repodir / f"pipelines/{season}/idr{idr}/v{gen}/lstbin/{casename}/lstbin.toml"
+        toml_file = template.parent / f"{casename}/lstbin.toml"
         if toml_file.exists() and not force:
             print(f":warning: File '{toml_file}' exists and --force was not set. [red]Skipping[/].")
             continue
@@ -253,7 +259,7 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
             SEASON = season,
             IDR = idr,
             GENERATION = gen,
-            ANALYSISDIR = seasons.seasons[season]['analysis_dir'],
+            ANALYSISDIR = writedir,
             CASENAME = casename,
             INPAINT_EXT="none" if mdltype == "dlyfilt" else ".where_inpainted.h5",
             DATA_EXT="" if redavg=='nonavg' else (
@@ -277,7 +283,12 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
         print(f"[green]✓[/] Wrote case [blue]{casename}[/] to '{toml_file}'")
 
         if setup_analysis:
-            anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/v{gen}/{casename}"
+            if validation:
+                # For now we've setup the validation in a slightly different structure
+                # than the actual analysis, so we have to if-then this.
+                anldir = seasons.seasons[season]['validation_dir'] / f"makeflow-lstbin/{casename}"
+            else:
+                anldir = seasons.seasons[season]['analysis_dir'] / f"IDR{idr}/makeflow-lstbin/v{gen}/{casename}"
             if not anldir.exists():
                 anldir.mkdir(parents=True)
             anlfile = anldir / "lstbin.toml"
