@@ -50,13 +50,7 @@ nlsts_per_file = 2
 lst_start = 0.0
 antpairs_from_last_file_each_night = true
 {% if not REDAVG %}
-# The following rules replace parts of the data file names to match their associated
-# calibration file. Curiously, since the FastUVH5Meta object does a path.resolve() on
-# the data file, the symlinks in the IDR2 directory get resolved back to the main
-# folder where we download the raw data from the librarian, but the calibration solutions
-# do not exist there, and so are not found. So we forcibly also replace the main path.
 calfile_rules = [
-  ["/lustre/aoc/projects/hera/H6C/", "/lustre/aoc/projects/hera/h6c-analysis/IDR2/"],
   [".uvh5", ".smooth.calfits"]
 ]
 {% endif %}
@@ -65,7 +59,7 @@ calfile_rules = [
 # Arguments to specify input files.
 # Files to be read will be:
 #    {datadir}/{nightdir}/zen.{jdglob}.{sd}.{label}[.]{extension}
-datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/"
+datadir="/lustre/aoc/projects/hera/Validation/H6C_IDR{{ IDR }}/"
 nights=[
   "2459861", "2459862", "2459863", "2459864", "2459866", 
   "2459867", "2459868", "2459869", "2459870", "2459871", 
@@ -75,7 +69,7 @@ fileglob = "{night}/zen.{night}.?????.sum{{ DATA_EXT }}.uvh5"
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
-outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ CASENAME }}/"
+outdir = "/lustre/aoc/projects/hera/Validation/H6C_IDR{{ IDR }}/lstbin-outputs/{{ CASENAME }}/"
 bl_chunk_size = "${LSTBIN_OPTS:bl_chunk_size}"
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.{blchunk}.sum.uvh5"
 overwrite=true
@@ -87,7 +81,7 @@ do_simultaneous_inpainting = {{ (not FLAGGED_AVERAGE)|string|lower}}
 inpaint_mindelay = {{ INPAINT_DELAY}}
 do_lstcal = {{ DO_LSTCAL|string|lower }}
 {% if not REDAVG -%}
-lstcal_path = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ LSTCAL_CASE }}"
+lstcal_path = "/lustre/aoc/projects/hera/Validation/H6C_IDR{{ IDR }}/lstbin-outputs/{{ LSTCAL_CASE }}"
 {% endif %}
 
 # ========================================= THE WORKFLOW ========================

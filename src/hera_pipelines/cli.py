@@ -267,7 +267,7 @@ def lstbin_setup(season, idr, gen, repodir, cases, force, setup_analysis, prefix
             REDAVG=redavg=='redavg',
             INPAINT_DELAY = inpdelay[:-2],
             DO_LSTCAL = lstcal=='lstcal',
-            LSTCAL_CASE = get_casename(cases[0])
+            LSTCAL_CASE = get_casename(cases[0]),  # default case
         )
         rendered = toml.render(**kw)
 
