@@ -15,6 +15,7 @@ tomlfile=${3}
 printf -v outfile_idx "%04d" ${4}
 kernel=${5}
 printf -v outfile_blchunk "%03d" ${6}
+isvalidation=${7}
 
 outname="lststack.${outfile_idx}.${outfile_blchunk}"
 
@@ -31,7 +32,11 @@ eval $cmd
 if [ -f "${outdir}/${outname}.ipynb.hasplots" ]
 then
     casename=$(basename $(builtin cd ${outdir}; pwd))
-    htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks/lstbin/${casename}"
+    if [ ${isvalidation} -eq 1 ]; then
+        htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks/validation/lstbin/${casename}"
+    else
+        htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks/lstbin/${casename}"
+    fi
     mkdir -p "${htmldir}"
     cp "${outdir}/${outname}.html" "${htmldir}/"
     rm "${outdir}/${outname}.ipynb.hasplots"
