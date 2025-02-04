@@ -1,16 +1,12 @@
 import re
 import time
-import yaml
 import numpy as np
 from pathlib import Path
 import typer
 from rich import console
 
-import hera_sim
 from pyuvdata import UVData, FastUVH5Meta
-from hera_cal.utils import LST2JD
 from hera_cal.red_groups import RedundantGroups
-from pyuvdata.utils.bls import baseline_to_antnums
 from scipy.interpolate import interp1d
 
 cns = console.Console()
@@ -22,10 +18,6 @@ def run(
     ref_is_redavg: bool = False,
     outdir: Path = Path('.'),
     clobber: bool = False,
-    inflate: bool = False,
-    input_is_compressed: bool = False,
-    flag_file: str = "",
-    include_outriggers: bool = False,    
 ):
     """Mock LST-binned data from perfectly calibrated simulations.
 
@@ -71,7 +63,7 @@ def run(
     sim_files = list(np.array(sim_files)[sort])
 
     # Figure out where to write the output.
-    stem = re.findall("zen.LST.\d+\.\d+.", reffile.name)[0]
+    stem = re.findall(r"zen\.LST\.\d+\.\d+\.", reffile.name)[0]
     
     # Since there can be multiple basline-chunks for the same LST, we need to
     # find all of them (we're given only one of them).
