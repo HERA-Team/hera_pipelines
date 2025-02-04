@@ -46,7 +46,7 @@ def run(
     else:
         reds = None
             
-    lst_re = re.compile("\d+\.\d+")
+    lst_re = re.compile(r"\d+\.\d+")
     def sort(fn):
         return float(lst_re.findall(str(fn))[0])
     sim_files = sorted(sim_dir.glob("*.uvh5"), key=sort)
