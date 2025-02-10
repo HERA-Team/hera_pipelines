@@ -107,6 +107,10 @@ def run(
 
     for fl in all_reffiles:
         print(f"Processing file: [blue]{fl.name}")
+        if (outdir / fl.name).exists() and not clobber:
+            print(f"  File already exists. Skipping...")
+            continue
+        
         uvd = interpolate_single_outfile(
             sim_lsts=start_lsts,
             data_lsts=lsts,
@@ -158,7 +162,7 @@ def interpolate_single_outfile(
     sim_files = sim_files[first_sim_index:last_sim_index+1]
     print(f"    Found {len(sim_files)} files between LST {data_lsts.min() - dlst_ref:.6f} and {data_lsts.max() + dlst_ref:.6f}.")
     print(f"    First file: {sim_files[0].name}")
-    print(f"     Last file: {sim_files[-1].name}")
+    print(f"    Last file:  {sim_files[-1].name}")
     
     # Before loading in the files, figure out which antennas to select.
     if ref_uvdata.time_axis_faster_than_bls:
@@ -197,19 +201,26 @@ def interpolate_single_outfile(
     print(f"    Determining files and baselines took {dt:.2f} minutes.")
 
     # Now load in the files.
-    print("  Loading simulation data...", end="")
+    print("  > Loading simulation data")
     t1 = time.time()
     sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read)
+
+    if not (
+        np.all(sim_uvdata.ant_1_array == ref_uvdata.ant_1_array) and
+        np.all(sim_uvdata.ant_2_array == ref_uvdata.ant_2_array)
+    ):
+        raise ValueError(
+            "Antenna pairs do not match between reference and simulation."
+        )
+
     t2 = time.time()
     dt = (t2 - t1) / 60
-    print(f" took {dt:.2f} minutes.")
+    print(f"    Loading simulation data took {dt:.2f} minutes.")
 
     # Now interpolate the simulation data to the reference data times.
-    print("  Interpolating simulation to observed times...")
+    print("  > Interpolating simulation to observed times")
     t1 = time.time()
 
-    if not np.all(sim_uvdata.get_antpairs() == ref_uvdata.get_antpairs()):
-        raise ValueError("Antenna pairs do not match between reference and simulation.")
     
     simdata = sim_uvdata.data_array
     if sim_uvdata.time_axis_faster_than_bls:
@@ -229,12 +240,15 @@ def interpolate_single_outfile(
     if not data_lsts[-1] < sim_lsts[-1]:
         raise ValueError("Observed LSTs are not within the range of the simulation LSTs.")
     
-    ref_uvdata.data_array = interp1d(sim_lsts, simdata, axis=axis, kind="cubic")(data_lsts)
+    ref_uvdata.data_array = (
+        interp1d(sim_lsts, simdata.real, axis=axis, kind="cubic")(data_lsts)
+        + 1j * interp1d(sim_lsts, simdata.imag, axis=axis, kind="cubic")(data_lsts)
+    )
     ref_uvdata.data_array.shape = (ref_uvdata.Nblts, ref_uvdata.Nfreqs, ref_uvdata.Npols)
     
     t2 = time.time()
     dt = (t2 - t1) / 60
-    print(f" took {dt:.2f} minutes.")
+    print(f"    Interpolation took {dt:.2f} minutes.")
 
     return ref_uvdata
 
