@@ -3,6 +3,8 @@ import time
 import numpy as np
 from pathlib import Path
 import typer
+from typing import Annotated
+
 from rich import console
 
 from pyuvdata import UVData, FastUVH5Meta
@@ -13,10 +15,36 @@ cns = console.Console()
 print = cns.print
 
 def run(
-    reffile: Path,
-    sim_dir: Path = Path("."),
+    reffile: Annotated[
+        Path,
+        typer.Option(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            writable=False,
+            readable=True,
+        ),
+    ],
+    sim_dir: Annotated[
+        Path,
+        typer.Option(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            writable=False,
+            readable=True,
+        )
+    ] = Path("."),
     ref_is_redavg: bool = False,
-    outdir: Path = Path('.'),
+    outdir: Annotated[
+        Path,
+        typer.Option(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            writable=True,
+        )
+    ] = Path('.'),
     clobber: bool = False,
 ):
     """Mock LST-binned data from perfectly calibrated simulations.
