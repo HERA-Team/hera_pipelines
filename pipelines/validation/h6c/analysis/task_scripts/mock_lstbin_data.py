@@ -145,13 +145,13 @@ def interpolate_single_outfile(
 ) -> UVData:    
     # Start the interpolation routine.
     t1 = time.time()
-    print("  Reading reference data...", end="")
+    print("  > Reading reference data")
     ref_uvdata = UVData.from_file(reffile, read_data=True)
     ref_uvdata.set_rectangularity()
 
     t2 = time.time()
     dt = (t2 - t1) / 60
-    print(f" took {dt:.2f} minutes.")
+    print(f"    Reading reference data took {dt:.2f} minutes.")
 
     # Figure out which simulation files to read in.
     t1 = time.time()
@@ -205,10 +205,11 @@ def interpolate_single_outfile(
     t1 = time.time()
     sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read)
 
-    if not (
-        np.all(sim_uvdata.ant_1_array == ref_uvdata.ant_1_array) and
-        np.all(sim_uvdata.ant_2_array == ref_uvdata.ant_2_array)
-    ):
+    if not np.all(sim_uvdata.get_antpairs() == ref_uvdata.get_antpairs()):
+        for (ap1, ap2) in zip(sim_uvdata.get_antpairs(), ref_uvdata.get_antpairs()):
+            if ap1 != ap2:
+                print(f"    Sim/Ref {ap1} != {ap2}.")
+                
         raise ValueError(
             "Antenna pairs do not match between reference and simulation."
         )
