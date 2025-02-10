@@ -162,42 +162,35 @@ def interpolate_single_outfile(
     
     # Before loading in the files, figure out which antennas to select.
     if ref_uvdata.time_axis_faster_than_bls:
-        bls = list(zip(
+        ref_bls = list(zip(
             ref_uvdata.ant_1_array[::ref_uvdata.Ntimes], 
             ref_uvdata.ant_2_array[::ref_uvdata.Ntimes]
         ))
     else:
-        bls = list(zip(
+        ref_bls = list(zip(
             ref_uvdata.ant_1_array[:ref_uvdata.Nbls], 
             ref_uvdata.ant_2_array[:ref_uvdata.Nbls]
         ))
 
 
     if reds is not None:
-        new_bls = []
-        for antpair in sim_antpairs:
+        sim_bls_to_read = []
+        for ref_bl in ref_bls:
             
             _bls = reds.get_reds_in_bl_set(
-                antpair,
-                bl_set=bls,
+                ref_bl,
+                bl_set=sim_antpairs,
                 include_conj=True,
-                match_conj_to_set=True,
+                match_conj_to_set=False,
                 include_conj_only_if_missing=True,
             )
-            if len(_bls) == 0:
-                continue
-            elif len(_bls) == 1:
-                new_bls.append(list(_bls)[0])
+            if len(_bls) == 1:
+                sim_bls_to_read.append(list(_bls)[0])
             else:
-                raise ValueError(f"Multiple redundant baselines found for antenna pair {antpair}")
+                raise ValueError(
+                    f"Zero or multiple redundant baselines found for antenna pair {_bls}"
+                )
         
-        if len(new_bls) == 0:
-            raise ValueError(
-                "No redundant baselines found for any antenna pair. The pairs in the"
-                f" simulation are: {sim_antpairs}."
-                f" The pairs in the reference dataset are: {bls}"
-            )
-        bls = new_bls
         
     t2 = time.time()
     dt = (t2 - t1) / 60
@@ -206,7 +199,7 @@ def interpolate_single_outfile(
     # Now load in the files.
     print("  Loading simulation data...", end="")
     t1 = time.time()
-    sim_uvdata = UVData.from_file(sim_files, bls=bls)
+    sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read)
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f" took {dt:.2f} minutes.")
