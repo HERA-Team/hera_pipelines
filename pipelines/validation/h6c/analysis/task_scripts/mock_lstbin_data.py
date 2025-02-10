@@ -165,17 +165,7 @@ def interpolate_single_outfile(
     print(f"    Last file:  {sim_files[-1].name}")
     
     # Before loading in the files, figure out which antennas to select.
-    if ref_uvdata.time_axis_faster_than_bls:
-        ref_bls = list(zip(
-            ref_uvdata.ant_1_array[::ref_uvdata.Ntimes], 
-            ref_uvdata.ant_2_array[::ref_uvdata.Ntimes]
-        ))
-    else:
-        ref_bls = list(zip(
-            ref_uvdata.ant_1_array[:ref_uvdata.Nbls], 
-            ref_uvdata.ant_2_array[:ref_uvdata.Nbls]
-        ))
-
+    ref_bls = ref_uvdata.get_antpairs()
 
     if reds is not None:
         sim_bls_to_read = []
@@ -205,7 +195,7 @@ def interpolate_single_outfile(
     t1 = time.time()
     sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read)
 
-    if not np.all(sim_uvdata.get_antpairs() == ref_uvdata.get_antpairs()):
+    if not np.all(sim_uvdata.get_antpairs() == sim_bls_to_read):
         for (ap1, ap2) in zip(sim_uvdata.get_antpairs(), ref_uvdata.get_antpairs()):
             if ap1 != ap2:
                 print(f"    Sim/Ref {ap1} != {ap2}.")
