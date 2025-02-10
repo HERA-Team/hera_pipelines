@@ -193,17 +193,14 @@ def interpolate_single_outfile(
     # Now load in the files.
     print("  > Loading simulation data")
     t1 = time.time()
+    # This handles conjugation correctly (matching ref)
     sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read)
 
-    if not np.all(sim_uvdata.get_antpairs() == sim_bls_to_read):
-        for (ap1, ap2) in zip(sim_uvdata.get_antpairs(), ref_uvdata.get_antpairs()):
-            if ap1 != ap2:
-                print(f"    Sim/Ref {ap1} != {ap2}.")
-                
-        raise ValueError(
-            "Antenna pairs do not match between reference and simulation."
-        )
-
+    actual_aps = sim_uvdata.get_antpairs()
+    for bl in sim_bls_to_read:
+        if bl not in actual_aps:
+            raise ValueError(f"Baseline {bl} not found in simulation data.")
+        
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"    Loading simulation data took {dt:.2f} minutes.")
@@ -212,17 +209,23 @@ def interpolate_single_outfile(
     print("  > Interpolating simulation to observed times")
     t1 = time.time()
 
+    # We have all the necessary baselines in the sim data, but not in the same order
+    # as the reference data. We need to sort them.
     
+    required_indices = [actual_aps.index(ap) for ap in sim_bls_to_read]
+
     simdata = sim_uvdata.data_array
     if sim_uvdata.time_axis_faster_than_bls:
         simdata.shape = (sim_uvdata.Ntimes, sim_uvdata.Nbls) + sim_uvdata.data_array.shape[-2:]
         sim_lsts = sim_uvdata.lst_array[:sim_uvdata.Ntimes]
+        simdata = simdata[:, required_indices]
         axis=0
     else:
         simdata.shape = (sim_uvdata.Nbls, sim_uvdata.Ntimes) + sim_uvdata.data_array.shape[-2:]
         sim_lsts = sim_uvdata.lst_array[::sim_uvdata.Nbls]
+        simdata = simdata[required_indices]
         axis=1
-        
+
     sim_lsts[sim_lsts < sim_lsts[0]] += 2*np.pi
     if not np.all(np.diff(sim_lsts) > 0):
         raise ValueError("Simulation LSTs are not strictly increasing after wrapping.")
