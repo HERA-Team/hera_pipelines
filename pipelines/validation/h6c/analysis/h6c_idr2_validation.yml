@@ -64,6 +64,7 @@ dependencies:
       - flake8-rst-docstrings
       - pep8-naming
       - bokeh
+      - typer
       - /lustre/aoc/projects/hera/Validation/H6C_IDR2/src/aipy
       - /lustre/aoc/projects/hera/Validation/H6C_IDR2/src/pyuvdata
       - /lustre/aoc/projects/hera/Validation/H6C_IDR2/src/pyuvsim
