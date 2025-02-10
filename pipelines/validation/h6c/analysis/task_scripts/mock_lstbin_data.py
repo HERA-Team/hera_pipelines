@@ -55,7 +55,7 @@ def run(
     observed LST-bins, handles antenna selection and flagging, and writes the
     resulting data to a new UVH5 file.
     """
-    print("Beginning mock data routine...")
+    print("Beginning mock LSTBIN data routine...")
     init_time = time.time()
 
     # Get the perfectly-calibrated simulation files.
@@ -69,7 +69,7 @@ def run(
     
     if ref_is_redavg:
         reds = RedundantGroups.from_antpos(
-            antpos=dict(zip(ref_meta.antenna_num, ref_meta.antpos_enu))
+            antpos=dict(zip(ref_meta.telescope.antenna_numbers, ref_meta.antpos_enu))
         )
     else:
         reds = None
