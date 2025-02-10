@@ -238,6 +238,7 @@ def interpolate_single_outfile(
         interp1d(sim_lsts, simdata.real, axis=axis, kind="cubic")(data_lsts)
         + 1j * interp1d(sim_lsts, simdata.imag, axis=axis, kind="cubic")(data_lsts)
     )
+    print(ref_uvdata.data_array.shape, (ref_uvdata.Nblts, ref_uvdata.Nfreqs, ref_uvdata.Npols))
     ref_uvdata.data_array.shape = (ref_uvdata.Nblts, ref_uvdata.Nfreqs, ref_uvdata.Npols)
     
     t2 = time.time()
