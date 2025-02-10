@@ -237,8 +237,7 @@ def interpolate_single_outfile(
     ref_uvdata.data_array = (
         interp1d(sim_lsts, simdata.real, axis=axis, kind="cubic")(data_lsts)
         + 1j * interp1d(sim_lsts, simdata.imag, axis=axis, kind="cubic")(data_lsts)
-    )
-    ref_uvdata.data_array.reshape((ref_uvdata.Nblts, ref_uvdata.Nfreqs, ref_uvdata.Npols))
+    ).reshape((ref_uvdata.Nblts, ref_uvdata.Nfreqs, ref_uvdata.Npols))
     
     t2 = time.time()
     dt = (t2 - t1) / 60
