@@ -221,11 +221,14 @@ def interpolate_single_outfile(
     simdata = sim_uvdata.data_array
     if sim_uvdata.time_axis_faster_than_bls:
         simdata.shape = (sim_uvdata.Ntimes, sim_uvdata.Nbls) + sim_uvdata.data_array.shape[-2:]
+        sim_lsts = sim_uvdata.lst_array[:sim_uvdata.Ntimes]
         axis=0
     else:
         simdata.shape = (sim_uvdata.Nbls, sim_uvdata.Ntimes) + sim_uvdata.data_array.shape[-2:]
+        sim_lsts = sim_uvdata.lst_array[::sim_uvdata.Nbls]
         axis=1
         
+    
     ref_uvdata.data_array = interp1d(sim_lsts, simdata, axis=axis, kind="cubic")(data_lsts)
     
     t2 = time.time()
