@@ -119,7 +119,7 @@ def run(
         t1 = time.time()
         print("  Writing data to disk...", end="")
         uvd.write_uvh5(
-            outdir / fl.name, save_format="uvh5", clobber=clobber, fix_autos=True
+            outdir / fl.name, clobber=clobber, fix_autos=True
         )
         t2 = time.time()
         dt = (t2 - t1) / 60
