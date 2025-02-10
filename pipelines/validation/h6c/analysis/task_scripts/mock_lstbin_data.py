@@ -163,14 +163,14 @@ def interpolate_single_outfile(
     print(f"    Found {len(sim_files)} files between LST {data_lsts.min() - dlst_ref:.6f} and {data_lsts.max() + dlst_ref:.6f}.")
     print(f"    First file: {sim_files[0].name}")
     print(f"    Last file:  {sim_files[-1].name}")
-    
+
     # Before loading in the files, figure out which antennas to select.
     ref_bls = ref_uvdata.get_antpairs()
 
     if reds is not None:
         sim_bls_to_read = []
         for ref_bl in ref_bls:
-            
+
             _bls = reds.get_reds_in_bl_set(
                 ref_bl,
                 bl_set=sim_antpairs,
@@ -184,8 +184,8 @@ def interpolate_single_outfile(
                 raise ValueError(
                     f"Zero or multiple redundant baselines found for antenna pair {_bls}"
                 )
-        
-        
+
+
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"    Determining files and baselines took {dt:.2f} minutes.")
@@ -200,7 +200,7 @@ def interpolate_single_outfile(
     for bl in sim_bls_to_read:
         if bl not in actual_aps:
             raise ValueError(f"Baseline {bl} not found in simulation data.")
-        
+
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"    Loading simulation data took {dt:.2f} minutes.")
@@ -211,7 +211,7 @@ def interpolate_single_outfile(
 
     # We have all the necessary baselines in the sim data, but not in the same order
     # as the reference data. We need to sort them.
-    
+
     required_indices = [actual_aps.index(ap) for ap in sim_bls_to_read]
 
     simdata = sim_uvdata.data_array
@@ -219,13 +219,17 @@ def interpolate_single_outfile(
         simdata.shape = (sim_uvdata.Nbls, sim_uvdata.Ntimes) + sim_uvdata.data_array.shape[-2:]
         sim_lsts = sim_uvdata.lst_array[:sim_uvdata.Ntimes]
         simdata = simdata[required_indices]
-        axis=1
+        if not ref_uvdata.time_axis_faster_than_bls:
+            simdata = simdata.transpose((1,0,2,3))
     else:
         simdata.shape = (sim_uvdata.Ntimes, sim_uvdata.Nbls) + sim_uvdata.data_array.shape[-2:]
         sim_lsts = sim_uvdata.lst_array[::sim_uvdata.Nbls]
         simdata = simdata[:, required_indices]
-        axis=0
+        if ref_uvdata.time_axis_faster_than_bls:
+            simdata = simdata.transpose((1, 0, 2, 3))
 
+    axis = 1 if ref_uvdata.time_axis_faster_than_bls else 0
+    
     sim_lsts[sim_lsts < sim_lsts[0]] += 2*np.pi
     if not np.all(np.diff(sim_lsts) > 0):
         raise ValueError("Simulation LSTs are not strictly increasing after wrapping.")
@@ -233,12 +237,12 @@ def interpolate_single_outfile(
         raise ValueError("Simulation LSTs are not within the range of the observed LSTs.")
     if not data_lsts[-1] < sim_lsts[-1]:
         raise ValueError("Observed LSTs are not within the range of the simulation LSTs.")
-    
+
     ref_uvdata.data_array = (
         interp1d(sim_lsts, simdata.real, axis=axis, kind="cubic")(data_lsts)
         + 1j * interp1d(sim_lsts, simdata.imag, axis=axis, kind="cubic")(data_lsts)
     ).reshape((ref_uvdata.Nblts, ref_uvdata.Nfreqs, ref_uvdata.Npols))
-    
+
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"    Interpolation took {dt:.2f} minutes.")
