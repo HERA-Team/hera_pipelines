@@ -153,7 +153,6 @@ def interpolate_single_outfile(
     t1 = time.time()
     print("  > Selecting simulation files...")
     dlst_ref = np.median(np.diff(data_lsts))
-    print(f"    Sim lsts: {sim_lsts}")
     first_sim_index = np.argwhere(sim_lsts <= data_lsts.min() - dlst_ref).flatten()[-1]
     last_sim_index = np.argwhere(sim_lsts >= data_lsts.max() + dlst_ref).flatten()[0]
     sim_files = sim_files[first_sim_index:last_sim_index+1]
