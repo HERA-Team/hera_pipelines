@@ -172,16 +172,22 @@ def interpolate_single_outfile(
 
 
     if reds is not None:
-        bls = [
-            list(reds.get_reds_in_bl_set(
+        bls = []
+        for antpair in sim_antpairs:
+            
+            _bls = reds.get_reds_in_bl_set(
                 antpair,
                 bl_set=bls,
                 include_conj=True,
                 match_conj_to_set=True,
                 include_conj_only_if_missing=True,
-            ))[0]
-            for antpair in sim_antpairs
-        ]
+            )
+            if len(_bls) == 0:
+                continue
+            elif len(_bls) == 1:
+                bls.append(_bls[0])
+            else:
+                raise ValueError(f"Multiple redundant baselines found for antenna pair {antpair}")
         
     t2 = time.time()
     dt = (t2 - t1) / 60
