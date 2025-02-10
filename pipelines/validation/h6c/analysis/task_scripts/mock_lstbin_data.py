@@ -142,7 +142,7 @@ def interpolate_single_outfile(
     # Start the interpolation routine.
     t1 = time.time()
     print("  Reading reference data...", end="")
-    ref_uvdata = UVData.from_file(reffile, read_data=False)
+    ref_uvdata = UVData.from_file(reffile, read_data=True)
     ref_uvdata.set_rectangularity()
 
     t2 = time.time()
