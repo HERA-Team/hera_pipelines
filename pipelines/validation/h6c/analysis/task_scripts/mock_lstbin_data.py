@@ -237,7 +237,7 @@ def interpolate_single_outfile(
         raise ValueError("Observed LSTs are not within the range of the simulation LSTs.")
     
     ref_uvdata.data_array = interp1d(sim_lsts, simdata, axis=axis, kind="cubic")(data_lsts)
-    ref_uvdata.data_array.shape = ref_uvdata.nsamples_array.shape
+    ref_uvdata.data_array.shape = ref_uvdata.flag_array.shape
     
     t2 = time.time()
     dt = (t2 - t1) / 60
