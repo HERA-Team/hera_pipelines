@@ -155,7 +155,7 @@ def interpolate_single_outfile(
     dlst_ref = np.median(np.diff(data_lsts))
     print(f"    Sim lsts: {sim_lsts}")
     first_sim_index = np.argwhere(sim_lsts <= data_lsts.min() - dlst_ref).flatten()[-1]
-    last_sim_index = np.argwhere(sim_lsts >= data_lsts.max() + dlst_ref).flatten()[-1]
+    last_sim_index = np.argwhere(sim_lsts >= data_lsts.max() + dlst_ref).flatten()[0]
     sim_files = sim_files[first_sim_index:last_sim_index+1]
     print(f"    Found {len(sim_files)} files between LST {data_lsts.min() - dlst_ref:.6f} and {data_lsts.max() + dlst_ref:.6f}.")
     print(f"    First file: {sim_files[0].name}")
