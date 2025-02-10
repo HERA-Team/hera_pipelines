@@ -151,13 +151,13 @@ def interpolate_single_outfile(
 
     # Figure out which simulation files to read in.
     t1 = time.time()
-    print("  Selecting simulation files...", end="")
+    print("  > Selecting simulation files...")
     dlst_ref = np.median(np.diff(data_lsts))
     first_sim_index = np.argwhere(sim_lsts <= data_lsts.min() - dlst_ref).flatten()[-1]
     last_sim_index = np.argwhere(sim_lsts >= data_lsts.max() + dlst_ref).flatten()[-1]
-
     sim_files = sim_files[first_sim_index:last_sim_index+1]
-
+    print(f"    Found {len(sim_files)} files in required LST range.")
+    
     # Before loading in the files, figure out which antennas to select.
     if ref_uvdata.time_axis_faster_than_bls:
         bls = list(zip(
@@ -199,7 +199,7 @@ def interpolate_single_outfile(
         
     t2 = time.time()
     dt = (t2 - t1) / 60
-    print(f" took {dt:.2f} minutes.")
+    print(f"    Determining files and baselines took {dt:.2f} minutes.")
 
     # Now load in the files.
     print("  Loading simulation data...", end="")
