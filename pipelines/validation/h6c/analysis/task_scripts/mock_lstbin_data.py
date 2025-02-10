@@ -185,7 +185,7 @@ def interpolate_single_outfile(
             if len(_bls) == 0:
                 continue
             elif len(_bls) == 1:
-                new_bls.append(_bls[0])
+                new_bls.append(list(_bls)[0])
             else:
                 raise ValueError(f"Multiple redundant baselines found for antenna pair {antpair}")
         
