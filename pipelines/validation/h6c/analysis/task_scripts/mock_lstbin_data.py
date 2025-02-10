@@ -216,14 +216,14 @@ def interpolate_single_outfile(
 
     simdata = sim_uvdata.data_array
     if sim_uvdata.time_axis_faster_than_bls:
-        simdata.shape = (sim_uvdata.Ntimes, sim_uvdata.Nbls) + sim_uvdata.data_array.shape[-2:]
+        simdata.shape = (sim_uvdata.Nbls, sim_uvdata.Ntimes) + sim_uvdata.data_array.shape[-2:]
         sim_lsts = sim_uvdata.lst_array[:sim_uvdata.Ntimes]
-        simdata = simdata[:, required_indices]
+        simdata = simdata[required_indices]
         axis=0
     else:
-        simdata.shape = (sim_uvdata.Nbls, sim_uvdata.Ntimes) + sim_uvdata.data_array.shape[-2:]
+        simdata.shape = (sim_uvdata.Ntimes, sim_uvdata.Nbls) + sim_uvdata.data_array.shape[-2:]
         sim_lsts = sim_uvdata.lst_array[::sim_uvdata.Nbls]
-        simdata = simdata[required_indices]
+        simdata = simdata[:, required_indices]
         axis=1
 
     sim_lsts[sim_lsts < sim_lsts[0]] += 2*np.pi
