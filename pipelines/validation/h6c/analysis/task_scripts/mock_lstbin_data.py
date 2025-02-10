@@ -173,13 +173,13 @@ def interpolate_single_outfile(
 
     if reds is not None:
         bls = [
-            reds.get_reds_in_bl_set(
+            list(reds.get_reds_in_bl_set(
                 antpair,
                 bl_set=bls,
                 include_conj=True,
                 match_conj_to_set=True,
                 include_conj_only_if_missing=True,
-            )
+            ))[0]
             for antpair in sim_antpairs
         ]
         
