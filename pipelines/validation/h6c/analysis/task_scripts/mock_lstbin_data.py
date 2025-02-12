@@ -66,6 +66,7 @@ def run(
     ref_meta = FastUVH5Meta(reffile)
     lsts = ref_meta.lsts
     lsts[lsts < lsts[0]] += 2 * np.pi
+    dlst_ref = np.median(np.diff(lsts))
     
     if ref_is_redavg:
         reds = RedundantGroups.from_antpos(
@@ -82,9 +83,9 @@ def run(
         [float(lst_re.findall(str(fn))[0]) for fn in sim_files]
     )  # We'll need these later.
 
-    # Ensure that the LSTs are within pi of the reference LST.
-    start_lsts[start_lsts<lsts[0] - np.pi] += 2 * np.pi
-    start_lsts[start_lsts>lsts[0] + np.pi] -= 2 * np.pi
+    # Ensure that the simulation LSTs wrap just before the ref lsts
+    start_lsts[start_lsts<lsts[0] - 2*dlst_ref] += 2 * np.pi
+    start_lsts[start_lsts>=lsts[0] - 2*dlst_ref + 2*np.pi] -= 2 * np.pi
     
     sort = np.argsort(start_lsts)
     start_lsts = start_lsts[sort]
