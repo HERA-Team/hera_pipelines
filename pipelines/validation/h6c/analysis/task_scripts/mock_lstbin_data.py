@@ -161,11 +161,11 @@ def interpolate_single_outfile(
     first_sim_index = np.argwhere(sim_lsts <= data_lsts.min() - dlst_ref).flatten()[-1]
     last_sim_index = np.argwhere(sim_lsts >= data_lsts.max() + dlst_ref).flatten()[0]
     sim_files = sim_files[first_sim_index:last_sim_index+1]
-    print(f"    Found {len(sim_files)} files between LST {data_lsts.min() - dlst_ref:.6f} and {data_lsts.max() + dlst_ref:.6f}.")
-    print(f"    First file: {sim_files[0].name}")
-    print(f"    Last file:  {sim_files[-1].name}")
+    print(f"    Found {len(sim_files)} files between LST {data_lsts.min() - dlst_ref:.6f} and {data_lsts.max() + dlst_ref:.6f}:")
+    for fl in sim_files:
+        print(f"      - {fl.name}")
 
-    # Before loading in the files, figure out which antennas to select.
+    # Before loading in the files, figure out which baselines to select.
     ref_bls = ref_uvdata.get_antpairs()
 
     if reds is not None:
@@ -196,7 +196,10 @@ def interpolate_single_outfile(
     t1 = time.time()
     # This handles conjugation correctly (matching ref)
     sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read)
-
+    sim_uvdata.set_rectangularity()
+    if not sim_uvdata.blts_are_rectangular:
+        raise ValueError("Can't deal with non-rectangular sim files!")
+    
     actual_aps = sim_uvdata.get_antpairs()
     for bl in sim_bls_to_read:
         if bl not in actual_aps:
