@@ -234,10 +234,8 @@ def interpolate_single_outfile(
     sim_lsts[sim_lsts < sim_lsts[0]] += 2*np.pi
     if not np.all(np.diff(sim_lsts) > 0):
         raise ValueError("Simulation LSTs are not strictly increasing after wrapping.")
-    if not sim_lsts[0] < data_lsts[0]:
-        raise ValueError("Simulation LSTs are not within the range of the observed LSTs.")
-    if not data_lsts[-1] < sim_lsts[-1]:
-        raise ValueError("Observed LSTs are not within the range of the simulation LSTs.")
+    if sim_lsts[0] >= data_lsts[0] or data_lsts[-1] >= sim_lsts[-1]:
+        raise ValueError(f"Simulation LSTs are not within the range of the observed LSTs.\nsim_lsts: {sim_lsts}.\nref_lsts: {data_lsts}")
 
     ref_uvdata.data_array = (
         interp1d(sim_lsts, simdata.real, axis=axis, kind="cubic")(data_lsts)
