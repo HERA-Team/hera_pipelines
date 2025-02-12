@@ -195,7 +195,7 @@ def interpolate_single_outfile(
     print("  > Loading simulation data")
     t1 = time.time()
     # This handles conjugation correctly (matching ref)
-    sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read)
+    sim_uvdata = UVData.from_file(sim_files, bls=sim_bls_to_read, axis='blt')
     sim_uvdata.set_rectangularity()
     if not sim_uvdata.blts_are_rectangular:
         raise ValueError("Can't deal with non-rectangular sim files!")
