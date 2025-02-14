@@ -1,0 +1,28 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 24000
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/validation/h6c/analysis/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
+conda_env = "h6c_idr2_validation"
+batch_system = "slurm"
+sim_env = "h6c_idr2_validation"
+
+[MOCK_DATA_OPTS]
+simdir = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/chunked-ideal-data/eor-grf-1024"
+outdir = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/lstbin-outputs/eor-only/"
+
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["MOCK_LSTBIN_DATA",]
+
+[MOCK_LSTBIN_DATA]
+mem = 24000
+args = ["{basename}",
+        "${MOCK_DATA_OPTS:simdir}",
+        "${MOCK_DATA_OPTS:outdir}",
+       ]
