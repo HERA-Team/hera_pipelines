@@ -125,6 +125,9 @@ eigenval_cutoff = 1e-12
 max_contiguous_flags = 20
 spectrum_chan_buffer = 25
 
+[2D_DPSS_FILTER_OPTS]
+min_frate_half_width = 2.0 # in mH
+
 ############################################################################################################
 
 [WorkFlow]
@@ -139,6 +142,11 @@ actions = ["SETUP",
            "FULL_DAY_RFI_ROUND_2_NOTEBOOK",
            "POSTPROCESS_FILE_NOTEBOOK",
            "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
+           "BUILD_CORNER_TURN_MAP",
+           "CORNER_TURN_SINGLE_JD",
+           "2D_DPSS_FILTER_NOTEBOOK",
+           # TODO: FULL_DAY_RFI_ROUND_3_NOTEBOOK
+           # TODO: SINGLE_BASELINE_INPAINT_AND_FRF
           ]
 
 [SETUP]
@@ -366,3 +374,29 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]
+
+[BUILD_CORNER_TURN_MAP]
+prereqs = "POSTPROCESS_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",]
+
+[CORNER_TURN_SINGLE_JD]
+prereqs = "BUILD_CORNER_TURN_MAP"
+prereq_chunk_size = "all"
+args = ["{basename}",]
+
+[2D_DPSS_FILTER_NOTEBOOK]
+prereqs = "CORNER_TURN_SINGLE_JD"
+mem = 24000
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
+        "${2D_DPSS_FILTER_OPTS:min_frate_half_width}",
+        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
+       ]
