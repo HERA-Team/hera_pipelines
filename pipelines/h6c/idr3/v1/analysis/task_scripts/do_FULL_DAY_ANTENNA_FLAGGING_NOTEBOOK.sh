@@ -12,47 +12,41 @@ source ${src_dir}/_common.sh
 # 1 - (raw) filename
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
-# 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5 - upload_to_librarian: global boolean trigger
-# 6 - librarian_full_day_antenna_flagging: boolean trigger for this step
-# 7+ - various settings
+# 4+ - various settings
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-upload_to_librarian=${5}
-librarian_full_day_antenna_flagging=${6}
-am_corr_bad=${7}
-am_corr_suspect=${8}
-am_xpol_bad=${9}
-am_xpol_suspect=${10}
-suspect_solar_alt=${11}
-zeros_per_spec_good=${12}
-zeros_per_spec_suspect=${13}
-auto_power_good_low=${14}
-auto_power_good_high=${15}
-auto_power_suspect_low=${16}
-auto_power_suspect_high=${17}
-auto_slope_good_low=${18}
-auto_slope_good_high=${19}
-auto_slope_suspect_low=${20}
-auto_slope_suspect_high=${21}
-auto_rfi_good=${22}
-auto_rfi_suspect=${23}
-auto_shape_good=${24}
-auto_shape_suspect=${25}
-oc_cspa_good=${26}
-oc_cspa_suspect=${27}
-oc_skip_outriggers=${28}
-smoothing_scale_nfiles=${29}
-max_flag_gap_nfiles=${30}
-auto_power_max_flag_frac=${31}
-auto_shape_max_flag_frac=${32}
-auto_slope_max_flag_frac=${33}
-auto_rfi_max_flag_frac=${34}
-chisq_max_flag_frac=${35}
-overall_max_flag_frac=${36}
-path_to_a_priori_flags=${37}
+am_corr_bad=${4}
+am_corr_suspect=${5}
+am_xpol_bad=${6}
+am_xpol_suspect=${7}
+suspect_solar_alt=${8}
+zeros_per_spec_good=${9}
+zeros_per_spec_suspect=${10}
+auto_power_good_low=${11}
+auto_power_good_high=${12}
+auto_power_suspect_low=${13}
+auto_power_suspect_high=${14}
+auto_slope_good_low=${15}
+auto_slope_good_high=${16}
+auto_slope_suspect_low=${17}
+auto_slope_suspect_high=${18}
+auto_rfi_good=${19}
+auto_rfi_suspect=${20}
+auto_shape_good=${21}
+auto_shape_suspect=${22}
+oc_cspa_good=${23}
+oc_cspa_suspect=${24}
+oc_skip_outriggers=${25}
+smoothing_scale_nfiles=${26}
+max_flag_gap_nfiles=${27}
+auto_power_max_flag_frac=${28}
+auto_shape_max_flag_frac=${29}
+auto_slope_max_flag_frac=${30}
+auto_rfi_max_flag_frac=${31}
+chisq_max_flag_frac=${32}
+overall_max_flag_frac=${33}
+path_to_a_priori_flags=${34}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -112,34 +106,4 @@ if [ -f "$first_outfile" ]; then
 else
     echo $first_outfile not produced.
     exit 1
-fi
-
-# upload results to librarian if desired
-if [ "${upload_to_librarian}" == "True" ]; then
-    if [ "${librarian_full_day_rfi}" == "True" ]; then
-
-        # Compress all ant_metrics files into one with a JD corresponding to $fn
-        compressed_file=`echo ${fn%.uvh5}.antenna_flags.h5.tar.gz`
-        echo tar czfv ${compressed_file} zen.${jd}*.antenna_flags.h5
-        tar czfv ${compressed_file} zen.${jd}*.antenna_flags.h5
-
-        # Upload gzipped file to the librarian
-        librarian_file=`basename ${compressed_file}`
-        echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        echo Finished uploading ${compressed_file} to the Librarian at $(date)
-    fi
-fi
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_outfile}
-    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-    git add ${nb_outdir}/README.md
-    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "Full-day antenna flagging notebook for JD ${jd}" -m ${lasturl}
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi

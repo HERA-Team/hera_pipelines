@@ -12,20 +12,14 @@ source ${src_dir}/_common.sh
 # 1 - (raw) filename
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
-# 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5 - upload_to_librarian: global boolean trigger
-# 6 - librarian_smooth_cal: boolean trigger for this step
-# 7+ - various settings
+# 4+ - various settings
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-upload_to_librarian=${5}
-librarian_smooth_cal=${6}
-freq_smoothing_scale=${7}
-time_smoothing_scale=${8}
-eigenval_cutoff=${9}
-calibrate_cross_pols=${10}
+freq_smoothing_scale=${4}
+time_smoothing_scale=${5}
+eigenval_cutoff=${6}
+calibrate_cross_pols=${7}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -62,34 +56,4 @@ if [ -f "$first_outfile" ]; then
 else
     echo $first_outfile not produced.
     exit 1
-fi
-
-# upload results to librarian if desired
-if [ "${upload_to_librarian}" == "True" ]; then
-    if [ "${librarian_smooth_cal}" == "True" ]; then
-
-        # Compress all ant_metrics files into one with a JD corresponding to $fn
-        compressed_file=`echo ${fn%.uvh5}.smooth.calfits.tar.gz`
-        echo tar czfv ${compressed_file} zen.${jd}*.smooth.calfits
-        tar czfv ${compressed_file} zen.${jd}*.smooth.calfits
-
-        # Upload gzipped file to the librarian
-        librarian_file=`basename ${compressed_file}`
-        echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        echo Finished uploading ${compressed_file} to the Librarian at $(date)
-    fi
-fi
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_outfile}
-    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-    git add ${nb_outdir}/README.md
-    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "Calibration smoothing notebook for JD ${jd}" -m ${lasturl}
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi

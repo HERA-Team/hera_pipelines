@@ -12,14 +12,12 @@ source ${src_dir}/_common.sh
 # 1 - (raw) filename
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
-# 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5 - oc_skip_outriggers: whether to skip outriggers (and thus flag them) when doing redcal
+# 4 - oc_skip_outriggers: whether to skip outriggers (and thus flag them) when doing redcal
 
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-oc_skip_outriggers=${5}
+oc_skip_outriggers=${4}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -38,16 +36,3 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/antenna_classification_summary.ipynb
 echo Finished finished antenna classification summary notebook at $(date)
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_outfile}
-    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-    git add ${nb_outdir}/README.md
-    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "Antenna classification summary notebook for JD ${jd}" -m ${lasturl}
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
-fi

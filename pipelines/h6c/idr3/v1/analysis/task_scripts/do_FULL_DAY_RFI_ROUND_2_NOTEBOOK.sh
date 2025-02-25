@@ -12,25 +12,19 @@ source ${src_dir}/_common.sh
 # 1 - (raw) filename
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
-# 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5 - upload_to_librarian: global boolean trigger
-# 6 - librarian_full_day_rfi: boolean trigger for this step
-# 7+ - various settings
+# 4+ - various settings
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
-git_push=${4}
-upload_to_librarian=${5}
-librarian_full_day_rfi=${6}
-z_thresh=${7}
-ws_z_thresh=${8}
-avg_z_thresh=${9}
-max_freq_flag_frac=${10}
-max_time_flag_frac=${11}
-avg_spectrum_filter_delay=${12}
-eigenval_cutoff=${13}
-time_avg_delay_filt_snr_thresh=${14}
-time_avg_delay_filt_snr_dynamic_range=${15}
+z_thresh=${4}
+ws_z_thresh=${5}
+avg_z_thresh=${6}
+max_freq_flag_frac=${7}
+max_time_flag_frac=${8}
+avg_spectrum_filter_delay=${9}
+eigenval_cutoff=${10}
+time_avg_delay_filt_snr_thresh=${11}
+time_avg_delay_filt_snr_dynamic_range=${12}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -68,34 +62,4 @@ if [ -f "$first_outfile" ]; then
 else
     echo $first_outfile not produced.
     exit 1
-fi
-
-# upload results to librarian if desired
-if [ "${upload_to_librarian}" == "True" ]; then
-    if [ "${librarian_full_day_rfi}" == "True" ]; then
-
-        # Compress all ant_metrics files into one with a JD corresponding to $fn
-        compressed_file=`echo ${fn%.uvh5}.flag_waterfall_round_2.h5.tar.gz`
-        echo tar czfv ${compressed_file} zen.${jd}*.flag_waterfall_round_2.h5
-        tar czfv ${compressed_file} zen.${jd}*.flag_waterfall_round_2.h5
-
-        # Upload gzipped file to the librarian
-        librarian_file=`basename ${compressed_file}`
-        echo librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        librarian upload local-rtp ${compressed_file} ${jd}/${librarian_file}
-        echo Finished uploading ${compressed_file} to the Librarian at $(date)
-    fi
-fi
-
-# If desired, push results to github
-if [ "${git_push}" == "True" ]
-then
-    cd ${nb_output_repo}
-    git pull origin main || echo 'Unable to git pull origin main. Perhaps the internet is down?'
-    git add ${nb_outfile}
-    python ${src_dir}/build_notebook_readme.py ${nb_outdir}
-    git add ${nb_outdir}/README.md
-    lasturl=`python -c "readme = open('${nb_outdir}/README.md', 'r'); print(readme.readlines()[-1].split('(')[-1].split(')')[0])"`
-    git commit -m "Full-Day RFI Round 2 notebook for JD ${jd}" -m ${lasturl}
-    git push origin main || echo 'Unable to git push origin main. Perhaps the internet is down?'
 fi
