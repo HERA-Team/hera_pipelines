@@ -56,19 +56,27 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/single_baseline_2D_filtered_SNRs.ipynb
 echo Finished running 2D DPSS filtering of single baseline SNRs notebook at $(date)
 
-# check for output files
-# TODO: fix
-# (python -c "
-# import os
-# for antpair '${antpairs_str}'.split('.'):
-#     assert os.path.exists('${SINGLE_BL_FILE_PATH}'.replace('{bl}', antpair).replace('.uvh5', '${SNR_SUFFIX}'))
-# ")
 
-# TODO
-# if [[ "$nb_outfile" == *".0_4."* ]]; then
-#     cp ${nb_outfile} ${nb_output_repo}/
-# fi
+# Extract expected output files from the corner_turn_map for this red_avg_file
+expected_files=$(python -c "
+import yaml
+with open('${CORNER_TURN_MAP_YAML}', 'r') as file:
+    corner_turn_map = yaml.unsafe_load(file)
 
+outfiles = corner_turn_map['files_to_outfiles_map']['${RED_AVG_FILE}']
+# Print them space-separated for the shell
+print(' '.join([of.replace('.uvh5', '${SNR_SUFFIX}') for of in outfiles]))
+")
+
+# Check that the expected output files exist
+for of in $expected_files; do
+    if [ -f "$of" ]; then
+        echo "Found $of"
+    else
+        echo "$of not produced."
+        exit 1
+    fi
+done
 
 # TODO
 # is_fourth_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[4])"`
