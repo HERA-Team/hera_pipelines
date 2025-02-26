@@ -78,11 +78,7 @@ for of in $expected_files; do
     fi
 done
 
-# TODO
-# is_fourth_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[4])"`
-# if [ "${is_fourth_file}" == "True" ]; then
-#     # Copy file to github repo
-#     github_nb_outdir=${nb_output_repo}/file_calibration
-#     github_nb_outfile=${github_nb_outdir}/file_calibration_${jd}.html
-#     cp ${nb_outfile} ${github_nb_outfile}
-# fi
+# check if "0_4" is in the antpairs_str, if so copy the notebook to the output repo
+if [[ "$antpairs_str" == *"0_4"* ]]; then
+    cp ${nb_outfile} ${nb_output_repo}/single_baseline_2D_filtered_SNRs/single_baseline_2D_filtered_SNRs_${jd}.ipynb
+fi
