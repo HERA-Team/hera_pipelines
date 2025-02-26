@@ -46,8 +46,8 @@ if [ "$antpairs_str" = "none" ]; then
     echo "No antpairs match this input file. Exiting..."
     exit 0
 fi
-#TODO: add JD to filename
-nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.baseline.${antpairs_str}.sum.single_baseline_2D_filtered_SNRs.html"
+jd=$(get_int_jd ${fn})
+nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.${JD}.baseline.${antpairs_str}.sum.single_baseline_2D_filtered_SNRs.html"
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
