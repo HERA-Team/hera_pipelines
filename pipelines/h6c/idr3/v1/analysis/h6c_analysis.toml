@@ -111,8 +111,8 @@ dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
 dly_filt_eigenval_cutoff = 1e-12
 save_diff_red_avg = false
-save_abs_cal_red_avg = true
-save_dly_filt_red_avg = true
+save_abs_cal_red_avg = false
+save_dly_filt_red_avg = false
 
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
 filter_dly_min = 150.0 # in ns
