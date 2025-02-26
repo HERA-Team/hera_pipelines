@@ -145,8 +145,8 @@ actions = ["SETUP",
            "BUILD_CORNER_TURN_MAP",
            "CORNER_TURN_SINGLE_JD",
            "2D_DPSS_FILTER_NOTEBOOK",
-           # TODO: FULL_DAY_RFI_ROUND_3_NOTEBOOK
-           # TODO: SINGLE_BASELINE_INPAINT_AND_FRF
+           "FULL_DAY_RFI_ROUND_3_NOTEBOOK",
+           "SINGLE_BASELINE_INPAINT_AND_FRF",
           ]
 
 [SETUP]
@@ -400,3 +400,16 @@ args = ["{basename}",
         "${2D_DPSS_FILTER_OPTS:min_frate_half_width}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
        ]
+
+[FULL_DAY_RFI_ROUND_3_NOTEBOOK]
+prereqs = "2D_DPSS_FILTER_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",]  # TODO: UPDATE
+
+[SINGLE_BASELINE_INPAINT_AND_FRF]
+prereqs = "FULL_DAY_RFI_ROUND_3_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",]  # TODO: UPDATE
