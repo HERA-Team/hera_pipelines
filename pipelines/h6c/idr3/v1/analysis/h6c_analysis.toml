@@ -85,8 +85,8 @@ chisq_max_flag_frac = 0.5
 overall_max_flag_frac = 0.5
 
 [CALIBRATION_SMOOTHING_OPTS]
-freq_smoothing_scale = 10.0 # in MHz
-time_smoothing_scale = 6e5 # in seconds
+freq_smoothing_scale = 30.0 # in MHz
+time_smoothing_scale = 1e4 # in seconds
 eigenval_cutoff = 1e-12
 blacklist_timescale_factor = 10
 blacklist_relative_error_thresh = 0.75
