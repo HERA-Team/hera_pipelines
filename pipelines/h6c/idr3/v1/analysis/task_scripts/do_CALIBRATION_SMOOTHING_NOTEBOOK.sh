@@ -20,6 +20,8 @@ freq_smoothing_scale=${4}
 time_smoothing_scale=${5}
 eigenval_cutoff=${6}
 calibrate_cross_pols=${7}
+blacklist_timescale_factor=${8}
+blacklist_relative_error_thresh=${9}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -41,6 +43,8 @@ if [ "${calibrate_cross_pols}" == "True" ]; then
 else
     export PER_POL_REFANT="True"
 fi
+export BLACKLIST_TIMESCALE_FACTOR=${blacklist_timescale_factor}
+export BLACKLIST_RELATIVE_ERROR_THRESH=${blacklist_relative_error_thresh}
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
