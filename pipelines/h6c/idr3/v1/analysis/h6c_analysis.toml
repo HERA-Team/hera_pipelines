@@ -394,6 +394,7 @@ args = ["{basename}",]
 
 [2D_DPSS_FILTER_NOTEBOOK]
 prereqs = "CORNER_TURN_SINGLE_JD"
+prereq_chunk_size = "all"
 mem = 24000
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
