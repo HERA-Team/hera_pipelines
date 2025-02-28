@@ -4,6 +4,7 @@ set -e
 # This loads a single baseline (all pols) for all times on a single JD and writes it as its own file.
 
 src_dir="$(dirname "$0")"
+source ${src_dir}/_common.sh
 
 fn=${1}
 nb_template_dir=${2}
