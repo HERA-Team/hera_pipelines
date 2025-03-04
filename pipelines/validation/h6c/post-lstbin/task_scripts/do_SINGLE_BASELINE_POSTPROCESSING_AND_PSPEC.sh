@@ -28,7 +28,9 @@ if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --sk
     
     runopts="--output-dir ${outdir} -k ${kernel} --toml ${toml_file} --toml-section ${toml_section}"
     cfg="--basename ${nb_outfile} --SINGLE_BL_FILE ${full_file_path} --OUT_PSPEC_FILE=${full_file_path%.uvh5}.pspec.h5"
-
+    echo "Runopts: ${runopts}"
+    echo "Config: ${cfg}"
+    
     cmd="hnote run ${runopts} single_baseline_postprocessing_and_pspec ${cfg}"
     echo $cmd
     eval $cmd
