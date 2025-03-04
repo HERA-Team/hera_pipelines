@@ -50,7 +50,7 @@ if [ "$antpairs_str" = "none" ]; then
     exit 0
 fi
 jd=$(get_int_jd ${fn})
-nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.${JD}.baseline.${antpairs_str}.sum.single_baseline_2D_filtered_SNRs.html"
+nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.${jd}.baseline.${antpairs_str}.sum.single_baseline_2D_filtered_SNRs.html"
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
