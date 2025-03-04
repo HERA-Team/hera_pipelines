@@ -9,6 +9,7 @@ conda_env = "h6c_idr2_validation"
 batch_system = "slurm"
 
 [NOTEBOOK_OPTS]
+toml_file = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/makeflow-pspec/h6c_pspec_14band.toml"  # this file
 toml_section = "CONFIG_OPTS"
 
 
@@ -61,5 +62,6 @@ actions = [
 [SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC]
 args = [
     "{basename}",
+    "${NOTEBOOK_OPTS:toml_file}",
     "${NOTEBOOK_OPTS:toml_section}",
 ]
