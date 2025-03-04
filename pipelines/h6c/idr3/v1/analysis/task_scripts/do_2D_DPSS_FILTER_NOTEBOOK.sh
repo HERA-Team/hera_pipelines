@@ -12,8 +12,9 @@ nb_output_repo=${3}
 FM_low_freq=${4}
 FM_high_freq=${5}
 filter_delay=${6}
-min_frate_half_width=${7}
-eigenval_cutoff=${8}
+post_filter_1D_delay=${7}
+min_frate_half_width=${8}
+eigenval_cutoff=${9}
 
 # path manipulation
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -24,6 +25,7 @@ export CORNER_TURN_MAP_YAML="$(cd "$(dirname "$fn")" && pwd)/single_baseline_fil
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
 export FILTER_DELAY=${filter_delay}
+export POST_FILTER_1D_DELAY=${post_filter_1D_delay}
 export MIN_FRATE_HALF_WIDTH=${min_frate_half_width}
 export EIGENVAL_CUTOFF=${eigenval_cutoff}
 export SNR_SUFFIX=".2Dfilt_SNR.uvh5"
