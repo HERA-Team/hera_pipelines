@@ -28,7 +28,7 @@ if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --sk
     nb_outfile=${full_file_path%.uvh5}.single_baseline_postprocessing_and_pspec
     
     runopts="--output-dir ${outdir} -k ${kernel} --toml ${toml_file} --toml-section ${toml_section}"
-    cfg="--basename ${nb_outfile} --SINGLE_BL_FILE ${full_file_path} --OUT_PSPEC_FILE=${full_file_path%.uvh5}.pspec.h5"
+    cfg="--basename ${nb_outfile} --SINGLE-BL-FILE ${full_file_path} --OUT-PSPEC-FILE=${full_file_path%.uvh5}.pspec.h5"
     echo "Runopts: ${runopts}"
     echo "Config: ${cfg}"
 
