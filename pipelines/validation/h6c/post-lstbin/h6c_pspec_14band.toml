@@ -11,7 +11,7 @@ batch_system = "slurm"
 [NOTEBOOK_OPTS]
 toml_file = "/lustre/aoc/projects/hera/Validation/H6C_IDR2/makeflow-pspec/h6c_pspec_14band.toml"  # this file
 toml_section = "CONFIG_OPTS"
-
+kernel = ""
 
 [CONFIG_OPTS] # This section is directly read when running the notebook.
 # General Options
@@ -64,4 +64,5 @@ args = [
     "{basename}",
     "${NOTEBOOK_OPTS:toml_file}",
     "${NOTEBOOK_OPTS:toml_section}",
+    "${Options:conda_env}",
 ]

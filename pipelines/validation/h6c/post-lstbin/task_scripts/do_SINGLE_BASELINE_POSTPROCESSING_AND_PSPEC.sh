@@ -14,6 +14,7 @@ source ${src_dir}/_common.sh
 fn=${1}
 toml_file=${2}
 toml_section=${3}
+kernel=${4}
 
 # --variables used by the notebook
 outdir=$(cd "$(dirname "$fn")" && pwd)
@@ -30,7 +31,7 @@ if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --sk
     cfg="--basename ${nb_outfile} --SINGLE_BL_FILE ${full_file_path} --OUT_PSPEC_FILE=${full_file_path%.uvh5}.pspec.h5"
     echo "Runopts: ${runopts}"
     echo "Config: ${cfg}"
-    
+
     cmd="hnote run ${runopts} single_baseline_postprocessing_and_pspec ${cfg}"
     echo $cmd
     eval $cmd
