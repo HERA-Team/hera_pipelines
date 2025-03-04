@@ -129,7 +129,7 @@ spectrum_chan_buffer = 25
 
 [2D_DPSS_FILTER_OPTS]
 min_frate_half_width = 2.0 # in mH
-post_filter_1D_delay = 1.0 # in ns
+post_filter_1D_delay_res_factor = 1.0
 
 ############################################################################################################
 
@@ -403,7 +403,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
-        "${2D_DPSS_FILTER_OPTS:post_filter_1D_delay}",
+        "${2D_DPSS_FILTER_OPTS:post_filter_1D_delay_res_factor}",
         "${2D_DPSS_FILTER_OPTS:min_frate_half_width}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
        ]
