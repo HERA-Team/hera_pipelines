@@ -50,6 +50,7 @@ full_file_path="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
 echo "Performing single baseline postprocessing and power spectrum estimation on ${full_file_path}"
 export SINGLE_BL_FILE=${full_file_path}
 export OUT_PSPEC_FILE=${full_file_path%.uvh5}.pspec.h5
+export OUT_TAVG_PSPEC_FILE=${full_file_path%.uvh5}.tavg_pspec.h5
 export BAND_STR=${band_str}
 export ALREADY_INPAINTED=${already_inpainted}
 export PERFORM_INPAINT=${perform_inpaint}
@@ -81,6 +82,7 @@ export EFIELD_HEALPIX_BEAM_FILE=${efield_healpix_beam_file}
 export TAPER=${taper}
 export INCLUDE_INTERLEAVE_AUTO_PS=${include_interleave_auto_ps}
 export STORE_WINDOW_FUNCTIONS=${store_window_functions}
+# TODO: add LST_RANGE_HOURS when we want to parameterize that
 
 # check if file is not just autocorrelaitons and that neither polarization is fully flagged
 if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --skip_outriggers; then
