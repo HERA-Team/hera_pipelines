@@ -38,7 +38,7 @@ timeout = "48h"
 outdir = "${LSTAVG_OPTS:outdir}"
 bl_chunk_size = 2000
 parallelize = true
-
+isvalidation = "0"
 
 [FILE_CFG]
 # This section specifies a file configuration for LST-binning.
@@ -91,7 +91,7 @@ do_lstcal = {{ DO_LSTCAL|string|lower }}
 {% if not REDAVG -%}
 lstcal_path = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ LSTCAL_CASE }}"
 {% endif %}
-isvalidation = "0"
+
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
 actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
