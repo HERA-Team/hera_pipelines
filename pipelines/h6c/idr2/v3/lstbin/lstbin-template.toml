@@ -91,7 +91,7 @@ do_lstcal = {{ DO_LSTCAL|string|lower }}
 {% if not REDAVG -%}
 lstcal_path = "/lustre/aoc/projects/hera/h6c-analysis/IDR{{ IDR }}/lstbin-outputs/{{ LSTCAL_CASE }}"
 {% endif %}
-isvalidation "0"
+isvalidation = "0"
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
 actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]

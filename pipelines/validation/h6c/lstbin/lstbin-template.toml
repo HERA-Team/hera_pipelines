@@ -85,6 +85,7 @@ do_lstcal = {{ DO_LSTCAL|string|lower }}
 {% if not REDAVG -%}
 lstcal_path = "/lustre/aoc/projects/hera/Validation/H6C_IDR{{ IDR }}/lstbin-outputs/{{ LSTCAL_CASE }}"
 {% endif %}
+isvalidation = "1"
 
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
