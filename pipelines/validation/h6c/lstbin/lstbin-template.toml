@@ -38,7 +38,7 @@ timeout = "48h"
 outdir = "${LSTAVG_OPTS:outdir}"
 bl_chunk_size = 2000
 parallelize = true
-isvalidation = "1"
+isvalidation = true
 
 
 [FILE_CFG]
