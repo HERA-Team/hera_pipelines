@@ -32,8 +32,8 @@ eval $cmd
 if [ -f "${outdir}/${outname}.ipynb.hasplots" ]
 then
     casename=$(basename $(builtin cd ${outdir}; pwd))
-    if [ ${isvalidation} -eq 1 ]; then
-        htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks/validation/lstbin/${casename}"
+    if [ ${isvalidation^^} = "TRUE" ]; then
+        htmldir="/lustre/aoc/projects/hera/Validation/H6C_IDR2/notebooks/lstbin/${casename}"
     else
         htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks/lstbin/${casename}"
     fi
