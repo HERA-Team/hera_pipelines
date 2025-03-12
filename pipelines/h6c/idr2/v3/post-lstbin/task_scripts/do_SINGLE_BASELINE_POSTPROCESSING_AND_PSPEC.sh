@@ -36,7 +36,7 @@ if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --sk
     echo $cmd
     eval $cmd
 
-    echo Finished running single baseline postprocessing and power spectrum estimation notebook for ${fn} at $(date) and writing results to ${nb_outfile}.ipynb
+    echo Finished running single baseline postprocessing and power spectrum estimation notebook for ${fn} at $(date) and writing results to ${nb_outfile}.ipynb and ${nb_outfile}.html
 
     # Check to see that output file was correctly produced
     if [ -f "${fn%.uvh5}.pspec.h5" ]; then
