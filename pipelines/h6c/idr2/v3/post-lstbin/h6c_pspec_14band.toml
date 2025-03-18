@@ -57,6 +57,7 @@ STORE_WINDOW_FUNCTIONS = false
 [WorkFlow]
 actions = [
     "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
+    "MERGE_SINGLE_BASELINE_FILES",
 ]
 
 [SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC]
@@ -65,4 +66,14 @@ args = [
     "${NOTEBOOK_OPTS:toml_file}",
     "${NOTEBOOK_OPTS:toml_section}",
     "${Options:conda_env}",
+]
+
+[MERGE_SINGLE_BASELINE_FILES]
+prereqs = [
+    "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
+]
+chunk_size = "all"
+prereq_chunk_size = "all"
+args = [
+    "{basename}",
 ]
