@@ -80,4 +80,4 @@ prereq_chunk_size = "all"
 args = [
     "{basename}",
 ]
-mem=60000
+mem=100000
