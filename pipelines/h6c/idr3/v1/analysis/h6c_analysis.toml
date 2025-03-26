@@ -129,7 +129,9 @@ spectrum_chan_buffer = 25
 
 [2D_DPSS_FILTER_OPTS]
 min_frate_half_width = 2.0 # in mH
-post_filter_1D_delay_res_factor = 1.0
+post_filter_delay_low_band = 200.0 # in ns
+post_filter_delay_high_band = 50.0 # in ns
+tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
 
 ############################################################################################################
 
@@ -403,10 +405,13 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
-        "${2D_DPSS_FILTER_OPTS:post_filter_1D_delay_res_factor}",
         "${2D_DPSS_FILTER_OPTS:min_frate_half_width}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
-       ]
+        "${2D_DPSS_FILTER_OPTS:post_filter_delay_low_band}",
+        "${2D_DPSS_FILTER_OPTS:post_filter_delay_high_band}",
+        "${2D_DPSS_FILTER_OPTS:tv_chan_edges}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
+        ]
 
 [FULL_DAY_RFI_ROUND_3_NOTEBOOK]
 prereqs = "2D_DPSS_FILTER_NOTEBOOK"

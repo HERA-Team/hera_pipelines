@@ -12,9 +12,12 @@ nb_output_repo=${3}
 FM_low_freq=${4}
 FM_high_freq=${5}
 filter_delay=${6}
-post_filter_1D_delay_res_factor=${7}
-min_frate_half_width=${8}
-eigenval_cutoff=${9}
+min_frate_half_width=${7}
+eigenval_cutoff=${8}
+post_filter_delay_low_band=${9}
+post_filter_delay_high_band=${10}
+tv_chan_edges=${11}
+tv_thresh=${12}
 
 # path manipulation
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -25,9 +28,12 @@ export CORNER_TURN_MAP_YAML="$(cd "$(dirname "$fn")" && pwd)/single_baseline_fil
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
 export FILTER_DELAY=${filter_delay}
-export POST_FILTER_DELAY_RES_FACTOR=${post_filter_1D_delay_res_factor}
 export MIN_FRATE_HALF_WIDTH=${min_frate_half_width}
 export EIGENVAL_CUTOFF=${eigenval_cutoff}
+export POST_FILTER_DELAY_LOW_BAND=${post_filter_delay_low_band}
+export POST_FILTER_DELAY_HIGH_BAND=${post_filter_delay_high_band}
+export TV_CHAN_EDGES=${tv_chan_edges}
+export TV_THRESH=${tv_thresh}
 export SNR_SUFFIX=".2Dfilt_SNR.uvh5"
 
 # produce a string like "0_0" for a single baselinea and "0_0.0_1.0_2" for multiple baselines
