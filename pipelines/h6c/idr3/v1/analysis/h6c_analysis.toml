@@ -133,6 +133,9 @@ post_filter_delay_low_band = 200.0 # in ns
 post_filter_delay_high_band = 50.0 # in ns
 tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
 
+[FULL_DAY_RFI_OPTS_ROUND_3]
+freq_conv_size = 8.0 # in MHz
+
 ############################################################################################################
 
 [WorkFlow]
@@ -420,7 +423,20 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-args = ["{basename}",]  # TODO: UPDATE
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:min_samp_frac}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:ws_z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:max_freq_flag_frac}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:max_time_flag_frac}",
+        "${2D_DPSS_FILTER_OPTS:tv_chan_edges}",
+        "${FULL_DAY_RFI_OPTS_ROUND_3:freq_conv_size}",
+        ]
 
 [SINGLE_BASELINE_INPAINT_AND_FRF]
 prereqs = "FULL_DAY_RFI_ROUND_3_NOTEBOOK"
