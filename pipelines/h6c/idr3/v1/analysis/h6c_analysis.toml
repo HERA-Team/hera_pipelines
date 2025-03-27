@@ -411,6 +411,7 @@ args = ["{basename}",
         "${2D_DPSS_FILTER_OPTS:post_filter_delay_high_band}",
         "${2D_DPSS_FILTER_OPTS:tv_chan_edges}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
+        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:min_samp_frac}",
         ]
 
 [FULL_DAY_RFI_ROUND_3_NOTEBOOK]

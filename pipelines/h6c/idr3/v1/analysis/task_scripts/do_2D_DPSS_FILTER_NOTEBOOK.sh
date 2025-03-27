@@ -18,6 +18,7 @@ post_filter_delay_low_band=${9}
 post_filter_delay_high_band=${10}
 tv_chan_edges=${11}
 tv_thresh=${12}
+min_samp_frac=${13}
 
 # path manipulation
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -34,6 +35,7 @@ export POST_FILTER_DELAY_LOW_BAND=${post_filter_delay_low_band}
 export POST_FILTER_DELAY_HIGH_BAND=${post_filter_delay_high_band}
 export TV_CHAN_EDGES=${tv_chan_edges}
 export TV_THRESH=${tv_thresh}
+export MIN_SAMP_FRAC=${min_samp_frac}
 export SNR_SUFFIX=".2Dfilt_SNR.uvh5"
 
 # produce a string like "0_0" for a single baselinea and "0_0.0_1.0_2" for multiple baselines
