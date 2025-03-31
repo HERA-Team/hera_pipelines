@@ -418,6 +418,7 @@ args = ["{basename}",
         ]
 
 [FULL_DAY_RFI_ROUND_3_NOTEBOOK]
+mem = 48000
 prereqs = "2D_DPSS_FILTER_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
