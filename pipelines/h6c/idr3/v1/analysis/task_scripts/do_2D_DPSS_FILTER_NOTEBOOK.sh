@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-# This loads a single baseline (all pols) for all times on a single JD and writes it as its own file.
+# This loads a single baseline (all pols) for all times and calculates 2D DPSS filtered SNRs for finding RFI.
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
