@@ -135,6 +135,16 @@ tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
 freq_conv_size = 8.0 # in MHz
 
 [2D_INFORMED_INPAINT_OPTS]
+auto_inpaint_delay = 100.0 # in ns
+inpaint_delay = 1000.0 # in ns
+iterative_delay_delta = 25.0 # in ns
+cg_tol = 1e-6
+inpaint_width_factor = 0.5
+inpaint_zero_dist_weight = 1e-2
+fr0_filter = true
+fr0_halfwidth = 0.01 # in Hz
+
+
 ############################################################################################################
 
 [WorkFlow]
