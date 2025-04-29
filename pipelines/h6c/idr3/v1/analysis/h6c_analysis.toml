@@ -18,6 +18,9 @@ nb_template_dir = '/users/jsdillon/Libraries/hera_notebook_templates/notebooks' 
 # nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR2/notebooks'
 nb_output_repo = '/lustre/aoc/projects/hera/jsdillon/H6C/IDR3/notebooks' # TODO: undo
 
+[GLOBAL_OPTS]
+eigenval_cutoff = 1e-12
+
 [CALIBRATE_FILE_OPTS]
 am_corr_bad = 0.2
 am_corr_suspect = 0.4
@@ -64,7 +67,6 @@ FM_high_freq = 108.0 # in MHz
 max_solar_alt = 0.0 # in degrees
 freq_filter_scale = 5.0 # in MHz
 time_filter_scale = 450 # in s
-eigenval_cutoff = 1e-12
 min_frac_of_autos = 0.25
 max_auto_L2 = 1.2
 z_thresh = 5.0
@@ -87,14 +89,12 @@ overall_max_flag_frac = 0.5
 [CALIBRATION_SMOOTHING_OPTS]
 freq_smoothing_scale = 30.0 # in MHz
 time_smoothing_scale = 1e4 # in seconds
-eigenval_cutoff = 1e-12
 blacklist_timescale_factor = 10
 blacklist_relative_error_thresh = 0.75
 
 [DELAY_FILTERED_AVG_ZSCORE_OPTS]
 min_samp_frac = 0.15
 filter_delay = 750 # in ns
-eigenval_cutoff = 1e-12
 
 [FULL_DAY_RFI_OPTS_ROUND_2]
 z_thresh = 5.0
@@ -103,7 +103,6 @@ avg_z_thresh =  1.0
 max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.25
 avg_spectrum_filter_delay = 250.0 # in ns
-eigenval_cutoff = 1e-12
 time_avg_delay_filt_snr_thresh = 4.0
 time_avg_delay_filt_snr_dynamic_range = 1.5
 
@@ -111,7 +110,6 @@ time_avg_delay_filt_snr_dynamic_range = 1.5
 dly_filt_horizon = 1.0
 dly_filt_standoff = 0.0 # in ns
 dly_filt_min_dly = 150.0 # in ns
-dly_filt_eigenval_cutoff = 1e-12
 save_diff_red_avg = false
 save_abs_cal_red_avg = false
 save_dly_filt_red_avg = false
@@ -123,12 +121,10 @@ inpaint_regularization = 1e-5
 standoff = 50 # in ns
 xtalk_fr = 0.025 #in mHz
 inpaint_fr = 2.5 # in mHz
-eigenval_cutoff = 1e-12
 max_contiguous_flags = 20
 spectrum_chan_buffer = 25
 
 [2D_DPSS_FILTER_OPTS]
-min_frate_half_width = 2.0 # in mH
 post_filter_delay_low_band = 200.0 # in ns
 post_filter_delay_high_band = 50.0 # in ns
 tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
@@ -136,6 +132,7 @@ tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
 [FULL_DAY_RFI_OPTS_ROUND_3]
 freq_conv_size = 8.0 # in MHz
 
+[2D_INFORMED_INPAINT_OPTS]
 ############################################################################################################
 
 [WorkFlow]
@@ -236,7 +233,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:max_solar_alt}",
         "${FULL_DAY_RFI_OPTS:freq_filter_scale}",
         "${FULL_DAY_RFI_OPTS:time_filter_scale}",
-        "${FULL_DAY_RFI_OPTS:eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${FULL_DAY_RFI_OPTS:min_frac_of_autos}",
         "${FULL_DAY_RFI_OPTS:max_auto_L2}",
         "${FULL_DAY_RFI_OPTS:z_thresh}",
@@ -302,7 +299,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${CALIBRATION_SMOOTHING_OPTS:freq_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:time_smoothing_scale}",
-        "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
         "${CALIBRATION_SMOOTHING_OPTS:blacklist_timescale_factor}",
         "${CALIBRATION_SMOOTHING_OPTS:blacklist_relative_error_thresh}",
@@ -318,7 +315,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:min_samp_frac}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
-        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         ]
 extra_batch_options = "--nice=1000"
 
@@ -337,7 +334,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:max_freq_flag_frac}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:max_time_flag_frac}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:avg_spectrum_filter_delay}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_thresh}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_dynamic_range}",
         ]
@@ -351,7 +348,7 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_horizon}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
         "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
-        "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${POSTPROCESS_FILE_OPTS:save_diff_red_avg}",
@@ -378,7 +375,7 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:xtalk_fr}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
@@ -408,8 +405,8 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
-        "${2D_DPSS_FILTER_OPTS:min_frate_half_width}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
+        "${2D_DPSS_FILTER_OPTS:auto_fr_spectrum_file}",
         "${2D_DPSS_FILTER_OPTS:post_filter_delay_low_band}",
         "${2D_DPSS_FILTER_OPTS:post_filter_delay_high_band}",
         "${2D_DPSS_FILTER_OPTS:tv_chan_edges}",
@@ -442,4 +439,16 @@ args = ["{basename}",
 [SINGLE_BASELINE_INPAINT_AND_FRF]
 prereqs = "FULL_DAY_RFI_ROUND_3_NOTEBOOK"
 prereq_chunk_size = "all"
-args = ["{basename}",]  # TODO: UPDATE
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${2D_INFORMED_INPAINT_OPTS:auto_inpaint_delay}",
+        "${2D_INFORMED_INPAINT_OPTS:inpaint_delay}",
+        "${2D_INFORMED_INPAINT_OPTS:iterative_delay_delta}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${2D_INFORMED_INPAINT_OPTS:cg_tol}",
+        "${2D_INFORMED_INPAINT_OPTS:inpaint_width_factor}",
+        "${2D_INFORMED_INPAINT_OPTS:inpaint_zero_dist_weight}",
+        "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
+        "${2D_INFORMED_INPAINT_OPTS:fr0_halfwidth}",
+        ]
