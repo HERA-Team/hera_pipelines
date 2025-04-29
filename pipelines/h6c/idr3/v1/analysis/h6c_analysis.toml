@@ -125,6 +125,8 @@ max_contiguous_flags = 20
 spectrum_chan_buffer = 25
 
 [2D_DPSS_FILTER_OPTS]
+auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
+gauss_fit_buffer_cut = 1e-5
 post_filter_delay_low_band = 200.0 # in ns
 post_filter_delay_high_band = 50.0 # in ns
 tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
@@ -405,8 +407,9 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:filter_delay}",
-        "${DELAY_FILTERED_AVG_ZSCORE_OPTS:eigenval_cutoff}",
         "${2D_DPSS_FILTER_OPTS:auto_fr_spectrum_file}",
+        "${2D_DPSS_FILTER_OPTS:gauss_fit_buffer_cut}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${2D_DPSS_FILTER_OPTS:post_filter_delay_low_band}",
         "${2D_DPSS_FILTER_OPTS:post_filter_delay_high_band}",
         "${2D_DPSS_FILTER_OPTS:tv_chan_edges}",
