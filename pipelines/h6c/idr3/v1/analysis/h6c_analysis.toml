@@ -455,6 +455,8 @@ prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         "${2D_INFORMED_INPAINT_OPTS:auto_inpaint_delay}",
         "${2D_INFORMED_INPAINT_OPTS:inpaint_delay}",
         "${2D_INFORMED_INPAINT_OPTS:iterative_delay_delta}",
