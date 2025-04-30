@@ -24,6 +24,7 @@ fr0_filter=${15}
 fr0_halfwidth=${16}
 
 # path manipulation
+jd=$(get_int_jd ${fn})
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
 export RED_AVG_FILE=${SUM_FILE%.sum.uvh5}.sum.smooth_calibrated.red_avg.uvh5
 export CORNER_TURN_MAP_YAML="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/corner_turn_map.yaml"
@@ -66,7 +67,6 @@ if [ "$antpairs_str" = "none" ]; then
     echo "No antpairs match this input file. Exiting..."
     exit 0
 fi
-jd=$(get_int_jd ${fn})
 nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.${jd}.baseline.${antpairs_str}.sum.single_baseline_2D_informed_inpaint.html"
 
 # Execute jupyter notebook
