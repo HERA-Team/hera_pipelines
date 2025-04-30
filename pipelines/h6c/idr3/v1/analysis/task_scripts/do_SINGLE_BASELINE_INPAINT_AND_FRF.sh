@@ -4,6 +4,7 @@ set -e
 # This loads a single baseline (all pols) for all times and performs 2D-informed inpainting and FR=0 filtering on the data.
 
 src_dir="$(dirname "$0")"
+source ${src_dir}/_common.sh
 
 fn=${1}
 nb_template_dir=${2}
