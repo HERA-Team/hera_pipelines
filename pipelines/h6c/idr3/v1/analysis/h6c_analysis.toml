@@ -464,6 +464,8 @@ args = ["{basename}",
         "${2D_INFORMED_INPAINT_OPTS:cg_tol}",
         "${2D_INFORMED_INPAINT_OPTS:inpaint_width_factor}",
         "${2D_INFORMED_INPAINT_OPTS:inpaint_zero_dist_weight}",
+        "${2D_DPSS_FILTER_OPTS:auto_fr_spectrum_file}",
+        "${2D_DPSS_FILTER_OPTS:gauss_fit_buffer_cut}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_halfwidth}",
         ]
