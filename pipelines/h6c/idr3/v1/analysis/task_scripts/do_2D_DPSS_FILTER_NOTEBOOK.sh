@@ -71,5 +71,5 @@ echo Finished running 2D DPSS filtering of single baseline SNRs notebook at $(da
 
 # check if "0_4" is in the antpairs_str, if so copy the notebook to the output repo
 if [[ ".${antpairs_str}." == *".0_4."* ]]; then
-    cp ${nb_outfile} ${nb_output_repo}/single_baseline_2D_filtered_SNRs/single_baseline_2D_filtered_SNRs_${jd}.ipynb
+    cp ${nb_outfile} ${nb_output_repo}/single_baseline_2D_filtered_SNRs/single_baseline_2D_filtered_SNRs_${jd}.html
 fi
