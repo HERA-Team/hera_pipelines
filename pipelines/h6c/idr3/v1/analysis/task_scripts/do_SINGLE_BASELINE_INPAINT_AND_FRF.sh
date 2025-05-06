@@ -56,7 +56,6 @@ with open('${CORNER_TURN_MAP_YAML}', 'r') as file:
 
 antpairs = corner_turn_map['files_to_antpairs_map']['${RED_AVG_FILE}']
 ubl_keys = [corner_turn_map['antpairs_to_ubl_keys_map'][ap] for ap in antpairs]
-ubl_keys = [k for k in ubl_keys if k[0] != k[1]]  # skip autos
 if len(ubl_keys) > 0:
     print('.'.join(['_'.join(str(ant) for ant in ap) for ap in ubl_keys]))
 else:
