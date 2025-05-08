@@ -404,6 +404,7 @@ time_centered = false
 args = ["{basename}",]
 
 [CORNER_TURN_SINGLE_JD]
+mem = 4000
 prereqs = "BUILD_CORNER_TURN_MAP"
 prereq_chunk_size = "all"
 args = ["{basename}",]
