@@ -20,6 +20,7 @@ add_to_history += '=' * 65 + '\n' + os.popen('mamba env export').read() + '=' * 
 # open the yaml file
 with open(args.map_yaml_path, 'r') as file:
     corner_turn_map = yaml.unsafe_load(file)
+ubl_key_to_antpair = {val: key for key, val in corner_turn_map['antpairs_to_ubl_keys_map'].items()}
 
 # read original data
 hd = io.HERAData(args.this_file)
@@ -36,11 +37,12 @@ if args.extension.endswith('.uvh5'):
         hd_ct = io.HERAData(outfile.replace('.uvh5', args.extension))
         data_ct, flags_ct, nsamples_ct = hd_ct.read(times=hd.times)
         for bl in data_ct:
-            assert bl not in modified_bls, f'{bl} was already modified'
-            modified_bls.add(bl)
-            data[bl] = data_ct[bl]
-            flags[bl] = flags_ct[bl]
-            nsamples[bl] = nsamples_ct[bl]
+            target_bl = ubl_key_to_antpair[bl[0:2]] + (bl[2],)
+            assert target_bl not in modified_bls, f'{target_bl} was already modified'
+            modified_bls.add(target_bl)
+            data[target_bl] = data_ct[bl]
+            flags[target_bl] = flags_ct[bl]
+            nsamples[target_bl] = nsamples_ct[bl]
 
     hd.update(data=data, flags=flags, nsamples=nsamples)
     hd.history += add_to_history
@@ -54,8 +56,10 @@ elif args.extension.endswith('.h5'):
         wip =  io.load_flags(outfile.replace('.uvh5', args.extension))
         time_indices = np.array([np.argmin(np.abs(wip.times - t)) for t in hd.times])
         for bl in wip:
-            assert bl not in modified_bls, f'{bl} was already modified'
-            where_inpainted[bl] = wip[bl][time_indices, :]
+            target_bl = ubl_key_to_antpair[bl[0:2]] + (bl[2],)
+            assert target_bl not in modified_bls, f'{target_bl} was already modified'
+            modified_bls.add(target_bl)
+            where_inpainted[target_bl] = wip[bl][time_indices, :]
 
     hd.update(flags=where_inpainted)
     uvf = UVFlag(hd, mode='flag', copy_flags=True)
