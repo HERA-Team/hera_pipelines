@@ -13,7 +13,7 @@ parser.add_argument("map_yaml_path", help="path to yaml that maps files to antpa
 parser.add_argument("extension", help='replacement for ".uvh5" for the output type to corner turn (must end in ".uvh5" for UVData or ".h5" for UVFlag).')
 args = parser.parse_args()
 
-print(f'Running corner_returner.py for {args.this_file} to make {args.this_file.replace(".uhv5", args.extension)} using {args.map_yaml_path}')
+print(f'Running corner_returner.py for {args.this_file} to make {args.this_file.replace(".uvh5", args.extension)} using {args.map_yaml_path}')
 add_to_history = 'Produced by from single-baseline files with corner_returner.py with the following environment:\n'
 add_to_history += '=' * 65 + '\n' + os.popen('mamba env export').read() + '=' * 65
 
