@@ -51,8 +51,8 @@ if args.extension.endswith('.uvh5'):
 elif args.extension.endswith('.h5'):
     # if extension ends with ".h5" it's a flag file
     where_inpainted = {bl: np.zeros_like(flags[bl]) for bl in flags}
-    print(f"Now loading flags from on {outfile.replace('.uvh5', args.extension)}.")
     for outfile in all_outfiles:
+        print(f"Now loading flags from on {outfile.replace('.uvh5', args.extension)}.")
         wip =  io.load_flags(outfile.replace('.uvh5', args.extension))
         time_indices = np.array([np.argmin(np.abs(wip.times - t)) for t in hd.times])
         for bl in wip:
