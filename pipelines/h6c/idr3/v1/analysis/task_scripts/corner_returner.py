@@ -22,7 +22,7 @@ with open(args.map_yaml_path, 'r') as file:
     corner_turn_map = yaml.unsafe_load(file)
 
 # read original data
-hd = io.HERAData(RED_AVG_FILE)
+hd = io.HERAData(args.this_file)
 data, flags, nsamples = hd.read()
 
 # get all full-jd files from original corner turn
