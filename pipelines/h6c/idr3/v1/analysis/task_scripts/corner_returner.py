@@ -26,7 +26,7 @@ hd = io.HERAData(args.this_file)
 data, flags, nsamples = hd.read()
 
 # get all full-jd files from original corner turn
-all_outfiles = [outfile for outfiles in corner_turn_map['files_to_outfiles_map'].values() for outfile in outfiles][0:10] # TODO remove this
+all_outfiles = [outfile for outfiles in corner_turn_map['files_to_outfiles_map'].values() for outfile in outfiles]
 
 modified_bls = set([])
 if args.extension.endswith('.uvh5'):
