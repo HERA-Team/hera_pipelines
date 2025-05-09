@@ -33,7 +33,7 @@ modified_bls = set([])
 if args.extension.endswith('.uvh5'):
     # if extension ends with ".uvh5" it's a data file
     for outfile in all_outfiles:
-        print(f"Now loading data from on {outfile.replace('.uvh5', args.extension)}.")
+        print(f"\tNow loading data from on {outfile.replace('.uvh5', args.extension)}.")
         hd_ct = io.HERAData(outfile.replace('.uvh5', args.extension))
         data_ct, flags_ct, nsamples_ct = hd_ct.read(times=hd.times)
         for bl in data_ct:
@@ -46,13 +46,14 @@ if args.extension.endswith('.uvh5'):
 
     hd.update(data=data, flags=flags, nsamples=nsamples)
     hd.history += add_to_history
+    print(f'Writing corner re-turned data to {args.this_file.replace(".uvh5", args.extension)}')
     hd.write_uvh5(args.this_file.replace('.uvh5', args.extension), clobber=True)
     
 elif args.extension.endswith('.h5'):
     # if extension ends with ".h5" it's a flag file
     where_inpainted = {bl: np.zeros_like(flags[bl]) for bl in flags}
     for outfile in all_outfiles:
-        print(f"Now loading flags from on {outfile.replace('.uvh5', args.extension)}.")
+        print(f"\tNow loading flags from on {outfile.replace('.uvh5', args.extension)}.")
         wip =  io.load_flags(outfile.replace('.uvh5', args.extension))
         time_indices = np.array([np.argmin(np.abs(wip.times - t)) for t in hd.times])
         for bl in wip:
@@ -64,6 +65,7 @@ elif args.extension.endswith('.h5'):
     hd.update(flags=where_inpainted)
     uvf = UVFlag(hd, mode='flag', copy_flags=True)
     uvf.history += add_to_history
+    print(f'Writing corner re-turned flags to {args.this_file.replace(".uvh5", args.extension)}')
     uvf.write(args.this_file.replace('.uvh5', args.extension), clobber=True)
 
 else:
