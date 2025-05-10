@@ -409,6 +409,7 @@ mem = 4000
 prereqs = "BUILD_CORNER_TURN_MAP"
 prereq_chunk_size = "all"
 args = ["{basename}",]
+extra_batch_options = "--nice=1000"
 
 [2D_DPSS_FILTER_NOTEBOOK]
 prereqs = "CORNER_TURN_SINGLE_JD"
@@ -429,6 +430,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
         "${DELAY_FILTERED_AVG_ZSCORE_OPTS:min_samp_frac}",
         ]
+extra_batch_options = "--nice=1000"
 
 [FULL_DAY_RFI_ROUND_3_NOTEBOOK]
 mem = 48000
@@ -472,6 +474,7 @@ args = ["{basename}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_halfwidth}",
         ]
+extra_batch_options = "--nice=1000"
 
 [CORNER_RETURN]
 mem = 4000
@@ -479,6 +482,7 @@ prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
 args = ["{basename}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
         ]
+extra_batch_options = "--nice=1000"
 
 [CLEANUP]
 prereqs = "CORNER_RETURN"
