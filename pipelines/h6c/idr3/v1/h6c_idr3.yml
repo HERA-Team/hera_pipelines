@@ -56,19 +56,21 @@ dependencies:
   - tabulate
   - toml
   - pip:
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/aipy
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvdata
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvsim
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/uvtools
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_filters
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/linsolve
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_mc
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_sim
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_opm
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_qm
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_cal
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/eor_limits
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pspec
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/simpleQE
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/librarian
+    - --no-build-isolation      # use active env (with numpy, cython) for the build
+    - --no-use-pep517           # fall back to setup.py
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/aipy
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvdata
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvsim
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/uvtools
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_filters
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/linsolve
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_mc
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_sim
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_opm
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_qm
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_cal
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/eor_limits
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pspec
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/simpleQE
+    - -e /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/librarian
