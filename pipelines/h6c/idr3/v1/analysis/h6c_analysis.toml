@@ -4,8 +4,8 @@ source_script = "~/.bashrc"
 base_mem = 15500
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr2/v3/analysis/apriori_flags"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/analysis/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/analysis/apriori_flags"
 conda_env = "h6c_idr3" 
 batch_system = "slurm"
 
