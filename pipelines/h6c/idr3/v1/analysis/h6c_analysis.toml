@@ -165,6 +165,7 @@ actions = ["SETUP",
            "FULL_DAY_RFI_ROUND_3_NOTEBOOK",
            "SINGLE_BASELINE_INPAINT_AND_FRF",
            "CORNER_RETURN",
+           "CLEANUP",
           ]
 
 [SETUP]
@@ -478,3 +479,11 @@ prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
 args = ["{basename}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
         ]
+
+[CLEANUP]
+prereqs = "CORNER_RETURN"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = []
