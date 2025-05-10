@@ -1,4 +1,4 @@
-name: h6c_idr2
+name: h6c_idr3
 channels:
   - conda-forge
   - defaults
@@ -56,14 +56,6 @@ dependencies:
   - tabulate
   - toml
   - pip:
-      - flake8-docstrings
-      - flake8-pytest
-      - flake8-builtins
-      - flake8-comprehensions
-      - flake8-docstrings
-      - flake8-rst-docstrings
-      - pep8-naming
-      - bokeh
       - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/aipy
       - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvdata
       - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvsim
