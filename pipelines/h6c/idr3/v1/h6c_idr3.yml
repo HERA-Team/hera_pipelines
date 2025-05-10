@@ -64,19 +64,19 @@ dependencies:
       - flake8-rst-docstrings
       - pep8-naming
       - bokeh
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/aipy
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/pyuvdata
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/pyuvsim
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/uvtools
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_filters
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/linsolve
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_mc
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_sim
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_opm
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_qm
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_cal
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/eor_limits
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_notebook_templates
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pspec
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/simpleQE
-      - /lustre/aoc/projects/hera/h6c-analysis/IDR2/src/librarian
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/aipy
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvdata
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/pyuvsim
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/uvtools
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_filters
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/linsolve
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_mc
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_sim
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_opm
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_qm
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_cal
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/eor_limits
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pspec
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/simpleQE
+      - /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/librarian
