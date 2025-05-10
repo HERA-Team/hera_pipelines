@@ -48,6 +48,9 @@ FR_QUANTILE_HIGH = 0.95
 FR_EIGENVAL_CUTOFF = 1e-12
 TARGET_AVERAGING_TIME = 300  # seconds
 
+LST_MIN = 1.25  # 30 minutes inside H1C, because FRF's bleed structure (galaxy and pulsars)
+LST_MAX = 5.75
+
 # pspec options
 EFIELD_HEALPIX_BEAM_FILE = "/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
 TAPER = "bh"
@@ -57,6 +60,7 @@ STORE_WINDOW_FUNCTIONS = false
 [WorkFlow]
 actions = [
     "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
+    "MERGE_SINGLE_BASELINE_FILES",
 ]
 
 [SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC]
@@ -66,3 +70,15 @@ args = [
     "${NOTEBOOK_OPTS:toml_section}",
     "${Options:conda_env}",
 ]
+
+
+[MERGE_SINGLE_BASELINE_FILES]
+prereqs = [
+    "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
+]
+chunk_size = "all"
+prereq_chunk_size = "all"
+args = [
+    "{basename}",
+]
+mem=100000
