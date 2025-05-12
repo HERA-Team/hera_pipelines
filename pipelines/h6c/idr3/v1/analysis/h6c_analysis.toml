@@ -400,7 +400,7 @@ time_centered = false
 args = ["{basename}",]
 
 [CORNER_TURN_SINGLE_JD]
-mem = 4000
+mem = 8000
 prereqs = "BUILD_CORNER_TURN_MAP"
 prereq_chunk_size = "all"
 args = ["{basename}",]
@@ -472,7 +472,7 @@ args = ["{basename}",
 extra_batch_options = "--nice=1000"
 
 [CORNER_RETURN]
-mem = 4000
+mem = 8000
 prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
 args = ["{basename}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
