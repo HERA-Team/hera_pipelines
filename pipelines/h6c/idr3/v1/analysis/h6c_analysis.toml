@@ -474,6 +474,7 @@ extra_batch_options = "--nice=1000"
 [CORNER_RETURN]
 mem = 8000
 prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
+prereq_chunk_size = "all"
 args = ["{basename}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
         ]
