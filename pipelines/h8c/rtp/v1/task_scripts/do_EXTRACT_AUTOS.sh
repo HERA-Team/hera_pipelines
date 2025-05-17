@@ -52,12 +52,20 @@ if [ "${upload_to_librarian}" == "True" ]; then
         # get the integer portion of the JD
         jd=$(get_int_jd ${fn})
 
-        echo librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
-        librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
-        echo Finished uploading sum autos to Librarian at $(date)
-
-        echo librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
-        librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
-        echo Finished uploading diff autos to Librarian at $(date)
+        if librarian locate-file local-rtp ${autos_file}; then
+            echo "${autos_file} is already in the librarian. Skipping..."
+        else
+            echo librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
+            librarian upload local-rtp ${autos_file} ${jd}/${autos_file}
+            echo Finished uploading sum autos to Librarian at $(date)
+        fi
+        
+        if librarian locate-file local-rtp ${diff_autos_file}; then
+            echo "${diff_autos_file} is already in the librarian. Skipping..."
+        else
+            echo librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
+           librarian upload local-rtp ${diff_autos_file} ${jd}/${diff_autos_file}
+            echo Finished uploading diff autos to Librarian at $(date)
+        fi
     fi
 fi

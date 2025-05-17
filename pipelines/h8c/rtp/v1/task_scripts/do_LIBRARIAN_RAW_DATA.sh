@@ -28,8 +28,11 @@ if [ "${upload_to_librarian}" == "True" ]; then
             echo "Finished uploading sum data to Librarian at $(date)"
         fi
 
-        # Upload a 32-channel summed version of the diff file
-        diff_sum_file=$(python -c "
+        if librarian locate-file local-rtp ${fn%.sum.uvh5}.diff.32chansum.uvh5; then
+            echo "${fn%.sum.uvh5}.diff.32chansum.uvh5 is already in the librarian. Skipping..."
+        else
+            # Upload a 32-channel summed version of the diff file
+            diff_sum_file=$(python -c "
 import numpy as np
 from pyuvdata import UVData
 import hdf5plugin
@@ -50,8 +53,9 @@ output_file = SUM_FILE.replace('.sum.', '.diff.32chansum.')
 uvd_out.write_uvh5(output_file, data_compression='bitshuffle', clobber=True)
 print(output_file)
 ")
-        echo librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
-        librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
-        echo "Finished uploading 32-channel summed diff file to Librarian at $(date)"
+            echo librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
+            librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
+            echo "Finished uploading 32-channel summed diff file to Librarian at $(date)"
+        fi
     done
 fi
