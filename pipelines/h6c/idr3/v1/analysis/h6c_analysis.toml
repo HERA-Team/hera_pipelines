@@ -153,12 +153,12 @@ actions = ["SETUP",
            "DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK",
            "FULL_DAY_RFI_ROUND_2_NOTEBOOK",
            "POSTPROCESS_FILE_NOTEBOOK",
-           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
            "BUILD_CORNER_TURN_MAP",
            "CORNER_TURN_SINGLE_JD",
            "2D_DPSS_FILTER_NOTEBOOK",
            "FULL_DAY_RFI_ROUND_3_NOTEBOOK",
            "SINGLE_BASELINE_INPAINT_AND_FRF",
+           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
            "CORNER_RETURN",
            "CLEANUP",
           ]
@@ -367,30 +367,6 @@ args = ["{basename}",
         ]
 extra_batch_options = "--nice=1000"
 
-[FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK]
-# TODO move to end of pipeline after corner turn
-mem = 60000
-prereqs = "POSTPROCESS_FILE_NOTEBOOK"
-prereq_chunk_size = "all"
-chunk_size = 1
-stride_length = "all"
-time_centered = false
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:filter_dly_min}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:xtalk_fr}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
-        "${GLOBAL_OPTS:eigenval_cutoff}",
-        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
-        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
-        ]
-
 [BUILD_CORNER_TURN_MAP]
 prereqs = "POSTPROCESS_FILE_NOTEBOOK"
 prereq_chunk_size = "all"
@@ -470,6 +446,30 @@ args = ["{basename}",
         "${2D_INFORMED_INPAINT_OPTS:fr0_halfwidth}",
         ]
 extra_batch_options = "--nice=1000"
+
+[FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK]
+mem = 60000
+prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:filter_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:xtalk_fr}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
+        ]
+
 
 [CORNER_RETURN]
 mem = 8000
