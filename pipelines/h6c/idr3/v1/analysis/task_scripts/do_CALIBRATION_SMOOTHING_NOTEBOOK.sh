@@ -22,6 +22,9 @@ eigenval_cutoff=${6}
 calibrate_cross_pols=${7}
 blacklist_timescale_factor=${8}
 blacklist_relative_error_thresh=${9}
+blacklist_relative_weight=${10}
+FM_low_freq=${11}
+FM_high_freq=${12}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -45,6 +48,9 @@ else
 fi
 export BLACKLIST_TIMESCALE_FACTOR=${blacklist_timescale_factor}
 export BLACKLIST_RELATIVE_ERROR_THRESH=${blacklist_relative_error_thresh}
+export BLACKLIST_RELATIVE_WEIGHT=${blacklist_relative_weight}
+export FM_LOW_FREQ=${FM_low_freq}
+export FM_HIGH_FREQ=${FM_high_freq}
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
