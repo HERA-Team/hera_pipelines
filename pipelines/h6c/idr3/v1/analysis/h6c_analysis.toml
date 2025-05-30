@@ -86,6 +86,7 @@ freq_smoothing_scale = 30.0 # in MHz
 time_smoothing_scale = 1e4 # in seconds
 blacklist_timescale_factor = 10
 blacklist_relative_error_thresh = 1.0
+blacklist_relative_weight = 0.1
 
 [DELAY_FILTERED_AVG_ZSCORE_OPTS]
 min_samp_frac = 0.15
@@ -312,6 +313,9 @@ args = ["{basename}",
         "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
         "${CALIBRATION_SMOOTHING_OPTS:blacklist_timescale_factor}",
         "${CALIBRATION_SMOOTHING_OPTS:blacklist_relative_error_thresh}",
+        "${CALIBRATION_SMOOTHING_OPTS:blacklist_relative_weight}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
         ]
 
 [DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK]
