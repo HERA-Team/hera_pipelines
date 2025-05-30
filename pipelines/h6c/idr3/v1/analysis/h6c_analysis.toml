@@ -85,7 +85,7 @@ overall_max_flag_frac = 0.5
 freq_smoothing_scale = 30.0 # in MHz
 time_smoothing_scale = 1e4 # in seconds
 blacklist_timescale_factor = 10
-blacklist_relative_error_thresh = 0.75
+blacklist_relative_error_thresh = 1.0
 
 [DELAY_FILTERED_AVG_ZSCORE_OPTS]
 min_samp_frac = 0.15
