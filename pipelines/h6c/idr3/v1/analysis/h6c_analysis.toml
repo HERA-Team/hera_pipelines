@@ -451,7 +451,7 @@ args = ["{basename}",
 extra_batch_options = "--nice=1000"
 
 [FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK]
-mem = 60000
+mem = 32000
 prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
 prereq_chunk_size = "all"
 chunk_size = 1
