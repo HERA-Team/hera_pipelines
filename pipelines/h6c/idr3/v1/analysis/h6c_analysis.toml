@@ -110,15 +110,6 @@ save_diff_red_avg = false
 save_abs_cal_red_avg = false
 save_dly_filt_red_avg = false
 
-[FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
-filter_dly_min = 150.0 # in ns
-inpaint_dly_min = 500.0 # in ns
-inpaint_regularization = 1e-5
-standoff = 50 # in ns
-xtalk_fr = 0.025 #in mHz
-inpaint_fr = 2.5 # in mHz
-max_contiguous_flags = 20
-spectrum_chan_buffer = 25
 
 [2D_DPSS_FILTER_OPTS]
 auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
@@ -140,6 +131,14 @@ inpaint_zero_dist_weight = 1e-2
 fr0_filter = true
 fr0_halfwidth = 0.01 # in Hz
 
+[FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
+filter_dly_min = 150.0 # in ns
+inpaint_dly_min = 500.0 # in ns
+inpaint_regularization = 1e-5
+standoff = 50 # in ns
+inpaint_fr = 2.5 # in mHz
+max_contiguous_flags = 20
+spectrum_chan_buffer = 25
 
 ############################################################################################################
 
@@ -465,7 +464,7 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
-        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:xtalk_fr}",
+        "${2D_INFORMED_INPAINT_OPTS:fr0_halfwidth}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
         "${GLOBAL_OPTS:eigenval_cutoff}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
