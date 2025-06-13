@@ -1,11 +1,10 @@
-
-# This is the lstbin TOML file for the redavg-smoothcal-inpaint-1000ns-lstcal case.
+# This is the lstbin TOML file for the redavg-smoothcal-inpaint-1000ns case.
 
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/task_scripts/"
 source_script = "~/.bashrc"
-conda_env = "h6c_idr2"
+conda_env = "h6c_idr3"
 base_mem = 24000
 base_cpu = 1
 timeout = "48h"
@@ -16,7 +15,6 @@ outdir = "${LSTAVG_OPTS:outdir}"
 bl_chunk_size = 2000
 parallelize = true
 
-
 [FILE_CFG]
 # This section specifies a file configuration for LST-binning.
 # The possible parameters here any input attribute of the
@@ -26,7 +24,7 @@ parallelize = true
 nlsts_per_file = 2
 lst_start = 0.0
 antpairs_from_last_file_each_night = true
-
+where_inpainted_file_rules = [[".inpainted.uvh5", ".where_inpainted.h5"]]
 
 [FILE_CFG.datafiles]                                                                                                                                                                 
 # Arguments to specify input files.
@@ -38,22 +36,22 @@ nights=[
   "2459867", "2459868", "2459869", "2459870", "2459871", 
   "2459872", "2459873", "2459874", "2459876"
 ]
-fileglob = "{night}/zen.{night}.?????.sum.smooth_calibrated.red_avg.uvh5"
+fileglob = "{night}/zen.{night}.?????.sum.smooth_calibrated.red_avg.inpainted.uvh5"
+where_inpainted_file_rules = [".inpainted.uvh5", ".where_inpainted.h5"]
 
 [LSTAVG_OPTS]
 # Options for the notebook running -- i.e. the metrics and averaging.
-outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/redavg-smoothcal-inpaint-1000ns-lstcal/"
+outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lstbin-outputs/redavg-smoothcal-inpaint-1000ns/"
 bl_chunk_size = "${LSTBIN_OPTS:bl_chunk_size}"
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.{blchunk}.sum.uvh5"
 overwrite=true
 write_med_mad=false
 plot_every=180  # about 1 hour
-save_metric_data = true  # this should be updated for the real runs
+save_metric_data = false  # this should be updated for the real runs
 do_extra_flagging = false
-do_simultaneous_inpainting = true
-inpaint_mindelay = 1000
+do_simultaneous_inpainting = false
 do_lstcal = true
-
+inpaint_method = "pre-inpainted"
 
 # ========================================= THE WORKFLOW ========================
 [WorkFlow]
