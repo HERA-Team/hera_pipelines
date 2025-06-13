@@ -48,7 +48,6 @@ write_med_mad=false
 plot_every=180  # about 1 hour
 save_metric_data = false  # this should be updated for the real runs
 do_extra_flagging = false
-do_simultaneous_inpainting = false
 do_lstcal = true
 inpaint_method = "pre-inpainted"
 
