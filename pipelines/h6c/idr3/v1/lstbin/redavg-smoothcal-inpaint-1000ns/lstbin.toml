@@ -48,7 +48,7 @@ write_med_mad=false
 plot_every=180  # about 1 hour
 save_metric_data = false  # this should be updated for the real runs
 do_extra_flagging = false
-do_lstcal = true
+do_lstcal = false # TODO: restore this to true
 inpaint_method = "pre-inpainted"
 
 # ========================================= THE WORKFLOW ========================
