@@ -4,12 +4,12 @@ source_script = "~/.bashrc"
 base_mem = 15500
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/post-lstbin/task_scripts"
-conda_env = "h6c_idr2"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/post-lstbin/task_scripts"
+conda_env = "h6c_idr3"
 batch_system = "slurm"
 
 [NOTEBOOK_OPTS]
-toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/makeflow-pspec/h6c_pspec_14band.toml"  # this file
+toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/makeflow-pspec/h6c_pspec_14band.toml"  # this file
 toml_section = "CONFIG_OPTS"
 kernel = ""
 
@@ -42,7 +42,7 @@ CHANNEL_FLAG_CUT = 0.0
 INTEGRATION_FLAG_CUT = 0.2
 NINTERLEAVE = 4
 XTALK_FR = 0.01  # mHz
-FR_SPECTRA_FILE = "/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_core.h5"
+FR_SPECTRA_FILE = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5"
 FR_QUANTILE_LOW = 0.05
 FR_QUANTILE_HIGH = 0.95
 FR_EIGENVAL_CUTOFF = 1e-12
@@ -52,7 +52,7 @@ LST_MIN = 1.25  # 30 minutes inside H1C, because FRF's bleed structure (galaxy a
 LST_MAX = 5.75
 
 # pspec options
-EFIELD_HEALPIX_BEAM_FILE = "/lustre/aoc/projects/hera/H4C/beams/NF_HERA_Vivaldi_efield_beam_healpix.fits"
+EFIELD_HEALPIX_BEAM_FILE = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/NF_HERA_Vivaldi_efield_beam_healpix.fits"
 TAPER = "bh"
 INCLUDE_INTERLEAVE_AUTO_PS = false
 STORE_WINDOW_FUNCTIONS = false
