@@ -3,7 +3,7 @@
 
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/src/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
+path_to_do_scripts = "/home/sgm/work/hera/hera_pipelines/pipelines/h6c/idr2/v3/lstbin/task_scripts/"
 source_script = "~/.bashrc"
 conda_env = "h6c_idr2"
 base_mem = 24000
@@ -15,7 +15,7 @@ timeout = "48h"
 outdir = "${LSTAVG_OPTS:outdir}"
 bl_chunk_size = 2000
 parallelize = true
-
+isvalidation = false
 
 [FILE_CFG]
 # This section specifies a file configuration for LST-binning.
@@ -32,8 +32,8 @@ antpairs_from_last_file_each_night = true
 # Arguments to specify input files.
 # Files to be read will be:
 #    {datadir}/{nightdir}/zen.{jdglob}.{sd}.{label}[.]{extension}
-datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR2/"
-nights=[
+datadir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/"
+nights = [
   "2459861", "2459862", "2459863", "2459864", "2459866", 
   "2459867", "2459868", "2459869", "2459870", "2459871", 
   "2459872", "2459873", "2459874", "2459876"
@@ -45,12 +45,14 @@ fileglob = "{night}/zen.{night}.?????.sum.smooth_calibrated.red_avg.dly_filt.uvh
 outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR2/lstbin-outputs/redavg-smoothcal-dlyfilt-500ns-lstcal/"
 bl_chunk_size = "${LSTBIN_OPTS:bl_chunk_size}"
 fname_format = "{inpaint_mode}/zen.{kind}.{lst:7.5f}.{blchunk}.sum.uvh5"
-overwrite=true
-write_med_mad=false
-plot_every=180  # about 1 hour
+overwrite = true
+write_med_mad = false
+plot_every = 180  # about 1 hour
 save_metric_data = true  # this should be updated for the real runs
+save_lstbin_data = true
 do_extra_flagging = false
-do_simultaneous_inpainting = false
+inpaint_method = "per-night"
+spws = "50.1~62.2,63.3~73.5,74.6~85.4,108.0~116.1,117.3~124.4,125.3~136.2,138.3~148.2,150.1~159.2,159.3~169.9,171.9~181.1,181.4~196.4,198.5~208.4,212.3~220.6,224.4~231.1"
 inpaint_mindelay = 500
 do_lstcal = true
 
@@ -61,5 +63,5 @@ actions = ["PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK"]
 
 [PER_OUTFILE_LSTSTACK_METRICS_NOTEBOOK]
 args = [
-  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel", "output_blchnk_select"
+  "outdir", "lstconf", "lstavg_toml_file", "output_file_select", "kernel", "output_blchnk_select", "isvalidation"
 ]
