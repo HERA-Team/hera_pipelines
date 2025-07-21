@@ -128,7 +128,7 @@ iterative_delay_delta = 25.0 # in ns
 cg_tol = 1e-6
 inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
-fr0_filter = true
+fr0_filter = false
 fr0_halfwidth = 0.01 # in Hz
 
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
