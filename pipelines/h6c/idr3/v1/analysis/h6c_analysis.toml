@@ -159,7 +159,6 @@ actions = ["SETUP",
            "FULL_DAY_RFI_ROUND_3_NOTEBOOK",
            "SINGLE_BASELINE_INPAINT_AND_FRF",
            "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
-           "CORNER_RETURN",
            "CLEANUP",
           ]
 
@@ -473,18 +472,8 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]
 
-
-[CORNER_RETURN]
-mem = 8000
-prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
-prereq_chunk_size = "all"
-args = ["{basename}",
-        "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
-        ]
-extra_batch_options = "--nice=1000"
-
 [CLEANUP]
-prereqs = "CORNER_RETURN"
+prereqs = "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
