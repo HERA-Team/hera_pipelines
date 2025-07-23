@@ -120,6 +120,7 @@ tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
 
 [FULL_DAY_RFI_OPTS_ROUND_3]
 freq_conv_size = 8.0 # in MHz
+max_freq_flag_frac = 0.5
 
 [2D_INFORMED_INPAINT_OPTS]
 auto_inpaint_delay = 100.0 # in ns
@@ -421,7 +422,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:z_thresh}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:ws_z_thresh}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:avg_z_thresh}",
-        "${FULL_DAY_RFI_OPTS_ROUND_2:max_freq_flag_frac}",
+        "${FULL_DAY_RFI_OPTS_ROUND_3:max_freq_flag_frac}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:max_time_flag_frac}",
         "${2D_DPSS_FILTER_OPTS:tv_chan_edges}",
         "${FULL_DAY_RFI_OPTS_ROUND_3:freq_conv_size}",
