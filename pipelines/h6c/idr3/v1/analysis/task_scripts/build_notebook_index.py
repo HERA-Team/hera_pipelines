@@ -17,7 +17,6 @@ a.add_argument("target_dir", help="Path to folder to make an index.html for.")
 args = a.parse_args()
 
 files = sorted(os.listdir(args.target_dir))
-title = os.path.realpath(args.target_dir).split('/')[-1]
 
 date_str_cache = {}
 def make_links(files):
@@ -40,7 +39,7 @@ def make_links(files):
 
 links = make_links(files)
 with open(os.path.join(args.target_dir, 'index.html'), 'w') as f:
-    f.write(f'<html>\n<title>{title}</title>\n<header>\n<h1>{title}</h1>\n</header>\n<body>\n<ul>\n')
+    f.write(f'<html>\n<title>H6C IDR3 Notebooks</title>\n<header>\n<h1>H6C IDR3 Notebooks</h1>\n</header>\n<body>\n<ul>\n')
     f.write('<li><a href=".."><b>Back to all notebooks.</b></a></li>')
     f.write('\n'.join(links))
     f.write('\n</ul>\n</body>\n</html>')
