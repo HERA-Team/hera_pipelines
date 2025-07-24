@@ -79,4 +79,5 @@ echo Finished running 2D informed inpainting notebook at $(date)
 if [[ ".${antpairs_str}." == *".0_4."* ]]; then
     # Copy file to github repo
     cp ${nb_outfile} ${nb_output_repo}/single_baseline_2D_informed_inpaint/single_baseline_2D_informed_inpaint_${jd}.html
+    python ${src_dir}/build_notebook_index.py ${nb_output_repo}/single_baseline_2D_informed_inpaint
 fi

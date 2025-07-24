@@ -57,3 +57,5 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/post_corner_turn_systematics_inspect.ipynb
 echo Finished full-day systematics inspect notebook at $(date)
+
+python ${src_dir}/build_notebook_index.py ${nb_outdir}

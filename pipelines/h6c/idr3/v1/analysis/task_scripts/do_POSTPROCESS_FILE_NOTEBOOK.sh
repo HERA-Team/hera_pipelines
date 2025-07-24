@@ -119,4 +119,5 @@ if [ "${is_middle_file}" == "True" ]; then
     github_nb_outdir=${nb_output_repo}/file_postprocessing
     github_nb_outfile=${github_nb_outdir}/file_postprocessing_${jd}.html
     cp ${nb_outfile} ${github_nb_outfile}
+    python ${src_dir}/build_notebook_index.py ${github_nb_outdir}
 fi

@@ -67,3 +67,5 @@ else
     echo $first_outfile not produced.
     exit 1
 fi
+
+python ${src_dir}/build_notebook_index.py ${nb_outdir}

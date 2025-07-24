@@ -36,3 +36,5 @@ jupyter nbconvert --output=${nb_outfile} \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/antenna_classification_summary.ipynb
 echo Finished finished antenna classification summary notebook at $(date)
+
+python ${src_dir}/build_notebook_index.py ${nb_outdir}
