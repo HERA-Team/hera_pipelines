@@ -56,8 +56,8 @@ recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x
 links = make_links(recent_html_files)
 recent_jds = sorted(list(set([int(jd) for link in links for jd in re.findall(r"2\d{6}", link)])), reverse=True)
 
-overall_index = '<html>\n<title>H8C_Notebooks</title>\n<header>\n<h1>H8C_Notebooks</h1>\n</header>\n<body>\n<h3><ul>\n'
-overall_index += '    <li><a href=".."><b>Back to all seasons.</b></a></li>\n'
+overall_index = '<html>\n<title>H6C IDR3 Notebooks</title>\n<header>\n<h1>H6C IDR3 Notebooks</h1>\n</header>\n<body>\n<h3><ul>\n'
+overall_index += '    <li><a href=".."><b>Back to H6C.</b></a></li>\n'
 overall_index += '    <li><a href="file_calibration">file_calibration</a></li>\n'
 overall_index += '    <li><a href="antenna_classification_summary">antenna_classification_summary</a></li>\n'
 overall_index += '    <li><a href="full_day_auto_checker">full_day_auto_checker</a></li>\n'
