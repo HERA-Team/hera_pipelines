@@ -60,7 +60,6 @@ overall_index = '<html>\n<title>H6C IDR3 Notebooks</title>\n<header>\n<h1>H6C ID
 overall_index += '    <li><a href=".."><b>Back to H6C.</b></a></li>\n'
 overall_index += '    <li><a href="file_calibration">file_calibration</a></li>\n'
 overall_index += '    <li><a href="antenna_classification_summary">antenna_classification_summary</a></li>\n'
-overall_index += '    <li><a href="full_day_auto_checker">full_day_auto_checker</a></li>\n'
 overall_index += '    <li><a href="full_day_antenna_flagging">full_day_antenna_flagging</a></li>\n'
 overall_index += '    <li><a href="full_day_rfi">full_day_rfi</a></li>\n'
 overall_index += '    <li><a href="calibration_smoothing">calibration_smoothing</a></li>\n'
