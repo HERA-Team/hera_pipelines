@@ -45,8 +45,9 @@ auto_shape_max_flag_frac=${29}
 auto_slope_max_flag_frac=${30}
 auto_rfi_max_flag_frac=${31}
 chisq_max_flag_frac=${32}
-overall_max_flag_frac=${33}
-path_to_a_priori_flags=${34}
+xengine_max_flag_frac=${33}
+overall_max_flag_frac=${34}
+path_to_a_priori_flags=${35}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -90,6 +91,7 @@ export AUTO_SHAPE_MAX_FLAG_FRAC=${auto_shape_max_flag_frac}
 export AUTO_SLOPE_MAX_FLAG_FRAC=${auto_slope_max_flag_frac}
 export AUTO_RFI_MAX_FLAG_FRAC=${auto_rfi_max_flag_frac}
 export CHISQ_MAX_FLAG_FRAC=${chisq_max_flag_frac}
+export XENGINE_MAX_FLAG_FRAC=${xengine_max_flag_frac}
 export OVERALL_MAX_FLAG_FRAC=${overall_max_flag_frac}
 
 # Execute jupyter notebook and save as HTML
