@@ -46,12 +46,16 @@ for file, aps in files_to_antpairs_map.items():
     ubl_keys = [antpairs_to_ubl_keys_map[ap] for ap in aps]
     outnames = [glob_str.replace('*', f'baseline.{k[0]}_{k[1]}', 1).replace('*', '') for k in ubl_keys]
     files_to_outfiles_map[file] = [os.path.abspath(os.path.join(args.out_folder, outname)) for outname in outnames]
-                                              
+
+# create a files to unique times map:
+files_to_times_map = {file: np.unique(meta.time_array) for file, meta in zip(all_files, metas)}
+
 # write yaml
 with open(out_yaml, 'w') as file:
-    yaml.dump({'files_to_antpairs_map': files_to_antpairs_map, 
+    yaml.dump({'files_to_antpairs_map': files_to_antpairs_map,
                'antpairs_to_ubl_keys_map': antpairs_to_ubl_keys_map,
-               'files_to_outfiles_map': files_to_outfiles_map}, 
+               'files_to_outfiles_map': files_to_outfiles_map,
+               'files_to_times_map': files_to_times_map},
               file)
 
 # summarize
