@@ -52,7 +52,59 @@ if len(antpairs_here) > 0:
             uvd.ant_2_array[:] = ubl_key[0]
         else:
             raise ValueError(f'Neither ant_1_array nor ant_2_array is all {antpair[0]}')
-        
+
+        # figure out whethere there are any discontinutities in time
+        times = np.unique(uvd.time_array)
+        diffs = np.diff(times)
+        dt = np.median(diffs)
+        boundaries = np.where(~np.isclose(diffs,  dt))[0] + 1
+        chunks = np.split(times, boundaries)
+
+        # Handle missing data by rephasing to a common grid, inserting flagged data as necessary
+        if len(chunks) > 1:
+            print(f'\tThere are {len(chunks)} contiguous sets of times:')
+            for c in chunks:
+                print(f'\t\tFrom {c[0]} to {c[-1]}')
+
+            # figure out the best underlying time grid that requires a minimum of rephasing
+            largest_chunk = max(chunks, key=len)
+            rel_tidx_min = np.round((np.min(times) - np.min(largest_chunk)) / dt)
+            rel_tidx_max = np.round((np.max(times) - np.min(largest_chunk)) / dt)
+            time_grid = np.arange(rel_tidx_min, rel_tidx_max + 1) * dt + np.min(largest_chunk)
+
+            # create new UVData object with missing times
+            time_grid_indices = np.abs(time_grid[None, :] - times[:, None]).argmin(axis=1)
+            new_times = np.array([t for i, t in enumerate(time_grid) if i not in set(time_grid_indices)])
+            new_uvd = UVData.new(freq_array=uvd.freq_array,
+                                 polarization_array=uvd.polarization_array,
+                                 times=new_times,
+                                 telescope=uvd.telescope,
+                                 antpairs=uvd.get_antpairs(),
+                                 vis_units=uvd.vis_units,
+                                 empty=True)
+            new_uvd.flag_array[:] = True  # flag all new data
+            new_uvd.nsample_array[:] = 0
+
+            # combine new times and old, reordering to be sequential, then update 
+            uvd.fast_concat(new_uvd, axis='blt', inplace=True)
+            uvd.reorder_blts()
+            uvd.time_array = time_grid
+            uvd.lst_array = utils.JD2LST(uvd.time_array, *uvd.telescope.location_lat_lon_alt_degrees)
+
+            # perform rephasing of the data that got moved to a new grid (assumes a single antpair)
+            old_lsts = utils.JD2LST(times, *uvd.telescope.location_lat_lon_alt_degrees)
+            lst_shift = np.zeros_like(uvd.lst_array)
+            for old_lst, tgi in zip(old_lsts, time_grid_indices):
+                lst_shift[tgi] = uvd.lst_array[tgi] - old_lst
+            antpos = uvd.telescope.get_enu_antpos()
+            uvd.data_array = utils.lst_rephase(data=uvd.data_array[:, None, :, :],
+                                               bls=(antpos[uvd.telescope.antenna_numbers == antpair[0]] -
+                                                    antpos[uvd.telescope.antenna_numbers == antpair[1]]),
+                                               freqs=uvd.freq_array,
+                                               dlst=lst_shift,
+                                               lat=uvd.telescope.location_lat_lon_alt_degrees[0],
+                                               inplace=False)[:, 0, :, :]
+
         # Write data
         print(f'\tWriting {outfile}')
         uvd.write_uvh5(outfile, clobber=True)
