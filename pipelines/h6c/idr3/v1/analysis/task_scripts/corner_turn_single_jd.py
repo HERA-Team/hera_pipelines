@@ -1,8 +1,8 @@
 import numpy as np
 import yaml
 import glob
-from hera_cal import io, redcal, red_groups
-from pyuvdata import FastUVH5Meta
+from hera_cal import utils
+from pyuvdata import FastUVH5Meta, UVData
 import os
 import argparse
 
@@ -35,27 +35,26 @@ if len(antpairs_here) > 0:
     for antpair, outfile in zip(antpairs_here, outfiles_here):
         # Read for this antpair
         print(f'Now working on {antpair}.')
-        hd = io.HERAData(all_files)
-        usable_files = [f for f in hd.filepaths if antpair in hd.antpairs[f]]
+        usable_files = [f for f in all_files if antpair in FastUVH5Meta(f).antpairs]
         if len(usable_files) < len(all_files):
             print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
-            hd = io.HERAData(usable_files)
-        hd.read(bls=[antpair], return_data=False, axis='blt')
+        uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt', 
+                               blts_are_rectangular=True, time_axis_faster_than_bls=True)
 
         # rename antennas in underlying UVData object
         ubl_key = corner_turn_map['antpairs_to_ubl_keys_map'][antpair]
         print(f'\tIdentifying {antpair} as {ubl_key} for consistency across nights.')
-        if np.all(hd.ant_1_array == antpair[0]):
-            hd.ant_1_array[:] = ubl_key[0]
-            hd.ant_2_array[:] = ubl_key[1]
-        elif np.all(hd.ant_2_array == antpair[0]):
-            hd.ant_1_array[:] = ubl_key[1]
-            hd.ant_2_array[:] = ubl_key[0]
+        if np.all(uvd.ant_1_array == antpair[0]):
+            uvd.ant_1_array[:] = ubl_key[0]
+            uvd.ant_2_array[:] = ubl_key[1]
+        elif np.all(uvd.ant_2_array == antpair[0]):
+            uvd.ant_1_array[:] = ubl_key[1]
+            uvd.ant_2_array[:] = ubl_key[0]
         else:
             raise ValueError(f'Neither ant_1_array nor ant_2_array is all {antpair[0]}')
         
         # Write data
         print(f'\tWriting {outfile}')
-        hd.write_uvh5(outfile, clobber=True)
+        uvd.write_uvh5(outfile, clobber=True)
 else:
     print(f'No baselines correspond to {args.this_file}')
