@@ -3,6 +3,7 @@ import yaml
 import glob
 from hera_cal import utils
 from pyuvdata import FastUVH5Meta, UVData
+from pyuvdata.utils import antnums_to_baseline
 import os
 import argparse
 
@@ -47,9 +48,11 @@ if len(antpairs_here) > 0:
         if np.all(uvd.ant_1_array == antpair[0]):
             uvd.ant_1_array[:] = ubl_key[0]
             uvd.ant_2_array[:] = ubl_key[1]
+            uvd.baseline_array[:] = antnums_to_baseline(ubl_key[0], ubl_key[1], Nants_telescope=uvd.Nants_telescope)
         elif np.all(uvd.ant_2_array == antpair[0]):
             uvd.ant_1_array[:] = ubl_key[1]
             uvd.ant_2_array[:] = ubl_key[0]
+            uvd.baseline_array[:] = antnums_to_baseline(ubl_key[1], ubl_key[0], Nants_telescope=uvd.Nants_telescope)
         else:
             raise ValueError(f'Neither ant_1_array nor ant_2_array is all {antpair[0]}')
 
