@@ -16,8 +16,8 @@ autos_file=`echo ${fn%.sum.uvh5}.sum.autos.uvh5`
 if [ -f "$autos_file" ]; then
     echo ${autos_file} already exists... skipping extraction.
 else
-    echo ${src_dir}/robust_extract_autos.py ${fn} ${autos_file} --clobber
-    ${src_dir}/robust_extract_autos.py ${fn} ${autos_file} --clobber
+    echo python ${src_dir}/robust_extract_autos.py ${fn} ${autos_file} --clobber
+    python ${src_dir}/robust_extract_autos.py ${fn} ${autos_file} --clobber
     echo Finished extracting autos from sum data at $(date)
 fi
 
@@ -29,8 +29,8 @@ if [ -f "$diff_autos_file" ]; then
     echo ${diff_autos_file} already exists... skipping extraction.
 else
     if [ -f "$diff_file" ]; then
-        echo ${src_dir}/robust_extract_autos.py ${diff_file} ${diff_autos_file} --clobber
-        ${src_dir}/robust_extract_autos.py ${diff_file} ${diff_autos_file} --clobber
+        echo python ${src_dir}/robust_extract_autos.py ${diff_file} ${diff_autos_file} --clobber
+        python ${src_dir}/robust_extract_autos.py ${diff_file} ${diff_autos_file} --clobber
         echo Finished extracting autos from diff data at $(date)
     else
         echo ${diff_file} does not exist... skipping extraction.
