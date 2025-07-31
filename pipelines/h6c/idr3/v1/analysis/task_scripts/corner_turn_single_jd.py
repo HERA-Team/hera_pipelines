@@ -79,7 +79,7 @@ if len(antpairs_here) > 0:
                                  polarization_array=uvd.polarization_array,
                                  times=new_times,
                                  telescope=uvd.telescope,
-                                 antpairs=uvd.get_antpairs(),
+                                 antpairs=[ubl_key],
                                  vis_units=uvd.vis_units,
                                  empty=True)
             new_uvd.flag_array[:] = True  # flag all new data
