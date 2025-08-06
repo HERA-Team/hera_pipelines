@@ -36,7 +36,7 @@ if len(antpairs_here) > 0:
     for antpair, outfile in zip(antpairs_here, outfiles_here):
         # Read for this antpair
         print(f'Now working on {antpair}.')
-        usable_files = [f for f in all_files if antpair in FastUVH5Meta(f).antpairs]
+        usable_files = [f for f in all_files if len({antpair, antpair[::-1]} & set(FastUVH5Meta(f).antpairs)) > 0]
         if len(usable_files) < len(all_files):
             print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
         uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt', 
