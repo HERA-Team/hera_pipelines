@@ -52,7 +52,7 @@ os.chdir(os.path.join(args.target_dir, '..'))
 all_html_files = [os.path.relpath(f) for f in glob.glob(os.path.join(args.target_dir, "../*/*.html"))]
 mod_times = [os.path.getmtime(f) for f in all_html_files]
 file_time_pairs = list(zip(all_html_files, mod_times))
-recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)][0:200]
+recent_html_files = [pair[0] for pair in sorted(file_time_pairs, key=lambda x: x[1], reverse=True)]
 links = make_links(recent_html_files)
 recent_jds = sorted(list(set([int(jd) for link in links for jd in re.findall(r"2\d{6}", link)])), reverse=True)
 
