@@ -41,6 +41,7 @@ if len(antpairs_here) > 0:
             print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
         uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt', 
                                blts_are_rectangular=True, time_axis_faster_than_bls=True)
+        uvd.conjugate_bls(convention='ant1<ant2')
 
         # rename antennas in underlying UVData object
         ubl_key = corner_turn_map['antpairs_to_ubl_keys_map'][antpair]
@@ -90,7 +91,7 @@ if len(antpairs_here) > 0:
 
             # combine new times and old, reordering to be sequential, then update 
             uvd.fast_concat(new_uvd, axis='blt', inplace=True)
-            uvd.reorder_blts()
+            uvd.reorder_blts(conj_convention='ant1<ant2')
             uvd.time_array = time_grid
             uvd.lst_array = utils.JD2LST(uvd.time_array, *uvd.telescope.location_lat_lon_alt_degrees)
 
