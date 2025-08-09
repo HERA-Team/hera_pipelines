@@ -41,7 +41,6 @@ if len(antpairs_here) > 0:
             print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
         uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt', 
                                blts_are_rectangular=True, time_axis_faster_than_bls=True)
-        uvd.conjugate_bls(convention='ant1<ant2')
 
         # rename antennas in underlying UVData object
         ubl_key = corner_turn_map['antpairs_to_ubl_keys_map'][antpair]
