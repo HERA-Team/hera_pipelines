@@ -111,7 +111,6 @@ save_diff_red_avg = false
 save_abs_cal_red_avg = false
 save_dly_filt_red_avg = false
 
-
 [2D_DPSS_FILTER_OPTS]
 auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
 gauss_fit_buffer_cut = 1e-5
