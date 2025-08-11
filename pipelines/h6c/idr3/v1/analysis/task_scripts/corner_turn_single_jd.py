@@ -42,6 +42,15 @@ if len(antpairs_here) > 0:
         uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt', 
                                blts_are_rectangular=True, time_axis_faster_than_bls=True)
 
+        # handle case where fully-flagged baselines are misordered
+        is_misordered_but_flagged = (uvd.ant_1_array != np.median(uvd.ant_1_array)) | (uvd.ant_2_array != np.median(uvd.ant_2_array))
+        is_misordered_but_flagged &= np.all(uvd.flag_array, axis=(1, 2))
+        if np.any(is_misordered_but_flagged):
+            print(f'{np.sum(is_misordered_but_flagged)} integrations have the wrong order in ant_1_array or ' + 
+                  'ant_2_array but are flagged. Fixing them...')
+            uvd.ant_1_array[is_misordered_but_flagged] = np.median(uvd.ant_1_array[~is_misordered_but_flagged]).astype(uvd.ant_1_array.dtype)
+            uvd.ant_2_array[is_misordered_but_flagged] = np.median(uvd.ant_2_array[~is_misordered_but_flagged]).astype(uvd.ant_2_array.dtype)
+
         # rename antennas in underlying UVData object
         ubl_key = corner_turn_map['antpairs_to_ubl_keys_map'][antpair]
         print(f'\tIdentifying {antpair} as {ubl_key} for consistency across nights.')
@@ -55,6 +64,8 @@ if len(antpairs_here) > 0:
             uvd.baseline_array[:] = antnums_to_baseline(ubl_key[1], ubl_key[0], Nants_telescope=uvd.Nants_telescope)
         else:
             raise ValueError(f'Neither ant_1_array nor ant_2_array is all {antpair[0]}')
+        uvd.Nbls = np.unique(uvd.baseline_array).size
+        uvd.set_uvws_from_antenna_positions()
 
         # figure out whethere there are any discontinutities in time
         times = np.unique(uvd.time_array)
@@ -88,9 +99,8 @@ if len(antpairs_here) > 0:
             new_uvd.flag_array[:] = True  # flag all new data
             new_uvd.nsample_array[:] = 0
 
-            # combine new times and old, reordering to be sequential, then update 
+            # combine new times and old, then update lsts
             uvd.fast_concat(new_uvd, axis='blt', inplace=True)
-            uvd.reorder_blts(conj_convention='ant1<ant2')
             uvd.time_array = time_grid
             uvd.lst_array = utils.JD2LST(uvd.time_array, *uvd.telescope.location_lat_lon_alt_degrees)
 
