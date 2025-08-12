@@ -99,10 +99,14 @@ if len(antpairs_here) > 0:
             new_uvd.flag_array[:] = True  # flag all new data
             new_uvd.nsample_array[:] = 0
 
-            # combine new times and old, then update lsts
+            # combine new times and old, then update lsts, and enforce uniform conjugation
             uvd.fast_concat(new_uvd, axis='blt', inplace=True)
             uvd.time_array = time_grid
             uvd.lst_array = utils.JD2LST(uvd.time_array, *uvd.telescope.location_lat_lon_alt_degrees)
+            if np.median(uvd.ant_1_array) < np.median(uvd.ant_2_array):
+                uvd.reorder_blts(conj_convention='ant1<ant2')
+            else:
+                uvd.reorder_blts(conj_convention='ant2<ant1')
 
             # perform rephasing of the data that got moved to a new grid (assumes a single antpair)
             old_lsts = utils.JD2LST(times, *uvd.telescope.location_lat_lon_alt_degrees)
