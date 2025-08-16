@@ -1,0 +1,55 @@
+[Options]
+makeflow_type = "lstbin_single_baseline" # this creates {basename} that look like "0_1"
+source_script = "~/.bashrc"
+base_mem = 15500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/task_scripts"
+toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/single_bl_lst_stack_config.toml"  # this file
+conda_env = "python3" 
+batch_system = "slurm"
+
+
+[FILE_CFG] # this key is required
+lst_branch_cut = 5.2 # in radians
+where_inpainted_file_rules = [[".inpainted.uvh5", ".where_inpainted.h5"]]
+
+
+[FILE_CFG.datafiles] # this key is required
+# datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
+datadir="/Users/jsdillon/Downloads/single_bl_lststack"
+nights=[
+  "2459861", "2459862", "2459863", "2459864", "2459866", 
+  "2459867", "2459868", "2459869", "2459870", "2459871", 
+  "2459872", "2459873", "2459874", "2459876"
+]
+fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.smooth_calibrated.red_avg.inpainted.uvh5"
+
+[LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
+OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs/"
+FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.LST.baseline.{bl_str}.sum.uvh5"
+FM_LOW_FREQ=87.5 # in MHz
+FM_HIGH_FREQ=108.0 # in MHz
+EIGENVAL_CUTOFF=1e-12
+INPAINT_DELAY=1000 # in ns
+AUTO_INPAINT_DELAY=100 # in ns
+INPAINT_WIDTH_FACTOR=0.5
+INPAINT_ZERO_DIST_WEIGHT=1e-2
+MIN_NIGHTS_PER_BIN=3
+MAX_CHANNEL_NIGHTLY_FLAG_FRAC=0.05
+MOD_Z_TO_REINPAINT=5 # TODO: revisit
+AUTO_FR_SPECTRUM_FILE="/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5"
+GAUSS_FIT_BUFFER_CUT=1e-5
+CG_TOL=1e-6
+CG_ITER_LIM=500
+FR0_FILTER=true
+FR0_HALFWIDTH=0.01 # in mHz
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["SINGLE_BASELINE_LSTSTACK"]
+
+[SINGLE_BASELINE_LSTSTACK]
+args = ["{basename}", 
+        "${Options:toml_file}",]
