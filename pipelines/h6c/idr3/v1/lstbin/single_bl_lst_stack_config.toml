@@ -20,8 +20,7 @@ lst_branch_cut = 5.2 # in radians
 where_inpainted_file_rules = [[".inpainted.uvh5", ".where_inpainted.h5"]]
 
 [FILE_CFG.datafiles] # this key is required
-# datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
-datadir="/Users/jsdillon/Downloads/single_bl_lststack"
+datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
 nights=[
   "2459861", 
   "2459862", 
