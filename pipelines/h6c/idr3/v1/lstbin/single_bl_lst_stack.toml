@@ -6,7 +6,7 @@ base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/task_scripts"
 toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/single_bl_lst_stack_config.toml"  # this file
-conda_env = "python3" 
+conda_env = "h6c_idr3" 
 batch_system = "slurm"
 
 
