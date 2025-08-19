@@ -10,10 +10,14 @@ conda_env = "python3"
 batch_system = "slurm"
 
 
+[NOTEBOOK_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
+
+
 [FILE_CFG] # this key is required
 lst_branch_cut = 5.2 # in radians
 where_inpainted_file_rules = [[".inpainted.uvh5", ".where_inpainted.h5"]]
-
 
 [FILE_CFG.datafiles] # this key is required
 # datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
@@ -25,8 +29,9 @@ nights=[
 ]
 fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.smooth_calibrated.red_avg.inpainted.uvh5"
 
+
 [LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
-OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs/"
+OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs"
 FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.LST.baseline.{bl_str}.sum.uvh5"
 FM_LOW_FREQ=87.5 # in MHz
 FM_HIGH_FREQ=108.0 # in MHz
@@ -52,4 +57,5 @@ actions = ["SINGLE_BASELINE_LSTSTACK"]
 
 [SINGLE_BASELINE_LSTSTACK]
 args = ["{basename}", 
-        "${Options:toml_file}",]
+        "${Options:toml_file}",
+       ]
