@@ -17,8 +17,8 @@ nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
 eigenval_cutoff = 1e-12
 
 [CALIBRATE_FILE_OPTS]
-am_corr_bad = 0.2
-am_corr_suspect = 0.4
+am_corr_bad = 0.35
+am_corr_suspect = 0.45
 am_xpol_bad = -0.1
 am_xpol_suspect = 0.0
 suspect_solar_alt = 0.0
