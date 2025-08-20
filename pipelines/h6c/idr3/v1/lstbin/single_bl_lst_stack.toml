@@ -66,7 +66,7 @@ FR0_HALFWIDTH=0.01 # in mHz
 actions = ["SINGLE_BASELINE_LSTSTACK"]
 
 [SINGLE_BASELINE_LSTSTACK]
-mem = 32000
+mem = 47500
 args = ["{basename}", 
         "${Options:toml_file}",
        ]
