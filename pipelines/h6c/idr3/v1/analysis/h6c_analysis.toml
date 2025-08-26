@@ -88,6 +88,7 @@ time_smoothing_scale = 1e4 # in seconds
 blacklist_timescale_factor = 4.0
 blacklist_relative_error_thresh = 1.0
 blacklist_relative_weight = 0.1
+sc_relative_diff_cutoff = 0.2
 
 [DELAY_FILTERED_AVG_ZSCORE_OPTS]
 min_samp_frac = 0.15
@@ -316,6 +317,7 @@ args = ["{basename}",
         "${CALIBRATION_SMOOTHING_OPTS:blacklist_relative_weight}",
         "${FULL_DAY_RFI_OPTS:FM_low_freq}",
         "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${CALIBRATION_SMOOTHING_OPTS:sc_relative_diff_cutoff}"
         ]
 
 [DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK]

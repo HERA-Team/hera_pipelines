@@ -25,6 +25,7 @@ blacklist_relative_error_thresh=${9}
 blacklist_relative_weight=${10}
 FM_low_freq=${11}
 FM_high_freq=${12}
+sc_relative_diff_cutoff=${13}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -51,6 +52,7 @@ export BLACKLIST_RELATIVE_ERROR_THRESH=${blacklist_relative_error_thresh}
 export BLACKLIST_RELATIVE_WEIGHT=${blacklist_relative_weight}
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
+export SC_RELATIVE_DIFF_CUTOFF=${sc_relative_diff_cutoff}
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \
