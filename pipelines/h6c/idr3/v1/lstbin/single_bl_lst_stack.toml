@@ -41,7 +41,7 @@ fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.sm
 
 
 [LSTCAL_OPTS]
-NBLS_FOR_LSTCAL = 20
+NBLS_FOR_LSTCAL = 30
 
 
 [LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
