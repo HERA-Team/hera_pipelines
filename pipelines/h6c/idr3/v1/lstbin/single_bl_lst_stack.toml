@@ -24,7 +24,7 @@ datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
 nights=[
   "2459861", 
   "2459862", 
-  # "2459863", 
+  "2459863", 
   "2459864", 
   "2459866", 
   "2459867", 
