@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-# This script runs the single baseline LST stacking notebook
+# This script runs the single night LST-Cal notebook
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
