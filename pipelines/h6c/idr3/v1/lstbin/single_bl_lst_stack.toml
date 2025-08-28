@@ -67,9 +67,27 @@ FR0_HALFWIDTH=0.01 # in mHz
 ############################################################################################################
 
 [WorkFlow]
-actions = ["SINGLE_BASELINE_LSTSTACK"]
+actions = ["PRELIMINARY_SINGLE_BASELINE_LSTSTACK",
+           "SINGLE_NIGHT_LSTCAL",
+           "SINGLE_BASELINE_LSTSTACK"]
 
-[SINGLE_BASELINE_LSTSTACK]
+[PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
+mem = 47500
+args = ["{basename}", 
+        "${Options:toml_file}",
+       ]
+
+[SINGLE_NIGHT_LSTCAL]
+prereqs = "PRELIMINARY_SINGLE_BASELINE_LSTSTACK"
+prereq_chunk_size = "all"
+mem = 47500
+args = ["{basename}", 
+        "${Options:toml_file}",
+       ]
+
+[SINGLE_BASELINE_STACK]
+prereqs = "SINGLE_NIGHT_LSTCAL"
+prereq_chunk_size = "all"
 mem = 47500
 args = ["{basename}", 
         "${Options:toml_file}",
