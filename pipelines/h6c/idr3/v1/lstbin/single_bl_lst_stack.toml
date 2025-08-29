@@ -49,6 +49,7 @@ FREQ_SMOOTHING_SCALE=30.0 # in MHz
 TIME_SMOOTHING_SCALE=1e4 # in seconds
 BLACKLIST_TIMESCALE_FACTOR=10
 BLACKLIST_RELATIVE_ERROR_THRESH=1
+WHERE_INPAINTED_WGTS=1e-4
 
 [LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
 OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs"
