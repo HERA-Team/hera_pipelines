@@ -17,7 +17,7 @@ args = parser.parse_args()
 # read settings
 configurator = lst_stack.config.LSTBinConfiguratorSingleBaseline.from_toml(args.toml_file)
 toml_config = toml.load(args.toml_file)
-NBLS = toml_config['LST_CAL_OPTS']['NBLS_FOR_LSTCAL']
+NBLS = toml_config['LSTCAL_OPTS']['NBLS_FOR_LSTCAL']
 
 # Julian dates for LST-calibration
 jds = [int(night) for night in configurator.nights]
