@@ -42,7 +42,7 @@ jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.timeout=-1 \
 --execute ${nb_template_dir}/single_night_lstcal.ipynb
-echo Finished running single-baseline LST-stacking and re-inpainting notebook at $(date)
+echo Finished running single-night LST-calibration notebook at $(date)
 
 # if baseline string is "0_0", copy notebook for easy viewing
 if [[ ${BASELINE_STRING} == "0_0" ]]; then
