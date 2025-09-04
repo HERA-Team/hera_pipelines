@@ -16,10 +16,10 @@ parser.add_argument("toml_file", help="the path to the toml file")
 args = parser.parse_args()
 
 # read settings
-configurator = lst_stack.config.LSTBinConfiguratorSingleBaseline.from_toml(toml_file)
+configurator = lst_stack.config.LSTBinConfiguratorSingleBaseline.from_toml(args.toml_file)
 hd = io.HERAData(configurator.bl_to_file_map[list(configurator.bl_to_file_map.keys())[0]][0])
 antpos = hd.antpos
-toml_config = toml.load(toml_file)
+toml_config = toml.load(args.toml_file)
 NBLS = toml_config['LSTCAL_OPTS']['NBLS_FOR_LSTCAL']
 
 # Julian dates for LST-calibration
@@ -106,4 +106,4 @@ idx = np.argsort(nsamples)[::-1]
 blkeys_for_cal = [blkeys[i] for i in idx[:NBLS]]
 
 # print "True" or "False"
-print(bl_str in ["{}_{}".format(*bl) for bl in blkeys_for_cal])
+print(args.bl_str in ["{}_{}".format(*bl) for bl in blkeys_for_cal])
