@@ -1,4 +1,4 @@
-# This script prints "True" or "False" given a baseline string and a TOML file in order to figure out 
+# This script prints a JD given a baseline string and a TOML file in order to figure out 
 # whether the baseline is mapped to a given Julian Date used for calibration
 
 import argparse
@@ -19,4 +19,8 @@ bl_string_to_jd_map = {
     for night, bl_string in zip(sorted(configurator.nights), all_bl_strings)
 }
 
-print(args.bl_str in bl_string_to_jd_map)
+jd = bl_string_to_jd_map.get(args.bl_str)
+if jd is None:
+    sys.exit(1)
+print(jd)
+sys.exit(0)
