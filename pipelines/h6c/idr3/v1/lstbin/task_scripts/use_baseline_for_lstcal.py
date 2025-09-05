@@ -104,6 +104,7 @@ nsamples = [
 
 idx = np.argsort(nsamples)[::-1]
 blkeys_for_cal = [blkeys[i] for i in idx[:NBLS]]
+bl_strings = ["{}_{}".format(*bl) for bl in blkeys_for_cal] + ["{}_{}".format(bl[1], bl[0]) for bl in blkeys_for_cal]
 
 # print "True" or "False"
-print(args.bl_str in ["{}_{}".format(*bl) for bl in blkeys_for_cal])
+print(args.bl_str in bl_strings)
