@@ -88,7 +88,7 @@ args = ["{basename}",
 [SINGLE_NIGHT_LSTCAL]
 prereqs = "PRELIMINARY_SINGLE_BASELINE_LSTSTACK"
 prereq_chunk_size = "all"
-mem = 47500
+mem = 80000
 args = ["{basename}", 
         "${Options:toml_file}",
        ]
