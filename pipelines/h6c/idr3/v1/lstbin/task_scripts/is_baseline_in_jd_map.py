@@ -1,9 +1,8 @@
 # This script prints a JD given a baseline string and a TOML file in order to figure out 
 # whether the baseline is mapped to a given Julian Date used for calibration
 
-import argparse
+import argparse, toml, sys
 import numpy as np
-import toml
 from hera_cal import lst_stack
 
 # create an argparser 
