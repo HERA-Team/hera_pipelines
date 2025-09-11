@@ -22,6 +22,16 @@ where_inpainted_file_rules = [[".inpainted.uvh5", ".where_inpainted.h5"]]
 [FILE_CFG.datafiles] # this key is required
 datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
 nights=[
+  # "2459847",
+  # "2459848",
+  # "2459849",
+  # "2459853",
+  # "2459854",
+  # "2459855",
+  # "2459856",
+  # "2459858",
+  # "2459859",
+  # "2459860",
   "2459861", 
   "2459862", 
   "2459863", 
@@ -36,6 +46,24 @@ nights=[
   "2459873",
   "2459874", 
   "2459876",
+  # "2459878",
+  # "2459879",
+  # "2459880",
+  # "2459881",
+  # "2459882",
+  # "2459883",
+  # "2459884",
+  # "2459887",
+  # "2459889",
+  # "2459890",
+  # "2459891",
+  # "2459893",
+  # "2459894",
+  # "2459898",
+  # "2459902",
+  # "2459903",
+  # "2459904",
+  # "2459905",
 ]
 fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.smooth_calibrated.red_avg.inpainted.uvh5"
 
