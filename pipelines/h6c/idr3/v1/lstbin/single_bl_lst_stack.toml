@@ -122,7 +122,7 @@ args = ["{basename}",
         "${Options:toml_file}",
        ]
 
-[SINGLE_BASELINE_STACK]
+[SINGLE_BASELINE_LSTSTACK]
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
 mem = 47500
