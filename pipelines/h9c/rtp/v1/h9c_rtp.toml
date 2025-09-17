@@ -101,6 +101,7 @@ auto_shape_max_flag_frac = 0.25
 auto_slope_max_flag_frac = 0.25
 auto_rfi_max_flag_frac = 0.25
 chisq_max_flag_frac = 0.5
+xengine_max_flag_frac = 0.05
 overall_max_flag_frac = 0.5
 
 [CALIBRATION_SMOOTHING_OPTS]
@@ -408,6 +409,7 @@ args = ["{basename}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_slope_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:auto_rfi_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:chisq_max_flag_frac}",
+        "${FULL_DAY_ANTENNA_FLAGGING_OPTS:xengine_max_flag_frac}",
         "${FULL_DAY_ANTENNA_FLAGGING_OPTS:overall_max_flag_frac}",
         ]
 
