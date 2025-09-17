@@ -108,6 +108,10 @@ overall_max_flag_frac = 0.5
 freq_smoothing_scale = 10.0 # in MHz
 time_smoothing_scale = 6e5 # in seconds
 eigenval_cutoff = 1e-12
+blacklist_timescale_factor = 4.0
+blacklist_relative_error_thresh = 1.0
+blacklist_relative_weight = 0.1
+sc_relative_diff_cutoff = 0.2
 
 [DELAY_FILTERED_AVG_ZSCORE_OPTS]
 min_samp_frac = 0.15
@@ -452,6 +456,12 @@ args = ["{basename}",
         "${CALIBRATION_SMOOTHING_OPTS:time_smoothing_scale}",
         "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
         "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
+        "${CALIBRATION_SMOOTHING_OPTS:blacklist_timescale_factor}",
+        "${CALIBRATION_SMOOTHING_OPTS:blacklist_relative_error_thresh}",
+        "${CALIBRATION_SMOOTHING_OPTS:blacklist_relative_weight}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${CALIBRATION_SMOOTHING_OPTS:sc_relative_diff_cutoff}",
         ]
 
 [DELAY_FILTERED_AVG_ZSCORE_NOTEBOOK]
