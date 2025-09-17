@@ -11,8 +11,7 @@ source ${src_dir}/_common.sh
 # 1 - (raw) filename
 # 2 - nb_template_dir: where to look for the notebook template
 # 3 - nb_output_repo: repository for saving evaluated notebooks
-# 4 - git_push: boolean whether to push the results created in the nb_output_repo
-# 5+ - various settings
+# 4+ - various settings
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
