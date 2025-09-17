@@ -1,10 +1,10 @@
 [Options]
 makeflow_type = "analysis"
 source_script = "~/.bashrc"
-base_mem = 12000 # TODO: Check if this is the right number for site
+base_mem = 12000
 base_cpu = 1
 timeout = "48h"
-path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h8c/rtp/v1/task_scripts"
+path_to_do_scripts = "/home/obs/src/hera_pipelines/pipelines/h9c/rtp/v1/task_scripts"
 conda_env = "RTP"
 mandc_report = true
 batch_system = "slurm"
@@ -31,7 +31,7 @@ all_statuses = "dish_maintenance,dish_ok,RF_maintenance,RF_ok,digital_ok,digital
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/home/obs/src/hera_notebook_templates/notebooks'
-nb_output_repo = '/mnt/sn1/data2/H8C_Notebooks'
+nb_output_repo = '/mnt/sn1/data2/H9C_Notebooks'
 
 [CALIBRATE_FILE_OPTS]
 am_corr_bad = 0.2
