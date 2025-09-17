@@ -49,12 +49,12 @@ per_jd_reds = {}
 all_reds = red_groups.RedundantGroups.from_antpos(
     antpos=antpos, 
     pols=('nn', 'ee'), 
-    include_autos=False
+    include_autos=True
 )
 filtered_reds = red_groups.RedundantGroups.from_antpos(
     antpos=data_antpos, 
     pols=('nn', 'ee'), 
-    include_autos=False
+    include_autos=True
 )
 filtered_reds.filter_reds(inplace=True, ex_ants=shared_ex_ants)
 
@@ -103,7 +103,7 @@ nsamples = [
 ]
 
 idx = np.argsort(nsamples)[::-1]
-blkeys_for_cal = [blkeys[i] for i in idx[:NBLS]]
+blkeys_for_cal = [blkeys[i] for i in idx[:NBLS + 1]] # Plus 1 to account for including the autos
 bl_strings = ["{}_{}".format(*bl) for bl in blkeys_for_cal] + ["{}_{}".format(bl[1], bl[0]) for bl in blkeys_for_cal]
 
 # print "True" or "False"
