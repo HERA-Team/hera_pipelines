@@ -81,4 +81,4 @@ time_centered = false
 args = [
     "{basename}",
 ]
-mem=100000
+mem=250000
