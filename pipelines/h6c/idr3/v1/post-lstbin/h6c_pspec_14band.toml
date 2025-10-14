@@ -1,7 +1,7 @@
 [Options]
 makeflow_type = "analysis"
 source_script = "~/.bashrc"
-base_mem = 15500
+base_mem = 23500
 base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/post-lstbin/task_scripts"
