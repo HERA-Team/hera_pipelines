@@ -9,7 +9,7 @@ conda_env = "h6c_idr3"
 batch_system = "slurm"
 
 [NOTEBOOK_OPTS]
-toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/makeflow-pspec/h6c_pspec_14band.toml"  # this file
+toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/makeflow-pspec/IDR3/h6c_pspec_14band.toml"  # this file
 toml_section = "CONFIG_OPTS"
 kernel = ""
 nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
