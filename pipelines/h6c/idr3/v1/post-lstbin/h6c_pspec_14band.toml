@@ -12,6 +12,7 @@ batch_system = "slurm"
 toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/makeflow-pspec/h6c_pspec_14band.toml"  # this file
 toml_section = "CONFIG_OPTS"
 kernel = ""
+nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
 
 [CONFIG_OPTS] # This section is directly read when running the notebook.
 # General Options
@@ -69,6 +70,7 @@ args = [
     "${NOTEBOOK_OPTS:toml_file}",
     "${NOTEBOOK_OPTS:toml_section}",
     "${Options:conda_env}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",   
 ]
 
 [MERGE_SINGLE_BASELINE_FILES]

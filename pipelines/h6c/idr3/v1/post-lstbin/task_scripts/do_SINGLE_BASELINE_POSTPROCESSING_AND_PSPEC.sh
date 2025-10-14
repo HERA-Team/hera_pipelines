@@ -15,6 +15,7 @@ fn=${1}
 toml_file=${2}
 toml_section=${3}
 kernel=${4}
+nb_output_repo=${5}
 
 # --variables used by the notebook
 outdir=$(cd "$(dirname "$fn")" && pwd)
@@ -47,4 +48,13 @@ if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --sk
     fi
 else
     echo "File ${full_file_path} is either just autocorrelations or has a fully flagged polarization. Skipping the power spectrum notebook."
+fi
+
+# check if ".0_4." is in the filename, if so copy the notebook to the output repo
+if [[ "$(basename "$fn")" == *".0_4."* ]]; then
+    # Copy file to notebook folder for www access
+    dest_dir="${nb_output_repo}/single_baseline_postprocessing_and_pspec"
+    mkdir -p "$dest_dir"
+    src_html="${nb_outfile%.html}.html"
+    cp -v "$src_html" "${dest_dir}/$(basename "${nb_outfile%.html}").html"
 fi
