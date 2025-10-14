@@ -72,6 +72,7 @@ overall_index += '    <li><a href="single_baseline_2D_informed_inpaint">single_b
 overall_index += '    <li><a href="full_day_systematics_inspect">full_day_systematics_inspect</a></li>\n'
 overall_index += '    <li><a href="lststack">lststack</a></li>\n'
 overall_index += '    <li><a href="lstbin">lstbin (OLD)</a></li>\n'
+overall_index += '    <li><a href="single_baseline_postprocessing_and_pspec">single_baseline_postprocessing_and_pspec</a></li>\n'
 overall_index += '</ul>\n</h3>\n<h2>Notebooks by JD:</h2>\n'
 for jd in recent_jds[:]:
     overall_index += f'<h3>{jd}:</h3>\n<ul>\n' + '\n'.join([link for link in links if str(jd) in link]) + '\n</ul>\n'
