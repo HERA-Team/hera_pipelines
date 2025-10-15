@@ -77,6 +77,7 @@ args = [
 prereqs = [
     "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
 ]
+prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
