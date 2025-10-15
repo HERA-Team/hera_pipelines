@@ -19,7 +19,7 @@ outdir=$(cd "$(dirname "$fn")" && pwd)
 # First do the non-time-averaged pspecs
 pattern="$outdir/*.sum.pspec.h5"
 outpath="$outdir/baselines_merged"
-cmd="pspec fast-merge-baselines --pattern '${pattern}' --group stokespol --names interleave_averaged --outpath ${outpath} --extras frf_losses"
+cmd="pspec fast-merge-baselines --pattern '${pattern}' --group stokespol --names interleave_averaged --outpath ${outpath} --extras frf_losses --batch-size 20"
 echo $cmd
 eval $cmd
 
