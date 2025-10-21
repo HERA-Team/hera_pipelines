@@ -56,7 +56,7 @@ LST_MAX = 5.75
 EFIELD_HEALPIX_BEAM_FILE = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/NF_HERA_Vivaldi_efield_beam_healpix.fits"
 TAPER = "bh"
 INCLUDE_INTERLEAVE_AUTO_PS = false
-STORE_WINDOW_FUNCTIONS = true
+STORE_WINDOW_FUNCTIONS = false
 
 [WorkFlow]
 actions = [
