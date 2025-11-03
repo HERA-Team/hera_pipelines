@@ -24,6 +24,10 @@ FM_high_freq=${9}
 save_diff_red_avg=${10}
 save_abs_cal_red_avg=${11}
 save_dly_filt_red_avg=${12}
+calibrate_cross_pols=${13}
+do_bl_select=${14}
+bl_select_decimation_factor=${15}
+bl_select_ngroup=${16}
 
 # Export variables used by the notebook
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -55,10 +59,10 @@ export SAVE_DIFF_RED_AVG=${save_diff_red_avg}
 export SAVE_ABS_CAL_RED_AVG=${save_abs_cal_red_avg}
 export SAVE_DLY_FILT_RED_AVG=${save_dly_filt_red_avg}
 export SAVE_CROSS_POLS=${calibrate_cross_pols}
-export DO_BL_SELECT="TRUE"
+export DO_BL_SELECT=${do_bl_select}
 export BL_SELECT_SUFFIX="sum.smooth_calibrated.bl_select.uvh5"
-export BL_SELECT_DECIMATION_FACTOR=30
-export BL_SELECT_NGROUP=30
+export BL_SELECT_DECIMATION_FACTOR=${bl_select_decimation_factor}
+export BL_SELECT_NGROUP=${bl_select_ngroup}
 
 nb_outfile=${SUM_FILE%.uvh5}.postprocessing_notebook.html
 
