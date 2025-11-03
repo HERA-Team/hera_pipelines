@@ -111,6 +111,9 @@ dly_filt_min_dly = 150.0 # in ns
 save_diff_red_avg = false
 save_abs_cal_red_avg = false
 save_dly_filt_red_avg = false
+do_bl_select = true
+bl_select_decimation_factor = 30
+bl_select_ngroup = 30
 
 [2D_DPSS_FILTER_OPTS]
 auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
@@ -370,6 +373,9 @@ args = ["{basename}",
         "${POSTPROCESS_FILE_OPTS:save_abs_cal_red_avg}",
         "${POSTPROCESS_FILE_OPTS:save_dly_filt_red_avg}",
         "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
+        "${POSTPROCESS_FILE_OPTS:do_bl_select}",
+        "${POSTPROCESS_FILE_OPTS:bl_select_decimation_factor}",
+        "${POSTPROCESS_FILE_OPTS:bl_select_ngroup}",
         ]
 extra_batch_options = "--nice=1000"
 
