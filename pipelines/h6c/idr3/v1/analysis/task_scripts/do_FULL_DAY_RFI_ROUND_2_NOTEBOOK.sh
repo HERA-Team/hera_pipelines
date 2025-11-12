@@ -25,6 +25,7 @@ avg_spectrum_filter_delay=${9}
 eigenval_cutoff=${10}
 time_avg_delay_filt_snr_thresh=${11}
 time_avg_delay_filt_snr_dynamic_range=${12}
+time_cov_size=${13}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -47,6 +48,7 @@ export AVG_SPECTRUM_FILTER_DELAY=${avg_spectrum_filter_delay}
 export EIGENVAL_CUTOFF=${eigenval_cutoff}
 export TIME_AVG_DELAY_FILT_SNR_THRESH=${time_avg_delay_filt_snr_thresh}
 export TIME_AVG_DELAY_FILT_SNR_DYNAMIC_RANGE=${time_avg_delay_filt_snr_dynamic_range}
+export TIME_COV_SIZE=${time_cov_size}
 
 # Execute jupyter notebook and save as HTML
 jupyter nbconvert --output=${nb_outfile} \

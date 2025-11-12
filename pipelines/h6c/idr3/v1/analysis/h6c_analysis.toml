@@ -103,6 +103,7 @@ max_time_flag_frac = 0.25
 avg_spectrum_filter_delay = 250.0 # in ns
 time_avg_delay_filt_snr_thresh = 4.0
 time_avg_delay_filt_snr_dynamic_range = 1.5
+time_cov_size = 300.0 # in s
 
 [POSTPROCESS_FILE_OPTS]
 dly_filt_horizon = 1.0
@@ -355,6 +356,7 @@ args = ["{basename}",
         "${GLOBAL_OPTS:eigenval_cutoff}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_thresh}",
         "${FULL_DAY_RFI_OPTS_ROUND_2:time_avg_delay_filt_snr_dynamic_range}",
+        "${FULL_DAY_RFI_OPTS_ROUND_2:time_cov_size}",
         ]
 
 [POSTPROCESS_FILE_NOTEBOOK]
