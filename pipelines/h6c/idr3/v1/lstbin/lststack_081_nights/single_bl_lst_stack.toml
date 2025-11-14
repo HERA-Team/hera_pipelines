@@ -22,7 +22,7 @@ where_inpainted_file_rules = [[".inpainted.uvh5", ".where_inpainted.h5"]]
 [FILE_CFG.datafiles] # this key is required
 datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
 nights=[
-    "2459847"
+    "2459847",
     "2459848",
     "2459849",
     "2459853",
