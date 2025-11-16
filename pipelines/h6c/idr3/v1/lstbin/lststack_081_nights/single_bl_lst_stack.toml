@@ -151,7 +151,7 @@ actions = ["PRELIMINARY_SINGLE_BASELINE_LSTSTACK",
            "SINGLE_BASELINE_LSTSTACK"]
 
 [PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
-mem = 155000
+mem = 160000
 args = ["{basename}", 
         "${Options:toml_file}",
        ]
@@ -167,7 +167,7 @@ args = ["{basename}",
 [SINGLE_BASELINE_LSTSTACK]
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
-mem = 155000
+mem = 160000
 args = ["{basename}", 
         "${Options:toml_file}",
        ]
