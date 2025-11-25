@@ -129,7 +129,7 @@ WHERE_INPAINTED_WGTS=1e-4
 LSTCAL_FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.{night}.lstcal.hdf5"
 
 [LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
-OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs-081-nights"
+OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs-086-nights"
 FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.LST.baseline.{bl_str}.sum.uvh5"
 USE_LSTCAL_GAINS = true # this will be ignored if the PRELIMINARY flag is true
 FM_LOW_FREQ=87.5 # in MHz
