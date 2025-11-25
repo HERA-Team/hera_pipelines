@@ -10,9 +10,9 @@
 [Options]
 makeflow_type = "analysis"
 # Below is the path to the task scripts used by this toml. You probably want to change this for your own environment.
-path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/task_scripts"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/task_scripts"
 # This also needs to be changed depending on the environment you are using to process the data.
-conda_env = "hera3dev"
+conda_env = "h4c_idr3"
 source_script = "~/.bashrc"
 base_mem = 8000
 base_cpu = 1
@@ -39,7 +39,7 @@ cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
 # Directory containing a-priori yaml files. These are used to remove antennas from the data that have already been flagged
 # which can significantly improve i/o and storage requirements (for H4C this was a factor of ~2)
-yaml_dir = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags_include_variable/"
+yaml_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/rtp/v1/stage_2_a_priori_flags_include_variable/"
 # number of baselines to load into memory at a time. This can also be reduced if you are running out of
 # memory on individual jobs though it might not fix every step.
 nbl_per_load = 100
@@ -94,7 +94,7 @@ min_frate = 0.5
 # In particular, here I decided to throw away LSTs below 0 hours (excluding the LST of Galactic set)
 # which has a lot of non-fringing artifacts from antenna-antenna reflections.
 # I'm not sure it actually makes a difference though.
-yaml_flag_file = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/flag_yamls/post_process_flags.yaml"
+yaml_flag_file = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/flag_yamls/post_process_flags.yaml"
 # number of interleavings to use
 ninterleave = 4
 [PSPEC_OPTS]

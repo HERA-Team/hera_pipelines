@@ -1,8 +1,8 @@
 [Options]
 makeflow_type = "lstbin"
-path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/post_processing/v6/lstbin/task_scripts/"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v6/lstbin/task_scripts/"
 source_script = "~/.bashrc"
-conda_env = "hera3dev"
+conda_env = "h4c_idr3"
 base_mem = 16000
 base_cpu = 1
 timeout = "48h"
@@ -51,7 +51,7 @@ data_files = [
 ]
 calibration = "'smooth_abs.calfits'"
 flag_thresh = 0.8
-yaml_dir = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/stage_2_a_priori_flags_include_variable_with_expanded_flags/"
+yaml_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v6/pre_lstbin/flag_yamls/stage_2_a_priori_flags_include_variable_with_expanded_flags/"
 
 
 [WorkFlow]
