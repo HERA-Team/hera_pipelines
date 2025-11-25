@@ -5,7 +5,7 @@ base_mem = 15500
 base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/task_scripts"
-toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/lststack_081_nights/single_bl_lst_stack.toml"  # this file
+toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/lststack_086_nights/single_bl_lst_stack.toml"  # this file
 conda_env = "h6c_idr3" 
 batch_system = "slurm"
 
@@ -102,7 +102,15 @@ nights=[
     "2459960",
     "2459965",
     "2459966",
-    "2459976",
+    "2459967",
+    "2459969",
+    "2459970",
+    "2459971",
+    "2459972",
+    "2459973",
+    "2459974",
+    "2459975",
+    # "2459976",
 ]
 fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.smooth_calibrated.red_avg.inpainted.uvh5"
 
