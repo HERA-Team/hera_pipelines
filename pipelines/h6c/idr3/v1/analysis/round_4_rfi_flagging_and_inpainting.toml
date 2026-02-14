@@ -1,0 +1,47 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 15500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/analysis/task_scripts"
+conda_env = "h6c_idr3"
+batch_system = "slurm"
+
+[NOTEBOOK_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
+
+[SINGLE_BASELINE_PI_FRF_SNR_OPTS]
+FM_low_freq = 87.5 # in MHz
+FM_high_freq = 108.0 # in MHz
+filter_delay = 750 # in ns
+eigenval_cutoff = 1e-12
+fr_spectra_file = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5'
+auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
+xtalk_fr = 0.01 # in mHz
+fr_quantile_low = 0.05
+fr_quantile_high = 0.95
+min_samp_frac = 0.05
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"]
+
+[SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK]
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:filter_delay}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:eigenval_cutoff}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_spectra_file}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:auto_fr_spectrum_file}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_low}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
+        ]
+extra_batch_options = "--nice=1000"
