@@ -44,4 +44,4 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
         ]
-extra_batch_options = "--nice=1000"
+extra_batch_options = "--nice=999"
