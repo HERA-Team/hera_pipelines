@@ -37,7 +37,10 @@ export XTALK_FR=${xtalk_fr}
 export FR_QUANTILE_LOW=${fr_quantile_low}
 export FR_QUANTILE_HIGH=${fr_quantile_high}
 export MIN_SAMP_FRAC=${min_samp_frac}
-export SNR_SUFFIX=".pI_FRF_SNR.uvh5"
+export FRF_SNR_SUFFIX=".pI_FRF_SNR.uvh5"
+export SAVE_DLY_SNR="True"
+export DLY_SNR_SUFFIX=".pI_DLYFILT_SNR.uvh5"
+export SAVE_FRF_SNR="True"
 
 # produce a string like "0_0" for a single baseline and "0_0.0_1.0_2" for multiple baselines
 antpairs_str=$(python -c "
