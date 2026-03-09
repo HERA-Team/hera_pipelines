@@ -24,8 +24,6 @@ fr_quantile_low = 0.05
 fr_quantile_high = 0.95
 min_samp_frac = 0.1
 
-############################################################################################################
-
 [FULL_DAY_RFI_ROUND_4_OPTS]
 z_thresh = 4
 ws_z_thresh = 2
@@ -33,6 +31,16 @@ avg_z_thresh = 1
 max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.25
 time_conv_size = 360 # in seconds
+
+[FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
+filter_dly_min = 150.0 # in ns
+inpaint_dly_min = 500.0 # in ns
+inpaint_regularization = 1e-5
+standoff = 50 # in ns
+fr0_halfwidth = 0.01 # in Hz
+inpaint_fr = 2.5 # in mHz
+max_contiguous_flags = 20
+spectrum_chan_buffer = 25
 
 ############################################################################################################
 
@@ -126,7 +134,7 @@ args = ["{basename}",
 extra_batch_options = "--nice=999"
 
 [FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK]
-# placeholder — final post-corner-turn systematics inspection
+mem = 32000
 prereqs = "SINGLE_BASELINE_REINPAINT_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -135,5 +143,16 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:filter_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:eigenval_cutoff}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]
 extra_batch_options = "--nice=999"
