@@ -1,7 +1,7 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_task_scripts"
-path_to_a_priori_flags = "/users/heramgr/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/H4C/hera_software/hera_pipelines/pipelines/validation/h4c/rtp/v2/stage_2_a_priori_flags_include_variable"
 conda_env = "hera3dev"
 source_script = "~/.bashrc"
 base_mem = 16000
@@ -11,7 +11,7 @@ pbs_mail_user = "lisaleemcb@gmail.com"
 
 [NOTEBOOK_OPTS]
 nb_template_dir = '/lustre/aoc/projects/hera/H4C/h4c_software/hera_notebook_templates/notebooks'
-nb_output_repo = '/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/H4C/h4c_software/H4C_Notebooks/'
 git_push = false
 
 [MOCK_DATA_OPTS]
@@ -25,8 +25,8 @@ nInt_to_load = 10
 flag_nchan_low = 0
 flag_nchan_high = 0
 oc_maxiter = 10000
-min_bl_cut = 1 # 15
-max_bl_cut = 10000 # 100
+min_bl_cut = 1       # 15
+max_bl_cut = 10000   # 100
 max_dims = 4
 check_every = 50
 check_after = 500
@@ -84,33 +84,34 @@ framesize = "1280x720"
 
 [WorkFlow]
 actions = [
-           "THROW_AWAY_FLAGGED_BASELINES",
-           "MOCK_DATA",
-           #"EXTRACT_AUTOS",
-           "REDCAL",
-           "REDCAL_INSPECT_NOTEBOOK",
-           "ABSCAL",
-           "ABSCAL_INSPECT_NOTEBOOK",
-#           "XRFI",
-           "XRFI_TRANSFER",
-#           "RFI_INSPECT_NOTEBOOK",
-           "CAL_SMOOTH",
-           "SMOOTH_CAL_INSPECT_NOTEBOOK",
-           #"IMAGING",
-           #"MOVIES",
-           #"APPLY_CAL_REDUNDANT_AVERAGE",
-           # "CLEAN_FILES", # TODO: add this back in
-          ]
+    "THROW_AWAY_FLAGGED_BASELINES",
+    "MOCK_DATA",
+    #"EXTRACT_AUTOS",
+    "REDCAL",
+    "REDCAL_INSPECT_NOTEBOOK",
+    "ABSCAL",
+    "ABSCAL_INSPECT_NOTEBOOK",
+    #           "XRFI",
+    "XRFI_TRANSFER",
+    #           "RFI_INSPECT_NOTEBOOK",
+    "CAL_SMOOTH",
+    "SMOOTH_CAL_INSPECT_NOTEBOOK",
+    #"IMAGING",
+    #"MOVIES",
+    #"APPLY_CAL_REDUNDANT_AVERAGE",
+    # "CLEAN_FILES", # TODO: add this back in
+]
 
 [THROW_AWAY_FLAGGED_BASELINES]
 args = ["{basename}", "${Options:path_to_a_priori_flags}"]
 
 [MOCK_DATA]
 prereqs = "THROW_AWAY_FLAGGED_BASELINES"
-args = ["{basename}",
-        "${MOCK_DATA_OPTS:sky_cmp}",
-#        "${MOCK_DATA_OPTS:config_files_dir}",
-       ]
+args = [
+    "{basename}",
+    "${MOCK_DATA_OPTS:sky_cmp}",
+    #        "${MOCK_DATA_OPTS:config_files_dir}",
+]
 
 # [EXTRACT_AUTOS]
 # #prereqs = "THROW_AWAY_FLAGGED_BASELINES"
@@ -119,20 +120,21 @@ args = ["{basename}",
 [REDCAL]
 prereqs = "MOCK_DATA"
 prereq_chunk_size = 1
-args = ["{basename}",
-        "${REDCAL_OPTS:ant_z_thresh}",
-        "${REDCAL_OPTS:solar_horizon}",
-        "${REDCAL_OPTS:flag_nchan_low}",
-        "${REDCAL_OPTS:flag_nchan_high}",
-        "${REDCAL_OPTS:oc_maxiter}",
-        "${REDCAL_OPTS:nInt_to_load}",
-        "${REDCAL_OPTS:min_bl_cut}",
-        "${REDCAL_OPTS:max_bl_cut}",
-        "${Options:path_to_a_priori_flags}",
-        "${REDCAL_OPTS:max_dims}",
-        "${REDCAL_OPTS:check_every}",
-        "${REDCAL_OPTS:check_after}",
-       ]
+args = [
+    "{basename}",
+    "${REDCAL_OPTS:ant_z_thresh}",
+    "${REDCAL_OPTS:solar_horizon}",
+    "${REDCAL_OPTS:flag_nchan_low}",
+    "${REDCAL_OPTS:flag_nchan_high}",
+    "${REDCAL_OPTS:oc_maxiter}",
+    "${REDCAL_OPTS:nInt_to_load}",
+    "${REDCAL_OPTS:min_bl_cut}",
+    "${REDCAL_OPTS:max_bl_cut}",
+    "${Options:path_to_a_priori_flags}",
+    "${REDCAL_OPTS:max_dims}",
+    "${REDCAL_OPTS:check_every}",
+    "${REDCAL_OPTS:check_after}",
+]
 
 [REDCAL_INSPECT_NOTEBOOK]
 prereqs = "REDCAL"
@@ -141,23 +143,25 @@ chunk_size = 1
 stride_length = "all"
 time_centered = false
 mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-       ]
+args = [
+    "{basename}",
+    "${NOTEBOOK_OPTS:nb_template_dir}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",
+    "${NOTEBOOK_OPTS:git_push}",
+]
 
 [ABSCAL]
 prereqs = "REDCAL"
-args = ["{basename}",
-        "${ABSCAL_OPTS:model_files_glob}",
-        "${ABSCAL_OPTS:nInt_to_load}",
-        "${ABSCAL_OPTS:min_bl_cut}",
-        "${ABSCAL_OPTS:max_bl_cut}",
-        "${ABSCAL_OPTS:phs_max_iter}",
-        "${ABSCAL_OPTS:phs_conv_crit}",
-        "${ABSCAL_OPTS:edge_cut}"
-       ]
+args = [
+    "{basename}",
+    "${ABSCAL_OPTS:model_files_glob}",
+    "${ABSCAL_OPTS:nInt_to_load}",
+    "${ABSCAL_OPTS:min_bl_cut}",
+    "${ABSCAL_OPTS:max_bl_cut}",
+    "${ABSCAL_OPTS:phs_max_iter}",
+    "${ABSCAL_OPTS:phs_conv_crit}",
+    "${ABSCAL_OPTS:edge_cut}",
+]
 
 [ABSCAL_INSPECT_NOTEBOOK]
 prereqs = "ABSCAL"
@@ -166,13 +170,14 @@ chunk_size = 1
 stride_length = "all"
 time_centered = false
 mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${ABSCAL_OPTS:model_files_glob}",
-        "${CAL_SMOOTH_OPTS:lst_blacklists}",
-       ]
+args = [
+    "{basename}",
+    "${NOTEBOOK_OPTS:nb_template_dir}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",
+    "${NOTEBOOK_OPTS:git_push}",
+    "${ABSCAL_OPTS:model_files_glob}",
+    "${CAL_SMOOTH_OPTS:lst_blacklists}",
+]
 
 #[XRFI]
 #prereqs = ["REDCAL",
@@ -246,19 +251,20 @@ chunk_size = 1
 stride_length = "all"
 time_centered = false
 mem = 128000
-args = ["{basename}",
-        "${CAL_SMOOTH_OPTS:freq_scale}",
-        "${CAL_SMOOTH_OPTS:time_scale}",
-        "${CAL_SMOOTH_OPTS:tol}",
-        "${CAL_SMOOTH_OPTS:filter_mode}",
-        "${CAL_SMOOTH_OPTS:window}",
-        "${CAL_SMOOTH_OPTS:maxiter}",
-        "${CAL_SMOOTH_OPTS:alpha}",
-        "${CAL_SMOOTH_OPTS:freq_threshold}",
-        "${CAL_SMOOTH_OPTS:time_threshold}",
-        "${CAL_SMOOTH_OPTS:ant_threshold}",
-        "${CAL_SMOOTH_OPTS:lst_blacklists}"
-       ]
+args = [
+    "{basename}",
+    "${CAL_SMOOTH_OPTS:freq_scale}",
+    "${CAL_SMOOTH_OPTS:time_scale}",
+    "${CAL_SMOOTH_OPTS:tol}",
+    "${CAL_SMOOTH_OPTS:filter_mode}",
+    "${CAL_SMOOTH_OPTS:window}",
+    "${CAL_SMOOTH_OPTS:maxiter}",
+    "${CAL_SMOOTH_OPTS:alpha}",
+    "${CAL_SMOOTH_OPTS:freq_threshold}",
+    "${CAL_SMOOTH_OPTS:time_threshold}",
+    "${CAL_SMOOTH_OPTS:ant_threshold}",
+    "${CAL_SMOOTH_OPTS:lst_blacklists}",
+]
 
 [SMOOTH_CAL_INSPECT_NOTEBOOK]
 prereqs = "CAL_SMOOTH"
@@ -267,13 +273,14 @@ chunk_size = 1
 stride_length = "all"
 time_centered = false
 mem = 128000
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${NOTEBOOK_OPTS:git_push}",
-        "${ABSCAL_OPTS:model_files_glob}",
-        "${CAL_SMOOTH_OPTS:lst_blacklists}",
-       ]
+args = [
+    "{basename}",
+    "${NOTEBOOK_OPTS:nb_template_dir}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",
+    "${NOTEBOOK_OPTS:git_push}",
+    "${ABSCAL_OPTS:model_files_glob}",
+    "${CAL_SMOOTH_OPTS:lst_blacklists}",
+]
 
 # [IMAGING]
 # prereqs = "CAL_SMOOTH"
