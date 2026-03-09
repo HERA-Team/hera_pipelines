@@ -22,7 +22,7 @@ auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cac
 xtalk_fr = 0.01 # in mHz
 fr_quantile_low = 0.05
 fr_quantile_high = 0.95
-min_samp_frac = 0.05
+min_samp_frac = 0.1
 
 ############################################################################################################
 
