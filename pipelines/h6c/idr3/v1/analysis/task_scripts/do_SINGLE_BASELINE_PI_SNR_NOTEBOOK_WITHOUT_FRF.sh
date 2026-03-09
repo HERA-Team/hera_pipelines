@@ -2,7 +2,7 @@
 set -e
 
 # This loads single baselines (all pols) for all times, forms pseudo-Stokes pI,
-# and computes delay-filtered, fringe-rate-filtered SNR waterfalls.
+# and computes delay-filtered, SNR waterfalls.
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
