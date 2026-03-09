@@ -37,10 +37,9 @@ export XTALK_FR=${xtalk_fr}
 export FR_QUANTILE_LOW=${fr_quantile_low}
 export FR_QUANTILE_HIGH=${fr_quantile_high}
 export MIN_SAMP_FRAC=${min_samp_frac}
-export FRF_SNR_SUFFIX=".pI_FRF_SNR.uvh5"
-export SAVE_DLY_SNR="True"
 export DLY_SNR_SUFFIX=".pI_DLYFILT_SNR.uvh5"
-export SAVE_FRF_SNR="True"
+export SAVE_DLY_SNR="True"
+export SAVE_FRF_SNR="False"
 
 # produce a string like "0_0" for a single baseline and "0_0.0_1.0_2" for multiple baselines
 antpairs_str=$(python -c "
@@ -62,17 +61,17 @@ if [ "$antpairs_str" = "none" ]; then
     exit 0
 fi
 jd=$(get_int_jd ${fn})
-nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.${jd}.baseline.${antpairs_str}.sum.single_baseline_pI_FRF_SNR.html"
+nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.${jd}.baseline.${antpairs_str}.sum.single_baseline_pI_SNR.html"
 
 # Execute jupyter notebook
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/single_baseline_pI_FRF_SNR.ipynb
-echo Finished running single baseline pI FRF SNR notebook at $(date)
+--execute ${nb_template_dir}/single_baseline_pI_SNR.ipynb
+echo Finished running single baseline pI SNR notebook at $(date)
 
 # check if "0_4" is in the antpairs_str, if so copy the notebook to the output repo
 if [[ ".${antpairs_str}." == *".0_4."* ]]; then
-    cp ${nb_outfile} ${nb_output_repo}/single_baseline_pI_FRF_SNR/single_baseline_pI_FRF_SNR_${jd}.html
-    python ${src_dir}/build_notebook_index.py ${nb_output_repo}/single_baseline_pI_FRF_SNR
+    cp ${nb_outfile} ${nb_output_repo}/single_baseline_pI_SNR/single_baseline_pI_SNR_${jd}.html
+    python ${src_dir}/build_notebook_index.py ${nb_output_repo}/single_baseline_pI_SNR
 fi
