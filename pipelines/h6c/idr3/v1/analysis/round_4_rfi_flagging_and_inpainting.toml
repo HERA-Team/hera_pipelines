@@ -101,3 +101,17 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
         ]
 extra_batch_options = "--nice=999"
+
+[FULL_DAY_RFI_ROUND_5_NOTEBOOK]
+# placeholder — notebook not yet implemented
+prereqs = "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        ]
+extra_batch_options = "--nice=999"
+
