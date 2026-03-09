@@ -82,3 +82,22 @@ args = ["{basename}",
         "${FULL_DAY_RFI_ROUND_4_OPTS:time_conv_size}",
         ]
 extra_batch_options = "--nice=999"
+
+[SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF]
+prereqs = "FULL_DAY_RFI_ROUND_4_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:filter_delay}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:eigenval_cutoff}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_spectra_file}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:auto_fr_spectrum_file}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_low}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
+        ]
+extra_batch_options = "--nice=999"
