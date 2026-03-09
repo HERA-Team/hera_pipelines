@@ -67,8 +67,8 @@ nb_outfile="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/zen.${jd}.base
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
 --ExecutePreprocessor.timeout=-1 \
---execute ${nb_template_dir}/single_baseline_pI_SNR.ipynb
-echo Finished running single baseline pI SNR notebook at $(date)
+--execute ${nb_template_dir}/single_baseline_pI_FRF_SNR.ipynb
+echo Finished running single baseline pI SNR notebook without FRF at $(date)
 
 # check if "0_4" is in the antpairs_str, if so copy the notebook to the output repo
 if [[ ".${antpairs_str}." == *".0_4."* ]]; then
