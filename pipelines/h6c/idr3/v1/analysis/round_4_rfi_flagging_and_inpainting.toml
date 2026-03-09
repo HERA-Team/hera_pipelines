@@ -42,7 +42,7 @@ actions = ["SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF",
            "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF",
            "FULL_DAY_RFI_ROUND_5_NOTEBOOK",
            "SINGLE_BASELINE_REINPAINT_NOTEBOOK",
-           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK"]
+           "FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK"]
 
 [SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF]
 args = ["{basename}",
@@ -125,3 +125,15 @@ args = ["{basename}",
         ]
 extra_batch_options = "--nice=999"
 
+[FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK]
+# placeholder — final post-corner-turn systematics inspection
+prereqs = "SINGLE_BASELINE_REINPAINT_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        ]
+extra_batch_options = "--nice=999"
