@@ -115,3 +115,13 @@ args = ["{basename}",
         ]
 extra_batch_options = "--nice=999"
 
+[SINGLE_BASELINE_REINPAINT_NOTEBOOK]
+# placeholder — notebook not yet implemented
+prereqs = "FULL_DAY_RFI_ROUND_5_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        ]
+extra_batch_options = "--nice=999"
+
