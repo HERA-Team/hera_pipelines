@@ -70,7 +70,7 @@ args = ["{basename}",
 extra_batch_options = "--nice=999"
 
 [FULL_DAY_RFI_ROUND_4_NOTEBOOK]
-mem = 48000
+mem = 128000
 prereqs = "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF"
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -112,6 +112,7 @@ extra_batch_options = "--nice=999"
 
 [FULL_DAY_RFI_ROUND_5_NOTEBOOK]
 # placeholder — notebook not yet implemented
+mem = 128000
 prereqs = "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF"
 prereq_chunk_size = "all"
 chunk_size = 1
