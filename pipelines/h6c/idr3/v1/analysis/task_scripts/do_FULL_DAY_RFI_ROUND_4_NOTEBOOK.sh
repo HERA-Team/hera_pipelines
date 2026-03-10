@@ -36,6 +36,7 @@ export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
 export RED_AVG_FILE=${SUM_FILE%.sum.uvh5}.sum.smooth_calibrated.red_avg.uvh5
 export CORNER_TURN_MAP_YAML="$(cd "$(dirname "$fn")" && pwd)/single_baseline_files/corner_turn_map.yaml"
 export SNR_SUFFIX=".inpainted.pI_DLYFILT_SNR.uvh5"
+export OUTFILE_SUFFIX=".flag_waterfall_round_4.h5"
 export MIN_SAMP_FRAC=${min_samp_frac}
 export FM_LOW_FREQ=${FM_low_freq}
 export FM_HIGH_FREQ=${FM_high_freq}
