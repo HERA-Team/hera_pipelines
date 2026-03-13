@@ -40,8 +40,8 @@ export MIN_SAMP_FRAC=${min_samp_frac}
 export SAVE_DLY_SNR="False"
 export SAVE_FRF_SNR="True"
 export FRF_SNR_SUFFIX=".pI_FRF_SNR.uvh5"
-export APPLY_ROUND_4_FLAGS="True"
-export ROUND_4_FLAG_SUFFIX=".flag_waterfall_round_4.h5"
+export APPLY_PRIOR_FLAGS="True"
+export PRIOR_FLAG_SUFFIX=".flag_waterfall_round_4.h5"
 
 # produce a string like "0_0" for a single baseline and "0_0.0_1.0_2" for multiple baselines
 antpairs_str=$(python -c "
