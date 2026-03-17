@@ -32,6 +32,14 @@ max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.25
 time_conv_size = 360 # in seconds
 
+[FULL_DAY_RFI_ROUND_5_OPTS]
+z_thresh = 8
+ws_z_thresh = 4
+avg_z_thresh = 2
+max_freq_flag_frac = 0.25
+max_time_flag_frac = 0.50
+time_conv_size = 3600 # in seconds
+
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
 filter_dly_min = 150.0 # in ns
 inpaint_dly_min = 500.0 # in ns
@@ -111,7 +119,6 @@ args = ["{basename}",
 extra_batch_options = "--nice=999"
 
 [FULL_DAY_RFI_ROUND_5_NOTEBOOK]
-# placeholder — notebook not yet implemented
 mem = 128000
 prereqs = "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF"
 prereq_chunk_size = "all"
@@ -121,6 +128,15 @@ time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${FULL_DAY_RFI_ROUND_5_OPTS:z_thresh}",
+        "${FULL_DAY_RFI_ROUND_5_OPTS:ws_z_thresh}",
+        "${FULL_DAY_RFI_ROUND_5_OPTS:avg_z_thresh}",
+        "${FULL_DAY_RFI_ROUND_5_OPTS:max_freq_flag_frac}",
+        "${FULL_DAY_RFI_ROUND_5_OPTS:max_time_flag_frac}",
+        "${FULL_DAY_RFI_ROUND_5_OPTS:time_conv_size}",
         ]
 extra_batch_options = "--nice=999"
 
