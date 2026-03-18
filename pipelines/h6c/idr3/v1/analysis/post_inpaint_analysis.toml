@@ -85,7 +85,7 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
         ]
-extra_batch_options = "--nice=999"
+# extra_batch_options = "--nice=999"
 
 [FULL_DAY_RFI_ROUND_4_NOTEBOOK]
 mem = 128000
@@ -107,7 +107,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_ROUND_4_OPTS:max_time_flag_frac}",
         "${FULL_DAY_RFI_ROUND_4_OPTS:time_conv_size}",
         ]
-extra_batch_options = "--nice=999"
+# extra_batch_options = "--nice=999"
 
 [SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF]
 prereqs = "FULL_DAY_RFI_ROUND_4_NOTEBOOK"
@@ -126,7 +126,7 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
         ]
-extra_batch_options = "--nice=999"
+# extra_batch_options = "--nice=999"
 
 [FULL_DAY_RFI_ROUND_5_NOTEBOOK]
 mem = 128000
@@ -167,7 +167,7 @@ args = ["{basename}",
         "${GLOBAL_OPTS:auto_fr_spectrum_file}",
         "${REINPAINT_OPTS:gauss_fit_buffer_cut}",
         ]
-extra_batch_options = "--nice=999"
+# extra_batch_options = "--nice=999"
 
 [FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK]
 mem = 32000
@@ -191,4 +191,4 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]
-extra_batch_options = "--nice=999"
+# extra_batch_options = "--nice=999"
