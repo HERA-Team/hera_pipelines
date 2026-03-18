@@ -12,13 +12,15 @@ batch_system = "slurm"
 nb_template_dir = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates/notebooks'
 nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
 
-[SINGLE_BASELINE_PI_FRF_SNR_OPTS]
+[GLOBAL_OPTS]
 FM_low_freq = 87.5 # in MHz
 FM_high_freq = 108.0 # in MHz
-filter_delay = 750 # in ns
 eigenval_cutoff = 1e-12
-fr_spectra_file = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5'
 auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
+
+[SINGLE_BASELINE_PI_FRF_SNR_OPTS]
+filter_delay = 750 # in ns
+fr_spectra_file = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5'
 xtalk_fr = 0.01 # in mHz
 fr_quantile_low = 0.05
 fr_quantile_high = 0.95
@@ -39,6 +41,14 @@ avg_z_thresh = 2
 max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.50
 time_conv_size = 3600 # in seconds
+
+[REINPAINT_OPTS]
+auto_inpaint_delay = 100.0 # in ns, for smooth auto model
+inpaint_delay = 1000.0 # in ns
+cg_tol = 1e-6
+inpaint_width_factor = 0.5
+inpaint_zero_dist_weight = 1e-2
+gauss_fit_buffer_cut = 1e-5
 
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
 filter_dly_min = 150.0 # in ns
@@ -64,12 +74,12 @@ actions = ["SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF",
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:filter_delay}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_spectra_file}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:auto_fr_spectrum_file}",
+        "${GLOBAL_OPTS:auto_fr_spectrum_file}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_low}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
@@ -88,8 +98,8 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
         "${FULL_DAY_RFI_ROUND_4_OPTS:z_thresh}",
         "${FULL_DAY_RFI_ROUND_4_OPTS:ws_z_thresh}",
         "${FULL_DAY_RFI_ROUND_4_OPTS:avg_z_thresh}",
@@ -105,12 +115,12 @@ prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:filter_delay}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:eigenval_cutoff}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_spectra_file}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:auto_fr_spectrum_file}",
+        "${GLOBAL_OPTS:auto_fr_spectrum_file}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_low}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
@@ -129,8 +139,8 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
         "${FULL_DAY_RFI_ROUND_5_OPTS:z_thresh}",
         "${FULL_DAY_RFI_ROUND_5_OPTS:ws_z_thresh}",
         "${FULL_DAY_RFI_ROUND_5_OPTS:avg_z_thresh}",
@@ -141,12 +151,21 @@ args = ["{basename}",
 extra_batch_options = "--nice=999"
 
 [SINGLE_BASELINE_REINPAINT_NOTEBOOK]
-# placeholder — notebook not yet implemented
 prereqs = "FULL_DAY_RFI_ROUND_5_NOTEBOOK"
 prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
+        "${REINPAINT_OPTS:auto_inpaint_delay}",
+        "${REINPAINT_OPTS:inpaint_delay}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${REINPAINT_OPTS:cg_tol}",
+        "${REINPAINT_OPTS:inpaint_width_factor}",
+        "${REINPAINT_OPTS:inpaint_zero_dist_weight}",
+        "${GLOBAL_OPTS:auto_fr_spectrum_file}",
+        "${REINPAINT_OPTS:gauss_fit_buffer_cut}",
         ]
 extra_batch_options = "--nice=999"
 
@@ -166,9 +185,9 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:eigenval_cutoff}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_low_freq}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:FM_high_freq}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]
