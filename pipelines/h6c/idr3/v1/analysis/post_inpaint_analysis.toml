@@ -68,7 +68,8 @@ actions = ["SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF",
            "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF",
            "FULL_DAY_RFI_ROUND_5_NOTEBOOK",
            "SINGLE_BASELINE_REINPAINT_NOTEBOOK",
-           "FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK"]
+           "FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK",
+           "CLEANUP_POST_INPAINT"]
 
 [SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF]
 args = ["{basename}",
@@ -192,3 +193,11 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
         ]
 # extra_batch_options = "--nice=999"
+
+[CLEANUP_POST_INPAINT]
+prereqs = "FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}"]
