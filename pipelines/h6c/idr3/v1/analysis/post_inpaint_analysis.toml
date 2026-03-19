@@ -149,7 +149,7 @@ args = ["{basename}",
         "${FULL_DAY_RFI_ROUND_5_OPTS:max_time_flag_frac}",
         "${FULL_DAY_RFI_ROUND_5_OPTS:time_conv_size}",
         ]
-extra_batch_options = "--nice=999"
+# extra_batch_options = "--nice=999"
 
 [SINGLE_BASELINE_REINPAINT_NOTEBOOK]
 prereqs = "FULL_DAY_RFI_ROUND_5_NOTEBOOK"
