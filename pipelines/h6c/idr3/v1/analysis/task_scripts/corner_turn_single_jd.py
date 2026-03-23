@@ -51,6 +51,11 @@ if len(antpairs_here) > 0:
             uvd.ant_1_array[is_misordered_but_flagged] = np.median(uvd.ant_1_array[~is_misordered_but_flagged]).astype(uvd.ant_1_array.dtype)
             uvd.ant_2_array[is_misordered_but_flagged] = np.median(uvd.ant_2_array[~is_misordered_but_flagged]).astype(uvd.ant_2_array.dtype)
 
+        # compute baseline vector from the actual data ordering before renaming
+        antpos = uvd.telescope.get_enu_antpos()
+        bl_vec = (antpos[uvd.telescope.antenna_numbers == int(np.median(uvd.ant_1_array))]
+                  - antpos[uvd.telescope.antenna_numbers == int(np.median(uvd.ant_2_array))])
+
         # rename antennas in underlying UVData object
         ubl_key = corner_turn_map['antpairs_to_ubl_keys_map'][antpair]
         print(f'\tIdentifying {antpair} as {ubl_key} for consistency across nights.')
@@ -113,9 +118,8 @@ if len(antpairs_here) > 0:
             lst_shift = np.zeros_like(uvd.lst_array)
             for old_lst, tgi in zip(old_lsts, time_grid_indices):
                 lst_shift[tgi] = uvd.lst_array[tgi] - old_lst
-            antpos = uvd.telescope.get_enu_antpos()
             uvd.data_array = utils.lst_rephase(data=uvd.data_array[:, None, :, :],
-                                               bls=(antpos[uvd.telescope.antenna_numbers == antpair[0]] -
+                                               bls=bl_vec,
                                                freqs=uvd.freq_array,
                                                dlst=lst_shift,
                                                lat=uvd.telescope.location_lat_lon_alt_degrees[0],
