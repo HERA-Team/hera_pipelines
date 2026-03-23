@@ -116,7 +116,6 @@ if len(antpairs_here) > 0:
             antpos = uvd.telescope.get_enu_antpos()
             uvd.data_array = utils.lst_rephase(data=uvd.data_array[:, None, :, :],
                                                bls=(antpos[uvd.telescope.antenna_numbers == antpair[0]] -
-                                                    antpos[uvd.telescope.antenna_numbers == antpair[1]]),
                                                freqs=uvd.freq_array,
                                                dlst=lst_shift,
                                                lat=uvd.telescope.location_lat_lon_alt_degrees[0],
