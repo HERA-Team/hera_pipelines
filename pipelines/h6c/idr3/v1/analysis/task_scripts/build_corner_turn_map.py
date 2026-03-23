@@ -28,7 +28,7 @@ out_yaml = os.path.join(args.out_folder, args.map_yaml)
 
 # create list of FastUVH5Meta objects and get antpairs in all files
 metas = [FastUVH5Meta(f) for f in all_files]
-antpairs = sorted(set([ap for meta in metas for ap in meta.antpairs]))
+antpairs = sorted(set([ap if ap[0] <= ap[1] else ap[::-1] for meta in metas for ap in meta.antpairs]))
 
 # create files_to_antpairs_map
 files_to_antpairs_map = {file: [] for file in all_files}
