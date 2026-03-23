@@ -31,7 +31,7 @@ z_thresh = 4
 ws_z_thresh = 2
 avg_z_thresh = 1
 max_freq_flag_frac = 0.25
-max_time_flag_frac = 0.25
+max_time_flag_frac = 0.50
 time_conv_size = 360 # in seconds
 
 [FULL_DAY_RFI_ROUND_5_OPTS]
