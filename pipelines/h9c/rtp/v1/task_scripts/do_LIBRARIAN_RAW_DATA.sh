@@ -28,34 +28,42 @@ if [ "${upload_to_librarian}" == "True" ]; then
             echo "Finished uploading sum data to Librarian at $(date)"
         fi
 
-        if librarian locate-file local-rtp ${fn%.sum.uvh5}.diff.32chansum.uvh5; then
-            echo "${fn%.sum.uvh5}.diff.32chansum.uvh5 is already in the librarian. Skipping..."
+        if librarian locate-file local-rtp ${fn%.sum.uvh5}.diff.uvh5; then
+            echo "${fn%.sum.uvh5}.diff.uvh5 is already in the librarian. Skipping..."
         else
-            # Upload a 32-channel summed version of the diff file
-            diff_sum_file=$(python -c "
-import numpy as np
-from pyuvdata import UVData
-import hdf5plugin
-
-SUM_FILE = '${fn_path}'
-
-# Load the file
-uvd = UVData()
-uvd.read(SUM_FILE.replace('.sum.', '.diff.'))
-
-# Perform channel summation
-uvd_out = uvd.select(freq_chans=np.arange(0, uvd.Nfreqs, 32), inplace=False)
-uvd_out.data_array = np.sum(uvd.data_array.reshape(uvd.Nblts, -1, 32, uvd.Npols), axis=2)
-uvd_out.freq_array = np.mean(uvd.freq_array.reshape(-1, 32), axis=1)
-
-# Write the output file
-output_file = SUM_FILE.replace('.sum.', '.diff.32chansum.')
-uvd_out.write_uvh5(output_file, data_compression='bitshuffle', clobber=True)
-print(output_file)
-")
-            echo librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
-            librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
-            echo "Finished uploading 32-channel summed diff file to Librarian at $(date)"
+            echo librarian upload local-rtp ${fn%.sum.uvh5}.diff.uvh5 ${jd}/${fn%.sum.uvh5}.diff.uvh5
+            librarian upload local-rtp ${fn%.sum.uvh5}.diff.uvh5 ${jd}/${fn%.sum.uvh5}.diff.uvh5
+            echo "Finished uploading diff data to Librarian at $(date)"
         fi
+
+#         if librarian locate-file local-rtp ${fn%.sum.uvh5}.diff.32chansum.uvh5; then
+#             echo "${fn%.sum.uvh5}.diff.32chansum.uvh5 is already in the librarian. Skipping..."
+#         else
+#             # Upload a 32-channel summed version of the diff file
+#             diff_sum_file=$(python -c "
+# import numpy as np
+# from pyuvdata import UVData
+# import hdf5plugin
+
+# SUM_FILE = '${fn_path}'
+
+# # Load the file
+# uvd = UVData()
+# uvd.read(SUM_FILE.replace('.sum.', '.diff.'))
+
+# # Perform channel summation
+# uvd_out = uvd.select(freq_chans=np.arange(0, uvd.Nfreqs, 32), inplace=False)
+# uvd_out.data_array = np.sum(uvd.data_array.reshape(uvd.Nblts, -1, 32, uvd.Npols), axis=2)
+# uvd_out.freq_array = np.mean(uvd.freq_array.reshape(-1, 32), axis=1)
+
+# # Write the output file
+# output_file = SUM_FILE.replace('.sum.', '.diff.32chansum.')
+# uvd_out.write_uvh5(output_file, data_compression='bitshuffle', clobber=True)
+# print(output_file)
+# ")
+#             echo librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
+#             librarian upload local-rtp ${diff_sum_file} ${jd}/${diff_sum_file}
+#             echo "Finished uploading 32-channel summed diff file to Librarian at $(date)"
+#         fi
     done
 fi
