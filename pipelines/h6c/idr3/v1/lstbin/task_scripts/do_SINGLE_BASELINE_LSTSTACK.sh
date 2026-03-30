@@ -9,6 +9,13 @@ source ${src_dir}/_common.sh
 bl_str=${1}
 toml_file=${2}
 
+# check if this baseline's length is within the MAX_BL_LENGTH threshold
+bl_length_ok=$(python ${src_dir}/check_baseline_length.py ${bl_str} ${toml_file})
+if [ "${bl_length_ok}" != "True" ]; then
+    echo "Baseline ${bl_str} deferred (length exceeds MAX_BL_LENGTH). Change MAX_BL_LENGTH in the TOML config to run this baseline."
+    exit 1
+fi
+
 # read relevant variables from TOML
 {
     IFS= read -r nb_template_dir
