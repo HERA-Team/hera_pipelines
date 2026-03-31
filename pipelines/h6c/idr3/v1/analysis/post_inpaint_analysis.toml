@@ -30,7 +30,7 @@ min_samp_frac = 0.1
 z_thresh = 4
 ws_z_thresh = 2
 avg_z_thresh = 1
-max_freq_flag_frac = 0.25
+max_freq_flag_frac = 0.25 # TODO: in the future, I think this should be 0.50
 max_time_flag_frac = 0.50
 time_conv_size = 360 # in seconds
 
@@ -38,7 +38,7 @@ time_conv_size = 360 # in seconds
 z_thresh = 8
 ws_z_thresh = 4
 avg_z_thresh = 2
-max_freq_flag_frac = 0.25
+max_freq_flag_frac = 0.25 # TODO: in the future, I think this should be 0.50
 max_time_flag_frac = 0.50
 time_conv_size = 3600 # in seconds
 
