@@ -114,7 +114,8 @@ actions = ["PRELIMINARY_SINGLE_BASELINE_LSTSTACK",
 
 [PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
 mem = 47500
-args = ["{basename}", 
+ncpu = 2  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+args = ["{basename}",
         "${Options:toml_file}",
        ]
 
@@ -122,7 +123,8 @@ args = ["{basename}",
 prereqs = "PRELIMINARY_SINGLE_BASELINE_LSTSTACK"
 prereq_chunk_size = "all"
 mem = 80000
-args = ["{basename}", 
+ncpu = 2
+args = ["{basename}",
         "${Options:toml_file}",
        ]
 
@@ -130,6 +132,7 @@ args = ["{basename}",
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
 mem = 47500
-args = ["{basename}", 
+ncpu = 2  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+args = ["{basename}",
         "${Options:toml_file}",
        ]
