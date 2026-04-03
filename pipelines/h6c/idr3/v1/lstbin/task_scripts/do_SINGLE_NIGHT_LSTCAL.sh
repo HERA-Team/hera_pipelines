@@ -44,7 +44,11 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/single_night_lstcal.ipynb
 echo Finished running single-night LST-calibration notebook at $(date)
 
-# if baseline string is "0_0", copy notebook for easy viewing
-if [[ ${BASELINE_STRING} == "0_0" ]]; then
-    cp ${nb_outfile} ${nb_output_repo}/lststack/
-fi
+# Create symlink in notebook repo for web viewing
+nb_dest_dir="${nb_output_repo}/lstcal"
+mkdir -p "${nb_dest_dir}"
+ln -sf "$(realpath "${nb_outfile}")" "${nb_dest_dir}/$(basename "${nb_outfile}")"
+
+# Rebuild notebook index
+nb_index_script="${src_dir}/../../analysis/task_scripts/build_notebook_index.py"
+python "${nb_index_script}" "${nb_dest_dir}"

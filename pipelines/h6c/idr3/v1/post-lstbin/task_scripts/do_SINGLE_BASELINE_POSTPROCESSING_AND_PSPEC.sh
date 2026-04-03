@@ -50,11 +50,13 @@ else
     echo "File ${full_file_path} is either just autocorrelations or has a fully flagged polarization. Skipping the power spectrum notebook."
 fi
 
-# check if ".0_4." is in the filename, if so copy the notebook to the output repo
-if [[ "$(basename "$fn")" == *".0_4."* ]]; then
-    # Copy file to notebook folder for www access
-    dest_dir="${nb_output_repo}/single_baseline_postprocessing_and_pspec"
-    mkdir -p "$dest_dir"
-    src_html="${nb_outfile%.html}.html"
-    cp -v "$src_html" "${dest_dir}/$(basename "${nb_outfile%.html}").html"
+# Create symlink in notebook repo for web viewing
+if [ -f "${nb_outfile}.html" ]; then
+    nb_dest_dir="${nb_output_repo}/single_baseline_postprocessing_and_pspec"
+    mkdir -p "${nb_dest_dir}"
+    ln -sf "$(realpath "${nb_outfile}.html")" "${nb_dest_dir}/$(basename "${nb_outfile}").html"
+
+    # Rebuild notebook index
+    nb_index_script="${src_dir}/../../analysis/task_scripts/build_notebook_index.py"
+    python "${nb_index_script}" "${nb_dest_dir}"
 fi
