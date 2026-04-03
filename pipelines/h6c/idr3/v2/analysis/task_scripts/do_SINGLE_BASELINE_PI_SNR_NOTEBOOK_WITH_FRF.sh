@@ -20,6 +20,7 @@ xtalk_fr=${10}
 fr_quantile_low=${11}
 fr_quantile_high=${12}
 min_samp_frac=${13}
+subtract_polarized_source=${14}
 
 # path manipulation
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -42,6 +43,7 @@ export SAVE_FRF_SNR="True"
 export FRF_SNR_SUFFIX=".pI_FRF_SNR.uvh5"
 export APPLY_PRIOR_FLAGS="True"
 export PRIOR_FLAG_SUFFIX=".flag_waterfall_round_4.h5"
+export SUBTRACT_POLARIZED_SOURCE=${subtract_polarized_source}
 
 # produce a string like "0_0" for a single baseline and "0_0.0_1.0_2" for multiple baselines
 antpairs_str=$(python -c "
