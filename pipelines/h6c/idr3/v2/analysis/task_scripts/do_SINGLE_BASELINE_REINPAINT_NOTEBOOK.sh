@@ -20,6 +20,7 @@ inpaint_width_factor=${10}
 inpaint_zero_dist_weight=${11}
 auto_fr_spectrum_file=${12}
 gauss_fit_buffer_cut=${13}
+subtract_polarized_source=${14}
 
 # path manipulation
 jd=$(get_int_jd ${fn})
@@ -48,6 +49,9 @@ export SCAFFOLD_EXTENSION=".inpainted.uvh5"
 export INPUT_EXTENSION=".inpainted.uvh5"
 export OUTPUT_EXTENSION=".reinpainted.uvh5"
 export WHERE_INPAINTED_EXTENSION=".where_reinpainted.h5"
+
+# polarized source subtraction settings
+export SUBTRACT_POLARIZED_SOURCE=${subtract_polarized_source}
 
 # produce a string like "0_0" for a single baseline and "0_0.0_1.0_2" for multiple baselines
 antpairs_str=$(python -c "
