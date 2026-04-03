@@ -75,6 +75,7 @@ overall_index += '    <li><a href="full_day_rfi_round_4">full_day_rfi_round_4</a
 overall_index += '    <li><a href="single_baseline_pI_FRF_SNR">single_baseline_pI_FRF_SNR</a></li>\n'
 overall_index += '    <li><a href="full_day_rfi_round_5">full_day_rfi_round_5</a></li>\n'
 overall_index += '    <li><a href="single_baseline_scaffolded_and_feathered_inpainter">single_baseline_scaffolded_and_feathered_inpainter</a></li>\n'
+overall_index += '    <li><a href="per_night_source_filtering">per_night_source_filtering</a></li>\n'
 overall_index += '    <li><a href="full_day_systematics_inspect_post_reinpaint">full_day_systematics_inspect_post_reinpaint</a></li>\n'
 overall_index += '    <li><a href="lststack">lststack</a></li>\n'
 overall_index += '    <li><a href="lstbin">lstbin (OLD)</a></li>\n'

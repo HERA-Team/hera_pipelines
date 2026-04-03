@@ -50,6 +50,13 @@ inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
 gauss_fit_buffer_cut = 1e-5
 
+[PER_NIGHT_SOURCE_FILTERING_OPTS]
+source_yaml = '/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/metadata/sources.yaml'
+fg_delay_half_width = 500e-9   # in seconds, foreground delay filter half-width
+model_delay_half_width = 50e-9  # in seconds, source model spectral half-width
+model_frate_half_width = 0.25   # in mHz, source model temporal half-width
+max_workers = 8
+
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
 filter_dly_min = 150.0 # in ns
 inpaint_dly_min = 500.0 # in ns
@@ -63,7 +70,8 @@ spectrum_chan_buffer = 25
 ############################################################################################################
 
 [WorkFlow]
-actions = ["SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF",
+actions = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK",
+           "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF",
            "FULL_DAY_RFI_ROUND_4_NOTEBOOK",
            "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITH_FRF",
            "FULL_DAY_RFI_ROUND_5_NOTEBOOK",
@@ -71,7 +79,28 @@ actions = ["SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF",
            "FULL_DAY_SYSTEMATICS_INSPECT_POST_REINPAINT_NOTEBOOK",
            "CLEANUP_POST_INPAINT"]
 
+[PER_NIGHT_SOURCE_FILTERING_NOTEBOOK]
+mem = 128000
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${PER_NIGHT_SOURCE_FILTERING_OPTS:source_yaml}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${PER_NIGHT_SOURCE_FILTERING_OPTS:fg_delay_half_width}",
+        "${PER_NIGHT_SOURCE_FILTERING_OPTS:model_delay_half_width}",
+        "${PER_NIGHT_SOURCE_FILTERING_OPTS:model_frate_half_width}",
+        "${PER_NIGHT_SOURCE_FILTERING_OPTS:max_workers}",
+        ]
+# extra_batch_options = "--nice=999"
+
 [SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF]
+prereqs = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
+prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
