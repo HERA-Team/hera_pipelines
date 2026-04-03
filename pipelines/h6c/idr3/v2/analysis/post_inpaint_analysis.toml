@@ -81,6 +81,7 @@ actions = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK",
 
 [PER_NIGHT_SOURCE_FILTERING_NOTEBOOK]
 mem = 128000
+ncpu = 8
 chunk_size = 1
 stride_length = "all"
 time_centered = false
