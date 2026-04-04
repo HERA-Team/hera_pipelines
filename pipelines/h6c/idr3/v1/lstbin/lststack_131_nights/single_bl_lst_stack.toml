@@ -154,7 +154,7 @@ nights=[
   "2460035",
   "2460036",
 ]
-fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.smooth_calibrated.red_avg.inpainted.uvh5"
+fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.smooth_calibrated.red_avg.reinpainted.uvh5"
 
 
 [LSTCAL_OPTS]
