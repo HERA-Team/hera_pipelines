@@ -17,7 +17,7 @@ nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
 
 [FILE_CFG] # this key is required
 lst_branch_cut = 5.2 # in radians
-where_inpainted_file_rules = [[".inpainted.uvh5", ".where_inpainted.h5"]]
+where_inpainted_file_rules = [[".reinpainted.uvh5", ".where_reinpainted.h5"]]
 
 [FILE_CFG.datafiles] # this key is required
 datadir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/"
