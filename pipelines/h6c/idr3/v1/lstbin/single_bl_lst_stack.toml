@@ -82,7 +82,8 @@ WHERE_INPAINTED_WGTS=1e-4
 LSTCAL_FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.{night}.lstcal.hdf5"
 
 [LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
-MAX_BL_LENGTH = 1e10 # in meters; set to e.g. 60.0 to run only short baselines first. Other baselines will error.
+MAX_BL_LENGTH = 1e10 # in meters; set to e.g. 60.0 to run only short baselines first. Baselines longer than this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
+MIN_AVG_REDUNDANCY = 0.0 # average number of baselines per night in the redundant group; baselines below this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
 OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs"
 FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.LST.baseline.{bl_str}.sum.uvh5"
 USE_LSTCAL_GAINS = true # this will be ignored if the PRELIMINARY flag is true
@@ -108,18 +109,21 @@ FR0_FILT_AUTOS=false
 ############################################################################################################
 
 [WorkFlow]
-actions = ["SETUP",
+actions = ["BUILD_BASELINE_MAP",
            "PRELIMINARY_SINGLE_BASELINE_LSTSTACK",
            "SINGLE_NIGHT_LSTCAL",
            "SINGLE_BASELINE_LSTSTACK"]
 
-[SETUP]
+[BUILD_BASELINE_MAP]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
 mem = 16000
 ncpu = 1
 args = ["${Options:toml_file}"]
 
 [PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
-prereqs = "SETUP"
+prereqs = "BUILD_BASELINE_MAP"
 prereq_chunk_size = "all"
 mem = 47500
 ncpu = 2  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
