@@ -197,11 +197,19 @@ FR0_FILT_AUTOS=false
 ############################################################################################################
 
 [WorkFlow]
-actions = ["PRELIMINARY_SINGLE_BASELINE_LSTSTACK",
+actions = ["SETUP",
+           "PRELIMINARY_SINGLE_BASELINE_LSTSTACK",
            "SINGLE_NIGHT_LSTCAL",
            "SINGLE_BASELINE_LSTSTACK"]
 
+[SETUP]
+mem = 16000
+ncpu = 1
+args = ["${Options:toml_file}"]
+
 [PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
+prereqs = "SETUP"
+prereq_chunk_size = "all"
 mem = 250000
 ncpu = 16 # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
 args = ["{basename}",
