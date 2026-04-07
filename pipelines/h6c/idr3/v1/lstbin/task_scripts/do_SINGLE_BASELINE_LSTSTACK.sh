@@ -1,7 +1,16 @@
 #! /bin/bash
-set -e
+set -euo pipefail
 
-# This script runs the single baseline LST stacking notebook
+# This script runs the single baseline LST stacking notebook. The selection
+# decision is made HERE, not in baseline_map.yaml: the YAML carries raw facts
+# (bl_length_m, avg_redundancy) and this script thresholds them against TOML
+# parameters, so the TOML can be edited to re-scope the run without
+# regenerating the YAML.
+#
+# TOML parameters (both optional, under [LST_STACK_OPTS]):
+#   MAX_BL_LENGTH          -- run only if bl_length_m <= this (meters)
+#   MIN_AVG_REDUNDANCY     -- run only if avg_redundancy  >= this
+# Missing keys mean "don't filter on that axis".
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
@@ -9,25 +18,49 @@ source ${src_dir}/_common.sh
 bl_str=${1}
 toml_file=${2}
 
-# check if this baseline's length is within the MAX_BL_LENGTH threshold
-bl_length_ok=$(python ${src_dir}/check_baseline_length.py ${bl_str} ${toml_file})
-if [ "${bl_length_ok}" != "True" ]; then
-    echo "Baseline ${bl_str} deferred (length exceeds MAX_BL_LENGTH). Change MAX_BL_LENGTH in the TOML config to run this baseline."
-    exit 1
-fi
-
 # read relevant variables from TOML
 {
     IFS= read -r nb_template_dir
     IFS= read -r nb_output_repo
     IFS= read -r OUTDIR
+    IFS= read -r MAX_BL_LENGTH
+    IFS= read -r MIN_AVG_REDUNDANCY
 } < <(
     python3 -c 'import toml
 d = toml.load("'"$toml_file"'")
+opts = d["LST_STACK_OPTS"]
 print(d["NOTEBOOK_OPTS"]["nb_template_dir"])
 print(d["NOTEBOOK_OPTS"]["nb_output_repo"])
-print(d["LST_STACK_OPTS"]["OUTDIR"])'
+print(opts["OUTDIR"])
+print(opts.get("MAX_BL_LENGTH", ""))
+print(opts.get("MIN_AVG_REDUNDANCY", ""))'
 )
+
+yaml_path="${OUTDIR}/baseline_map.yaml"
+
+# pull raw facts from the YAML
+bl_length_m=$(python3 "${src_dir}/query_baseline_map.py" "${yaml_path}" "${bl_str}" bl_length_m)
+avg_redundancy=$(python3 "${src_dir}/query_baseline_map.py" "${yaml_path}" "${bl_str}" avg_redundancy)
+
+# threshold against TOML parameters
+should_run=$(python3 -c '
+import sys
+bl_length_m   = float(sys.argv[1])
+avg_red       = float(sys.argv[2])
+max_bl_length = sys.argv[3]
+min_avg_red   = sys.argv[4]
+ok = True
+if max_bl_length and bl_length_m > float(max_bl_length):
+    ok = False
+if min_avg_red and avg_red < float(min_avg_red):
+    ok = False
+print("True" if ok else "False")
+' "${bl_length_m}" "${avg_redundancy}" "${MAX_BL_LENGTH}" "${MIN_AVG_REDUNDANCY}")
+
+if [ "${should_run}" != "True" ]; then
+    echo "Baseline ${bl_str} deferred (bl_length_m=${bl_length_m}, avg_redundancy=${avg_redundancy}; MAX_BL_LENGTH=${MAX_BL_LENGTH:-none}, MIN_AVG_REDUNDANCY=${MIN_AVG_REDUNDANCY:-none}). Adjust thresholds in the TOML to run this baseline."
+    exit 1
+fi
 
 # export necessary environment variables to be read by notebook
 export TOML_FILE=${toml_file}

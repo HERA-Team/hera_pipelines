@@ -1,22 +1,16 @@
 #! /bin/bash
-set -e
+set -euo pipefail
 
-# This script runs the single night LST-Cal notebook
+# This script runs the single night LST-Cal notebook. For each baseline the
+# makeflow passes, SETUP has already decided via baseline_map.yaml which JD
+# that baseline anchors (if any). Baselines with night_for_lstcal == None
+# exit successfully without running the notebook.
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
 bl_str=${1}
 toml_file=${2}
-
-# If Python exits 0, jd gets the printed value; else the 'else' branch runs.
-if jd="$(python3 "${src_dir}/is_baseline_in_jd_map.py" "$bl_str" "$toml_file")"; then
-  echo "Baseline $bl_str maps to JD $jd — proceeding..."
-  # ... do calibration work using "$jd" ...
-else
-  echo "Baseline $bl_str does not map to a JD. Exiting..."
-  exit 0
-fi
 
 # read relevant variables from TOML
 {
@@ -31,12 +25,22 @@ print(d["NOTEBOOK_OPTS"]["nb_output_repo"])
 print(d["LST_STACK_OPTS"]["OUTDIR"])'
 )
 
-# # export necessary environment variables to be read by notebook
+yaml_path="${OUTDIR}/baseline_map.yaml"
+
+# look up which JD this baseline anchors
+jd=$(python3 "${src_dir}/query_baseline_map.py" "${yaml_path}" "${bl_str}" night_for_lstcal)
+if [ "${jd}" = "None" ]; then
+    echo "Baseline ${bl_str} is not an lstcal anchor. Exiting..."
+    exit 0
+fi
+echo "Baseline ${bl_str} maps to JD ${jd} — proceeding..."
+
+# export necessary environment variables to be read by notebook
 export TOML_FILE=${toml_file}
 export BASELINE_STRING=${bl_str}
 echo Now running LST-cal on night ${jd} with settings specified in ${TOML_FILE}
 
-# # Execute jupyter notebook
+# Execute jupyter notebook
 nb_outfile="${OUTDIR}/zen.${jd}.single_night_lstcal.html"
 jupyter nbconvert --output=${nb_outfile} \
 --to html \
