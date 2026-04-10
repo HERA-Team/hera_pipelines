@@ -37,7 +37,7 @@ echo "Baseline ${bl_str} maps to JD ${jd} — proceeding..."
 
 # export necessary environment variables to be read by notebook
 export TOML_FILE=${toml_file}
-export BASELINE_STRING=${bl_str}
+export JD=${jd}
 echo Now running LST-cal on night ${jd} with settings specified in ${TOML_FILE}
 
 # Execute jupyter notebook
