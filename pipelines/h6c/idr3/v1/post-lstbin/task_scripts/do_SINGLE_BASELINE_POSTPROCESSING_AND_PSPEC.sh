@@ -20,16 +20,17 @@ nb_output_repo=${5}
 # --variables used by the notebook
 outdir=$(cd "$(dirname "$fn")" && pwd)
 full_file_path="$outdir/$(basename "$fn")"
-echo "Performing single baseline postprocessing and power spectrum estimation on ${full_file_path}"
-
+reinpainted_file_path="${full_file_path%.uvh5}.reinpainted.uvh5"
+echo "Performing single baseline postprocessing and power spectrum estimation on ${reinpainted_file_path}"
 
 # check if file is not just autocorrelaitons and that neither polarization is fully flagged
 if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --skip_outriggers; then
     # Execute jupyter notebook
-    nb_outfile=${full_file_path%.uvh5}.single_baseline_postprocessing_and_pspec
-    
+    nb_outfile=${reinpainted_file_path%.uvh5}.single_baseline_postprocessing_and_pspec
+    out_pspec_file=${reinpainted_file_path%.uvh5}.pspec.h5
+
     runopts="--output-dir ${outdir} -k ${kernel} --toml ${toml_file} --toml-section ${toml_section}"
-    cfg="--basename ${nb_outfile} --SINGLE-BL-FILE ${full_file_path} --OUT-PSPEC-FILE=${full_file_path%.uvh5}.pspec.h5"
+    cfg="--basename ${nb_outfile} --SINGLE-BL-FILE ${reinpainted_file_path} --OUT-PSPEC-FILE=${out_pspec_file}"
     echo "Runopts: ${runopts}"
     echo "Config: ${cfg}"
 
@@ -40,10 +41,10 @@ if python ${src_dir}/check_single_bl_file.py ${full_file_path} --skip_autos --sk
     echo Finished running single baseline postprocessing and power spectrum estimation notebook for ${fn} at $(date) and writing results to ${nb_outfile}.ipynb and ${nb_outfile}.html
 
     # Check to see that output file was correctly produced
-    if [ -f "${fn%.uvh5}.pspec.h5" ]; then
-        echo Resulting $f found.
+    if [ -f "${out_pspec_file}" ]; then
+        echo Resulting ${out_pspec_file} found.
     else
-        echo $f not produced.
+        echo ${out_pspec_file} not produced.
         exit 1
     fi
 else
