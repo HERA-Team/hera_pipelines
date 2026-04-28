@@ -39,7 +39,7 @@ fi
 
 # Mode + single-file IO interface (consumed by the LSTSTACK_MODE branch in the notebook)
 export LSTSTACK_MODE="TRUE"
-export SINGLE_BL_FILE="${cross_file}"
+export RED_AVG_FILE="${cross_file}"
 
 # Filter and FR knobs
 export FM_LOW_FREQ=${FM_low_freq}
