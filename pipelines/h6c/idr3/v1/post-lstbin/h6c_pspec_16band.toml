@@ -14,6 +14,39 @@ toml_section = "CONFIG_OPTS"
 kernel = ""
 nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
 
+[NOTEBOOK_TEMPLATE_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates/notebooks'
+
+[GLOBAL_OPTS]
+FM_low_freq = 87.5  # in MHz
+FM_high_freq = 108.0  # in MHz
+eigenval_cutoff = 1e-12
+auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
+
+[SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS]
+filter_delay = 750  # in ns
+fr_spectra_file = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5'
+xtalk_fr = 0.01  # in mHz
+fr_quantile_low = 0.05
+fr_quantile_high = 0.95
+min_samp_frac = 0.1
+
+[LSTSTACK_RFI_ROUND_6_OPTS]
+z_thresh = 8
+ws_z_thresh = 4
+avg_z_thresh = 2
+max_freq_flag_frac = 0.25
+max_time_flag_frac = 0.50
+time_conv_size = 3600  # in seconds
+
+[SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS]
+auto_inpaint_delay = 100.0  # in ns, for smooth auto model
+inpaint_delay = 1000.0  # in ns
+cg_tol = 1e-6
+inpaint_width_factor = 0.5
+inpaint_zero_dist_weight = 1e-2
+gauss_fit_buffer_cut = 1e-5
+
 [CONFIG_OPTS] # This section is directly read when running the notebook.
 # General Options
 PLOT = true
@@ -65,17 +98,78 @@ STORE_WINDOW_FUNCTIONS = false
 
 [WorkFlow]
 actions = [
+    "SINGLE_LSTSTACK_BASELINE_FILTERED_SNR",
+    "LSTSTACK_RFI_ROUND_6_NOTEBOOK",
+    "SINGLE_LSTSTACK_BASELINE_REINPAINT",
     "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
     "MERGE_SINGLE_BASELINE_FILES",
 ]
 
+[SINGLE_LSTSTACK_BASELINE_FILTERED_SNR]
+args = [
+    "{basename}",
+    "${NOTEBOOK_TEMPLATE_OPTS:nb_template_dir}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",
+    "${GLOBAL_OPTS:FM_low_freq}",
+    "${GLOBAL_OPTS:FM_high_freq}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:filter_delay}",
+    "${GLOBAL_OPTS:eigenval_cutoff}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:fr_spectra_file}",
+    "${GLOBAL_OPTS:auto_fr_spectrum_file}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:xtalk_fr}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:fr_quantile_low}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:fr_quantile_high}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:min_samp_frac}",
+]
+
+[LSTSTACK_RFI_ROUND_6_NOTEBOOK]
+mem = 128000
+prereqs = "SINGLE_LSTSTACK_BASELINE_FILTERED_SNR"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = [
+    "{basename}",
+    "${NOTEBOOK_TEMPLATE_OPTS:nb_template_dir}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:min_samp_frac}",
+    "${GLOBAL_OPTS:FM_low_freq}",
+    "${GLOBAL_OPTS:FM_high_freq}",
+    "${LSTSTACK_RFI_ROUND_6_OPTS:z_thresh}",
+    "${LSTSTACK_RFI_ROUND_6_OPTS:ws_z_thresh}",
+    "${LSTSTACK_RFI_ROUND_6_OPTS:avg_z_thresh}",
+    "${LSTSTACK_RFI_ROUND_6_OPTS:max_freq_flag_frac}",
+    "${LSTSTACK_RFI_ROUND_6_OPTS:max_time_flag_frac}",
+    "${LSTSTACK_RFI_ROUND_6_OPTS:time_conv_size}",
+]
+
+[SINGLE_LSTSTACK_BASELINE_REINPAINT]
+prereqs = "LSTSTACK_RFI_ROUND_6_NOTEBOOK"
+args = [
+    "{basename}",
+    "${NOTEBOOK_TEMPLATE_OPTS:nb_template_dir}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",
+    "${GLOBAL_OPTS:FM_low_freq}",
+    "${GLOBAL_OPTS:FM_high_freq}",
+    "${GLOBAL_OPTS:eigenval_cutoff}",
+    "${GLOBAL_OPTS:auto_fr_spectrum_file}",
+    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:auto_inpaint_delay}",
+    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_delay}",
+    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:cg_tol}",
+    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_width_factor}",
+    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_zero_dist_weight}",
+    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:gauss_fit_buffer_cut}",
+]
+
 [SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC]
+prereqs = "SINGLE_LSTSTACK_BASELINE_REINPAINT"
 args = [
     "{basename}",
     "${NOTEBOOK_OPTS:toml_file}",
     "${NOTEBOOK_OPTS:toml_section}",
     "${Options:conda_env}",
-    "${NOTEBOOK_OPTS:nb_output_repo}",   
+    "${NOTEBOOK_OPTS:nb_output_repo}",
 ]
 
 [MERGE_SINGLE_BASELINE_FILES]
