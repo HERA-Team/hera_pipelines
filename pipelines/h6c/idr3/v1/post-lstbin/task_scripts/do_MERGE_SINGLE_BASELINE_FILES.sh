@@ -24,16 +24,16 @@ basename=$(basename "$fn")
 prefix="${basename%%.[0-9]*_[0-9]*.*}"  # Gets: zen.LST.baseline
 suffix="${basename#*.[0-9]*_[0-9]*.}"   # Gets: sum.FR0filt.uvh5 (or sum.uvh5)
 
+# Build output suffix. The ".reinpainted" infix reflects that pspec ran on the
+# re-inpainted data produced by SINGLE_LSTSTACK_BASELINE_REINPAINT.
+output_suffix="${suffix%.uvh5}.reinpainted"
+
 # Build the pattern with standard glob (works with fast-merge-baselines)
 # [0-9]* matches zero or more digits, but in context it works since we have delimiters
-# Replace .uvh5 with .pspec.h5
-pspec_pattern="${prefix}.[0-9]*_[0-9]*.${suffix%.uvh5}.pspec.h5"
+pspec_pattern="${prefix}.[0-9]*_[0-9]*.${output_suffix}.pspec.h5"
 
 # For tavg
-tavg_pattern="${prefix}.[0-9]*_[0-9]*.${suffix%.uvh5}.tavg.pspec.h5"
-
-# Build output suffix (preserve any tags like FR0filt)
-output_suffix="${suffix%.uvh5}"
+tavg_pattern="${prefix}.[0-9]*_[0-9]*.${output_suffix}.tavg.pspec.h5"
 
 # First do the non-time-averaged pspecs
 pattern="$outdir/$pspec_pattern"
