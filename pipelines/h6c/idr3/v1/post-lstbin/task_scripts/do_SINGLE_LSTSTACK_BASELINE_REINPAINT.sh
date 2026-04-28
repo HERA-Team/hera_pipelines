@@ -44,7 +44,7 @@ export RED_AVG_FILE="${cross_file}"
 
 # Round-6 flag application: glob all per-source + incoherent waterfalls in this dir
 export APPLY_PRIOR_FLAGS="TRUE"
-export PRIOR_FLAG_GLOB="zen.LST.*.flag_waterfall_round_6.h5"
+export PRIOR_FLAG_SUFFIX=".flag_waterfall_round_6.h5"
 
 # Inpainting settings
 export FM_LOW_FREQ=${FM_low_freq}
