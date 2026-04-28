@@ -29,7 +29,7 @@ fr_spectra_file = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_p
 xtalk_fr = 0.01  # in mHz
 fr_quantile_low = 0.05
 fr_quantile_high = 0.95
-min_samp_frac = 0.1
+min_samp_frac = 0.05  # TODO: this should probably be 1.0, but let's try this for now
 skip_fr0_overlap_baselines = "FALSE"  # passed verbatim into env; the notebook checks `.upper() == "TRUE"`
 
 [LSTSTACK_RFI_ROUND_6_OPTS]
@@ -148,6 +148,7 @@ args = [
 
 [SINGLE_LSTSTACK_BASELINE_REINPAINT]
 prereqs = "LSTSTACK_RFI_ROUND_6_NOTEBOOK"
+prereq_chunk_size = "all"
 args = [
     "{basename}",
     "${NOTEBOOK_TEMPLATE_OPTS:nb_template_dir}",
