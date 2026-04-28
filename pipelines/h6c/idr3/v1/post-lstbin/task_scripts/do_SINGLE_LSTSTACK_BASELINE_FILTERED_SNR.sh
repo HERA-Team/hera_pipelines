@@ -31,9 +31,9 @@ cross_file="${outdir}/$(basename "$fn")"
 
 echo "Performing LST-stack single-baseline filtered-SNR computation on ${cross_file}"
 
-# Skip autocorrelations and outriggers, fail if any polarization is fully flagged
-if ! python ${src_dir}/check_single_bl_file.py ${cross_file} --skip_autos --skip_outriggers; then
-    echo "Skipping ${cross_file} (autocorrelation, outrigger, or fully-flagged polarization)."
+# Skip autocorrelations or if any polarization is fully flagged
+if ! python ${src_dir}/check_single_bl_file.py ${cross_file} --skip_autos; then
+    echo "Skipping ${cross_file} (it's an autocorrelation or a fully-flagged polarization)."
     exit 0
 fi
 
