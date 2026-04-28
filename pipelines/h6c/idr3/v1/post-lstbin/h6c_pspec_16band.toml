@@ -30,6 +30,7 @@ xtalk_fr = 0.01  # in mHz
 fr_quantile_low = 0.05
 fr_quantile_high = 0.95
 min_samp_frac = 0.1
+skip_fr0_overlap_baselines = "FALSE"  # passed verbatim into env; the notebook checks `.upper() == "TRUE"`
 
 [LSTSTACK_RFI_ROUND_6_OPTS]
 z_thresh = 8
@@ -120,6 +121,7 @@ args = [
     "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:fr_quantile_low}",
     "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:fr_quantile_high}",
     "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:min_samp_frac}",
+    "${SINGLE_LSTSTACK_BASELINE_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
 ]
 
 [LSTSTACK_RFI_ROUND_6_NOTEBOOK]
