@@ -40,7 +40,7 @@ fi
 
 # Mode + IO interface (consumed by the LSTSTACK_MODE branch in the notebook)
 export LSTSTACK_MODE="TRUE"
-export SINGLE_BL_FILE="${cross_file}"
+export RED_AVG_FILE="${cross_file}"
 
 # Round-6 flag application: glob all per-source + incoherent waterfalls in this dir
 export APPLY_PRIOR_FLAGS="TRUE"
