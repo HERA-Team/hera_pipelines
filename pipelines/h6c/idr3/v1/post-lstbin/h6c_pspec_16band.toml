@@ -26,7 +26,7 @@ min_samp_frac = 0.05  # TODO: this should probably be 0.1, but let's try this fo
 
 [FRF_SNR_OPTS]  # Read directly by single_lststack_baseline_pI_FRF_SNR notebook
 filter_delay = 750.0  # ns
-xtalk_filter = 0.01       # mHz
+xtalk_frate = 0.01  # mHz
 skip_fr0_overlap_baselines = false
 fr_spectra_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5"
 fr_quantile_low = 0.05
