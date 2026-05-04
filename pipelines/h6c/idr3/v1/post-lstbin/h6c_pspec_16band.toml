@@ -31,9 +31,11 @@ skip_fr0_overlap_baselines = false
 fr_spectra_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5"
 fr_quantile_low = 0.05
 fr_quantile_high = 0.95
-auto_inpaint_delay = 100.0  # ns, for smooth auto model
-auto_blacklist_nsigma = 5.0
-auto_gauss_fit_buffer_cut = 1e-5
+auto_inpaint_delay = 50.0  # ns, for smooth auto model
+auto_gauss_fit_buffer_cut = 1e-3
+auto_blacklist_smoother_factor = 0.5
+auto_blacklist_rel_err_thresh = 1.0
+auto_blacklist_downweight = 0.1
 auto_cg_tol = 1e-6
 auto_cg_iter_lim = 500
 
