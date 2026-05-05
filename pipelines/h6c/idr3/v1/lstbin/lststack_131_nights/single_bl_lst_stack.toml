@@ -172,7 +172,7 @@ WHERE_INPAINTED_WGTS=1e-4
 LSTCAL_FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.{night}.lstcal.hdf5"
 
 [LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
-MAX_BL_LENGTH = 60.0 # in meters; set to e.g. 60.0 to run only short baselines first. Baselines longer than this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
+MAX_BL_LENGTH = 1e100 # in meters; set to e.g. 60.0 to run only short baselines first. Baselines longer than this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
 MIN_AVG_REDUNDANCY = 0.0 # average number of baselines per night in the redundant group; baselines below this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
 OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs-131-nights"
 FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.LST.baseline.{bl_str}.sum.uvh5"
