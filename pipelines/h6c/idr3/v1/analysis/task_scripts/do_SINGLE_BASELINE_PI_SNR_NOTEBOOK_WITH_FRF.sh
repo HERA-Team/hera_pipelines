@@ -16,10 +16,11 @@ filter_delay=${6}
 eigenval_cutoff=${7}
 fr_spectra_file=${8}
 auto_fr_spectrum_file=${9}
-xtalk_fr=${10}
+xtalk_frate=${10}
 fr_quantile_low=${11}
 fr_quantile_high=${12}
 min_samp_frac=${13}
+skip_fr0_overlap_baselines=${14}
 
 # path manipulation
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -33,10 +34,11 @@ export FILTER_DELAY=${filter_delay}
 export EIGENVAL_CUTOFF=${eigenval_cutoff}
 export FR_SPECTRA_FILE=${fr_spectra_file}
 export AUTO_FR_SPECTRUM_FILE=${auto_fr_spectrum_file}
-export XTALK_FR=${xtalk_fr}
+export XTALK_FRATE=${xtalk_frate}
 export FR_QUANTILE_LOW=${fr_quantile_low}
 export FR_QUANTILE_HIGH=${fr_quantile_high}
 export MIN_SAMP_FRAC=${min_samp_frac}
+export SKIP_FR0_OVERLAP_BASELINES=${skip_fr0_overlap_baselines}
 export SAVE_DLY_SNR="False"
 export SAVE_FRF_SNR="True"
 export FRF_SNR_SUFFIX=".pI_FRF_SNR.uvh5"

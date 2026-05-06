@@ -21,7 +21,8 @@ auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cac
 [SINGLE_BASELINE_PI_FRF_SNR_OPTS]
 filter_delay = 750 # in ns
 fr_spectra_file = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5'
-xtalk_fr = 0.01 # in mHz
+xtalk_frate = 0.01 # in mHz
+skip_fr0_overlap_baselines = false
 fr_quantile_low = 0.05
 fr_quantile_high = 0.95
 min_samp_frac = 0.1
@@ -81,10 +82,11 @@ args = ["{basename}",
         "${GLOBAL_OPTS:eigenval_cutoff}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_spectra_file}",
         "${GLOBAL_OPTS:auto_fr_spectrum_file}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_frate}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_low}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
         ]
 # extra_batch_options = "--nice=999"
 
@@ -122,10 +124,11 @@ args = ["{basename}",
         "${GLOBAL_OPTS:eigenval_cutoff}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_spectra_file}",
         "${GLOBAL_OPTS:auto_fr_spectrum_file}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_frate}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_low}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
         ]
 # extra_batch_options = "--nice=999"
 
@@ -184,7 +187,7 @@ args = ["{basename}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
-        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_frate}",
         "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
         "${GLOBAL_OPTS:eigenval_cutoff}",
         "${GLOBAL_OPTS:FM_low_freq}",
