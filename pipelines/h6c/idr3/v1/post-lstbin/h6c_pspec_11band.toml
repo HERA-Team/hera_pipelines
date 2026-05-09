@@ -23,6 +23,9 @@ FM_high_freq = 108.0  # in MHz
 eigenval_cutoff = 1e-12
 auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
 min_samp_frac = 0.05  # TODO: this should probably be 0.1, but let's try this for now
+BAND_STR = "49.0~62.2,62.9~74.1,74.4~86.9,110.3~124.6,125.3~136.2,138.8~149.9,150.0~164.0,164.1~180.9,181.6~197.1,197.3~213.2,213.2~227.3"
+LST_MIN = -1.5  # i.e. 22.5 hours
+LST_MAX = 15.5
 
 [FRF_SNR_OPTS]  # Read directly by single_lststack_baseline_pI_FRF_SNR notebook
 filter_delay = 1000.0  # ns
@@ -61,7 +64,6 @@ PLOT = true
 SAVE_RESULTS = true
 
 # Spectral Options
-BAND_STR = "49.0~62.2,62.9~74.1,74.4~86.9,110.3~124.6,125.3~136.2,138.8~149.9,150.0~164.0,164.1~180.9,181.6~197.1,197.3~213.2,213.2~227.3"
 ALREADY_INPAINTED = true
 PERFORM_INPAINT = false
 INPAINT_MIN_DLY = 500.0  # ns
@@ -94,9 +96,6 @@ FR_QUANTILE_LOW = 0.05
 FR_QUANTILE_HIGH = 0.95
 FR_EIGENVAL_CUTOFF = 1e-12
 TARGET_AVERAGING_TIME = 300  # seconds
-
-LST_MIN = -1.5 # i.e. 22.5 hours 
-LST_MAX = 15.5
 
 # pspec options
 EFIELD_HEALPIX_BEAM_FILE = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/NF_HERA_Vivaldi_efield_beam_healpix.fits"
