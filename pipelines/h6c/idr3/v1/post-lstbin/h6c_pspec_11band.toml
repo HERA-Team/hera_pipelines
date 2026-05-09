@@ -164,8 +164,7 @@ prereqs = "SINGLE_LSTSTACK_BASELINE_REINPAINT"
 args = [
     "{basename}",
     "${NOTEBOOK_OPTS:toml_file}",
-    "${NOTEBOOK_OPTS:toml_section}",
-    "${Options:conda_env}",
+    "${NOTEBOOK_TEMPLATE_OPTS:nb_template_dir}",
     "${NOTEBOOK_OPTS:nb_output_repo}",
 ]
 
