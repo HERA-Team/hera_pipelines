@@ -56,7 +56,7 @@ inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
 gauss_fit_buffer_cut = 1e-5
 
-[CONFIG_OPTS] # This section is directly read when running the notebook.
+[POSTPROCESS_AND_PSPEC_OPTS] # This section is directly read when running the notebook.
 # General Options
 PLOT = true
 SAVE_RESULTS = true

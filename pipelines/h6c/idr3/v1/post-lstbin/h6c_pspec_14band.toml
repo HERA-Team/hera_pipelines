@@ -20,7 +20,7 @@ BAND_STR = "50.1~62.2,63.3~73.5,74.6~85.4,108.0~116.1,117.3~124.4,125.3~136.2,13
 LST_MIN = 1.25  # 30 minutes inside H1C, because FRF's bleed structure (galaxy and pulsars)
 LST_MAX = 14    # extend to the end of the H6C 86 night set
 
-[CONFIG_OPTS] # This section is directly read when running the notebook.
+[POSTPROCESS_AND_PSPEC_OPTS] # This section is directly read when running the notebook.
 # General Options
 PLOT = true
 SAVE_RESULTS = true
