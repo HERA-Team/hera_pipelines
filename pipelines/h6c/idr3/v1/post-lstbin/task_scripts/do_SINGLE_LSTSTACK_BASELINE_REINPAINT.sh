@@ -25,6 +25,10 @@ cg_tol=${10}
 inpaint_width_factor=${11}
 inpaint_zero_dist_weight=${12}
 gauss_fit_buffer_cut=${13}
+apply_round_6_flags=${14}
+band_str=${15}
+lst_min=${16}
+lst_max=${17}
 
 # Path manipulation
 outdir=$(cd "$(dirname "$fn")" && pwd)
@@ -42,9 +46,18 @@ fi
 export LSTSTACK_MODE="TRUE"
 export RED_AVG_FILE="${cross_file}"
 
-# Round-6 flag application: glob all per-source + incoherent waterfalls in this dir
-export APPLY_PRIOR_FLAGS="TRUE"
+# Round-6 flag application: glob all per-source + incoherent waterfalls in this dir.
+# When apply_round_6_flags="FALSE", the notebook skips loading round-6 flag files and
+# only re-inpaints pixels with nsamples == 0 (fully-inpainted upstream).
+export APPLY_PRIOR_FLAGS=${apply_round_6_flags}
 export PRIOR_FLAG_SUFFIX=".flag_waterfall_round_6.h5"
+
+# Restrict re-inpainting to the same (band, LST) window the SNR step + pspec operate on.
+# Outside the mask, the notebook will set flags=True so the inpaint pipeline ignores those
+# pixels entirely (no DPSS fit there, no inpainting there).
+export BAND_STR=${band_str}
+export LST_MIN=${lst_min}
+export LST_MAX=${lst_max}
 
 # Inpainting settings
 export FM_LOW_FREQ=${FM_low_freq}

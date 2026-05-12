@@ -55,6 +55,7 @@ cg_tol = 1e-6
 inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
 gauss_fit_buffer_cut = 1e-5
+apply_round_6_flags = "TRUE"  # if "FALSE", only re-inpaint pixels with nsamples == 0 (skip round-6 flag waterfalls)
 
 [POSTPROCESS_AND_PSPEC_OPTS] # This section is directly read when running the notebook.
 # General Options
@@ -157,6 +158,10 @@ args = [
     "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_width_factor}",
     "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_zero_dist_weight}",
     "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:gauss_fit_buffer_cut}",
+    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:apply_round_6_flags}",
+    "${GLOBAL_OPTS:BAND_STR}",
+    "${GLOBAL_OPTS:LST_MIN}",
+    "${GLOBAL_OPTS:LST_MAX}",
 ]
 
 [SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC]
