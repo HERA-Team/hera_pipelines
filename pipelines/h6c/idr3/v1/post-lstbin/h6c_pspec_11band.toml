@@ -25,13 +25,7 @@ BAND_STR = "49.0~62.2,62.9~74.1,74.4~86.9,110.3~124.6,125.3~136.2,138.8~149.9,15
 LST_MIN = -1.5  # i.e. 22.5 hours
 LST_MAX = 15.5
 
-[FRF_SNR_OPTS]  # Read directly by single_lststack_baseline_pI_FRF_SNR notebook
-filter_delay = 1000.0  # ns
-xtalk_frate = 0.025  # mHz
-skip_fr0_overlap_baselines = false
-fr_spectra_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5"
-fr_quantile_low = 0.05
-fr_quantile_high = 0.95
+[AUTO_SMOOTH_OPTS]  # Shared by single_lststack_baseline_pI_FRF_SNR and single_lststack_baseline_scaffolded_and_feathered_inpainter
 auto_inpaint_delay = 50.0  # ns, for smooth auto model
 auto_gauss_fit_buffer_cut = 1e-3
 auto_blacklist_smoother_factor = 0.5
@@ -39,6 +33,14 @@ auto_blacklist_rel_err_thresh = 1.0
 auto_blacklist_downweight = 0.1
 auto_cg_tol = 1e-6
 auto_cg_iter_lim = 500
+
+[FRF_SNR_OPTS]  # Read directly by single_lststack_baseline_pI_FRF_SNR notebook
+filter_delay = 1000.0  # ns
+xtalk_frate = 0.025  # mHz
+skip_fr0_overlap_baselines = false
+fr_spectra_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5"
+fr_quantile_low = 0.05
+fr_quantile_high = 0.95
 
 [LSTSTACK_RFI_ROUND_6_OPTS]
 z_thresh = 8
@@ -48,14 +50,14 @@ max_freq_flag_frac = 0.25
 max_time_flag_frac = 0.50
 time_conv_size = 3600  # in seconds
 
-[SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS]
-auto_inpaint_delay = 100.0  # in ns, for smooth auto model
+[SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS]  # Read directly by single_lststack_baseline_scaffolded_and_feathered_inpainter notebook
 inpaint_delay = 1000.0  # in ns
 cg_tol = 1e-6
+cg_iter_lim = 500
 inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
-gauss_fit_buffer_cut = 1e-3
-apply_round_6_flags = "TRUE"  # if "FALSE", only re-inpaint pixels with nsamples == 0 (skip round-6 flag waterfalls)
+apply_round_6_flags = false  # if false, only re-inpaint pixels with nsamples == 0 (skip round-6 flag waterfalls) # TODO this should be true eventually
+apply_abscal_correction = true  # if true, multiply cross visibilities by upsampled SSM gleam/orig ratio before writing
 
 [POSTPROCESS_AND_PSPEC_OPTS] # This section is directly read when running the notebook.
 # General Options
@@ -146,22 +148,9 @@ prereqs = "LSTSTACK_RFI_ROUND_6_NOTEBOOK"
 prereq_chunk_size = "all"
 args = [
     "{basename}",
+    "${NOTEBOOK_OPTS:toml_file}",
     "${NOTEBOOK_TEMPLATE_OPTS:nb_template_dir}",
     "${NOTEBOOK_OPTS:nb_output_repo}",
-    "${GLOBAL_OPTS:FM_low_freq}",
-    "${GLOBAL_OPTS:FM_high_freq}",
-    "${GLOBAL_OPTS:eigenval_cutoff}",
-    "${GLOBAL_OPTS:auto_fr_spectrum_file}",
-    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:auto_inpaint_delay}",
-    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_delay}",
-    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:cg_tol}",
-    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_width_factor}",
-    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:inpaint_zero_dist_weight}",
-    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:gauss_fit_buffer_cut}",
-    "${SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS:apply_round_6_flags}",
-    "${GLOBAL_OPTS:BAND_STR}",
-    "${GLOBAL_OPTS:LST_MIN}",
-    "${GLOBAL_OPTS:LST_MAX}",
 ]
 
 [SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC]
