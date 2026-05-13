@@ -58,6 +58,8 @@ inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
 apply_round_6_flags = false  # if false, only re-inpaint pixels with nsamples == 0 (skip round-6 flag waterfalls) # TODO this should be true eventually
 apply_abscal_correction = true  # if true, multiply cross visibilities by upsampled SSM gleam/orig ratio before writing
+abscal_smooth_delay = 33.333  # ns; delay half-width for the 2D DPSS smoothing of the abscal ratio
+abscal_smooth_fringe_rate = 0.0001  # Hz; fringe-rate half-width for the 2D DPSS smoothing of the abscal ratio
 
 [POSTPROCESS_AND_PSPEC_OPTS] # This section is directly read when running the notebook.
 # General Options
