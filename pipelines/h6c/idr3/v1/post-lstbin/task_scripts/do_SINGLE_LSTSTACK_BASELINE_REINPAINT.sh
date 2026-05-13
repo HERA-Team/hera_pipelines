@@ -23,12 +23,6 @@ cross_file="$outdir/$(basename "$fn")"
 
 echo "Performing LST-stack single-baseline re-inpainting on ${cross_file}"
 
-# Skip autocorrelations or fully-flagged polarizations.
-if ! python ${src_dir}/check_single_bl_file.py ${cross_file} --skip_autos; then
-    echo "Skipping ${cross_file} (autocorrelation or fully-flagged polarization)."
-    exit 0
-fi
-
 # Env vars consumed by the notebook
 export TOML_FILE=${toml_file}
 export SINGLE_BL_FILE=${cross_file}
