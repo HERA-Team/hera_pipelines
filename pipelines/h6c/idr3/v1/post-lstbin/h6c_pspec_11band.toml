@@ -52,8 +52,6 @@ time_conv_size = 3600  # in seconds
 
 [SINGLE_LSTSTACK_BASELINE_REINPAINT_OPTS]  # Read directly by single_lststack_baseline_scaffolded_and_feathered_inpainter notebook
 inpaint_delay = 1000.0  # in ns
-cg_tol = 1e-6
-cg_iter_lim = 500
 inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
 apply_round_6_flags = false  # if false, only re-inpaint pixels with nsamples == 0 (skip round-6 flag waterfalls) # TODO this should be true eventually
