@@ -150,6 +150,7 @@ args = [
 
 [SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC]
 prereqs = "SINGLE_LSTSTACK_BASELINE_REINPAINT"
+prereq_chunk_size = "all"
 args = [
     "{basename}",
     "${NOTEBOOK_OPTS:toml_file}",
