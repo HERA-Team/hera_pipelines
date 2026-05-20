@@ -98,6 +98,7 @@ EFIELD_HEALPIX_BEAM_FILE = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_sim
 TAPER = "bh"
 INCLUDE_INTERLEAVE_AUTO_PS = false
 STORE_WINDOW_FUNCTIONS = false
+PSPEC_LST_AVG_RANGES = "1.0~6.0,8.2~10.0" # carves out PSR J0628-28 and PSR J0742-2822
 
 [WorkFlow]
 actions = [
