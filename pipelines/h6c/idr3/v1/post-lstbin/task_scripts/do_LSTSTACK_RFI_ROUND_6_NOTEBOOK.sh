@@ -41,7 +41,11 @@ export TIME_CONV_SIZE=${time_conv_size}
 # Output HTML lives directly in the nb_output_repo subfolder (one notebook per LST run)
 nb_outdir=${nb_output_repo}/full_lststack_rfi_round_6
 mkdir -p "${nb_outdir}"
-nb_outfile="${nb_outdir}/full_lststack_rfi_round_6.html"
+if [[ "${fn}" == *"FR0filt"* ]]; then
+    nb_outfile="${nb_outdir}/full_lststack_rfi_round_6_FR0filt.html"
+else
+    nb_outfile="${nb_outdir}/full_lststack_rfi_round_6.html"
+fi
 
 jupyter nbconvert --output=${nb_outfile} \
     --to html \
