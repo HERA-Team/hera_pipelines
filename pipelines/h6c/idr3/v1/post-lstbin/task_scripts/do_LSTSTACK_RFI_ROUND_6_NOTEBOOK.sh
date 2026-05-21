@@ -26,7 +26,11 @@ outdir=$(cd "$(dirname "$fn")" && pwd)
 
 # Notebook env vars
 export SINGLE_BL_DIR="${outdir}"
-export SNR_SUFFIX=".sum.pI_FRF_SNR.uvh5"
+if [[ "${fn}" == *"FR0filt"* ]]; then
+    export SNR_SUFFIX=".sum.FR0filt.pI_FRF_SNR.uvh5"
+else
+    export SNR_SUFFIX=".sum.pI_FRF_SNR.uvh5"
+fi
 export OUTFILE_SUFFIX=".flag_waterfall_round_6.h5"
 export MIN_SAMP_FRAC=${min_samp_frac}
 export FM_LOW_FREQ=${FM_low_freq}
