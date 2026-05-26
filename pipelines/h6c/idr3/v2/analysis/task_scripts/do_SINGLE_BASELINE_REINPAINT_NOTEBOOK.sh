@@ -21,6 +21,9 @@ inpaint_zero_dist_weight=${11}
 auto_fr_spectrum_file=${12}
 gauss_fit_buffer_cut=${13}
 subtract_polarized_source=${14}
+filter_scaffold=${15}
+filter_standoff=${16}
+filter_min_delay=${17}
 
 # path manipulation
 jd=$(get_int_jd ${fn})
@@ -52,6 +55,11 @@ export WHERE_INPAINTED_EXTENSION=".where_reinpainted.h5"
 
 # polarized source subtraction settings
 export SUBTRACT_POLARIZED_SOURCE=${subtract_polarized_source}
+
+# filter settings
+export FILTER_SCAFFOLD=${filter_scaffold}
+export FILTER_STANDOFF=${filter_standoff}
+export FILTER_MIN_DELAY=${filter_min_delay}
 
 # produce a string like "0_0" for a single baseline and "0_0.0_1.0_2" for multiple baselines
 antpairs_str=$(python -c "
