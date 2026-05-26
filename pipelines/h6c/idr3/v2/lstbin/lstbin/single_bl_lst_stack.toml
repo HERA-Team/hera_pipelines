@@ -6,7 +6,7 @@ base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/task_scripts"
 toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/lstbin/single_bl_lst_stack.toml"  # this file
-conda_env = "h6c_idr3_2" 
+conda_env = "h6c_idr3" 
 batch_system = "slurm"
 
 
@@ -78,12 +78,11 @@ FREQ_SMOOTHING_SCALE=30.0 # in MHz
 TIME_SMOOTHING_SCALE=2500 # in seconds
 BLACKLIST_TIMESCALE_FACTOR=10
 BLACKLIST_RELATIVE_ERROR_THRESH=0.25
-BLACKLIST_NITER=5
 WHERE_INPAINTED_WGTS=1e-4
 LSTCAL_FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.{night}.lstcal.hdf5"
 
 [LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
-MAX_BL_LENGTH = 1e100 # in meters; set to e.g. 60.0 to run only short baselines first. Baselines longer than this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
+MAX_BL_LENGTH = 1e10 # in meters; set to e.g. 60.0 to run only short baselines first. Baselines longer than this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
 MIN_AVG_REDUNDANCY = 0.0 # average number of baselines per night in the redundant group; baselines below this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
 OUTDIR = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs"
 FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.LST.baseline.{bl_str}.sum.uvh5"
@@ -126,8 +125,8 @@ args = ["${Options:toml_file}"]
 [PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
 prereqs = "BUILD_BASELINE_MAP"
 prereq_chunk_size = "all"
-mem = 250000
-ncpu = 16 # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+mem = 47500
+ncpu = 2  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
 args = ["{basename}",
         "${Options:toml_file}",
        ]
@@ -135,8 +134,8 @@ args = ["{basename}",
 [SINGLE_NIGHT_LSTCAL]
 prereqs = "PRELIMINARY_SINGLE_BASELINE_LSTSTACK"
 prereq_chunk_size = "all"
-mem = 82500
-ncpu = 5
+mem = 80000
+ncpu = 2
 args = ["{basename}",
         "${Options:toml_file}",
        ]
@@ -144,8 +143,8 @@ args = ["{basename}",
 [SINGLE_BASELINE_LSTSTACK]
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
-mem = 250000
-ncpu = 16  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+mem = 47500
+ncpu = 2  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
 args = ["{basename}",
         "${Options:toml_file}",
        ]

@@ -21,6 +21,7 @@ fr_quantile_low=${11}
 fr_quantile_high=${12}
 min_samp_frac=${13}
 subtract_polarized_source=${14}
+skip_fr0_overlap_baselines=${15}
 
 # path manipulation
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -38,6 +39,7 @@ export XTALK_FR=${xtalk_fr}
 export FR_QUANTILE_LOW=${fr_quantile_low}
 export FR_QUANTILE_HIGH=${fr_quantile_high}
 export MIN_SAMP_FRAC=${min_samp_frac}
+export SKIP_FR0_OVERLAP_BASELINES=${skip_fr0_overlap_baselines}
 export DLY_SNR_SUFFIX=".pI_DLYFILT_SNR.uvh5"
 export SAVE_DLY_SNR="True"
 export SAVE_FRF_SNR="False"
