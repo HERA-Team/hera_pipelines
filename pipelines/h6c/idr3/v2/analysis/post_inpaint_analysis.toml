@@ -18,6 +18,8 @@ FM_high_freq = 108.0 # in MHz
 eigenval_cutoff = 1e-12
 auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
 subtract_polarized_source = true
+ridge_alpha = 1e-12
+leverage_cap = 0.999
 
 [SINGLE_BASELINE_PI_FRF_SNR_OPTS]
 filter_delay = 750 # in ns
@@ -122,6 +124,8 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
         "${GLOBAL_OPTS:subtract_polarized_source}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
+        "${GLOBAL_OPTS:ridge_alpha}",
+        "${GLOBAL_OPTS:leverage_cap}",
         ]
 # extra_batch_options = "--nice=999"
 
@@ -165,6 +169,8 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
         "${GLOBAL_OPTS:subtract_polarized_source}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
+        "${GLOBAL_OPTS:ridge_alpha}",
+        "${GLOBAL_OPTS:leverage_cap}",
         ]
 # extra_batch_options = "--nice=999"
 
