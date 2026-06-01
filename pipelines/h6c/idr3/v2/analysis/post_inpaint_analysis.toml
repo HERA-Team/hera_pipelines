@@ -20,6 +20,7 @@ auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cac
 subtract_polarized_source = true
 ridge_alpha = 1e-12
 leverage_cap = 0.999
+use_low_band_model = false
 
 [SINGLE_BASELINE_PI_FRF_SNR_OPTS]
 filter_delay = 750 # in ns
@@ -126,6 +127,7 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
         "${GLOBAL_OPTS:ridge_alpha}",
         "${GLOBAL_OPTS:leverage_cap}",
+        "${GLOBAL_OPTS:use_low_band_model}",
         ]
 # extra_batch_options = "--nice=999"
 
@@ -171,6 +173,7 @@ args = ["{basename}",
         "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
         "${GLOBAL_OPTS:ridge_alpha}",
         "${GLOBAL_OPTS:leverage_cap}",
+        "${GLOBAL_OPTS:use_low_band_model}",
         ]
 # extra_batch_options = "--nice=999"
 
@@ -215,7 +218,8 @@ args = ["{basename}",
         "${GLOBAL_OPTS:subtract_polarized_source}",
         "${REINPAINT_OPTS:filter_scaffold}",
         "${REINPAINT_OPTS:filter_standoff}",
-        "${REINPAINT_OPTS:filter_min_delay}"
+        "${REINPAINT_OPTS:filter_min_delay}",
+        "${GLOBAL_OPTS:use_low_band_model}",
         ]
 # extra_batch_options = "--nice=999"
 

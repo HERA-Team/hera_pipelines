@@ -24,6 +24,7 @@ subtract_polarized_source=${14}
 skip_fr0_overlap_baselines=${15}
 ridge_alpha=${16}
 leverage_cap=${17}
+use_low_band_model=${18}
 
 # path manipulation
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
@@ -50,6 +51,7 @@ export PRIOR_FLAG_SUFFIX=".flag_waterfall_round_4.h5"
 export SUBTRACT_POLARIZED_SOURCE=${subtract_polarized_source}
 export RIDGE_ALPHA=${ridge_alpha}
 export LEVERAGE_CAP=${leverage_cap}
+export USE_LOW_BAND_MODEL=${use_low_band_model}
 
 # produce a string like "0_0" for a single baseline and "0_0.0_1.0_2" for multiple baselines
 antpairs_str=$(python -c "

@@ -24,6 +24,7 @@ subtract_polarized_source=${14}
 filter_scaffold=${15}
 filter_standoff=${16}
 filter_min_delay=${17}
+use_low_band_model=${18}
 
 # path manipulation
 jd=$(get_int_jd ${fn})
@@ -55,6 +56,7 @@ export WHERE_INPAINTED_EXTENSION=".where_reinpainted.h5"
 
 # polarized source subtraction settings
 export SUBTRACT_POLARIZED_SOURCE=${subtract_polarized_source}
+export USE_LOW_BAND_MODEL=${use_low_band_model}
 
 # filter settings
 export FILTER_SCAFFOLD=${filter_scaffold}
