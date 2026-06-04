@@ -1,20 +1,15 @@
 #! /bin/bash
-set -e
+set -euo pipefail
 
-# This script runs a preliminary  the single baseline LST stacking notebook
+# This script runs a preliminary single-baseline LST-stacking notebook, but
+# only for the baselines that SETUP flagged as in_preliminary_set in
+# baseline_map.yaml.
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
 
 bl_str=${1}
 toml_file=${2}
-
-# check if we want a preliminary LST-stack of this baseline for use in LST calibration
-use_baseline=$(python ${src_dir}/use_baseline_for_lstcal.py ${bl_str} ${toml_file})
-if [ "${use_baseline}" != "True" ]; then
-    echo "Baseline ${bl_str} is not used for LST calibration. Exiting..."
-    exit 0
-fi
 
 # read relevant variables from TOML
 {
@@ -28,6 +23,15 @@ print(d["NOTEBOOK_OPTS"]["nb_template_dir"])
 print(d["NOTEBOOK_OPTS"]["nb_output_repo"])
 print(d["LST_STACK_OPTS"]["OUTDIR"])'
 )
+
+yaml_path="${OUTDIR}/baseline_map.yaml"
+
+# check the frozen decision made by SETUP
+use_baseline=$(python3 "${src_dir}/query_baseline_map.py" "${yaml_path}" "${bl_str}" in_preliminary_set)
+if [ "${use_baseline}" != "True" ]; then
+    echo "Baseline ${bl_str} is not in the preliminary set. Exiting..."
+    exit 0
+fi
 
 # export necessary environment variables to be read by notebook
 export TOML_FILE=${toml_file}
@@ -43,7 +47,11 @@ jupyter nbconvert --output=${nb_outfile} \
 --execute ${nb_template_dir}/single_baseline_lst_stack_and_reinpaint.ipynb
 echo Finished running single-baseline LST-stacking and re-inpainting notebook at $(date)
 
-# if baseline string is "0_4", copy notebook for easy viewing
-if [[ ${BASELINE_STRING} == "0_4" ]]; then
-    cp ${nb_outfile} ${nb_output_repo}/lststack/
-fi
+# Create symlink in notebook repo for web viewing
+nb_dest_dir="${nb_output_repo}/lststack_preliminary"
+mkdir -p "${nb_dest_dir}"
+ln -sf "$(realpath "${nb_outfile}")" "${nb_dest_dir}/$(basename "${nb_outfile}")"
+
+# Rebuild notebook index
+nb_index_script="${src_dir}/../../analysis/task_scripts/build_notebook_index.py"
+python "${nb_index_script}" "${nb_dest_dir}"
