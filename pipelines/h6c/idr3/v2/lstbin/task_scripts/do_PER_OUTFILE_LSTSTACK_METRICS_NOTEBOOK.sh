@@ -33,9 +33,9 @@ if [ -f "${outdir}/${outname}.ipynb.hasplots" ]
 then
     casename="$(basename "$outdir")"
     if [ ${isvalidation} -eq 1 ]; then
-        htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks/validation/lstbin/${casename}"
+        htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/notebooks/validation/lstbin/${casename}"
     else
-        htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks/lstbin/${casename}"
+        htmldir="/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/notebooks/lstbin/${casename}"
     fi
     mkdir -p "${htmldir}"
     cp "${outdir}/${outname}.html" "${htmldir}/"
