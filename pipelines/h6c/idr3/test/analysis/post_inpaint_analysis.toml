@@ -34,9 +34,19 @@ min_samp_frac = 0.1
 ############################################################################################################
 
 [WorkFlow]
-actions = ["SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF"]
+actions = ["BUILD_CORNER_TURN_MAP",
+           "SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF"]
+
+[BUILD_CORNER_TURN_MAP]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",]
 
 [SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF]
+prereqs = "BUILD_CORNER_TURN_MAP"
+prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}",
