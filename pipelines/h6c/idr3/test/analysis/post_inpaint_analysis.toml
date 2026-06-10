@@ -1,0 +1,59 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 15500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/test_space/src/hera_pipelines/pipelines/h6c/idr3/test/analysis/task_scripts"
+conda_env = "h6c_idr3_2"
+batch_system = "slurm"
+
+[NOTEBOOK_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/h6c-analysis/test_space/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/test_space/notebooks'
+
+[GLOBAL_OPTS]
+FM_low_freq = 87.5 # in MHz
+FM_high_freq = 108.0 # in MHz
+eigenval_cutoff = 1e-12
+auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
+subtract_polarized_source = true
+ridge_alpha = 1e-12
+leverage_cap = 0.999
+use_low_band_model = false
+
+[SINGLE_BASELINE_PI_FRF_SNR_OPTS]
+filter_delay = 750 # in ns
+fr_spectra_file = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/spectra_cache_hera_core.h5'
+xtalk_fr = 0.01 # in mHz
+skip_fr0_overlap_baselines = false
+fr_quantile_low = 0.05
+fr_quantile_high = 0.95
+min_samp_frac = 0.1
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF"]
+
+[SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHOUT_FRF]
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${GLOBAL_OPTS:FM_low_freq}",
+        "${GLOBAL_OPTS:FM_high_freq}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:filter_delay}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_spectra_file}",
+        "${GLOBAL_OPTS:auto_fr_spectrum_file}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:xtalk_fr}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_low}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:fr_quantile_high}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:min_samp_frac}",
+        "${GLOBAL_OPTS:subtract_polarized_source}",
+        "${SINGLE_BASELINE_PI_FRF_SNR_OPTS:skip_fr0_overlap_baselines}",
+        "${GLOBAL_OPTS:ridge_alpha}",
+        "${GLOBAL_OPTS:leverage_cap}",
+        "${GLOBAL_OPTS:use_low_band_model}",
+        ]
+# extra_batch_options = "--nice=999"
