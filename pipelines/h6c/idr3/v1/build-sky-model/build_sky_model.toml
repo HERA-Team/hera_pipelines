@@ -1,0 +1,66 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 23500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/build-sky-model/task_scripts"
+conda_env = "h6c_idr3"
+batch_system = "slurm"
+
+[NOTEBOOK_OPTS]
+toml_file = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v1/build-sky-model/build_sky_model.toml"  # this file
+nb_output_repo = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/notebooks'
+
+[NOTEBOOK_TEMPLATE_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_notebook_templates/notebooks'
+
+[GLOBAL_OPTS]
+FM_low_freq = 87.5  # in MHz
+FM_high_freq = 108.0  # in MHz
+eigenval_cutoff = 1e-12
+auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
+min_samp_frac = 0.15
+
+[AUTO_SMOOTH_OPTS]  # 2D-DPSS auto smoothing, shared with single_lststack_baseline_pI_FRF_SNR
+auto_inpaint_delay = 50.0  # ns, for smooth auto model
+auto_gauss_fit_buffer_cut = 1e-3
+auto_blacklist_smoother_factor = 0.5
+auto_blacklist_rel_err_thresh = 1.0
+auto_blacklist_downweight = 0.1
+auto_cg_tol = 1e-6
+auto_cg_iter_lim = 500
+
+[SKY_MODEL_OPTS]  # Read by single_baseline_sky_model_2D_filter.ipynb
+delay_buffer = 200.0  # ns, added to the baseline horizon delay for the frequency-axis (delay) DPSS cut
+max_bl_length = 200.0  # m, skip baselines longer than this
+gauss_fit_buffer_cut = 1e-5  # for the sky-fringe-rate buffer from the auto FR spectrum
+cg_iter_lim = 500
+model_suffix = ".sky_model.uvh5"
+
+[CORNER_TURN_OPTS]  # Read by corner_return_2int.py
+outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/sky-model-outputs"
+fname_format = "zen.LST.{lst:.5f}.sum.sky_model.uvh5"
+ints_per_output_file = 2
+
+[WorkFlow]
+actions = [
+    "BUILD_SKY_MODEL",
+    "CORNER_RETURN_2INT",
+]
+
+[BUILD_SKY_MODEL]
+args = [
+    "{basename}",
+    "${NOTEBOOK_OPTS:toml_file}",
+    "${NOTEBOOK_TEMPLATE_OPTS:nb_template_dir}",
+    "${NOTEBOOK_OPTS:nb_output_repo}",
+]
+
+[CORNER_RETURN_2INT]
+prereqs = "BUILD_SKY_MODEL"
+prereq_chunk_size = "all"
+args = [
+    "{basename}",
+    "${NOTEBOOK_OPTS:toml_file}",
+]
