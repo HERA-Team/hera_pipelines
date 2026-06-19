@@ -31,7 +31,7 @@ auto_cg_tol = 1e-6
 auto_cg_iter_lim = 500
 
 [SKY_MODEL_OPTS]  # Read by single_baseline_sky_model_2D_filter.ipynb
-delay_buffer = 300.0  # ns, added to the baseline horizon delay for the frequency-axis (delay) DPSS cut
+delay_buffer = 200.0  # ns, added to the baseline horizon delay for the frequency-axis (delay) DPSS cut
 max_bl_length = 200.0  # m, skip baselines longer than this
 gauss_fit_buffer_cut = 1e-5  # for the sky-fringe-rate buffer from the auto FR spectrum
 cg_iter_lim = 500
