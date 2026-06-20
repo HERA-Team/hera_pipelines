@@ -36,9 +36,11 @@ max_bl_length = 200.0  # m, skip baselines longer than this
 gauss_fit_buffer_cut = 1e-5  # for the sky-fringe-rate buffer from the auto FR spectrum
 cg_iter_lim = 500
 model_suffix = ".sky_model.uvh5"
+# All results go here: per-baseline sky models in outdir/single_baseline_files/, corner-turned
+# 2-integration all-baseline files directly in outdir/.
+outdir = "/lustre/aoc/projects/hera/h6c-analysis/abscal_models/h6c_filtered_lst_stack"
 
 [CORNER_TURN_OPTS]  # Read by corner_return_2int.py
-outdir = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/sky-model-outputs"
 fname_format = "zen.LST.{lst:.5f}.sum.sky_model.uvh5"
 ints_per_output_file = 2
 
