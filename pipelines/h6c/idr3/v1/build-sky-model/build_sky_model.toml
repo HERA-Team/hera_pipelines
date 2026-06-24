@@ -36,6 +36,10 @@ max_bl_length = 200.0  # m, skip baselines longer than this
 gauss_fit_buffer_cut = 1e-5  # for the sky-fringe-rate buffer from the auto FR spectrum
 cg_iter_lim = 500
 model_suffix = ".sky_model.uvh5"
+# Scaffolded + feathered weighting so the 2D fit doesn't swing across wide flagged frequency gaps
+# (e.g. ORBCOMM). The feather width is set by the per-baseline delay cut; these are the relative knobs.
+feather_width_factor = 1.0
+feather_zero_dist_weight = 1e-4
 # Optionally rescale the cross visibilities to the gleam flux scale before the 2D filter, using the
 # SSM gleam/orig autocorrelation ratio (as in single_lststack_baseline_scaffolded_and_feathered_inpainter).
 apply_abscal_correction = true  # appropriate when applying to raw H6C lst products
