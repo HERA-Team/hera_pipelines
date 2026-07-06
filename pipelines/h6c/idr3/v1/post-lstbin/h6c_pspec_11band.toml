@@ -103,22 +103,24 @@ PSPEC_LST_AVG_RANGES = "1.0~6.0,8.2~10.0" # carves out PSR J0628-28 and PSR J074
 [FT_BEAM_OPTS]
 BEAMFILE = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/NF_HERA_Vivaldi_efield_beam.fits"
 POL = "pI"
-FREQ_MIN_HZ = 50.0e6
-FREQ_MAX_HZ = 250.0e6
-NFREQ = 2048
+LABEL = "HERA_Vivaldi"  # instrument/beam label baked into the FT-beam filename
+# NB: no explicit frequency grid -- the FT beam is computed on the exact
+# frequency channels of the merged tavg pspec file. Computing it on any
+# other grid scales the window functions' k_parallel axis by the ratio of
+# the channel widths (this scaled the IDR3.1.1a window functions by 1.25).
 MAPSIZE = 1.0
 NPIX = 299
-CACHE_DIRS = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/FTBeam_cache"
-CACHE_OUT  = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/FTBeam_cache"
+SEARCH_DIRS = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/FTBeam_cache"
+OUT_DIR     = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/FTBeam_cache"
 FORCE_RECOMPUTE = "false"
 
 [WF_OPTS]
-ALGO = "exact"  # "exact" or "with-inpainting" (the latter not yet implemented)
 DATASET_LABEL = "131-nights"  # baked into WF filename; bump per dataset
 BANDS = "1,2,3,4,5,6,7,8,9,10,11"  # 1-indexed (11-band variant)
 POLPAIRS = "pI"  # comma-separated, e.g. "pI" or "pI,pQ"
 WF_DIRS    = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/window_functions"
 OUT_DIR    = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/window_functions"
+WORKERS = 4  # parallel (spw, polpair) worker processes; memory scales with this
 FORCE_RECOMPUTE = "false"
 
 [WorkFlow]
@@ -128,7 +130,7 @@ actions = [
     "SINGLE_LSTSTACK_BASELINE_REINPAINT",
     "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
     "MERGE_SINGLE_BASELINE_FILES",
-    "COMPUTE_FT_BEAM",            # no prereqs -- can run in parallel with the above
+    "COMPUTE_FT_BEAM",            # consumes the merged tavg pspec (freq grid)
     "COMPUTE_WINDOW_FUNCTIONS",   # consumes both FT beam and merged tavg pspec
 ]
 
@@ -197,6 +199,9 @@ mem=250000
 ncpu = 16
 
 [COMPUTE_FT_BEAM]
+prereqs = [
+    "MERGE_SINGLE_BASELINE_FILES",  # the FT beam is computed on the data's frequency channels
+]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -205,13 +210,11 @@ args = [
     "{basename}",
     "${FT_BEAM_OPTS:BEAMFILE}",
     "${FT_BEAM_OPTS:POL}",
-    "${FT_BEAM_OPTS:FREQ_MIN_HZ}",
-    "${FT_BEAM_OPTS:FREQ_MAX_HZ}",
-    "${FT_BEAM_OPTS:NFREQ}",
+    "${FT_BEAM_OPTS:LABEL}",
     "${FT_BEAM_OPTS:MAPSIZE}",
     "${FT_BEAM_OPTS:NPIX}",
-    "${FT_BEAM_OPTS:CACHE_DIRS}",
-    "${FT_BEAM_OPTS:CACHE_OUT}",
+    "${FT_BEAM_OPTS:SEARCH_DIRS}",
+    "${FT_BEAM_OPTS:OUT_DIR}",
     "${FT_BEAM_OPTS:FORCE_RECOMPUTE}",
 ]
 
@@ -226,21 +229,18 @@ stride_length = "all"
 time_centered = false
 args = [
     "{basename}",
-    "${WF_OPTS:ALGO}",
     "${WF_OPTS:DATASET_LABEL}",
     "${WF_OPTS:BANDS}",
     "${WF_OPTS:POLPAIRS}",
-    "${POSTPROCESS_AND_PSPEC_OPTS:TAPER}",
     "${FT_BEAM_OPTS:BEAMFILE}",
     "${FT_BEAM_OPTS:POL}",
-    "${FT_BEAM_OPTS:FREQ_MIN_HZ}",
-    "${FT_BEAM_OPTS:FREQ_MAX_HZ}",
-    "${FT_BEAM_OPTS:NFREQ}",
+    "${FT_BEAM_OPTS:LABEL}",
     "${FT_BEAM_OPTS:MAPSIZE}",
     "${FT_BEAM_OPTS:NPIX}",
-    "${FT_BEAM_OPTS:CACHE_DIRS}",
+    "${FT_BEAM_OPTS:SEARCH_DIRS}",
     "${WF_OPTS:WF_DIRS}",
     "${WF_OPTS:OUT_DIR}",
+    "${WF_OPTS:WORKERS}",
     "${WF_OPTS:FORCE_RECOMPUTE}",
 ]
 mem=250000
