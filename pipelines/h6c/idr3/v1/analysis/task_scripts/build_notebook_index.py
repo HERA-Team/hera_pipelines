@@ -89,6 +89,9 @@ overall_index += '    <li><a href="full_lststack_rfi_round_6">full_lststack_rfi_
 overall_index += '    <li><a href="single_lststack_baseline_scaffolded_and_feathered_inpainter">single_lststack_baseline_scaffolded_and_feathered_inpainter</a></li>\n'
 overall_index += '    <li><a href="single_baseline_postprocessing_and_pspec">single_baseline_postprocessing_and_pspec</a></li>\n'
 overall_index += '</ul>\n</h3>\n'
+overall_index += '<h2>Build Abscal Model Notebooks:</h2>\n<h3><ul>\n'
+overall_index += '    <li><a href="single_baseline_sky_model_2D_filter">single_baseline_sky_model_2D_filter</a></li>\n'
+overall_index += '</ul>\n</h3>\n'
 overall_index += '<h2>Notebooks by JD:</h2>\n'
 for jd in recent_jds[:]:
     overall_index += f'<h3>{jd}:</h3>\n<ul>\n' + '\n'.join([link for link in links if str(jd) in link]) + '\n</ul>\n'
