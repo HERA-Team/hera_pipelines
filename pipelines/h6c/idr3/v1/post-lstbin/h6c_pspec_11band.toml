@@ -243,4 +243,6 @@ args = [
     "${WF_OPTS:WORKERS}",
     "${WF_OPTS:FORCE_RECOMPUTE}",
 ]
-mem=250000
+# measured (sacct, 131-nights tavg, July 2026): 10-21 GB and 8-17 min per spw;
+# request ~= max_per_spw * WORKERS * 1.4 headroom
+mem=120000
