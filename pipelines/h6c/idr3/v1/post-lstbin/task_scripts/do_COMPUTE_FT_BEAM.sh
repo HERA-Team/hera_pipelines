@@ -2,11 +2,9 @@
 set -e
 
 # This script ensures a flat-sky FT-of-beam HDF5 (one per polarization) exists
-# in the cache, computed on the exact frequency channels of the merged
-# time-averaged pspec file (computing it on any other grid scales the window
-# functions' k_parallel axis by the ratio of the channel widths). The actual
-# work is done by the `pspec compute-ft-beam` CLI command from hera_pspec;
-# if a matching file is already present in any of the search dirs the
+# in the cache, computed on the frequency channels of the merged time-averaged
+# pspec file, via the `pspec compute-ft-beam` CLI command from hera_pspec.
+# If a matching file is already present in any of the cache dirs the
 # computation is skipped. Output schema is compatible with
 # hera_pspec.uvwindow.FTBeam.from_file.
 #
@@ -21,7 +19,7 @@ set -e
 #                          filename (e.g. "HERA_Vivaldi")
 #   5 - mapsize          : Cartesian flat-sky map half-width
 #   6 - npix             : pixels per side in the Cartesian projection (odd)
-#   7 - search_dirs      : colon-separated cache search list (PATH-style)
+#   7 - cache_dirs       : colon-separated cache search list (PATH-style)
 #   8 - out_dir          : directory to write fresh outputs to
 #   9 - force_recompute  : "true" or "false"
 
@@ -52,7 +50,7 @@ pol=${3}
 label=${4}
 mapsize=${5}
 npix=${6}
-search_dirs=${7}
+cache_dirs=${7}
 out_dir=${8}
 force_recompute=${9}
 
@@ -61,23 +59,14 @@ if [ "${force_recompute}" = "true" ]; then
     force_flag="--force-recompute"
 fi
 
-# colon-separated search list -> repeated --search-dirs flags
-search_flags=""
-IFS=':' read -ra dirs <<< "${search_dirs}"
-for d in "${dirs[@]}"; do
-    [ -n "$d" ] && search_flags="${search_flags} --search-dirs ${d}"
-done
-
 cmd="pspec compute-ft-beam \
-    --beam-file ${beam_file} \
-    --pol ${pol} \
+    ${beam_file} ${pol} ${tavg_pspec_file} \
     --label ${label} \
-    --pspec-file ${tavg_pspec_file} \
     --group stokespol \
     --name time_and_interleave_averaged \
     --mapsize ${mapsize} \
     --npix ${npix} \
-    ${search_flags} \
+    --search-dirs ${cache_dirs//:/ } \
     --out-dir ${out_dir} \
     ${force_flag}"
 

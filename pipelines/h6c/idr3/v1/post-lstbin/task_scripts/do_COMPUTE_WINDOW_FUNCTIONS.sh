@@ -15,14 +15,17 @@ set -e
 #                           same way do_MERGE_SINGLE_BASELINE_FILES.sh does.
 #   2  - dataset_label    : free-form differentiator baked into the
 #                           WF filename (e.g. "131-nights")
-#   3  - bands            : comma-separated 1-indexed band numbers
+#   3  - spws             : comma-separated 0-indexed spectral window
+#                           indices (matching hera_pspec and the spwNN in
+#                           the WF filenames); kept comma-separated so the
+#                           value stays a single makeflow argument
 #   4  - polpairs         : comma-separated polpair strings
 #   5  - beam_file        : path to UVBeam .fits sim
 #   6  - ft_beam_pol      : pol of the FT beam to use
 #   7  - ft_beam_label    : instrument/beam label in the FT-beam filename
 #   8  - ft_beam_mapsize  : FT-beam Cartesian half-width
 #   9  - ft_beam_npix     : FT-beam Cartesian pixels per side
-#  10 - ft_beam_dirs      : colon-separated FT-beam cache search list
+#  10 - ft_beam_cache_dirs: colon-separated FT-beam cache search list
 #  11 - wf_dirs           : colon-separated WF search list (existing
 #                           products are reused if filenames match)
 #  12 - wf_out_dir        : directory to write fresh WF HDF5s
@@ -61,14 +64,14 @@ if [ ! -f "${tavg_pspec_file}" ]; then
 fi
 
 dataset_label=${2}
-bands=${3}
+spws=${3}
 polpairs=${4}
 beam_file=${5}
 ft_beam_pol=${6}
 ft_beam_label=${7}
 ft_beam_mapsize=${8}
 ft_beam_npix=${9}
-ft_beam_dirs=${10}
+ft_beam_cache_dirs=${10}
 wf_dirs=${11}
 wf_out_dir=${12}
 workers=${13}
@@ -81,56 +84,27 @@ fi
 
 # Resolve the FT-beam path with the same cache logic as COMPUTE_FT_BEAM
 # (cache hit -> instant). This guarantees both tasks agree on the file.
-search_flags=""
-IFS=':' read -ra dirs <<< "${ft_beam_dirs}"
-for d in "${dirs[@]}"; do
-    [ -n "$d" ] && search_flags="${search_flags} --search-dirs ${d}"
-done
-
+first_cache_dir="${ft_beam_cache_dirs%%:*}"
 ft_beam_file=$(pspec compute-ft-beam \
-    --beam-file ${beam_file} \
-    --pol ${ft_beam_pol} \
+    ${beam_file} ${ft_beam_pol} ${tavg_pspec_file} \
     --label ${ft_beam_label} \
-    --pspec-file ${tavg_pspec_file} \
     --group stokespol \
     --name time_and_interleave_averaged \
     --mapsize ${ft_beam_mapsize} \
     --npix ${ft_beam_npix} \
-    ${search_flags} \
-    --out-dir "${dirs[0]}" \
+    --search-dirs ${ft_beam_cache_dirs//:/ } \
+    --out-dir "${first_cache_dir}" \
     | grep '^FT_BEAM_PATH=' | cut -d= -f2)
 echo "[do_COMPUTE_WINDOW_FUNCTIONS] Using FT beam: ${ft_beam_file}"
 
-# comma-separated 1-indexed bands -> repeated 0-indexed --spws flags
-spw_flags=""
-IFS=',' read -ra band_arr <<< "${bands}"
-for b in "${band_arr[@]}"; do
-    [ -n "$b" ] && spw_flags="${spw_flags} --spws $((b - 1))"
-done
-
-# comma-separated polpairs -> repeated --polpairs flags
-polpair_flags=""
-IFS=',' read -ra pp_arr <<< "${polpairs}"
-for p in "${pp_arr[@]}"; do
-    [ -n "$p" ] && polpair_flags="${polpair_flags} --polpairs ${p}"
-done
-
-# colon-separated WF search list -> repeated --wf-dirs flags
-wf_dir_flags=""
-IFS=':' read -ra wdirs <<< "${wf_dirs}"
-for d in "${wdirs[@]}"; do
-    [ -n "$d" ] && wf_dir_flags="${wf_dir_flags} --wf-dirs ${d}"
-done
-
 cmd="pspec compute-window-functions \
-    --pspec-file ${tavg_pspec_file} \
+    ${tavg_pspec_file} ${ft_beam_file} \
     --group stokespol \
     --name time_and_interleave_averaged \
-    --ft-beam-file ${ft_beam_file} \
     --dataset-label ${dataset_label} \
-    ${spw_flags} \
-    ${polpair_flags} \
-    ${wf_dir_flags} \
+    --spws ${spws//,/ } \
+    --polpairs ${polpairs//,/ } \
+    --wf-dirs ${wf_dirs//:/ } \
     --out-dir ${wf_out_dir} \
     --workers ${workers} \
     ${force_flag}"
@@ -138,4 +112,4 @@ cmd="pspec compute-window-functions \
 echo $cmd
 eval $cmd
 
-echo "Finished pspec compute-window-functions for dataset=${dataset_label}, polpairs=${polpairs}, bands=${bands} at $(date)"
+echo "Finished pspec compute-window-functions for dataset=${dataset_label}, polpairs=${polpairs}, spws=${spws} at $(date)"
