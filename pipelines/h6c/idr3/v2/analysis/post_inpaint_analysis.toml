@@ -54,14 +54,14 @@ cg_tol = 1e-6
 inpaint_width_factor = 0.5
 inpaint_zero_dist_weight = 1e-2
 gauss_fit_buffer_cut = 1e-5
-filter_scaffold = true
+filter_scaffold = false
 filter_standoff = 50
 filter_min_delay = 300
 
 [PER_NIGHT_SOURCE_FILTERING_OPTS]
 source_yaml = '/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/metadata/sources.yaml'
-fg_delay_half_width = 500e-9   # in seconds, foreground delay filter half-width
-model_delay_half_width = 100e-9  # in seconds, source model spectral half-width
+fg_delay_half_width = 1000e-9   # in seconds, foreground delay filter half-width
+model_delay_half_width = 200e-9  # in seconds, source model spectral half-width
 model_frate_half_width = 0.25   # in mHz, source model temporal half-width
 max_workers = 8
 
