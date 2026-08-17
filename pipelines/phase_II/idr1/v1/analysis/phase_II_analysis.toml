@@ -1,0 +1,84 @@
+# Phase II IDR1 per-night analysis configuration.
+#
+# Doubles as the makeflow workflow definition and the notebooks' direct configuration:
+# each notebook reads the sections named below via toml.load(TOML_FILE), injecting keys
+# as uppercase globals, so do scripts pass only paths.
+
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 23500  # TODO: tune once file_sky_calibration has run at scale
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/task_scripts"  # TODO: confirm NRAO layout
+conda_env = "phase_II_idr1"  # TODO: create/confirm
+batch_system = "slurm"
+
+[NOTEBOOK_OPTS]
+toml_file = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/phase_II_analysis.toml"  # this file; TODO: confirm NRAO layout
+nb_template_dir = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_notebook_templates/notebooks'  # TODO: confirm NRAO layout
+nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'  # TODO: confirm NRAO layout
+
+[GLOBAL_OPTS]  # shared across notebooks
+FM_low_freq = 87.5    # in MHz
+FM_high_freq = 108.0  # in MHz
+
+[FILE_SKY_CAL_OPTS]  # Read directly by the file_sky_calibration notebook
+# use_diff = false  # if unset, defaults to true for JD < 2460100 (diffs were only recorded through the H6C era), else false
+sky_model_files_glob = '/lustre/aoc/projects/hera/h6c-analysis/abscal_models/h6c_filtered_lst_stack/zen.*.sum.sky_model.uvh5'
+skycal_min_bl_len = 1.0    # in meters
+skycal_max_bl_len = 120.0  # in meters
+sc_maxiter = 100
+sc_max_rerun = 10
+sc_max_chisq_flagging_dynamic_range = 1.5
+calibrate_cross_pols = true
+auto_repair_identities = true
+skip_outriggers = true
+cross_rfi_min_samp_frac = 0.15
+cross_rfi_filter_delay = 750.0  # in ns
+cross_rfi_z_thresh = 4.0
+cross_rfi_ws_z_thresh = 2.0
+rfi_dpss_halfwidth = 300e-9  # in s
+rfi_nsig = 4.0
+
+[ANT_CLASS_BOUNDS]  # Read directly by the file_sky_calibration notebook
+am_corr_bad = 0.35
+am_corr_suspect = 0.45
+am_xpol_bad = -0.1
+am_xpol_suspect = 0.0
+suspect_solar_altitude = 0.0
+max_zeros_per_eo_spec_good = 2
+max_zeros_per_eo_spec_suspect = 8
+auto_power_good_low = 5.0
+auto_power_good_high = 30.0
+auto_power_suspect_low = 1.0
+auto_power_suspect_high = 60.0
+auto_slope_good_low = -0.4
+auto_slope_good_high = 0.4
+auto_slope_suspect_low = -0.6
+auto_slope_suspect_high = 0.6
+auto_rfi_good = 1.5
+auto_rfi_suspect = 2.0
+auto_shape_good = 0.1
+auto_shape_suspect = 0.2
+bad_xengine_zcut = 10.0
+identity_coherence_good = 0.8
+identity_coherence_suspect = 0.7
+identity_repair_margin = 0.2
+sc_cspa_good = 2.0
+sc_cspa_suspect = 3.0
+deco_max_suspect = 0.05
+deco_max_bad = 0.10
+deco_jump_suspect = 0.025
+deco_jump_bad = 0.05
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["FILE_SKY_CAL_NOTEBOOK"]
+
+[FILE_SKY_CAL_NOTEBOOK]
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
