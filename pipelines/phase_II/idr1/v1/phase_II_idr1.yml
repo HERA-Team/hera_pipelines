@@ -32,7 +32,7 @@ dependencies:
   - nodejs
   - numpy
   - optax
-  - pandas
+  - pandas>=3
   - papermill
   - pip
   - pre-commit
