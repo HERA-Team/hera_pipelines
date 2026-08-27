@@ -10,14 +10,14 @@ source_script = "~/.bashrc"
 base_mem = 23500  # TODO: tune once file_sky_calibration has run at scale
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/task_scripts"  # TODO: confirm NRAO layout
-conda_env = "phase_II_idr1"  # TODO: create/confirm
+path_to_do_scripts = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/task_scripts"
+conda_env = "phase_II_idr1"
 batch_system = "slurm"
 
 [NOTEBOOK_OPTS]
-toml_file = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/phase_II_analysis.toml"  # this file; TODO: confirm NRAO layout
-nb_template_dir = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_notebook_templates/notebooks'  # TODO: confirm NRAO layout
-nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'  # TODO: confirm NRAO layout
+toml_file = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/phase_II_analysis.toml"
+nb_template_dir = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_notebook_templates/notebooks/phase_II'
+nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'
 
 [GLOBAL_OPTS]  # shared across notebooks
 FM_low_freq = 87.5    # in MHz
