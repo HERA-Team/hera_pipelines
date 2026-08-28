@@ -186,7 +186,9 @@ produced_by = "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"
 
 [WorkFlow]
 actions = ["FILE_SKY_CAL_NOTEBOOK",
-           "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+           "FULL_DAY_RFI_NOTEBOOK",
+           "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
+           "CALIBRATION_SMOOTHING_NOTEBOOK"]
 
 [FILE_SKY_CAL_NOTEBOOK]
 args = ["{basename}",
@@ -194,8 +196,30 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
+[FULL_DAY_RFI_NOTEBOOK]  # placeholder: do script currently a no-op
+prereqs = "FILE_SKY_CAL_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
 [FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
 prereqs = "FILE_SKY_CAL_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[CALIBRATION_SMOOTHING_NOTEBOOK]  # placeholder: do script currently a no-op
+prereqs = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
