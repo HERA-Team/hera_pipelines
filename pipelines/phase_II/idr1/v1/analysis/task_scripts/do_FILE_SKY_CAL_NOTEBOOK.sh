@@ -28,10 +28,10 @@ echo Finished running file sky calibration notebook at $(date)
 
 # All four outputs are always produced (as fully-flagged placeholders if necessary),
 # so any absence is an error.
-antclass_file=${SUM_FILE%.uvh5}.ant_class.csv
-sky_cal_file=${SUM_FILE%.uvh5}.sky.calfits
-decoherence_file=${SUM_FILE%.uvh5}.snap_decoherence.h5
-red_avg_zscore_file=${SUM_FILE%.uvh5}.red_avg_zscore.h5
+antclass_file=$(swap_suffix ${SUM_FILE} ${toml_file} ANT_CLASS)
+sky_cal_file=$(swap_suffix ${SUM_FILE} ${toml_file} SKY_CAL)
+decoherence_file=$(swap_suffix ${SUM_FILE} ${toml_file} DECOHERENCE)
+red_avg_zscore_file=$(swap_suffix ${SUM_FILE} ${toml_file} RED_AVG_ZSCORE)
 for f in ${antclass_file} ${sky_cal_file} ${decoherence_file} ${red_avg_zscore_file}; do
     if [ -f "$f" ]; then
         echo Resulting $f found.
@@ -43,7 +43,8 @@ done
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
-is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.sum.uvh5')); print('${fn}' == files[len(files) // 2])"`
+sum_suffix=$(get_suffix ${toml_file} SUM)
+is_middle_file=`python -c "import glob; files=sorted(glob.glob('zen.*${jd}*.${sum_suffix}')); print('${fn}' == files[len(files) // 2])"`
 if [ "${is_middle_file}" == "True" ]; then
     # Copy the night's middle file's rendered notebook to the output directory
     nb_dest_dir=${nb_output_repo}/file_sky_calibration
