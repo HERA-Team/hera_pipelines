@@ -75,12 +75,37 @@ deco_max_bad = 0.10
 deco_jump_suspect = 0.025
 deco_jump_bad = 0.05
 
+[FULL_DAY_ANT_FLAG_OPTS]  # Read directly by the full_day_antenna_flagging notebook
+smoothing_scale_nfiles = 30
+max_flag_gap_nfiles = 30
+auto_power_max_flag_frac = 0.5
+auto_shape_max_flag_frac = 0.25
+auto_slope_max_flag_frac = 0.25
+auto_rfi_max_flag_frac = 0.25
+chisq_max_flag_frac = 0.5
+deco_max_flag_frac = 0.5
+identity_max_flag_frac = 0.25
+xengine_max_flag_frac = 0.05
+overall_max_flag_frac = 0.5
+skip_outriggers = true
 ############################################################################################################
 
 [WorkFlow]
-actions = ["FILE_SKY_CAL_NOTEBOOK"]
+actions = ["FILE_SKY_CAL_NOTEBOOK",
+           "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 
 [FILE_SKY_CAL_NOTEBOOK]
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
+prereqs = "FILE_SKY_CAL_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
