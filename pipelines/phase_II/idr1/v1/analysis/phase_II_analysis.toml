@@ -88,6 +88,100 @@ identity_max_flag_frac = 0.25
 xengine_max_flag_frac = 0.05
 overall_max_flag_frac = 0.5
 skip_outriggers = true
+
+############################################################################################################
+
+[DATA_PRODUCTS]  # Read by the notebooks and by build_notebook_index.py
+# Every file the pipeline reads or writes, declared once so that no filename convention is
+# hardcoded in a notebook or a task script.
+#
+# Each notebook injects the entries wired to its own [WorkFlow] action -- by produced_by or
+# consumed_by -- as <NAME>_SUFFIX globals, and asserts that this wiring matches the suffix
+# defaults it declares for itself. So wiring an edge here without a matching read or write in
+# the notebook fails the run in its first cell, and the flowchart that build_notebook_index.py
+# draws on the top-level index.html cannot claim a data flow that does not exist.
+#
+#   suffix      -- replaces 'sum.uvh5' on a raw sum file, so a night's files are named
+#                  zen.{JD}.{suffix}. This is the only field that drives the injection and
+#                  the assertion above; omit it for inputs that are not per-sum-file.
+#   label       -- what the flowchart calls it
+#   kind        -- raw | calibration | metrics | ancillary | external; sets the node color
+#   produced_by -- the action(s) that write it, string or list (e.g. when a later stage
+#                  overwrites a product); omitted for inputs from outside this workflow
+#   consumed_by -- the actions that read it
+#   filename    -- display only: the naming pattern printed under the label on the flowchart,
+#                  for products with no per-sum-file suffix. Optional; injects nothing.
+#   note        -- display only: free text shown in the flowchart's hover tooltip, for what
+#                  the label and kind do not convey. Optional; injects nothing.
+
+[DATA_PRODUCTS.SUM]
+suffix = "sum.uvh5"
+label = "4-pol Raw Sum Data"
+kind = "raw"
+consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+
+[DATA_PRODUCTS.DIFF]
+suffix = "diff.uvh5"
+label = "4-pol Raw Diff Data"
+kind = "raw"
+consumed_by = ["FILE_SKY_CAL_NOTEBOOK"]  # only through the H6C era; see use_diff
+
+[DATA_PRODUCTS.SKY_MODEL]
+label = "Externally Calibrated, Redundantly Averaged, LST-Stacked, Filtered Data"
+filename = "zen.*.sum.sky_model.uvh5"  # display only: LST-indexed, so there is no per-sum-file suffix
+note = "Real data, not a simulation: the H6C filtered LST stack, used here as the abscal model."
+kind = "external"
+consumed_by = ["FILE_SKY_CAL_NOTEBOOK"]  # located by [FILE_SKY_CAL_OPTS] sky_model_files_glob
+
+[DATA_PRODUCTS.RTP_ANT_CLASS]
+suffix = "sum.rtp_ant_class.csv"
+label = "RTP Antenna Classifications"
+kind = "external"
+consumed_by = ["FILE_SKY_CAL_NOTEBOOK"]  # stands in for the diff-based classifiers when use_diff is false
+
+[DATA_PRODUCTS.AM]
+suffix = "sum.ant_metrics.hdf5"
+label = "Antenna Metrics"
+kind = "metrics"
+produced_by = "FILE_SKY_CAL_NOTEBOOK"
+
+[DATA_PRODUCTS.ANT_CLASS]
+suffix = "sum.ant_class.csv"
+label = "Antenna Classifications"
+kind = "metrics"
+produced_by = "FILE_SKY_CAL_NOTEBOOK"
+consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+
+[DATA_PRODUCTS.SKY_CAL]
+suffix = "sum.sky.calfits"
+label = "Sky-Calibrated Gain Solutions"
+kind = "calibration"
+produced_by = "FILE_SKY_CAL_NOTEBOOK"
+consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+
+[DATA_PRODUCTS.DECOHERENCE]
+suffix = "sum.snap_decoherence.h5"
+label = "SNAP Decoherence"
+kind = "metrics"
+produced_by = "FILE_SKY_CAL_NOTEBOOK"
+
+[DATA_PRODUCTS.RED_AVG_ZSCORE]
+suffix = "sum.red_avg_zscore.h5"
+label = "Delay-Filtered, Redundantly Averaged z-Score"
+kind = "metrics"
+produced_by = "FILE_SKY_CAL_NOTEBOOK"
+
+[DATA_PRODUCTS.APRIORI_FLAGS]
+label = "A Priori Flags (Optional)"
+kind = "ancillary"
+consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+
+[DATA_PRODUCTS.ANTENNA_FLAGS]
+suffix = "sum.antenna_flags.h5"
+label = "Per-File Antenna Flags"
+kind = "metrics"
+produced_by = "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"
+
 ############################################################################################################
 
 [WorkFlow]
