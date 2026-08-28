@@ -75,6 +75,18 @@ deco_max_bad = 0.10
 deco_jump_suspect = 0.025
 deco_jump_bad = 0.05
 
+[FULL_DAY_RFI_OPTS]  # Read directly by the full_day_rfi notebook
+z_thresh = 4.0
+ws_z_thresh = 2.0
+avg_z_thresh = 1.0
+max_freq_flag_frac = 0.25
+max_time_flag_frac = 0.1
+avg_spectrum_filter_delay = 250.0  # in ns
+eigenval_cutoff = 1e-12
+time_avg_delay_filt_snr_thresh = 4.0
+time_avg_delay_filt_snr_dynamic_range = 1.5
+time_conv_size = 300.0  # in s
+
 [FULL_DAY_ANT_FLAG_OPTS]  # Read directly by the full_day_antenna_flagging notebook
 smoothing_scale_nfiles = 30
 max_flag_gap_nfiles = 30
@@ -118,7 +130,7 @@ skip_outriggers = true
 suffix = "sum.uvh5"
 label = "4-pol Raw Sum Data"
 kind = "raw"
-consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 
 [DATA_PRODUCTS.DIFF]
 suffix = "diff.uvh5"
@@ -170,6 +182,21 @@ suffix = "sum.red_avg_zscore.h5"
 label = "Delay-Filtered, Redundantly Averaged z-Score"
 kind = "metrics"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
+consumed_by = ["FULL_DAY_RFI_NOTEBOOK"]
+
+[DATA_PRODUCTS.FLAG_WATERFALL]
+suffix = "sum.flag_waterfall.h5"
+label = "Full-Day RFI Flags"
+kind = "metrics"
+produced_by = "FULL_DAY_RFI_NOTEBOOK"
+consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK"]
+
+[DATA_PRODUCTS.APOSTERIORI_YAML]
+label = "A Posteriori Flags"
+filename = "{JD}_aposteriori_flags.yaml"  # display only: per-day, so there is no per-sum-file suffix
+note = "The day's final entirely-flagged times, frequencies, and antennas (ex_ants), written by the last stage that touches flags."
+kind = "ancillary"
+produced_by = "CALIBRATION_SMOOTHING_NOTEBOOK"
 
 [DATA_PRODUCTS.APRIORI_FLAGS]
 label = "A Priori Flags (Optional)"
@@ -196,7 +223,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[FULL_DAY_RFI_NOTEBOOK]  # placeholder: do script currently a no-op
+[FULL_DAY_RFI_NOTEBOOK]
 prereqs = "FILE_SKY_CAL_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
