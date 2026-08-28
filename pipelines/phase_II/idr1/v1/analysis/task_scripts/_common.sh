@@ -113,3 +113,30 @@ function stringContain()
 {
   [ -z "${2##*$1*}" ] && [ -z "$1" -o -n "$2" ];
 }
+
+function get_suffix ()
+# look up a data product's filename suffix in the toml's [DATA_PRODUCTS] section,
+# so that no filename convention is duplicated between here and the notebooks
+# usage: get_suffix <toml_file> <PRODUCT_NAME>   e.g. get_suffix ${toml_file} ANT_CLASS
+{
+    python -c "import toml, sys; print(toml.load(sys.argv[1])['DATA_PRODUCTS'][sys.argv[2]]['suffix'])" "$1" "$2"
+}
+
+function swap_suffix ()
+# rewrite a sum file's path as another data product's, e.g.
+# swap_suffix zen.2460100.12345.sum.uvh5 ${toml_file} ANT_CLASS -> zen.2460100.12345.sum.ant_class.csv
+{
+    local sum_suffix=$(get_suffix "$2" SUM)
+    echo "${1%${sum_suffix}}$(get_suffix "$2" "$3")"
+}
+
+# Every task script is named do_<ACTION>.sh, so sourcing this file tells the notebook which
+# [WorkFlow] action is running it without the name being written down in either place.
+# A template shared by two actions (as several are in h6c) therefore still identifies itself
+# correctly, and the notebook can look up its own [DATA_PRODUCTS] wiring.
+ACTION=$(basename "$0" .sh)
+if [[ "${ACTION}" == do_* ]]; then
+    export ACTION="${ACTION#do_}"
+else
+    unset ACTION  # sourced from something other than a task script; let the notebook default
+fi
