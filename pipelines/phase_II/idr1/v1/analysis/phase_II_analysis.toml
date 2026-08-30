@@ -70,6 +70,8 @@ identity_coherence_suspect = 0.5
 identity_repair_margin = 0.1
 sc_cspa_good = 2.0
 sc_cspa_suspect = 3.0
+cal_auto_model_good = 1.5
+cal_auto_model_suspect = 2.0
 deco_max_suspect = 0.05
 deco_max_bad = 0.10
 deco_jump_suspect = 0.025
@@ -208,6 +210,14 @@ suffix = "sum.antenna_flags.h5"
 label = "Per-File Antenna Flags"
 kind = "metrics"
 produced_by = "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"
+consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK"]
+
+[DATA_PRODUCTS.SMOOTH_CAL]
+suffix = "sum.smooth.calfits"
+label = "Smoothed Gain Solutions"
+kind = "calibration"
+note = "Staircase-FREE: per-SNAP decoherence is removed before smoothing and applied downstream from the sidecars (e.g. by apply_cal.calibrate_and_red_avg)."
+produced_by = "CALIBRATION_SMOOTHING_NOTEBOOK"
 
 ############################################################################################################
 
@@ -245,7 +255,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[CALIBRATION_SMOOTHING_NOTEBOOK]  # placeholder: do script currently a no-op
+[CALIBRATION_SMOOTHING_NOTEBOOK]
 prereqs = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
