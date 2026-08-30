@@ -2,7 +2,7 @@
 makeflow_type = "lstbin"
 path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/post_processing/v6/lstbin/task_scripts/"
 source_script = "~/.bashrc"
-conda_env = "hera3dev"
+conda_env = "h4c_idr3"
 base_mem = 16000
 base_cpu = 1
 timeout = "48h"

@@ -1,7 +1,7 @@
 [Options]
 makeflow_type = "analysis"
-path_to_do_scripts = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/post_lstbin_frate/task_scripts"
-conda_env = "hera3dev"
+path_to_do_scripts = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/post_lstbin_frate/task_scripts"
+conda_env = "h4c_idr3"
 source_script = "~/.bashrc"
 base_mem = 8000
 base_cpu = 1
@@ -12,7 +12,7 @@ spw_ranges = '10~105,150~320,515~615,665~717,770~1090'
 label = "include-variable-ants-interleave-4-way"
 cache_dir = "/lustre/aoc/projects/hera/aewallwi/filter_cache/"
 pols = "ee nn"
-yaml_dir = "/users/heramgr/hera_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/flag_yamls/"
+yaml_dir = "/lustre/aoc/projects/hera/H4C/h4c_software/hera_pipelines/pipelines/h4c/post_processing/v7_interleave/pre_lstbin/flag_yamls/"
 nbl_per_load = 100
 t_avg = 300.0
 include_diffs = "true"
