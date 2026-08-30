@@ -20,11 +20,10 @@ nb_template_dir = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_not
 nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'
 
 [GLOBAL_OPTS]  # shared across notebooks
-FM_low_freq = 87.5    # in MHz
-FM_high_freq = 108.0  # in MHz
+band_split_freq = 100.0  # in MHz; divides the low and high bands (inside the a priori flagged FM gap)
 
 [FILE_SKY_CAL_OPTS]  # Read directly by the file_sky_calibration notebook
-# use_diff = false  # if unset, defaults to true for JD < 2460100 (diffs were only recorded through the H6C era), else false
+# use_diff = false  # if unset, defaults to true for JD < 2460039 (diffs were only recorded through the H6C era), else false
 sky_model_files_glob = '/lustre/aoc/projects/hera/h6c-analysis/abscal_models/h6c_filtered_lst_stack/zen.*.sum.sky_model.uvh5'
 skycal_min_bl_len = 1.0    # in meters
 skycal_max_bl_len = 120.0  # in meters
@@ -32,6 +31,7 @@ sc_maxiter = 100
 sc_max_rerun = 10
 sc_max_divergent_chans = 25
 max_band_flag_frac = 0.5
+apriori_flag_freq_ranges = [[87.5, 108.0], [222.6, 235.0]]  # in MHz; default flags FM and the top X-engine block
 sc_max_chisq_flagging_dynamic_range = 1.5
 calibrate_cross_pols = true
 auto_repair_identities = true
@@ -97,6 +97,7 @@ auto_shape_max_flag_frac = 0.25
 auto_slope_max_flag_frac = 0.25
 auto_rfi_max_flag_frac = 0.25
 chisq_max_flag_frac = 0.5
+cal_auto_max_flag_frac = 0.25
 deco_max_flag_frac = 0.5
 identity_max_flag_frac = 0.25
 xengine_max_flag_frac = 0.05
