@@ -43,7 +43,9 @@ SUB_SIZE = 10.0
 LINE_H = 15.0
 SUB_LINE_H = 12.0
 MARGIN = 24
-FOLD = 13   # size of the notebook shape's dog-eared corner
+FOLD = 13        # size of the notebook shape's dog-eared corner
+NOTE_EXTRA_H = 40   # extra height on notebook nodes, so they outweigh the data products
+NOTE_LABEL_SIZE = 14.0  # notebook labels are set larger than the data products' too
 CYL_RY = 8  # vertical radius of a data-product cylinder's end caps
 
 # Fills lifted from the legend of the hand-drawn H6C flowcharts, so the two read alike.
@@ -64,12 +66,29 @@ KIND_LABEL = {
 NOTEBOOK_FILL = '#ffffff'
 PROCESS_FILL = '#00ffff'
 MISSING_FILL = '#f4f4f4'
+GLOW = '#F762F5'  # pink glow marking the notebook nodes as clickable
+HOVER_ALPHA = 0.22  # how strongly the glow colour tints a notebook under the cursor
+
+# Folder names are lowercase, so str.capitalize() would render these wrong ('Rfi', 'Zscore').
+# Only consulted for all-lowercase words, so anything already capitalized is left alone.
+SPECIAL_WORDS = {
+    'rfi': 'RFI', 'zscore': 'z-Score', 'lststack': 'LST-Stack', 'lstcal': 'LSTcal',
+    'snr': 'SNR', 'snrs': 'SNRs', 'dpss': 'DPSS', 'frf': 'FRF', 'pspec': 'PSpec',
+    'ssm': 'SSM', 'lst': 'LST', 'jd': 'JD',
+}
 
 # Assignments in a do_ script that name the folder a rendered notebook is published to.
 # Covers phase_II's `nb_dest_dir=` as well as h6c's `nb_outdir=` / `github_nb_outdir=`.
 _FOLDER_RE = re.compile(r'^\s*\w*nb_\w*dir=\$\{nb_output_repo\}/([A-Za-z0-9_.-]+)', re.M)
 _TEMPLATE_RE = re.compile(r'\$\{nb_template_dir\}/([A-Za-z0-9_.-]+\.ipynb)')
 _JD_RE = re.compile(r'2\d{6}')
+
+
+def _rgba(hex_color, alpha):
+    """'#F762F5' -> 'rgba(247, 98, 245, 0.22)', so one constant drives glow and fill alike."""
+    digits = hex_color.lstrip('#')
+    red, green, blue = (int(digits[i:i + 2], 16) for i in (0, 2, 4))
+    return f'rgba({red}, {green}, {blue}, {alpha})'
 
 
 def _as_list(value):
@@ -107,7 +126,8 @@ def _parse_do_script(path):
 def _prettify(name):
     """`full_day_antenna_flagging` -> `Full Day Antenna Flagging`, sparing acronyms."""
     words = re.split(r'[_\s]+', name.strip())
-    return ' '.join(w.capitalize() if w.islower() else w for w in words if w)
+    return ' '.join(SPECIAL_WORDS.get(w, w.capitalize()) if w.islower() else w
+                    for w in words if w)
 
 
 def _folder_stats(nb_output_repo, folder):
@@ -315,12 +335,17 @@ def _wrap(text, size, max_width, bold=False):
     return lines or ['']
 
 
-def _shape_svg(node, x, y, w, h, fill, stroke, dash):
+def _shape_svg(node, x, y, w, h, fill, stroke, dash, glow=False):
+    body = ' filter="url(#nb-glow)"' if glow else ''
     if node['shape'] == 'note':
         # Dog-eared page, matching the notebook glyph in the hand-drawn flowcharts.
-        return (f'<path class="node-body" d="M{x},{y + h} L{x},{y} L{x + w - FOLD},{y} '
-                f'L{x + w},{y + FOLD} L{x + w},{y + h} Z" fill="{fill}" '
-                f'stroke="{stroke}"{dash}/>'
+        page = (f'M{x},{y + h} L{x},{y} L{x + w - FOLD},{y} '
+                f'L{x + w},{y + FOLD} L{x + w},{y + h} Z')
+        # Edges are painted before nodes, so an opaque underlay keeps the translucent
+        # hover tint sitting on white rather than on whatever line passes behind.
+        return (f'<path d="{page}" fill="#ffffff" stroke="none"/>'
+                f'<path class="node-body" d="{page}" fill="{fill}" '
+                f'stroke="{stroke}"{dash}{body}/>'
                 f'<path d="M{x + w - FOLD},{y} L{x + w - FOLD},{y + FOLD} '
                 f'L{x + w},{y + FOLD}" fill="none" stroke="{stroke}"{dash}/>')
     if node['shape'] == 'cylinder':
@@ -349,13 +374,13 @@ def _node_svg(node, geometry):
     else:
         fill, stroke, dash, text_fill = MISSING_FILL, '#9a9a9a', ' stroke-dasharray="5 4"', '#8a8a8a'
 
-    parts = [_shape_svg(node, x, y, w, h, fill, stroke, dash)]
-    text_y = y + geometry['text_top'] + LABEL_SIZE
+    parts = [_shape_svg(node, x, y, w, h, fill, stroke, dash, glow=live)]
+    text_y = y + geometry['text_top'] + geometry['label_size']
     for line in geometry['lines']:
         parts.append(f'<text x="{x + w / 2:.1f}" y="{text_y:.1f}" text-anchor="middle" '
-                     f'font-size="{LABEL_SIZE}" font-weight="bold" fill="{text_fill}">'
-                     f'{html.escape(line)}</text>')
-        text_y += LINE_H
+                     f'font-size="{geometry["label_size"]}" font-weight="bold" '
+                     f'fill="{text_fill}">{html.escape(line)}</text>')
+        text_y += geometry['line_h']
     for line in geometry['sub_lines']:
         parts.append(f'<text x="{x + w / 2:.1f}" y="{text_y + 1:.1f}" text-anchor="middle" '
                      f'font-size="{SUB_SIZE}" font-style="italic" fill="{text_fill}" '
@@ -390,7 +415,7 @@ def _edge_svg(tail, head, label):
 def _legend_html(nodes):
     """Only show the swatches actually used, so the key stays as short as the chart is."""
     used = {node['fill'] for node in nodes if node['type'] == 'product'}
-    items = [('Jupyter notebook (click to open)', NOTEBOOK_FILL)]
+    items = [('Jupyter notebook &mdash; click to open', NOTEBOOK_FILL)]
     if any(n['type'] == 'action' and not n['is_notebook'] for n in nodes):
         items.append(('Pipeline process', PROCESS_FILL))
     for kind, fill in KIND_FILL.items():
@@ -399,7 +424,8 @@ def _legend_html(nodes):
     if any(n['type'] == 'action' and n['is_notebook'] and not n['exists'] for n in nodes):
         items.append(('Not yet run', MISSING_FILL))
     swatches = ''.join(
-        f'<span class="nb-key"><i style="background:{fill}"></i>{html.escape(text)}</span>'
+        f'<span class="nb-key"><i style="background:{fill}'
+        f'{f";box-shadow:0 0 5px 1px {GLOW}" if fill == NOTEBOOK_FILL else ""}"></i>{text}</span>'
         for text, fill in items)
     return f'<div id="nb-legend">{swatches}</div>'
 
@@ -419,13 +445,20 @@ def render(toml_path, task_script_dir, nb_output_repo):
     geometry = {}
     for node in nodes:
         cap = 2 * CYL_RY if node['shape'] == 'cylinder' else 0
-        lines = _wrap(node['label'], LABEL_SIZE, NODE_W - 2 * PAD_X, bold=True)
+        is_note = node['shape'] == 'note'
+        extra = NOTE_EXTRA_H if is_note else 0
+        label_size = NOTE_LABEL_SIZE if is_note else LABEL_SIZE
+        line_h = LINE_H + (label_size - LABEL_SIZE)
+        lines = _wrap(node['label'], label_size, NODE_W - 2 * PAD_X, bold=True)
         sub_lines = _wrap(node['sub'], SUB_SIZE, NODE_W - 2 * PAD_X) if node['sub'] else []
         if node['type'] == 'action':
             sub_lines = [f'({line})' for line in sub_lines]
         geometry[node['id']] = {
-            'lines': lines, 'sub_lines': sub_lines, 'text_top': PAD_Y + cap,
-            'h': 2 * PAD_Y + cap * 1.5 + len(lines) * LINE_H + len(sub_lines) * SUB_LINE_H,
+            'lines': lines, 'sub_lines': sub_lines,
+            'label_size': label_size, 'line_h': line_h,
+            'content_h': len(lines) * line_h + len(sub_lines) * SUB_LINE_H,
+            'h': 2 * PAD_Y + cap * 1.5 + extra
+                 + len(lines) * line_h + len(sub_lines) * SUB_LINE_H,
         }
 
     width = max(len(row) for row in rows.values()) * (NODE_W + H_GAP) - H_GAP
@@ -437,6 +470,7 @@ def render(toml_path, task_script_dir, nb_output_repo):
         x = MARGIN + (width - row_w) / 2
         for node in row:
             geometry[node].update(x=x, y=y, h=row_h)
+            geometry[node]['text_top'] = (row_h - geometry[node]['content_h']) / 2
             x += NODE_W + H_GAP
         y += row_h + V_GAP
     height = y - V_GAP + MARGIN
@@ -446,9 +480,25 @@ def render(toml_path, task_script_dir, nb_output_repo):
            f'width="{total_w:.0f}" height="{height:.0f}" '
            f'xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
            f'font-family="Helvetica Neue, Helvetica, Arial, sans-serif">',
-           '<defs><marker id="nb-arrow" viewBox="0 0 10 10" refX="9" refY="5" '
+           '<defs>'
+           '<marker id="nb-arrow" viewBox="0 0 10 10" refX="9" refY="5" '
            'markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
-           '<path d="M0,0 L10,5 L0,10 z" fill="#000000"/></marker></defs>']
+           '<path d="M0,0 L10,5 L0,10 z" fill="#000000"/></marker>'
+           # A zero-offset coloured drop shadow reads as a glow. Two strengths, so hovering
+           # brightens it; the filter region has to be oversized or the blur gets clipped.
+           # Two stacked shadows: a tight opaque one for a crisp pink edge, then a wide
+           # soft one over that result, which is what makes it bloom rather than outline.
+           f'<filter id="nb-glow" x="-60%" y="-60%" width="220%" height="220%">'
+           f'<feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="{GLOW}" '
+           f'flood-opacity="1"/>'
+           f'<feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="{GLOW}" '
+           f'flood-opacity="0.7"/></filter>'
+           f'<filter id="nb-glow-strong" x="-90%" y="-90%" width="280%" height="280%">'
+           f'<feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="{GLOW}" '
+           f'flood-opacity="1"/>'
+           f'<feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="{GLOW}" '
+           f'flood-opacity="0.9"/></filter>'
+           '</defs>']
     for tail, head in edges:
         svg.append(_edge_svg(geometry[tail], geometry[head],
                              'All files' if by_id[head].get('all_files') else ''))
@@ -456,7 +506,8 @@ def render(toml_path, task_script_dir, nb_output_repo):
         svg.append(_node_svg(node, geometry[node['id']]))
     svg.append('</svg>')
 
-    return _legend_html(nodes) + '\n'.join(svg) + FLOWCHART_ASSETS, actions
+    assets = FLOWCHART_ASSETS.replace('__HOVER_FILL__', _rgba(GLOW, HOVER_ALPHA))
+    return _legend_html(nodes) + '\n'.join(svg) + assets, actions
 
 
 FLOWCHART_ASSETS = """
@@ -467,7 +518,7 @@ FLOWCHART_ASSETS = """
 body { background: #ffffff; color: #000000; }
 #nb-flowchart { max-width: 100%; height: auto; }
 #nb-flowchart a { cursor: pointer; }
-#nb-flowchart a:hover .node-body { fill: #fff4c2; }
+#nb-flowchart a:hover .node-body { fill: __HOVER_FILL__; filter: url(#nb-glow-strong); }
 #nb-flowchart .node { cursor: default; }
 #nb-legend { margin: 0 0 6px 2px; font: 11px/1.9 Helvetica Neue, Helvetica, Arial, sans-serif; }
 #nb-legend .nb-key { margin-right: 14px; white-space: nowrap; }
