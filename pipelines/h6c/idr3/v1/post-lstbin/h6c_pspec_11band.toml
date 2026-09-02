@@ -100,6 +100,25 @@ INCLUDE_INTERLEAVE_AUTO_PS = false
 STORE_WINDOW_FUNCTIONS = false
 PSPEC_LST_AVG_RANGES = "1.0~6.0,8.2~10.0" # carves out PSR J0628-28 and PSR J0742-2822
 
+[FT_BEAM_OPTS]
+BEAMFILE = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/beam_simulation_products/NF_HERA_Vivaldi_efield_beam.fits"
+POL = "pI"
+LABEL = "HERA_Vivaldi"  # instrument/beam label baked into the FT-beam filename
+MAPSIZE = 1.0
+NPIX = 299
+CACHE_DIRS = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/FTBeam_cache"
+OUT_DIR    = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/FTBeam_cache"
+FORCE_RECOMPUTE = "false"
+
+[WF_OPTS]
+DATASET_LABEL = "131-nights"  # baked into WF filename; bump per dataset
+SPWS = "0,1,2,3,4,5,6,7,8,9,10"  # 0-indexed spectral windows (11-band variant)
+POLPAIRS = "pI"  # comma-separated, e.g. "pI" or "pI,pQ"
+WF_DIRS    = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/window_functions"
+OUT_DIR    = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/window_functions"
+WORKERS = 4  # parallel (spw, polpair) worker processes; memory scales with this
+FORCE_RECOMPUTE = "false"
+
 [WorkFlow]
 actions = [
     "SINGLE_LSTSTACK_BASELINE_FILTERED_SNR",
@@ -107,6 +126,8 @@ actions = [
     "SINGLE_LSTSTACK_BASELINE_REINPAINT",
     "SINGLE_BASELINE_POSTPROCESSING_AND_PSPEC",
     "MERGE_SINGLE_BASELINE_FILES",
+    "COMPUTE_FT_BEAM",            # reads the merged tavg pspec for its frequency channels
+    "COMPUTE_WINDOW_FUNCTIONS",   # consumes both FT beam and merged tavg pspec
 ]
 
 [SINGLE_LSTSTACK_BASELINE_FILTERED_SNR]
@@ -172,3 +193,52 @@ args = [
 ]
 mem=250000
 ncpu = 16
+
+[COMPUTE_FT_BEAM]
+prereqs = [
+    "MERGE_SINGLE_BASELINE_FILES",  # the FT beam is computed on the data's frequency channels
+]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = [
+    "{basename}",
+    "${FT_BEAM_OPTS:BEAMFILE}",
+    "${FT_BEAM_OPTS:POL}",
+    "${FT_BEAM_OPTS:LABEL}",
+    "${FT_BEAM_OPTS:MAPSIZE}",
+    "${FT_BEAM_OPTS:NPIX}",
+    "${FT_BEAM_OPTS:CACHE_DIRS}",
+    "${FT_BEAM_OPTS:OUT_DIR}",
+    "${FT_BEAM_OPTS:FORCE_RECOMPUTE}",
+]
+
+[COMPUTE_WINDOW_FUNCTIONS]
+prereqs = [
+    "COMPUTE_FT_BEAM",
+    "MERGE_SINGLE_BASELINE_FILES",
+]
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = [
+    "{basename}",
+    "${WF_OPTS:DATASET_LABEL}",
+    "${WF_OPTS:SPWS}",
+    "${WF_OPTS:POLPAIRS}",
+    "${FT_BEAM_OPTS:BEAMFILE}",
+    "${FT_BEAM_OPTS:POL}",
+    "${FT_BEAM_OPTS:LABEL}",
+    "${FT_BEAM_OPTS:MAPSIZE}",
+    "${FT_BEAM_OPTS:NPIX}",
+    "${FT_BEAM_OPTS:CACHE_DIRS}",
+    "${WF_OPTS:WF_DIRS}",
+    "${WF_OPTS:OUT_DIR}",
+    "${WF_OPTS:WORKERS}",
+    "${WF_OPTS:FORCE_RECOMPUTE}",
+]
+# measured (sacct, 131-nights tavg, July 2026): 10-21 GB and 8-17 min per spw;
+# request ~= max_per_spw * WORKERS * 1.4 headroom
+mem=120000
