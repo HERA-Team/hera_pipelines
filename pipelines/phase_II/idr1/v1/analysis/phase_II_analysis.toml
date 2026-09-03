@@ -87,7 +87,6 @@ avg_spectrum_filter_delay = 250.0  # in ns
 eigenval_cutoff = 1e-12
 time_avg_delay_filt_snr_thresh = 4.0
 time_avg_delay_filt_snr_dynamic_range = 1.5
-time_conv_size = 300.0  # in s
 
 [FULL_DAY_ANT_FLAG_OPTS]  # Read directly by the full_day_antenna_flagging notebook
 smoothing_scale_nfiles = 30
