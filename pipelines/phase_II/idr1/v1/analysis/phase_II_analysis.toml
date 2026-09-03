@@ -88,6 +88,17 @@ eigenval_cutoff = 1e-12
 time_avg_delay_filt_snr_thresh = 4.0
 time_avg_delay_filt_snr_dynamic_range = 1.5
 
+[CALIBRATION_SMOOTHING_OPTS]  # Read directly by the calibration_smoothing notebook
+freq_smoothing_scale = 30.0  # in MHz
+time_smoothing_scale = 1e4  # in seconds
+eigenval_cutoff = 1e-12
+per_pol_refant = false
+banned_refants = []  # e.g. [[144, 'Jnn']]: antennas never to use as reference antennas
+blacklist_timescale_factor = 4.0
+blacklist_relative_error_thresh = 1.0
+blacklist_relative_weight = 0.1
+sc_relative_diff_cutoff = 0.2
+
 [FULL_DAY_ANT_FLAG_OPTS]  # Read directly by the full_day_antenna_flagging notebook
 smoothing_scale_nfiles = 30
 max_flag_gap_nfiles = 30
@@ -132,7 +143,7 @@ skip_outriggers = true
 suffix = "sum.uvh5"
 label = "4-pol Raw Sum Data"
 kind = "raw"
-consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK"]
 
 [DATA_PRODUCTS.DIFF]
 suffix = "diff.uvh5"
@@ -171,13 +182,14 @@ suffix = "sum.sky.calfits"
 label = "Sky-Calibrated Gain Solutions"
 kind = "calibration"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
-consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK"]
 
 [DATA_PRODUCTS.DECOHERENCE]
 suffix = "sum.snap_decoherence.h5"
 label = "SNAP Decoherence"
 kind = "metrics"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
+consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK"]  # staircase removal before smoothing
 
 [DATA_PRODUCTS.RED_AVG_ZSCORE]
 suffix = "sum.red_avg_zscore.h5"
