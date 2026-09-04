@@ -97,7 +97,7 @@ blacklist_relative_error_thresh = 1.0
 blacklist_relative_weight = 0.1
 sc_relative_diff_cutoff = 0.2
 per_pol_refant = false
-banned_refants = [[144, 'Jnn'], [121, 'Jee'], [71, 'Jnn']]  # antennas never to use as reference antennas (H6C's list)
+banned_refants = [["144", "Jnn"], ["121", "Jee"], ["71", "Jnn"]]  # never used as reference antennas, antenna numbers are strings b/c TOML arrays must be homogeneous
 
 [FULL_DAY_ANT_FLAG_OPTS]  # Read directly by the full_day_antenna_flagging notebook
 smoothing_scale_nfiles = 30
