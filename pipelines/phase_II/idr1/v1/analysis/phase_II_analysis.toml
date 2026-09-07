@@ -246,6 +246,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 [FULL_DAY_RFI_NOTEBOOK]
+mem = 47000  # double the base: the whole night's z-scores are held in memory
 prereqs = "FILE_SKY_CAL_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -257,6 +258,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 [FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
+mem = 47000  # double the base, for safety
 prereqs = "FILE_SKY_CAL_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -268,6 +270,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 [CALIBRATION_SMOOTHING_NOTEBOOK]
+mem = 120000  # as in H6C: the whole night's gains, flags, and chi^2 waterfalls are held in memory
 prereqs = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 prereq_chunk_size = "all"
 chunk_size = 1
