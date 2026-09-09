@@ -74,7 +74,7 @@ HOVER_ALPHA = 0.22  # how strongly the glow colour tints a notebook under the cu
 SPECIAL_WORDS = {
     'rfi': 'RFI', 'zscore': 'z-Score', 'lststack': 'LST-Stack', 'lstcal': 'LSTcal',
     'snr': 'SNR', 'snrs': 'SNRs', 'dpss': 'DPSS', 'frf': 'FRF', 'pspec': 'PSpec',
-    'ssm': 'SSM', 'lst': 'LST', 'jd': 'JD',
+    'ssm': 'SSM', 'lst': 'LST', 'jd': 'JD', '2d': '2D', 'pi': 'pI',
 }
 
 # Assignments in a do_ script that name the folder a rendered notebook is published to.
