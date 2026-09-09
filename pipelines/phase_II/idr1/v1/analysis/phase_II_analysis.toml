@@ -244,17 +244,25 @@ label = "Smooth-Calibrated, Redundantly Averaged Data"
 kind = "raw"
 note = "One visibility per redundant group (the same baselines in every file of the night), decoherence-corrected from the sidecars. nsamples are EFFECTIVE nsamples (apply_cal.calibrate_and_red_avg), which make the standard noise prediction from the averaged autos exact; they are not counts."
 produced_by = "FILE_RED_AVG_NOTEBOOK"
-consumed_by = ["CORNER_TURN_SINGLE_JD"]
+consumed_by = ["BUILD_CORNER_TURN_MAP", "CORNER_TURN_SINGLE_JD"]
 
-# ---- PLACEHOLDER products of the planned stages (names provisional) ----
+[DATA_PRODUCTS.CORNER_TURN_MAP]
+label = "Corner-Turn Map"
+filename = "single_baseline_files/corner_turn_map.yaml"  # read by the do scripts via get_filename: the folder is where the single-baseline files go
+note = "Per night: which file writes which antpairs, each antpair's redundant-group key (its output name), and each file's times."
+kind = "ancillary"
+produced_by = "BUILD_CORNER_TURN_MAP"
+consumed_by = ["CORNER_TURN_SINGLE_JD", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
 
 [DATA_PRODUCTS.SINGLE_BASELINE]
 label = "Corner-Turned Single-Baseline Data"
-filename = "single_baseline_files/zen.{JD}.{bl}.sum.smooth_calibrated.red_avg.uvh5"  # display only: one whole-night file per redundant group
-note = "PLANNED. Whole-night, one file per redundant group, effective nsamples carried through."
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.smooth_calibrated.red_avg.uvh5"  # display only: one whole-night file per redundant group, named by the group's key
+note = "Whole-night, one file per redundant group, keyed by the group's canonical antpair so names agree across nights; missing integrations inserted flagged with nsamples = 0 and the data rephased onto a uniform time grid; effective nsamples carried through."
 kind = "raw"
 produced_by = "CORNER_TURN_SINGLE_JD"
 consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+
+# ---- PLACEHOLDER products of the planned stages (names provisional) ----
 
 [DATA_PRODUCTS.SKY_FILTERED_SNR]
 label = "Sky-Filtered Single-Baseline SNR"
@@ -342,10 +350,10 @@ actions = ["FILE_SKY_CAL_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
            "FILE_RED_AVG_NOTEBOOK",
-           # PLACEHOLDERS for the stages still to be built (do scripts are no-ops); names provisional,
-           # with the H6C RFI rounds 3/4/5 renamed sky_filtered / pI_dlyfilt / pI_FRF
            "BUILD_CORNER_TURN_MAP",
            "CORNER_TURN_SINGLE_JD",
+           # PLACEHOLDERS for the stages still to be built (do scripts are no-ops); names provisional,
+           # with the H6C RFI rounds 3/4/5 renamed sky_filtered / pI_dlyfilt / pI_FRF
            "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK",
            "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK",
            "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK",
@@ -405,11 +413,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-############################################################################################################
-# PLACEHOLDER action blocks: their do scripts exit successfully without doing anything. Prereqs and cadences
-# follow H6C IDR3's h6c_analysis.toml and post_inpaint_analysis.toml; everything else is still to be designed.
-
-[BUILD_CORNER_TURN_MAP]  # PLACEHOLDER: map each night's per-file red_avg files onto whole-night single-baseline files
+[BUILD_CORNER_TURN_MAP]  # once per night: maps every antpair in the red_avg files to one file and to its redundant group's key
 prereqs = "FILE_RED_AVG_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -420,13 +424,17 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[CORNER_TURN_SINGLE_JD]  # PLACEHOLDER: the corner turn itself (per-file red_avg -> per-baseline, whole-night files)
+[CORNER_TURN_SINGLE_JD]  # per file: writes the whole-night single-baseline files the map assigns to it (copied from H6C IDR3)
 prereqs = "BUILD_CORNER_TURN_MAP"
 prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+############################################################################################################
+# PLACEHOLDER action blocks: their do scripts exit successfully without doing anything. Prereqs and cadences
+# follow H6C IDR3's h6c_analysis.toml and post_inpaint_analysis.toml; everything else is still to be designed.
 
 [SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_2D_filtered_SNRs): per-baseline 2D DPSS filter keeping only sky-like modes (wedge + sky fringe rates) -> residual SNR
 prereqs = "CORNER_TURN_SINGLE_JD"

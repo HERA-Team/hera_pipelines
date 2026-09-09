@@ -122,6 +122,14 @@ function get_suffix ()
     python -c "import toml, sys; print(toml.load(sys.argv[1])['DATA_PRODUCTS'][sys.argv[2]]['suffix'])" "$1" "$2"
 }
 
+function get_filename ()
+# look up a data product's display filename in the toml's [DATA_PRODUCTS] section, for products that
+# are not per-sum-file (e.g. the corner turn's folder and map), so their names are declared once too
+# usage: get_filename <toml_file> <PRODUCT_NAME>   e.g. get_filename ${toml_file} CORNER_TURN_MAP
+{
+    python -c "import toml, sys; print(toml.load(sys.argv[1])['DATA_PRODUCTS'][sys.argv[2]]['filename'])" "$1" "$2"
+}
+
 function swap_suffix ()
 # rewrite a sum file's path as another data product's, e.g.
 # swap_suffix zen.2460100.12345.sum.uvh5 ${toml_file} ANT_CLASS -> zen.2460100.12345.sum.ant_class.csv
