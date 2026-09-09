@@ -117,7 +117,7 @@ skip_outriggers = true
 [FILE_RED_AVG_OPTS]  # Read directly by the file_redundant_averaging notebook
 include_cross_pols = false  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
 packet_nchans = 32  # channels per X-engine-to-catcher packet, the granularity of stale-packet failures
-packet_nonredundancy_cut = 10.0  # flag a baseline's packet chunk whose non-redundancy with its group exceeds this multiple of the baseline's typical chunk
+packet_nonredundancy_cut = 10.0  # a baseline's packet chunk counts as failed when its non-redundancy with its group exceeds this multiple of the baseline's typical chunk; the fewest antennas covering all failed baselines are flagged for the file
 
 ############################################################################################################
 
@@ -254,7 +254,7 @@ filename = "single_baseline_files/zen.{JD}.{bl}.sum.smooth_calibrated.red_avg.uv
 note = "PLANNED. Whole-night, one file per redundant group, effective nsamples carried through."
 kind = "raw"
 produced_by = "CORNER_TURN_SINGLE_JD"
-consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "SINGLE_BASELINE_INPAINT_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
 [DATA_PRODUCTS.SKY_FILTERED_SNR]
 label = "Sky-Filtered Single-Baseline SNR"
@@ -270,15 +270,15 @@ filename = "single_baseline_files/zen.{JD}.flag_waterfall_sky_filtered.h5"  # di
 note = "PLANNED (was H6C round 3). Flags on what the 2D sky-like filter rejects, with TV allocations treated specially."
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
-consumed_by = ["SINGLE_BASELINE_INPAINT_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
 
 [DATA_PRODUCTS.INPAINTED]
 label = "Inpainted Single-Baseline Data"
 filename = "single_baseline_files/zen.{JD}.{bl}.inpainted.uvh5"  # display only, plus a where_inpainted.h5 sidecar
-note = "PLANNED. DPSS-inpainted across flags, with effective nsamples DPSS-filled across the same gaps so that LST-stacking weights inpainted models by the depth the night would have had."
+note = "PLANNED. Inpainted across flags against the LST-stacked scaffold where one exists and H6C's iterative 2D-informed method where not, feathered at flag edges, with effective nsamples DPSS-filled across the same gaps so that LST-stacking weights inpainted models by the depth the night would have had. Handed to LST stacking together with the final flags."
 kind = "raw"
-produced_by = "SINGLE_BASELINE_INPAINT_NOTEBOOK"
-consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+produced_by = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
+consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"]
 
 [DATA_PRODUCTS.SOURCE_CATALOG]
 label = "Polarized Point Source Catalog"
@@ -322,24 +322,17 @@ consumed_by = ["FULL_DAY_RFI_PI_FRF_NOTEBOOK"]
 [DATA_PRODUCTS.FLAGS_PI_FRF]
 label = "Fringe-Rate-Filtered pI Flags"
 filename = "single_baseline_files/zen.{JD}.flag_waterfall_pI_FRF.h5"  # display only: per-day
-note = "PLANNED (was H6C round 5)."
+note = "PLANNED (was H6C round 5). The night's final flags, handed to LST stacking with the inpainted data (re-inpainting under them is the stacker's job, as in H6C)."
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
-consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
 [DATA_PRODUCTS.INPAINT_SCAFFOLD]
 label = "LST-Stacked, 2D-DPSS-Filtered Sky Model (Inpainting Scaffold)"
 filename = "zen.*.sum.sky_model.uvh5"  # display only: LST-indexed
-note = "PLANNED external input (single_baseline_sky_model_2D_filter on an LST stack); may be the same files as SKY_MODEL."
+note = "PLANNED external input (single_baseline_sky_model_2D_filter on an LST stack); may be the same files as SKY_MODEL. Baselines without one fall back to the iterative 2D-informed inpaint."
 kind = "external"
 consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
-[DATA_PRODUCTS.REINPAINTED]
-label = "Scaffold-Inpainted Single-Baseline Data"
-filename = "single_baseline_files/zen.{JD}.{bl}.reinpainted.uvh5"  # display only
-note = "PLANNED. The final per-night product handed to LST stacking: re-inpainted with the scaffold under the final flags, feathered at the flag edges."
-kind = "raw"
-produced_by = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
 
 ############################################################################################################
 
@@ -355,13 +348,12 @@ actions = ["FILE_SKY_CAL_NOTEBOOK",
            "CORNER_TURN_SINGLE_JD",
            "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK",
            "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK",
-           "SINGLE_BASELINE_INPAINT_NOTEBOOK",
+           "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK",
            "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK",
            "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK",
            "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK",
            "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK",
-           "FULL_DAY_RFI_PI_FRF_NOTEBOOK",
-           "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+           "FULL_DAY_RFI_PI_FRF_NOTEBOOK"]
 
 [FILE_SKY_CAL_NOTEBOOK]
 args = ["{basename}",
@@ -455,7 +447,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[SINGLE_BASELINE_INPAINT_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_inpaint_and_frf): per-baseline DPSS inpainting, with effective nsamples DPSS-filled across flag gaps
+[SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK]  # PLACEHOLDER: the one inpainting step -- the LST-stacked, 2D-DPSS-filtered model as scaffold for every baseline that has one (H6C single_baseline_scaffolded_and_feathered_inpainter), H6C's iterative 2D-informed method (single_baseline_2D_informed_inpaint) for those that don't; effective nsamples DPSS-filled across the same gaps
 prereqs = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
 prereq_chunk_size = "all"
 args = ["{basename}",
@@ -464,7 +456,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 [PER_NIGHT_SOURCE_FILTERING_NOTEBOOK]  # PLACEHOLDER (H6C IDR3.2 per_night_source_filtering_notebook, Tyler Cox): fit polarized point sources (position + rotation measure) and build Faraday-rotating DPSS models to subtract
-prereqs = "SINGLE_BASELINE_INPAINT_NOTEBOOK"
+prereqs = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
@@ -507,14 +499,6 @@ prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
-args = ["{basename}",
-        "${NOTEBOOK_OPTS:toml_file}",
-        "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}"]
-
-[SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_scaffolded_and_feathered_inpainter): final inpaint with the LST-stacked, 2D-DPSS-filtered model as scaffold
-prereqs = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
-prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
