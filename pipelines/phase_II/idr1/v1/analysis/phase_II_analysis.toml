@@ -114,6 +114,11 @@ xengine_max_flag_frac = 0.05
 overall_max_flag_frac = 0.5
 skip_outriggers = true
 
+[FILE_RED_AVG_OPTS]  # Read directly by the file_redundant_averaging notebook
+include_cross_pols = false  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
+packet_nchans = 32  # channels per X-engine-to-catcher packet, the granularity of stale-packet failures
+packet_nonredundancy_cut = 10.0  # flag a baseline's packet chunk whose non-redundancy with its group exceeds this multiple of the baseline's typical chunk
+
 ############################################################################################################
 
 [DATA_PRODUCTS]  # Read by the notebooks and by build_notebook_index.py
@@ -143,7 +148,7 @@ skip_outriggers = true
 suffix = "sum.uvh5"
 label = "4-pol Raw Sum Data"
 kind = "raw"
-consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK"]
+consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK", "FILE_RED_AVG_NOTEBOOK"]
 
 [DATA_PRODUCTS.DIFF]
 suffix = "diff.uvh5"
@@ -189,7 +194,7 @@ suffix = "sum.snap_decoherence.h5"
 label = "SNAP Decoherence"
 kind = "metrics"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
-consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK"]  # staircase removal before smoothing
+consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK", "FILE_RED_AVG_NOTEBOOK"]  # staircase removal/restoration around smoothing; exact inter-SNAP correction in the redundant average
 
 [DATA_PRODUCTS.RED_AVG_ZSCORE]
 suffix = "sum.red_avg_zscore.h5"
@@ -211,6 +216,7 @@ filename = "{JD}_aposteriori_flags.yaml"  # display only: per-day, so there is n
 note = "The day's final entirely-flagged times, frequencies, and antennas (ex_ants), written by the last stage that touches flags."
 kind = "ancillary"
 produced_by = "CALIBRATION_SMOOTHING_NOTEBOOK"
+consumed_by = ["FILE_RED_AVG_NOTEBOOK"]  # redundant groups made entirely of all-night-flagged antennas are left out of the outputs
 
 [DATA_PRODUCTS.APRIORI_FLAGS]
 label = "A Priori Flags (Optional)"
@@ -228,8 +234,17 @@ consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK"]
 suffix = "sum.smooth.calfits"
 label = "Smoothed Gain Solutions"
 kind = "calibration"
-note = "Staircase-FREE: per-SNAP decoherence is removed before smoothing and applied downstream from the sidecars (e.g. by apply_cal.calibrate_and_red_avg)."
+note = "Carries each file's fitted decoherence staircase (removed before smoothing, re-imposed after), so like sky.calfits it calibrates inter-SNAP cross-correlations correctly on its own; apply_cal.calibrate_and_red_avg cleans it with the sidecar for autos and intra-SNAP baselines."
 produced_by = "CALIBRATION_SMOOTHING_NOTEBOOK"
+consumed_by = ["FILE_RED_AVG_NOTEBOOK"]
+
+[DATA_PRODUCTS.RED_AVG]
+suffix = "sum.smooth_calibrated.red_avg.uvh5"
+label = "Smooth-Calibrated, Redundantly Averaged Data"
+kind = "raw"
+note = "One visibility per redundant group (the same baselines in every file of the night), decoherence-corrected from the sidecars. nsamples are EFFECTIVE nsamples (apply_cal.calibrate_and_red_avg), which make the standard noise prediction from the averaged autos exact; they are not counts."
+produced_by = "FILE_RED_AVG_NOTEBOOK"
+consumed_by = ["CORNER_TURN_SINGLE_JD"]
 
 ############################################################################################################
 
@@ -237,7 +252,8 @@ produced_by = "CALIBRATION_SMOOTHING_NOTEBOOK"
 actions = ["FILE_SKY_CAL_NOTEBOOK",
            "FULL_DAY_RFI_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
-           "CALIBRATION_SMOOTHING_NOTEBOOK"]
+           "CALIBRATION_SMOOTHING_NOTEBOOK",
+           "FILE_RED_AVG_NOTEBOOK",
 
 [FILE_SKY_CAL_NOTEBOOK]
 args = ["{basename}",
@@ -280,3 +296,12 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[FILE_RED_AVG_NOTEBOOK]
+prereqs = "CALIBRATION_SMOOTHING_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
