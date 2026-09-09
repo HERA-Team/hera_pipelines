@@ -246,6 +246,101 @@ note = "One visibility per redundant group (the same baselines in every file of 
 produced_by = "FILE_RED_AVG_NOTEBOOK"
 consumed_by = ["CORNER_TURN_SINGLE_JD"]
 
+# ---- PLACEHOLDER products of the planned stages (names provisional) ----
+
+[DATA_PRODUCTS.SINGLE_BASELINE]
+label = "Corner-Turned Single-Baseline Data"
+filename = "single_baseline_files/zen.{JD}.{bl}.sum.smooth_calibrated.red_avg.uvh5"  # display only: one whole-night file per redundant group
+note = "PLANNED. Whole-night, one file per redundant group, effective nsamples carried through."
+kind = "raw"
+produced_by = "CORNER_TURN_SINGLE_JD"
+consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "SINGLE_BASELINE_INPAINT_NOTEBOOK"]
+
+[DATA_PRODUCTS.SKY_FILTERED_SNR]
+label = "Sky-Filtered Single-Baseline SNR"
+filename = "single_baseline_files/zen.{JD}.{bl}.sky_filtered_SNR.uvh5"  # display only
+note = "PLANNED. Residual after a 2D DPSS filter keeping only sky-like modes: inside the horizon wedge (plus buffer) and at sky-like fringe rates."
+kind = "metrics"
+produced_by = "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK"
+consumed_by = ["FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"]
+
+[DATA_PRODUCTS.FLAGS_SKY_FILTERED]
+label = "Sky-Filtered Flags"
+filename = "single_baseline_files/zen.{JD}.flag_waterfall_sky_filtered.h5"  # display only: per-day
+note = "PLANNED (was H6C round 3). Flags on what the 2D sky-like filter rejects, with TV allocations treated specially."
+kind = "metrics"
+produced_by = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
+consumed_by = ["SINGLE_BASELINE_INPAINT_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
+
+[DATA_PRODUCTS.INPAINTED]
+label = "Inpainted Single-Baseline Data"
+filename = "single_baseline_files/zen.{JD}.{bl}.inpainted.uvh5"  # display only, plus a where_inpainted.h5 sidecar
+note = "PLANNED. DPSS-inpainted across flags, with effective nsamples DPSS-filled across the same gaps so that LST-stacking weights inpainted models by the depth the night would have had."
+kind = "raw"
+produced_by = "SINGLE_BASELINE_INPAINT_NOTEBOOK"
+consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+
+[DATA_PRODUCTS.SOURCE_CATALOG]
+label = "Polarized Point Source Catalog"
+filename = "sources.yaml"  # display only
+note = "PLANNED external input: the polarized sources (H6C IDR3.2 metadata/sources.yaml) whose positions and rotation measures are fit per night."
+kind = "external"
+consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
+
+[DATA_PRODUCTS.SOURCE_MODELS]
+label = "Per-Night Polarized Source Models"
+filename = "single_baseline_files/phased.{JD}.{source}.{model}.uvh5"  # display only
+note = "PLANNED. Faraday-rotating DPSS models of the fitted polarized sources, for subtraction before the pI SNRs are formed."
+kind = "raw"
+produced_by = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
+consumed_by = ["SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"]
+
+[DATA_PRODUCTS.PI_DLYFILT_SNR]
+label = "Delay-Filtered pI SNR"
+filename = "single_baseline_files/zen.{JD}.{bl}.pI_dlyfilt_SNR.uvh5"  # display only
+note = "PLANNED. Delay-filtered pseudo-Stokes I SNRs, coherently rephased to known bright sources."
+kind = "metrics"
+produced_by = "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK"
+consumed_by = ["FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"]
+
+[DATA_PRODUCTS.FLAGS_PI_DLYFILT]
+label = "Delay-Filtered pI Flags"
+filename = "single_baseline_files/zen.{JD}.flag_waterfall_pI_dlyfilt.h5"  # display only: per-day
+note = "PLANNED (was H6C round 4)."
+kind = "metrics"
+produced_by = "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"
+consumed_by = ["SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"]
+
+[DATA_PRODUCTS.PI_FRF_SNR]
+label = "Fringe-Rate-Filtered pI SNR"
+filename = "single_baseline_files/zen.{JD}.{bl}.pI_FRF_SNR.uvh5"  # display only
+note = "PLANNED. Delay + fringe-rate-filtered pseudo-Stokes I SNRs, both coherently rephased to bright sources and incoherently combined."
+kind = "metrics"
+produced_by = "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"
+consumed_by = ["FULL_DAY_RFI_PI_FRF_NOTEBOOK"]
+
+[DATA_PRODUCTS.FLAGS_PI_FRF]
+label = "Fringe-Rate-Filtered pI Flags"
+filename = "single_baseline_files/zen.{JD}.flag_waterfall_pI_FRF.h5"  # display only: per-day
+note = "PLANNED (was H6C round 5)."
+kind = "metrics"
+produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
+consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+
+[DATA_PRODUCTS.INPAINT_SCAFFOLD]
+label = "LST-Stacked, 2D-DPSS-Filtered Sky Model (Inpainting Scaffold)"
+filename = "zen.*.sum.sky_model.uvh5"  # display only: LST-indexed
+note = "PLANNED external input (single_baseline_sky_model_2D_filter on an LST stack); may be the same files as SKY_MODEL."
+kind = "external"
+consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+
+[DATA_PRODUCTS.REINPAINTED]
+label = "Scaffold-Inpainted Single-Baseline Data"
+filename = "single_baseline_files/zen.{JD}.{bl}.reinpainted.uvh5"  # display only
+note = "PLANNED. The final per-night product handed to LST stacking: re-inpainted with the scaffold under the final flags, feathered at the flag edges."
+kind = "raw"
+produced_by = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
+
 ############################################################################################################
 
 [WorkFlow]
@@ -254,6 +349,19 @@ actions = ["FILE_SKY_CAL_NOTEBOOK",
            "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK",
            "CALIBRATION_SMOOTHING_NOTEBOOK",
            "FILE_RED_AVG_NOTEBOOK",
+           # PLACEHOLDERS for the stages still to be built (do scripts are no-ops); names provisional,
+           # with the H6C RFI rounds 3/4/5 renamed sky_filtered / pI_dlyfilt / pI_FRF
+           "BUILD_CORNER_TURN_MAP",
+           "CORNER_TURN_SINGLE_JD",
+           "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK",
+           "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK",
+           "SINGLE_BASELINE_INPAINT_NOTEBOOK",
+           "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK",
+           "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK",
+           "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK",
+           "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK",
+           "FULL_DAY_RFI_PI_FRF_NOTEBOOK",
+           "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
 [FILE_SKY_CAL_NOTEBOOK]
 args = ["{basename}",
@@ -305,3 +413,109 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
+############################################################################################################
+# PLACEHOLDER action blocks: their do scripts exit successfully without doing anything. Prereqs and cadences
+# follow H6C IDR3's h6c_analysis.toml and post_inpaint_analysis.toml; everything else is still to be designed.
+
+[BUILD_CORNER_TURN_MAP]  # PLACEHOLDER: map each night's per-file red_avg files onto whole-night single-baseline files
+prereqs = "FILE_RED_AVG_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[CORNER_TURN_SINGLE_JD]  # PLACEHOLDER: the corner turn itself (per-file red_avg -> per-baseline, whole-night files)
+prereqs = "BUILD_CORNER_TURN_MAP"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_2D_filtered_SNRs): per-baseline 2D DPSS filter keeping only sky-like modes (wedge + sky fringe rates) -> residual SNR
+prereqs = "CORNER_TURN_SINGLE_JD"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK]  # PLACEHOLDER (H6C full_day_rfi_round_3): flag what is not sky-like, with special treatment of TV allocations (HERA Memo 82)
+prereqs = "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[SINGLE_BASELINE_INPAINT_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_inpaint_and_frf): per-baseline DPSS inpainting, with effective nsamples DPSS-filled across flag gaps
+prereqs = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[PER_NIGHT_SOURCE_FILTERING_NOTEBOOK]  # PLACEHOLDER (H6C IDR3.2 per_night_source_filtering_notebook, Tyler Cox): fit polarized point sources (position + rotation measure) and build Faraday-rotating DPSS models to subtract
+prereqs = "SINGLE_BASELINE_INPAINT_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_pI_snr without FRF): delay-filtered pseudo-Stokes I SNRs, coherently rephased to bright sources
+prereqs = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK]  # PLACEHOLDER (H6C full_day_rfi_round_4)
+prereqs = "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_pI_snr with FRF): delay + fringe-rate-filtered pI SNRs, coherent (source-phased) and incoherent
+prereqs = "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[FULL_DAY_RFI_PI_FRF_NOTEBOOK]  # PLACEHOLDER (H6C full_day_rfi_round_5)
+prereqs = "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_scaffolded_and_feathered_inpainter): final inpaint with the LST-stacked, 2D-DPSS-filtered model as scaffold
+prereqs = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}"]
