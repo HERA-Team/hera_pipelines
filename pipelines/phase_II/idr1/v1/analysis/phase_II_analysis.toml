@@ -117,8 +117,10 @@ skip_outriggers = true
 [FILE_RED_AVG_OPTS]  # Read directly by the file_redundant_averaging notebook
 include_cross_pols = false  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
 packet_nchans = 32  # channels per X-engine-to-catcher packet, the granularity of stale-packet failures
-packet_model_delay = 60e-9  # in s; delay half-width of the smooth model each chunk is tested against (the shortest baselines' horizon plus margin)
-packet_residual_cut = 10.0  # a packet chunk fails when its median noise-normalized residual about that model exceeds this
+packet_model_standoff = 25e-9  # in s; the smooth model each chunk is tested against has delay half-width = the baseline's horizon delay plus this...
+packet_model_max_delay = 100e-9  # in s; ...capped at this, above which a chunk could no longer be interpolated from its neighbors
+packet_residual_cut = 10.0  # a packet chunk fails when its median noise-normalized residual about that model exceeds this...
+packet_band_ratio_cut = 5.0  # ...and also this multiple of the median residual of the baseline's other chunks in the same band (gain ripples lift many chunks, packets one)
 packet_antenna_min_baselines = 12  # an antenna is flagged for the file when this many of its baselines fail the same integration and chunk; other failures are flagged per baseline
 
 ############################################################################################################
