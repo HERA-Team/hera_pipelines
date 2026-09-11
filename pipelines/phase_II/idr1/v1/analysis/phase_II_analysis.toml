@@ -115,7 +115,7 @@ overall_max_flag_frac = 0.5
 skip_outriggers = true
 
 [FILE_RED_AVG_OPTS]  # Read directly by the file_redundant_averaging notebook
-include_cross_pols = false  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
+include_cross_pols = true  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
 packet_nchans = 32  # channels per X-engine-to-catcher packet, the granularity of stale-packet failures
 packet_model_standoff = 25e-9  # in s; the smooth model each chunk is tested against has delay half-width = the baseline's horizon delay plus this...
 packet_model_max_delay = 100e-9  # in s; ...capped at this, above which a chunk could no longer be interpolated from its neighbors
