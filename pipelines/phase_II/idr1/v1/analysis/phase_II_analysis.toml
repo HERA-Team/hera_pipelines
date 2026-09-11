@@ -21,6 +21,7 @@ nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'
 
 [GLOBAL_OPTS]  # shared across notebooks
 band_split_freq = 100.0  # in MHz; divides the low and high bands (inside the a priori flagged FM gap)
+packet_nchans = 32  # channels per X-engine-to-catcher packet, the granularity of stale-packet failures
 
 [FILE_SKY_CAL_OPTS]  # Read directly by the file_sky_calibration notebook
 # use_diff = false  # if unset, defaults to true for JD < 2460039 (diffs were only recorded through the H6C era), else false
@@ -76,6 +77,8 @@ deco_max_suspect = 0.05
 deco_max_bad = 0.10
 deco_jump_suspect = 0.025
 deco_jump_bad = 0.05
+packet_chisq_ratio_suspect = 2.5
+packet_chisq_ratio_bad = 4.0
 
 [FULL_DAY_RFI_OPTS]  # Read directly by the full_day_rfi notebook
 z_thresh = 4.0
@@ -116,12 +119,6 @@ skip_outriggers = true
 
 [FILE_RED_AVG_OPTS]  # Read directly by the file_redundant_averaging notebook
 include_cross_pols = true  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
-packet_nchans = 32  # channels per X-engine-to-catcher packet, the granularity of stale-packet failures
-packet_model_standoff = 25e-9  # in s; the smooth model each chunk is tested against has delay half-width = the baseline's horizon delay plus this...
-packet_model_max_delay = 100e-9  # in s; ...capped at this, above which a chunk could no longer be interpolated from its neighbors
-packet_residual_cut = 10.0  # a packet chunk fails when its median noise-normalized residual about that model exceeds this...
-packet_band_ratio_cut = 5.0  # ...and also this multiple of the median residual of the baseline's other chunks in the same band (gain ripples lift many chunks, packets one)
-packet_antenna_min_baselines = 12  # an antenna is flagged for the file when this many of its baselines fail the same integration and chunk; other failures are flagged per baseline
 
 ############################################################################################################
 
