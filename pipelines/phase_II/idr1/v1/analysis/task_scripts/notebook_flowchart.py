@@ -238,7 +238,7 @@ def discover(toml_path, task_script_dir, nb_output_repo):
         node = {
             'id': name, 'type': 'product',
             'label': spec.get('label', _prettify(name)),
-            'sub': f'zen.{{JD}}.{suffix}' if suffix else spec.get('filename', ''),
+            'sub': spec.get('filename') or (f'zen.{{JD}}.{suffix}' if suffix else ''),
             'shape': 'cylinder',
             'fill': KIND_FILL.get(spec.get('kind'), '#eeeeee'),
             'is_notebook': False, 'exists': True, 'folder': None,
