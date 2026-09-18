@@ -64,3 +64,6 @@ with open(out_yaml, 'w') as file:
 # summarize
 print(f'Map created from {len(all_files)} input files (starting with {all_files[0]}) '
       f'to {len(antpairs)} antpairs and written to {out_yaml}.')
+
+# close the files now, while h5py is still intact, rather than at interpreter shutdown
+del metas, hd
