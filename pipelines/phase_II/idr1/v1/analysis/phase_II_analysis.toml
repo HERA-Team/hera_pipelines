@@ -22,6 +22,7 @@ nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'
 [GLOBAL_OPTS]  # shared across notebooks
 band_split_freq = 100.0  # in MHz; divides the low and high bands (inside the a priori flagged FM gap)
 packet_nchans = 32  # channels per X-engine-to-catcher packet, the granularity of stale-packet failures
+tv_chan_edges = [174, 182, 190, 198, 206, 214, 222, 230, 238, 246, 254]  # in MHz; edges of the digital TV allocations (HERA Memo 82)
 
 [FILE_SKY_CAL_OPTS]  # Read directly by the file_sky_calibration notebook
 # use_diff = false  # if unset, defaults to true for JD < 2460039 (diffs were only recorded through the H6C era), else false
@@ -120,6 +121,26 @@ skip_outriggers = true
 [FILE_RED_AVG_OPTS]  # Read directly by the file_redundant_averaging notebook
 include_cross_pols = true  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
 
+[SKY_FILTERED_SNR_OPTS]  # Read directly by the single_baseline_sky_filtered_SNR notebook
+filter_delay = 750.0  # in ns; delay half-width of the 2D sky-like filter
+post_filter_delay_low_band = 200.0  # in ns; half-width of the 1D delay filter then applied to the SNRs below band_split_freq...
+post_filter_delay_high_band = 50.0  # in ns; ...and above it
+auto_fr_spectrum_file = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/beam_simulation_products/spectra_cache_hera_auto.h5'
+gauss_fit_buffer_cut = 1e-5  # how far down the autocorrelation's fringe-rate kernel the sky's fringe rates are buffered
+eigenval_cutoff = 1e-12
+cg_iter_lim = 500  # conjugate gradient iterations allowed in the 2D fit
+tv_thresh = 1.0  # TV allocations averaging above this z-score in an integration get ~0 weight in the 1D post-filter
+min_samp_frac = 0.15  # baselines with fewer median nsamples than this fraction of the autocorrelations' are skipped
+
+[FULL_DAY_RFI_SKY_FILTERED_OPTS]  # Read directly by the full_day_rfi_sky_filtered notebook
+min_samp_frac = 0.15  # baselines with fewer median nsamples than this fraction of the autocorrelations' are left out
+z_thresh = 4.0
+ws_z_thresh = 2.0
+avg_z_thresh = 1.0
+max_freq_flag_frac = 0.5  # as in H6C round 3
+max_time_flag_frac = 0.25
+freq_conv_size = 8.0  # in MHz; the widest stretch of frequency tested for a low-level average excess (one TV allocation)
+
 ############################################################################################################
 
 [DATA_PRODUCTS]  # Read by the notebooks and by build_notebook_index.py
@@ -133,15 +154,20 @@ include_cross_pols = true  # also average en/ne cross-correlations (and cross-po
 # draws on the top-level index.html cannot claim a data flow that does not exist.
 #
 #   suffix      -- replaces 'sum.uvh5' on a raw sum file, so a night's files are named
-#                  zen.{JD}.{suffix}. This is the only field that drives the injection and
-#                  the assertion above; omit it for inputs that are not per-sum-file.
+#                  zen.{JD}.{suffix}; for single-baseline products it ends the name of each
+#                  whole-night file instead (zen.{JD}.baseline.{ant1}_{ant2}.{suffix}), so one
+#                  such product is named from another by swapping suffixes. This is the only
+#                  field that drives the injection and the assertion above; omit it for
+#                  products that are neither per-sum-file nor per-baseline.
 #   label       -- what the flowchart calls it
 #   kind        -- raw | calibration | metrics | ancillary | external; sets the node color
 #   produced_by -- the action(s) that write it, string or list (e.g. when a later stage
 #                  overwrites a product); omitted for inputs from outside this workflow
 #   consumed_by -- the actions that read it
-#   filename    -- display only: the naming pattern printed under the label on the flowchart,
-#                  for products with no per-sum-file suffix. Optional; injects nothing.
+#   filename    -- the naming pattern printed under the label on the flowchart (in preference
+#                  to the suffix). For per-night products it is also the path, relative to the
+#                  night's folder, that the do scripts (get_filename) and notebooks read, with
+#                  {JD} the integer JD.
 #   note        -- display only: free text shown in the flowchart's hover tooltip, for what
 #                  the label and kind do not convey. Optional; injects nothing.
 
@@ -253,22 +279,24 @@ filename = "single_baseline_files/corner_turn_map.yaml"  # read by the do script
 note = "Per night: which file writes which antpairs, each antpair's redundant-group key (its output name), and each file's times."
 kind = "ancillary"
 produced_by = "BUILD_CORNER_TURN_MAP"
-consumed_by = ["CORNER_TURN_SINGLE_JD", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
+consumed_by = ["CORNER_TURN_SINGLE_JD", "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
 
 [DATA_PRODUCTS.SINGLE_BASELINE]
 label = "Corner-Turned Single-Baseline Data"
+suffix = "sum.smooth_calibrated.red_avg.uvh5"
 filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.smooth_calibrated.red_avg.uvh5"  # display only: one whole-night file per redundant group, named by the group's key
 note = "Whole-night, one file per redundant group, keyed by the group's canonical antpair so names agree across nights; missing integrations inserted flagged with nsamples = 0 and the data rephased onto a uniform time grid; effective nsamples carried through."
 kind = "raw"
 produced_by = "CORNER_TURN_SINGLE_JD"
-consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
 # ---- PLACEHOLDER products of the planned stages (names provisional) ----
 
 [DATA_PRODUCTS.SKY_FILTERED_SNR]
 label = "Sky-Filtered Single-Baseline SNR"
-filename = "single_baseline_files/zen.{JD}.{bl}.sky_filtered_SNR.uvh5"  # display only
-note = "PLANNED. Residual after a 2D DPSS filter keeping only sky-like modes: inside the horizon wedge (plus buffer) and at sky-like fringe rates."
+suffix = "sum.sky_filtered_SNR.uvh5"
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.sky_filtered_SNR.uvh5"  # display only
+note = "Residual, in units of the thermal noise, after a 2D DPSS filter removes everything sky-like: delays inside filter_delay and the fringe rates the sky spans on that baseline. Cross-correlations with enough samples only."
 kind = "metrics"
 produced_by = "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK"
 consumed_by = ["FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"]
@@ -276,7 +304,7 @@ consumed_by = ["FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"]
 [DATA_PRODUCTS.FLAGS_SKY_FILTERED]
 label = "Sky-Filtered Flags"
 filename = "single_baseline_files/zen.{JD}.flag_waterfall_sky_filtered.h5"  # display only: per-day
-note = "PLANNED (was H6C round 3). Flags on what the 2D sky-like filter rejects, with TV allocations treated specially."
+note = "Was H6C round 3. One whole-night flag waterfall on what the 2D sky-like filter rejects, with TV allocations treated specially."
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
@@ -433,28 +461,30 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-############################################################################################################
-# PLACEHOLDER action blocks: their do scripts exit successfully without doing anything. Prereqs and cadences
-# follow H6C IDR3's h6c_analysis.toml and post_inpaint_analysis.toml; everything else is still to be designed.
-
-[SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_2D_filtered_SNRs): per-baseline 2D DPSS filter keeping only sky-like modes (wedge + sky fringe rates) -> residual SNR
+[SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK]  # per file: 2D DPSS filter of the single-baseline files the corner-turn map assigns to it, keeping only what is not sky-like, as an SNR (H6C single_baseline_2D_filtered_SNRs)
 prereqs = "CORNER_TURN_SINGLE_JD"
 prereq_chunk_size = "all"
+mem = 24000  # as in H6C
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK]  # PLACEHOLDER (H6C full_day_rfi_round_3): flag what is not sky-like, with special treatment of TV allocations (HERA Memo 82)
+[FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK]  # once per night: flags what is not sky-like, with special treatment of TV allocations (H6C full_day_rfi_round_3, HERA Memo 82)
 prereqs = "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
+mem = 48000  # as in H6C
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+############################################################################################################
+# PLACEHOLDER action blocks: their do scripts exit successfully without doing anything. Prereqs and cadences
+# follow H6C IDR3's h6c_analysis.toml and post_inpaint_analysis.toml; everything else is still to be designed.
 
 [SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK]  # PLACEHOLDER: the one inpainting step -- the LST-stacked, 2D-DPSS-filtered model as scaffold for every baseline that has one (H6C single_baseline_scaffolded_and_feathered_inpainter), H6C's iterative 2D-informed method (single_baseline_2D_informed_inpaint) for those that don't; effective nsamples DPSS-filled across the same gaps
 prereqs = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
