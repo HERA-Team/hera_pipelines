@@ -93,6 +93,8 @@ avg_spectrum_filter_delay = 250.0  # in ns
 eigenval_cutoff = 1e-12
 time_avg_delay_filt_snr_thresh = 4.0
 time_avg_delay_filt_snr_dynamic_range = 1.5
+tv_chisq_median_window = 3600.0  # in s; TV allocations' sky-calibration chi^2, relative to the whole upper band's, is compared to its running median over this long
+tv_chisq_ratio_cut = 2.0  # TV allocations above this are flagged at that integration, before the z-score flagging
 
 [CALIBRATION_SMOOTHING_OPTS]  # Read directly by the calibration_smoothing notebook
 freq_smoothing_scale = 10.0  # in MHz
@@ -216,7 +218,7 @@ suffix = "sum.sky.calfits"
 label = "Sky-Calibrated Gain Solutions"
 kind = "calibration"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
-consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK"]
+consumed_by = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK"]
 
 [DATA_PRODUCTS.DECOHERENCE]
 suffix = "sum.snap_decoherence.h5"
