@@ -1,0 +1,8 @@
+# Bright sources whose sidelobes intersect the polarized sources above, modeled (phased, baseline-averaged,
+# low-pass filtered) and subtracted before the polarized sources are fit. Empty for now, as in H6C IDR3.2
+# (/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/metadata/prior_sources.yaml). Entries take the form
+#   - name: "Fornax A"
+#     right_ascension: "03h22m41.7s"
+#     declination: "-37d12m30s"
+#     lst_half_width: 0.75 # time in hours
+sources:

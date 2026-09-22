@@ -145,6 +145,24 @@ max_freq_flag_frac = 0.25  # as in [FULL_DAY_RFI_OPTS]
 max_time_flag_frac = 0.5
 freq_conv_size = 8.0  # in MHz; the widest stretch of frequency tested for a low-level average excess (one TV allocation)
 
+[PER_NIGHT_SOURCE_FILTERING_OPTS]  # Read directly by the per_night_source_filtering notebook
+min_times = 50  # minimum integrations in a source's LST window to model it (and the window size for fitting positions and RMs)
+fit_freq_range = [107.0, 230.0]  # in MHz; used to fit source positions and rotation measures
+max_rm_diff = 2.0  # in rad / m^2; fits farther than these from the catalog fall back to the catalog values
+max_ra_diff = 1.0  # in degrees
+max_dec_diff = 1.0  # in degrees
+min_snr = 5.0  # of the fit source in its image, likewise
+fg_delay_half_width = 500.0  # in ns; the foreground DPSS filter applied before modeling each source
+sidelobe_delay_half_width = 100.0  # in ns; the low-pass filter that turns a phased average into a prior source's model
+model_delay_half_width = 100.0  # in ns; the source model's spectral DPSS half-width
+model_frate_half_width = 0.25  # in mHz; the source model's temporal DPSS half-width
+eigenval_cutoff = 1e-12
+residualized_source_basis = true  # fit physical RM modes residualized by each integration's foreground filter (else a two-branch fit)
+source_max_foreground_fraction = 1e-3  # keep only RM modes with at most this fraction of their power in the foreground subspace
+source_basis_rcond = 1e-12
+fit_maxiter = 10
+max_workers = 8
+
 ############################################################################################################
 
 [DATA_PRODUCTS]  # Read by the notebooks and by build_notebook_index.py
@@ -292,7 +310,7 @@ filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.smooth_cal
 note = "Whole-night, one file per redundant group, keyed by the group's canonical antpair so names agree across nights; missing integrations inserted flagged with nsamples = 0 and the data rephased onto a uniform time grid; effective nsamples carried through."
 kind = "raw"
 produced_by = "CORNER_TURN_SINGLE_JD"
-consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
 # ---- PLACEHOLDER products of the planned stages (names provisional) ----
 
@@ -319,19 +337,26 @@ filename = "single_baseline_files/zen.{JD}.{bl}.inpainted.uvh5"  # display only,
 note = "PLANNED. Inpainted across flags against the LST-stacked scaffold where one exists and H6C's iterative 2D-informed method where not, feathered at flag edges, with effective nsamples DPSS-filled across the same gaps so that LST-stacking weights inpainted models by the depth the night would have had. Handed to LST stacking together with the final flags."
 kind = "raw"
 produced_by = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
-consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"]
 
 [DATA_PRODUCTS.SOURCE_CATALOG]
 label = "Polarized Point Source Catalog"
-filename = "sources.yaml"  # display only
-note = "PLANNED external input: the polarized sources (H6C IDR3.2 metadata/sources.yaml) whose positions and rotation measures are fit per night."
+filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/source_catalogs/sources.yaml"  # read by the notebook (an absolute path)
+note = "External input, versioned with this pipeline: the polarized sources whose positions and rotation measures are fit per night (copied from H6C IDR3.2)."
+kind = "external"
+consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
+
+[DATA_PRODUCTS.PRIOR_SOURCE_CATALOG]
+label = "Bright Source Catalog"
+filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/source_catalogs/prior_sources.yaml"  # read by the notebook (an absolute path)
+note = "External input, versioned with this pipeline: bright sources whose sidelobes intersect the polarized ones, modeled and subtracted first (empty, as in H6C IDR3.2)."
 kind = "external"
 consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
 
 [DATA_PRODUCTS.SOURCE_MODELS]
 label = "Per-Night Polarized Source Models"
-filename = "single_baseline_files/phased.{JD}.{source}.{model}.uvh5"  # display only
-note = "PLANNED. Faraday-rotating DPSS models of the fitted polarized sources, for subtraction before the pI SNRs are formed."
+filename = "single_baseline_files/phased.{JD}.{source}.{model}.uvh5"  # read by the notebook; {model} is one of all_comps, fg_model, rm_model, scint_model
+note = "Faraday-rotating DPSS models of the fitted polarized sources (phased averages over baselines), for subtraction before the pI SNRs are formed. Fit on flagged, non-inpainted data."
 kind = "raw"
 produced_by = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"]
@@ -389,8 +414,8 @@ actions = ["FILE_SKY_CAL_NOTEBOOK",
            # with the H6C RFI rounds 3/4/5 renamed sky_filtered / pI_dlyfilt / pI_FRF
            "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK",
            "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK",
-           "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK",
            "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK",
+           "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK",
            "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK",
            "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK",
            "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK",
@@ -498,19 +523,21 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[PER_NIGHT_SOURCE_FILTERING_NOTEBOOK]  # PLACEHOLDER (H6C IDR3.2 per_night_source_filtering_notebook, Tyler Cox): fit polarized point sources (position + rotation measure) and build Faraday-rotating DPSS models to subtract
-prereqs = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
+[PER_NIGHT_SOURCE_FILTERING_NOTEBOOK]  # fit polarized point sources (position + rotation measure) on the flagged, non-inpainted single-baseline files and build Faraday-rotating DPSS models to subtract
+prereqs = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
 stride_length = "all"
 time_centered = false
+mem = 128000  # as in H6C
+ncpu = 8  # as in H6C: files are loaded in parallel (max_workers above)
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 [SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK]  # PLACEHOLDER (H6C single_baseline_pI_snr without FRF): delay-filtered pseudo-Stokes I SNRs, coherently rephased to bright sources
-prereqs = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
+prereqs = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"]
 prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
