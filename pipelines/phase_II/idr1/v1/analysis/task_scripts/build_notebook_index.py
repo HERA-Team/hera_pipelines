@@ -74,9 +74,6 @@ recent_jds = sorted(list(set([int(jd) for link in links for jd in re.findall(r"2
 flowchart, nodes = notebook_flowchart.render(args.toml, SRC_DIR, nb_output_repo)
 
 overall_index = f'<html>\n<title>{TITLE}</title>\n<header>\n<h1>{TITLE}</h1>\n</header>\n<body>\n'
-overall_index += '<p>Click a notebook to see its per-night renderings; hover for details.</p>\n'
-overall_index += flowchart + '\n'
-
 overall_index += '<h2>Notebooks by Type:</h2>\n<h3><ul>\n'
 for node in nodes:
     if not node['is_notebook']:
@@ -97,6 +94,10 @@ if unmapped:
     for folder in unmapped:
         overall_index += f'    <li><a href="{folder}">{folder}</a></li>\n'
     overall_index += '</ul>\n</h3>\n'
+
+overall_index += '<h2>Analysis Flowchart:</h2>\n'
+overall_index += '<p>Click a notebook to see its per-night renderings; hover for details.</p>\n'
+overall_index += flowchart + '\n'
 
 overall_index += '<h2>Notebooks by JD:</h2>\n'
 for jd in recent_jds[:]:
