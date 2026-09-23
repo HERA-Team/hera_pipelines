@@ -57,6 +57,7 @@ dependencies:
   - toml
   - pip:
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/aipy
+    - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/pyuvdata
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/pyuvsim
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/uvtools
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_filters
@@ -71,3 +72,4 @@ dependencies:
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pspec
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/simpleQE
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/librarian
+    - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/snapshot_imager
