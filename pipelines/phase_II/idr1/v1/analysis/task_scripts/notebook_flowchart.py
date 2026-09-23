@@ -118,15 +118,45 @@ def _as_list(value):
     return list(value)
 
 
-def _cadence(block, makeflow_type):
-    """Human-readable description of how often an action runs, per its chunking keys."""
+# What a data product is indexed by, read off the tokens of its declared filename.
+UNIT_TOKENS = ((('{bl}', '{ant1}', '{ant2}'), 'baseline'),
+               (('{source}', '{object}'), 'sky object'))
+
+
+def _product_unit(spec):
+    """One per baseline, one per sky object, one per raw file, or a single file for the night."""
+    filename = spec.get('filename') or ''
+    for tokens, unit in UNIT_TOKENS:
+        if any(token in filename for token in tokens):
+            return unit
+    return 'file' if spec.get('suffix') else 'night'
+
+
+def _action_unit(block, makeflow_type, reads):
+    """What a single run of an action covers. The chunking keys settle the per-night case. Past
+    the corner turn, a step fed single-baseline files covers one baseline: makeflow still hands
+    out a job per raw file, but the corner-turn map pairs each job with a baseline, so the unit
+    of work is a baseline even though makeflow_type stays 'analysis'."""
     if block.get('chunk_size') == 1 and block.get('stride_length') == 'all':
-        return 'one per night'
-    if makeflow_type == 'lstbin_single_baseline':
-        return 'one per baseline'
+        return 'night'
+    if makeflow_type == 'lstbin_single_baseline' or 'baseline' in reads:
+        return 'baseline'
     if makeflow_type == 'lstbin':
-        return 'one per LST-bin file'
-    return 'one per file'
+        return 'LST-bin file'
+    return 'file'
+
+
+def _edge_label(tail, head):
+    """What an arrow says, if anything. Only an arrow whose reader takes in many of the product
+    at once carries a label, and it names what is being gathered up; one carrying a single file
+    says nothing, as in the hand-drawn charts. prereq_chunk_size is no guide here: it is a
+    scheduling barrier, and the single-baseline steps all set it while each still reads one
+    baseline."""
+    if tail['type'] != 'product' or head['type'] != 'action':
+        return ''
+    if tail['unit'] == 'night' or tail['unit'] == head['unit']:
+        return ''
+    return f'All {tail["unit"]}s'
 
 
 def _parse_do_script(path):
@@ -211,6 +241,12 @@ def discover(toml_path, task_script_dir, nb_output_repo):
     actions = [a for a in config.get('WorkFlow', {}).get('actions', [])
                if a not in SKIP_ACTIONS]
     products = config.get('DATA_PRODUCTS', {})
+    units = {name: _product_unit(spec) for name, spec in products.items()}
+    # what each action reads, so a step fed single-baseline files is known to run per baseline
+    reads = {}
+    for name, spec in products.items():
+        for consumer in _as_list(spec.get('consumed_by')):
+            reads.setdefault(consumer, set()).add(units[name])
 
     nodes = []
     for action in actions:
@@ -218,14 +254,14 @@ def discover(toml_path, task_script_dir, nb_output_repo):
         folder, template = _parse_do_script(
             os.path.join(task_script_dir, f'do_{action}.sh'))
         stats = _folder_stats(nb_output_repo, folder)
+        unit = _action_unit(block, makeflow_type, reads.get(action, set()))
         node = {
-            'id': action, 'type': 'action',
+            'id': action, 'type': 'action', 'unit': unit,
             'folder': folder, 'template': template,
-            'cadence': _cadence(block, makeflow_type),
+            'cadence': f'one per {unit}',
             'prereqs': [p for p in _as_list(block.get('prereqs')) if p not in SKIP_ACTIONS],
-            'all_files': block.get('prereq_chunk_size') == 'all',
             'label': _prettify(folder if folder else action),
-            'sub': _cadence(block, makeflow_type),
+            'sub': f'one per {unit}',
             'is_notebook': folder is not None,
             'shape': 'note' if folder else 'process',
             **stats,
@@ -236,7 +272,7 @@ def discover(toml_path, task_script_dir, nb_output_repo):
     for name, spec in products.items():
         suffix = spec.get('suffix')
         node = {
-            'id': name, 'type': 'product',
+            'id': name, 'type': 'product', 'unit': units[name],
             'label': spec.get('label', _prettify(name)),
             'sub': spec.get('filename') or (f'zen.{{JD}}.{suffix}' if suffix else ''),
             'shape': 'cylinder',
@@ -783,7 +819,7 @@ def render(toml_path, task_script_dir, nb_output_repo):
     router = _Router(levels, geometry)
     edge_svg = []
     for tail, head in edges:
-        label = 'All files' if by_id[head].get('all_files') else ''
+        label = _edge_label(by_id[tail], by_id[head])
         path, label_at = router.route(tail, head, label)
         edge_svg.append(_edge_svg(tail, head, path, label_at, label))
 
@@ -865,6 +901,8 @@ body { background: #ffffff; color: #000000; }
   padding: 7px 10px; border: 1px solid #999; border-radius: 4px;
   background: #ffffe8; color: #000; font: 12px/1.45 Helvetica Neue, Helvetica, Arial, sans-serif;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25); pointer-events: none;
+  /* file paths and ACTION_NAMES have no spaces to break at, so allow breaks anywhere */
+  overflow-wrap: anywhere;
 }
 #nb-tip code { font-size: 11px; }
 </style>

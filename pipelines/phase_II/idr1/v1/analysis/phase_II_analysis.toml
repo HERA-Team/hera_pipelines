@@ -240,7 +240,10 @@ max_workers = 8
 #   filename    -- the naming pattern printed under the label on the flowchart (in preference
 #                  to the suffix). For per-night products it is also the path, relative to the
 #                  night's folder, that the do scripts (get_filename) and notebooks read, with
-#                  {JD} the integer JD.
+#                  {JD} the integer JD. Its tokens also say what the product is indexed by --
+#                  {bl} or {ant1}/{ant2} one per baseline, {source} or {object} one per sky
+#                  object, neither one per night -- which is how the flowchart knows to label
+#                  an arrow "All baselines" or "All sky objects" where a step gathers them up.
 #   note        -- display only: free text shown in the flowchart's hover tooltip, for what
 #                  the label and kind do not convey. Optional; injects nothing.
 
@@ -444,6 +447,13 @@ kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK"]
 
+[DATA_PRODUCTS.SOURCE_FLAGS_PI_DLYFILT]
+label = "Per-Source Delay-Filtered pI Flags"
+filename = "single_baseline_files/zen.{JD}.{source}.flag_waterfall_pI_dlyfilt.h5"
+note = "One flag waterfall per rephasing source, before they are unioned into the night's flags. Kept for the record, as in H6C round 4; nothing downstream reads them."
+kind = "metrics"
+produced_by = "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"
+
 [DATA_PRODUCTS.PI_FRF_SNR]
 label = "Delay + FR-Filtered pI SNR"
 suffix = "sum.pI_FRF_SNR.uvh5"
@@ -460,6 +470,13 @@ note = "Was H6C round 5. The night's final flag waterfall: the union of the flag
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+
+[DATA_PRODUCTS.SOURCE_FLAGS_PI_FRF]
+label = "Per-Source Delay + FR-Filtered pI Flags"
+filename = "single_baseline_files/zen.{JD}.{source}.flag_waterfall_pI_FRF.h5"
+note = "One flag waterfall per rephasing source, before they are unioned into the night's final flags. Kept for the record, as in H6C round 5; nothing downstream reads them."
+kind = "metrics"
+produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
 
 [DATA_PRODUCTS.INPAINT_SCAFFOLD]
 label = "LST-Indexed Single-Baseline Sky Models (Inpainting Scaffolds)"
