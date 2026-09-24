@@ -1,5 +1,6 @@
 # Polarized point sources whose positions and rotation measures per_night_source_filtering fits each night,
-# and whose Faraday-rotating models are subtracted before the pseudo-Stokes I SNRs are formed.
+# and whose Faraday-rotating (and scintillation) models are subtracted before the pseudo-Stokes I SNRs are formed
+# and before inpainting, in the bands (below and above the FM gap) each source's flags select.
 # Copied from H6C IDR3.2 (/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/metadata/sources.yaml).
 sources:
     - name: "PSR J0628-28"
@@ -10,6 +11,8 @@ sources:
       scintillation_timescale: 200 # in seconds
       lst_half_width: 0.75 # time in hours
       use_sidelobe_model: true
+      subtract_below_fm: false  # subtract this source's models below the FM gap
+      subtract_above_fm: true  # ...and above it
 
     - name: "PSR J0742-2822"
       right_ascension: "07h42m49.058s"
@@ -19,3 +22,5 @@ sources:
       scintillation_timescale: 0.0 # place holder for sources without scintillation fitting
       lst_half_width: 0.75 # time in hours
       use_sidelobe_model: true
+      subtract_below_fm: false  # subtract this source's models below the FM gap
+      subtract_above_fm: true  # ...and above it
