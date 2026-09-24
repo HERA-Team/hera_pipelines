@@ -480,8 +480,8 @@ produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
 
 [DATA_PRODUCTS.INPAINT_SCAFFOLD]
 label = "LST-Indexed Single-Baseline Sky Models (Inpainting Scaffolds)"
-filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_notebook_templates/zen.LST.baseline.{ant1}_{ant2}.sum.sky_model.uvh5"  # read by the notebook: {ant1}_{ant2} is a redundant group's key
-note = "External input (single_baseline_sky_model_2D_filter on an LST stack), one file per redundant group, autocorrelations included; the location is provisional. Baselines without one fall back to the iterative 2D-informed inpaint."
+filename = "/lustre/aoc/projects/hera/h6c-analysis/abscal_models/h6c_filtered_lst_stack/single_baseline_files/zen.LST.baseline.{ant1}_{ant2}.sum.sky_model.uvh5"  # read by the notebook: {ant1}_{ant2} is a redundant group's key
+note = "External input: the same filtered LST stack as SKY_MODEL (whose zen.*.sum.sky_model.uvh5 files are its corner turn), in the per-baseline layout single_baseline_sky_model_2D_filter writes: one file per redundant group, autocorrelations included. Baselines without one fall back to the iterative 2D-informed inpaint, which costs hours for long baselines."
 kind = "external"
 consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
