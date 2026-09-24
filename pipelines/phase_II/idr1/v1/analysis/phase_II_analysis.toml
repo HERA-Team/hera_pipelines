@@ -156,8 +156,8 @@ fr_quantile_high = 0.95
 min_samp_frac = 0.1  # baselines with fewer median nsamples than this fraction of the autocorrelations' are skipped
 ridge_alpha = 1e-12  # ridge regularization of the filters' normal matrices, for stability across wide flag gaps
 leverage_cap = 0.999  # leverage above this is treated as degenerate (the cell is flagged)
-subtract_polarized_source = true  # subtract per_night_source_filtering's models before filtering
-use_low_band_model = false  # ...including below band_split_freq
+subtract_polarized_source = true  # subtract per_night_source_filtering's Faraday-rotating (and scintillation) models before filtering...
+subtract_fg_model = false  # ...and their smooth foreground models too
 
 [FULL_DAY_RFI_PI_DLYFILT_OPTS]  # Read directly by the full_day_rfi_pI_dlyfilt notebook (was H6C round 4)
 min_samp_frac = 0.1  # baselines with fewer median nsamples than this fraction of the autocorrelations' are left out
@@ -188,8 +188,7 @@ gauss_fit_buffer_cut = 1e-5
 scaffold_extrap_limit = 0.5  # in units of the sky model's LST spacing; a data time farther than this from any model LST has no scaffold
 subtract_polarized_source = true  # subtract per_night_source_filtering's models before inpainting (the output stays source-subtracted)
 subtract_fg_model = false  # ...their smooth foreground components too
-subtract_polarized_source_from_scaffold = true
-use_low_band_model = false
+subtract_polarized_source_from_scaffold = false  # also subtract them from the sky-model scaffold (only right for a scaffold made from this night's data)
 filter_scaffold = false  # low-pass delay filter a sky-model scaffold first (unnecessary for a 2D-DPSS-filtered model)
 filter_standoff = 50.0  # in ns
 filter_min_delay = 300.0  # in ns
