@@ -403,7 +403,7 @@ produced_by = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
 
 [DATA_PRODUCTS.SOURCE_CATALOG]
 label = "Polarized Point Source Catalog"
-filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/source_catalogs/sources.yaml"  # read by the notebook (an absolute path)
+filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/source_catalogs/sources_to_filter.yaml"  # read by the notebook (an absolute path)
 note = "External input, versioned with this pipeline: the polarized sources whose positions and rotation measures are fit per night (copied from H6C IDR3.2); the pI SNR notebook reads it to find their models."
 kind = "external"
 consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
