@@ -366,7 +366,7 @@ kind = "raw"
 produced_by = "CORNER_TURN_SINGLE_JD"
 consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
 
-# ---- PLACEHOLDER products of the planned stages (names provisional) ----
+# ---- products of the stages after the corner turn: the RFI rounds, source filtering, and the inpaint ----
 
 [DATA_PRODUCTS.SKY_FILTERED_SNR]
 label = "Sky-Filtered Single-Baseline SNR"
@@ -596,8 +596,8 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 ############################################################################################################
-# PLACEHOLDER action blocks: their do scripts exit successfully without doing anything. Prereqs and cadences
-# follow H6C IDR3's h6c_analysis.toml and post_inpaint_analysis.toml; everything else is still to be designed.
+# The stages after the sky-filtered RFI round: the polarized-source filtering, the two pI RFI rounds, and the final
+# inpaint. Prereqs and cadences follow H6C IDR3's h6c_analysis.toml and post_inpaint_analysis.toml.
 
 [PER_NIGHT_SOURCE_FILTERING_NOTEBOOK]  # fit polarized point sources (position + rotation measure) on the flagged, non-inpainted single-baseline files and build Faraday-rotating DPSS models to subtract
 prereqs = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
