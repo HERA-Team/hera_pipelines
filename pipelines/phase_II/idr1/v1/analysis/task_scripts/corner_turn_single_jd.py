@@ -4,10 +4,8 @@
 import numpy as np
 import yaml
 import glob
-from hera_cal import utils
-from pyuvdata import FastUVH5Meta, UVData
-from pyuvdata.utils import antnums_to_baseline
 import os
+import sys
 import argparse
 
 # create an argparser for this_file, map_yaml, and out_folder
@@ -34,16 +32,31 @@ with open(yaml_path, 'r') as file:
 antpairs_here = corner_turn_map['files_to_antpairs_map'][os.path.abspath(args.this_file)]
 outfiles_here = corner_turn_map['files_to_outfiles_map'][os.path.abspath(args.this_file)]
 
+# most files are assigned no antpairs (a night has more files than redundant groups): leave before the slow imports
+if len(antpairs_here) == 0:
+    print(f'No baselines correspond to {args.this_file}')
+    sys.exit(0)
+
+from hera_cal import utils
+from pyuvdata import FastUVH5Meta, UVData
+from pyuvdata.utils import antnums_to_baseline
+
 # load all baselines corresponding to this_file and then write them out to uvh5
 if len(antpairs_here) > 0:
     for antpair, outfile in zip(antpairs_here, outfiles_here):
         # Read for this antpair
         print(f'Now working on {antpair}.')
-        usable_files = [f for f in all_files if len({antpair, antpair[::-1]} & set(FastUVH5Meta(f).antpairs)) > 0]
-        if len(usable_files) < len(all_files):
-            print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
-        uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt', 
-                               blts_are_rectangular=True, time_axis_faster_than_bls=True)
+        # every red_avg file of a night normally holds every antpair, so read them all directly rather than first
+        # opening each one to check (on Lustre each open costs ~0.1 s); only if that fails, find the files that have it
+        try:
+            uvd = UVData.from_file(all_files, bls=[antpair], axis='blt',
+                                   blts_are_rectangular=True, time_axis_faster_than_bls=True)
+        except ValueError:
+            usable_files = [f for f in all_files if len({antpair, antpair[::-1]} & set(FastUVH5Meta(f).antpairs)) > 0]
+            if len(usable_files) < len(all_files):
+                print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
+            uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt',
+                                   blts_are_rectangular=True, time_axis_faster_than_bls=True)
 
         # handle case where fully-flagged baselines are misordered
         is_misordered_but_flagged = (uvd.ant_1_array != np.median(uvd.ant_1_array)) | (uvd.ant_2_array != np.median(uvd.ant_2_array))
