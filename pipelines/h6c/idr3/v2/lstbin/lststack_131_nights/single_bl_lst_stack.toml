@@ -216,7 +216,7 @@ args = ["${Options:toml_file}"]
 prereqs = "BUILD_BASELINE_MAP"
 prereq_chunk_size = "all"
 mem = 250000
-ncpu = 5 # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+ncpu = 16 # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
 args = ["{basename}",
         "${Options:toml_file}",
        ]
@@ -224,7 +224,7 @@ args = ["{basename}",
 [SINGLE_NIGHT_LSTCAL]
 prereqs = "PRELIMINARY_SINGLE_BASELINE_LSTSTACK"
 prereq_chunk_size = "all"
-mem = 118000
+mem = 120000
 ncpu = 5
 args = ["{basename}",
         "${Options:toml_file}",
@@ -234,7 +234,7 @@ args = ["{basename}",
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
 mem = 250000
-ncpu = 5  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+ncpu = 16  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
 args = ["{basename}",
         "${Options:toml_file}",
        ]
