@@ -112,18 +112,21 @@ for antpair, outfile in zip(antpairs_here, outfiles_here):
         # create new UVData object with missing times
         time_grid_indices = np.abs(time_grid[None, :] - times[:, None]).argmin(axis=1)
         new_times = np.array([t for i, t in enumerate(time_grid) if i not in set(time_grid_indices)])
-        new_uvd = UVData.new(freq_array=uvd.freq_array,
-                             polarization_array=uvd.polarization_array,
-                             times=new_times,
-                             telescope=uvd.telescope,
-                             antpairs=[ubl_key],
-                             vis_units=uvd.vis_units,
-                             empty=True)
-        new_uvd.flag_array[:] = True  # flag all new data
-        new_uvd.nsample_array[:] = 0
+        if len(new_times) > 0:  # a gap that is not a whole number of integrations can leave no slot empty
+            new_uvd = UVData.new(freq_array=uvd.freq_array,
+                                 polarization_array=uvd.polarization_array,
+                                 times=new_times,
+                                 telescope=uvd.telescope,
+                                 antpairs=[(int(uvd.ant_1_array[0]), int(uvd.ant_2_array[0]))],  # the data's own orientation, so they never outvote it below
+                                 vis_units=uvd.vis_units,
+                                 do_blt_outer=True,  # needed when there is a single new time
+                                 integration_time=np.median(uvd.integration_time),
+                                 empty=True)
+            new_uvd.flag_array[:] = True  # flag all new data
+            new_uvd.nsample_array[:] = 0
+            uvd.fast_concat(new_uvd, axis='blt', inplace=True)
 
         # combine new times and old, then update lsts, and enforce uniform conjugation
-        uvd.fast_concat(new_uvd, axis='blt', inplace=True)
         if np.median(uvd.ant_1_array) < np.median(uvd.ant_2_array):
             uvd.reorder_blts(conj_convention='ant1<ant2')
         else:
