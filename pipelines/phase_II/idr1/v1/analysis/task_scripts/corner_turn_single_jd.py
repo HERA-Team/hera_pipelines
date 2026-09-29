@@ -48,17 +48,15 @@ for antpair, outfile in zip(antpairs_here, outfiles_here):
     print(f'Now working on {antpair}.')
     # every red_avg file of a night normally holds every antpair, so read them all directly rather than first
     # opening each one to check (on Lustre each open costs ~0.1 s); only if that fails, find the files that have it
+    read_kwargs = dict(bls=[antpair], axis='blt', blts_are_rectangular=True, time_axis_faster_than_bls=True)
     try:
-        uvd = UVData.from_file(all_files, bls=[antpair], axis='blt',
-                               blts_are_rectangular=True, time_axis_faster_than_bls=True)
-    except ValueError as err:
-        if 'No baseline-times were found' not in str(err):  # what pyuvdata raises when a file lacks the antpair
-            raise
+        uvd = UVData.from_file(all_files, **read_kwargs)
+    except ValueError:  # e.g. a file lacks the antpair (pyuvdata's wording for that has changed across versions)
         usable_files = [f for f in all_files if len({antpair, antpair[::-1]} & set(FastUVH5Meta(f).antpairs)) > 0]
-        if len(usable_files) < len(all_files):
-            print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
-        uvd = UVData.from_file(usable_files, bls=[antpair], axis='blt',
-                               blts_are_rectangular=True, time_axis_faster_than_bls=True)
+        if len(usable_files) == len(all_files):  # every file has it, so the error is something else
+            raise
+        print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
+        uvd = UVData.from_file(usable_files, **read_kwargs)
 
     # handle case where fully-flagged baselines are misordered
     is_misordered_but_flagged = (uvd.ant_1_array != np.median(uvd.ant_1_array)) | (uvd.ant_2_array != np.median(uvd.ant_2_array))
