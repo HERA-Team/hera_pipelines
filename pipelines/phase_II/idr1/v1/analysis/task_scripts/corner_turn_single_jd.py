@@ -27,7 +27,7 @@ with open(yaml_path, 'r') as file:
 antpairs_here = corner_turn_map['files_to_antpairs_map'][os.path.abspath(args.this_file)]
 outfiles_here = corner_turn_map['files_to_outfiles_map'][os.path.abspath(args.this_file)]
 
-# most files are assigned no antpairs (a night has more files than redundant groups): leave before the slow imports
+# many files are assigned no antpairs when a night has more files than redundant groups: leave before the slow imports
 if len(antpairs_here) == 0:
     print(f'No baselines correspond to {args.this_file}')
     sys.exit(0)
