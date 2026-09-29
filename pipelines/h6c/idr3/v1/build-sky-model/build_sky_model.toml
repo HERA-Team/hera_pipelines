@@ -32,7 +32,8 @@ auto_cg_iter_lim = 500
 
 [SKY_MODEL_OPTS]  # Read by single_baseline_sky_model_2D_filter.ipynb
 delay_buffer = 200.0  # ns, added to the baseline horizon delay for the frequency-axis (delay) DPSS cut
-# Floors on the 2D DPSS box, so short baselines keep most of the mutual-coupling "X" in delay-fringe-rate space.
+# Floors on the 2D DPSS box, so short baselines keep most of the mutual-coupling "X" in delay-fringe-rate space
+# (cross-correlations only: autos keep the horizon + buffer box).
 min_filter_delay = 500.0  # ns, the delay cut is max(horizon + delay_buffer, min_filter_delay)
 min_fr_half_width = 2.5  # mHz (fringe rate), the FR window's half-width is at least this
 max_bl_length = 1e10  # m, skip baselines longer than this
