@@ -1,6 +1,4 @@
-# Copied verbatim from pipelines/h6c/idr3/v1/analysis/task_scripts/build_corner_turn_map.py (2026-09-09): the corner turn is
-# unchanged for Phase II, and a copy (rather than a symlink) keeps later edits to either pipeline from
-# changing the other.
+# Adapted from pipelines/h6c/idr3/v1/analysis/task_scripts/build_corner_turn_map.py
 import numpy as np
 import yaml
 import glob
@@ -42,6 +40,17 @@ for i, ap in enumerate(antpairs):
 hd = io.HERAData(args.this_file)
 rgs = red_groups.RedundantGroups.from_antpos(hd.antpos)
 antpairs_to_ubl_keys_map = {ap: rgs.get_ubl_key(ap) for ap in antpairs}
+
+# two antpairs of one redundant group (named differently in files whose antennas differ) would have two jobs
+# write the same single-baseline file, each with only part of the night: fail here rather than keep whichever
+# job finishes last
+ubl_keys_to_antpairs = {}
+for ap, k in antpairs_to_ubl_keys_map.items():
+    ubl_keys_to_antpairs.setdefault(k, []).append(ap)
+shared = {k: aps for k, aps in ubl_keys_to_antpairs.items() if len(aps) > 1}
+if len(shared) > 0:
+    raise ValueError(f'{len(shared)} redundant groups appear under more than one antpair across the night '
+                     f'(e.g. {list(shared.items())[:3]}), so their single-baseline files would overwrite each other.')
 
 # create files_to_outfiles_map
 files_to_outfiles_map = {}
