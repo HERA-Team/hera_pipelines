@@ -1,7 +1,4 @@
-# Adapted from pipelines/h6c/idr3/v1/analysis/task_scripts/corner_turn_single_jd.py (copied 2026-09-09). Two
-# changes for Phase II: a job whose file has no baselines assigned exits before the slow imports, and each
-# baseline is read from all of the night's files directly, checking which files have it only if that read fails.
-# A copy (rather than a symlink) keeps later edits to either pipeline from changing the other.
+# Adapted from pipelines/h6c/idr3/v1/analysis/task_scripts/corner_turn_single_jd.py
 import numpy as np
 import yaml
 import glob
