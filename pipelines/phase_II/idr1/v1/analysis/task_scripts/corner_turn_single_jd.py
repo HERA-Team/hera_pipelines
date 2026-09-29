@@ -23,7 +23,7 @@ if not os.path.exists(args.out_folder):
 # read in yaml file
 yaml_path = os.path.join(args.out_folder, args.map_yaml)
 with open(yaml_path, 'r') as file:
-    corner_turn_map = yaml.unsafe_load(file)
+    corner_turn_map = yaml.load(file, Loader=getattr(yaml, 'CUnsafeLoader', yaml.UnsafeLoader))  # libyaml's loader is ~10x faster
 antpairs_here = corner_turn_map['files_to_antpairs_map'][os.path.abspath(args.this_file)]
 outfiles_here = corner_turn_map['files_to_outfiles_map'][os.path.abspath(args.this_file)]
 
