@@ -29,7 +29,7 @@ python ${src_dir}/corner_turn_single_jd.py ${red_avg_file} ${map_yaml} ${out_fol
 python - "${map_path}" "${red_avg_file}" <<'PYEOF'
 import os, sys, yaml
 with open(sys.argv[1]) as f:
-    outfiles = yaml.unsafe_load(f)['files_to_outfiles_map'][os.path.abspath(sys.argv[2])]
+    outfiles = yaml.load(f, Loader=getattr(yaml, 'CUnsafeLoader', yaml.UnsafeLoader))['files_to_outfiles_map'][os.path.abspath(sys.argv[2])]
 missing = [f for f in outfiles if not os.path.isfile(f)]
 if missing:
     print(f'{len(missing)} of {len(outfiles)} single-baseline files not produced, starting with {missing[0]}')
