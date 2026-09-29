@@ -20,12 +20,6 @@ args = parser.parse_args()
 if not os.path.exists(args.out_folder):
     os.makedirs(args.out_folder)
 
-# get files 
-basename_parts = os.path.basename(args.this_file).split('.')
-is_digit_cumsum = np.cumsum([part.isdigit() for part in basename_parts])  # don't replace JD, but replace decimal
-glob_str = '.'.join(['*' if part.isdigit() and idcs >= 2 else part for part, idcs in zip(basename_parts, is_digit_cumsum)])
-all_files = [os.path.abspath(f) for f in sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), glob_str)))]
-
 # read in yaml file
 yaml_path = os.path.join(args.out_folder, args.map_yaml)
 with open(yaml_path, 'r') as file:
@@ -37,6 +31,12 @@ outfiles_here = corner_turn_map['files_to_outfiles_map'][os.path.abspath(args.th
 if len(antpairs_here) == 0:
     print(f'No baselines correspond to {args.this_file}')
     sys.exit(0)
+
+# get files
+basename_parts = os.path.basename(args.this_file).split('.')
+is_digit_cumsum = np.cumsum([part.isdigit() for part in basename_parts])  # don't replace JD, but replace decimal
+glob_str = '.'.join(['*' if part.isdigit() and idcs >= 2 else part for part, idcs in zip(basename_parts, is_digit_cumsum)])
+all_files = [os.path.abspath(f) for f in sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), glob_str)))]
 
 from hera_cal import utils
 from pyuvdata import FastUVH5Meta, UVData
