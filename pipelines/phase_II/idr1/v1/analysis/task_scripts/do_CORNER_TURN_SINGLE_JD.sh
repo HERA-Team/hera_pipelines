@@ -1,8 +1,8 @@
 #! /bin/bash
 set -e
 
-# The corner turn itself: for the antpairs the corner-turn map assigns to this file, reads that
-# baseline (all pols) from every redundantly averaged file of the night and writes it as one whole-night
+# The corner turn itself: for the antpairs the corner-turn map assigns to a block of files, reads those
+# baselines (all pols) from every redundantly averaged file of the night and writes each as one whole-night
 # single-baseline file, keyed by its redundant group so that names agree across nights; missing
 # integrations are inserted flagged with nsamples = 0 and the data rephased onto a uniform time grid.
 # The folder and map name come from the toml's [DATA_PRODUCTS] so that nothing here is hardcoded.
@@ -22,17 +22,8 @@ map_path="$(dirname ${SUM_FILE})/$(get_filename ${toml_file} CORNER_TURN_MAP)"
 out_folder=$(dirname ${map_path})
 map_yaml=$(basename ${map_path})
 
-echo python ${src_dir}/corner_turn_single_jd.py ${red_avg_file} ${map_yaml} ${out_folder}
-python ${src_dir}/corner_turn_single_jd.py ${red_avg_file} ${map_yaml} ${out_folder}
-
-# every single-baseline file the map assigns to this file must now exist
-python - "${map_path}" "${red_avg_file}" <<'PYEOF'
-import os, sys, yaml
-with open(sys.argv[1]) as f:
-    outfiles = yaml.load(f, Loader=getattr(yaml, 'CUnsafeLoader', yaml.UnsafeLoader))['files_to_outfiles_map'][os.path.abspath(sys.argv[2])]
-missing = [f for f in outfiles if not os.path.isfile(f)]
-if missing:
-    print(f'{len(missing)} of {len(outfiles)} single-baseline files not produced, starting with {missing[0]}')
-    sys.exit(1)
-print(f'All {len(outfiles)} single-baseline files assigned to this file were produced.')
-PYEOF
+# One job in every block_size files with antpairs corner-turns the whole block, reading each red_avg file once,
+# and exits nonzero unless every single-baseline file assigned to its block was produced; the others exit at once.
+block_size=8
+echo python ${src_dir}/corner_turn_block.py ${red_avg_file} ${map_yaml} ${out_folder} --block-size ${block_size}
+python ${src_dir}/corner_turn_block.py ${red_avg_file} ${map_yaml} ${out_folder} --block-size ${block_size}
