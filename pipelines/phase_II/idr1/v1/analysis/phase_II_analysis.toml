@@ -18,6 +18,7 @@ batch_system = "slurm"
 toml_file = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/phase_II_analysis.toml"
 nb_template_dir = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_notebook_templates/notebooks/phase_II'
 nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'
+corner_turn_block_size = 8  # maximum assigned files per job and antpairs per read; use 1 for individual reads
 
 [GLOBAL_OPTS]  # shared across notebooks
 band_split_freq = 100.0  # in MHz; divides the low and high bands (inside the a priori flagged FM gap)
@@ -567,13 +568,14 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[CORNER_TURN_SINGLE_JD]  # per file: writes the whole-night single-baseline files the map assigns to it (copied from H6C IDR3)
+[CORNER_TURN_SINGLE_JD]  # one leader per block writes its assigned single-baseline files; followers exit early
 prereqs = "BUILD_CORNER_TURN_MAP"
 prereq_chunk_size = "all"
 args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
-        "${NOTEBOOK_OPTS:nb_output_repo}"]
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:corner_turn_block_size}"]
 
 [SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK]  # per file: 2D DPSS filter of the single-baseline files the corner-turn map assigns to it, keeping only what is not sky-like, as an SNR (H6C single_baseline_2D_filtered_SNRs)
 prereqs = "CORNER_TURN_SINGLE_JD"

@@ -22,8 +22,8 @@ map_path="$(dirname ${SUM_FILE})/$(get_filename ${toml_file} CORNER_TURN_MAP)"
 out_folder=$(dirname ${map_path})
 map_yaml=$(basename ${map_path})
 
-# One job in every block_size files with antpairs corner-turns the whole block, reading each red_avg file once,
-# and exits nonzero unless every single-baseline file assigned to its block was produced; the others exit at once.
-block_size=8
-echo python ${src_dir}/corner_turn_block.py ${red_avg_file} ${map_yaml} ${out_folder} --block-size ${block_size}
-python ${src_dir}/corner_turn_block.py ${red_avg_file} ${map_yaml} ${out_folder} --block-size ${block_size}
+# One job in every block_size files with antpairs corner-turns the whole block. The configured value is passed
+# through Makeflow's NOTEBOOK_OPTS interpolation, while the Python default remains one for per-antpair use.
+block_size=${5:-1}
+echo python "${src_dir}/corner_turn_single_jd.py" "${red_avg_file}" "${map_yaml}" "${out_folder}" --block-size "${block_size}"
+python "${src_dir}/corner_turn_single_jd.py" "${red_avg_file}" "${map_yaml}" "${out_folder}" --block-size "${block_size}"
