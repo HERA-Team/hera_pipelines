@@ -11,7 +11,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("this_file", help="this particular file, used to index into the map_yaml")
 parser.add_argument("map_yaml", help="name of yaml that maps files to antpairs and antpairs to ubl keys (should be in out_folder)")
 parser.add_argument("out_folder", help="output folder")
+parser.add_argument("--block-size", type=int, default=1,
+                    help="number of files with antpairs that one job corner-turns together, "
+                         "reading each red_avg file once for up to this many antpairs at a time")
 args = parser.parse_args()
+if args.block_size < 1:
+    parser.error("--block-size must be at least 1")
 
 # create out_folder if it doesn't exist
 if not os.path.exists(args.out_folder):
@@ -29,6 +34,17 @@ if len(antpairs_here) == 0:
     print(f'No baselines correspond to {args.this_file}')
     sys.exit(0)
 
+# files with antpairs are grouped into blocks of block_size; the job of each block's first file does the whole block
+files_with_work = sorted(f for f, aps in corner_turn_map['files_to_antpairs_map'].items() if len(aps) > 0)
+position = files_with_work.index(os.path.abspath(args.this_file))
+if position % args.block_size != 0:
+    print(f'The baselines of {args.this_file} are corner-turned by the job of '
+          f'{files_with_work[position - position % args.block_size]}')
+    sys.exit(0)
+block_files = files_with_work[position:position + args.block_size]
+antpairs_here = [ap for f in block_files for ap in corner_turn_map['files_to_antpairs_map'][f]]
+outfiles_here = [of for f in block_files for of in corner_turn_map['files_to_outfiles_map'][f]]
+
 # get files
 basename_parts = os.path.basename(args.this_file).split('.')
 is_digit_cumsum = np.cumsum([part.isdigit() for part in basename_parts])  # don't replace JD, but replace decimal
@@ -36,24 +52,65 @@ glob_str = '.'.join(['*' if part.isdigit() and idcs >= 2 else part for part, idc
 all_files = [os.path.abspath(f) for f in sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), glob_str)))]
 
 from hera_cal import utils
-from pyuvdata import FastUVH5Meta, UVData
+from pyuvdata import UVData
 from pyuvdata.utils import antnums_to_baseline
 
-# load all baselines corresponding to this_file and then write them out to uvh5
-for antpair, outfile in zip(antpairs_here, outfiles_here):
-    # Read for this antpair
+DOWNSELECT_NOTE = '  Downselected to specific antenna pairs using pyuvdata.'
+
+
+def read_block(files, antpairs):
+    '''Reads antpairs from each file that has any of them and concatenates the results in file order.
+    Also returns, for each antpair, whether every one of those files has it.'''
+    uvs, n_files_with = [], {ap: 0 for ap in antpairs}
+    for f in files:
+        try:
+            uv = UVData.from_file(f, bls=antpairs)
+        except ValueError as err:
+            if 'No baseline-times were found' not in str(err):  # raised when the file has none of the antpairs
+                raise
+            continue
+        here = set(uv.get_antpairs())
+        for ap in antpairs:
+            n_files_with[ap] += (ap in here) or (ap[::-1] in here)
+        if not uv.history.endswith(DOWNSELECT_NOTE):
+            # pyuvdata adds this note only when it drops rows; add it so every file's history reads the same
+            uv.history += DOWNSELECT_NOTE
+        uvs.append(uv)
+    if len(uvs) == 0:
+        raise ValueError(f'None of the {len(files)} files has any of {antpairs}')
+    if len(uvs) < len(files):
+        print(f'Only {len(uvs)} out of {len(files)} files have any of {antpairs}')
+    uvs[0].fast_concat(uvs[1:], axis='blt', inplace=True)
+    return uvs[0], {ap: n == len(uvs) for ap, n in n_files_with.items()}
+
+
+def split_antpair(block, antpair):
+    '''The rows of block that belong to antpair, in either orientation.'''
+    rows = np.nonzero(((block.ant_1_array == antpair[0]) & (block.ant_2_array == antpair[1]))
+                      | ((block.ant_1_array == antpair[1]) & (block.ant_2_array == antpair[0])))[0]
+    if len(rows) == 0:
+        raise ValueError(f'{antpair} is in none of the files')
+    uvd = block.copy(metadata_only=True)
+    uvd.select(blt_inds=rows, keep_all_metadata=True, run_check=False)
+    uvd.history = block.history
+    uvd.data_array = block.data_array[rows]
+    uvd.flag_array = block.flag_array[rows]
+    uvd.nsample_array = block.nsample_array[rows]
+    return uvd
+
+
+# load all baselines corresponding to this block and then write them out to uvh5
+for i, (antpair, outfile) in enumerate(zip(antpairs_here, outfiles_here)):
+    if i % args.block_size == 0:
+        # read every red_avg file once for the next block_size antpairs, freeing the previous ones first
+        block = None
+        block, in_every_file = read_block(all_files, antpairs_here[i:i + args.block_size])
     print(f'Now working on {antpair}.')
-    # every red_avg file of a night normally holds every antpair, so read them all directly rather than first
-    # opening each one to check (on Lustre each open costs ~0.1 s); only if that fails, find the files that have it
-    read_kwargs = dict(bls=[antpair], axis='blt', blts_are_rectangular=True, time_axis_faster_than_bls=True)
-    try:
-        uvd = UVData.from_file(all_files, **read_kwargs)
-    except ValueError:  # e.g. a file lacks the antpair (pyuvdata's wording for that has changed across versions)
-        usable_files = [f for f in all_files if len({antpair, antpair[::-1]} & set(FastUVH5Meta(f).antpairs)) > 0]
-        if len(usable_files) == len(all_files):  # every file has it, so the error is something else
-            raise
-        print(f'Only {len(usable_files)} out of {len(all_files)} files have {antpair}')
-        uvd = UVData.from_file(usable_files, **read_kwargs)
+    if in_every_file[antpair]:
+        uvd = split_antpair(block, antpair)
+    else:
+        # read it alone, so that its history lists only the files it is in
+        uvd = read_block(all_files, [antpair])[0]
 
     # handle case where fully-flagged baselines are misordered
     is_misordered_but_flagged = (uvd.ant_1_array != np.median(uvd.ant_1_array)) | (uvd.ant_2_array != np.median(uvd.ant_2_array))
@@ -144,3 +201,10 @@ for antpair, outfile in zip(antpairs_here, outfiles_here):
     # Write data
     print(f'\tWriting {outfile}')
     uvd.write_uvh5(outfile, clobber=True)
+
+# the block's other jobs exit before these files are written, so check all of them here
+missing = [f for f in outfiles_here if not os.path.isfile(f)]
+if missing:
+    print(f'{len(missing)} of {len(outfiles_here)} single-baseline files not produced, starting with {missing[0]}')
+    sys.exit(1)
+print(f'All {len(outfiles_here)} single-baseline files assigned to this block were produced.')

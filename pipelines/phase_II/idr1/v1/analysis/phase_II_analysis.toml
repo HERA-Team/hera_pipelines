@@ -127,6 +127,9 @@ skip_outriggers = true
 [FILE_RED_AVG_OPTS]  # Read directly by the file_redundant_averaging notebook
 include_cross_pols = true  # also average en/ne cross-correlations (and cross-polarized autocorrelations)
 
+[CORNER_TURN_OPTS]  # Read by do_CORNER_TURN_SINGLE_JD.sh
+block_size = 8  # each corner-turn job handles the antpairs of this many files, reading at most this many antpairs at a time
+
 [SKY_FILTERED_SNR_OPTS]  # Read directly by the single_baseline_sky_filtered_SNR notebook
 filter_delay = 750.0  # in ns; delay half-width of the 2D sky-like filter
 post_filter_delay_low_band = 200.0  # in ns; half-width of the 1D delay filter then applied to the SNRs below band_split_freq...
@@ -567,7 +570,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[CORNER_TURN_SINGLE_JD]  # per file: writes the whole-night single-baseline files the map assigns to it (copied from H6C IDR3)
+[CORNER_TURN_SINGLE_JD]  # per block of files: writes the whole-night single-baseline files the map assigns to them (adapted from H6C IDR3)
 prereqs = "BUILD_CORNER_TURN_MAP"
 prereq_chunk_size = "all"
 args = ["{basename}",
