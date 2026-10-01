@@ -15,13 +15,13 @@ fn=${1}
 toml_file=${2}
 nb_template_dir=${3}
 nb_output_repo=${4}
-block_size=${5:-1}
 
 SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
 red_avg_file=$(swap_suffix ${SUM_FILE} ${toml_file} RED_AVG)
 map_path="$(dirname ${SUM_FILE})/$(get_filename ${toml_file} CORNER_TURN_MAP)"
 out_folder=$(dirname ${map_path})
 map_yaml=$(basename ${map_path})
+block_size=$(python -c "import toml, sys; print(toml.load(sys.argv[1])['CORNER_TURN_OPTS']['block_size'])" "${toml_file}")
 
 echo python ${src_dir}/corner_turn_single_jd.py ${red_avg_file} ${map_yaml} ${out_folder} --block-size ${block_size}
 python ${src_dir}/corner_turn_single_jd.py ${red_avg_file} ${map_yaml} ${out_folder} --block-size ${block_size}
