@@ -18,7 +18,7 @@ batch_system = "slurm"
 toml_file = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/phase_II_analysis.toml"
 nb_template_dir = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_notebook_templates/notebooks/phase_II'
 nb_output_repo = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/notebooks'
-corner_turn_block_size = 8  # maximum assigned files per job and antpairs per read; use 1 for individual reads
+corner_turn_block_size = 8  # each corner-turn job handles the antpairs of this many files, reading at most this many antpairs at a time
 
 [GLOBAL_OPTS]  # shared across notebooks
 band_split_freq = 100.0  # in MHz; divides the low and high bands (inside the a priori flagged FM gap)
@@ -568,7 +568,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[CORNER_TURN_SINGLE_JD]  # one leader per block writes its assigned single-baseline files; followers exit early
+[CORNER_TURN_SINGLE_JD]  # per block of files: writes the whole-night single-baseline files the map assigns to them (adapted from H6C IDR3)
 prereqs = "BUILD_CORNER_TURN_MAP"
 prereq_chunk_size = "all"
 args = ["{basename}",
