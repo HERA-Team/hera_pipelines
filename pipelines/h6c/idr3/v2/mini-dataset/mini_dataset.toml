@@ -1,0 +1,100 @@
+# Makes a mini dataset: smaller, time- and frequency-averaged versions of LST-stacked single-baseline files
+# (e.g. zen.LST.baseline.0_1.sum.FR0filt.uvh5). Each output file holds a contiguous block of averaged LSTs
+# for all baselines, polarizations, and (averaged) frequencies, and is written to
+# <input folder>/<out_folder>/zen.LST.<first LST in radians>.<rest of input name>, e.g.
+# single_bl_reinpaint_1000ns/mini_dataset/zen.LST.0.12345.sum.FR0filt.uvh5
+#
+# Set fname_format below to the product to average, then build the makeflow with the helper next to this file,
+# run from wherever the makeflow, wrapper scripts, and logs should go:
+#   python /lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v2/mini-dataset/build_mini_dataset_makeflow.py \
+#       mini_dataset.toml /lustre/aoc/projects/hera/h6c-analysis/IDR3/lststack-outputs-131-nights/single_bl_reinpaint_1000ns
+# It finds exactly the files matching fname_format (so preliminary or other products are left out), sets
+# job_stride (below), writes mini_dataset.job_stride_<N>.toml, and builds mini_dataset.mf.
+#
+# About job_stride: an "analysis" makeflow normally makes one job per input file, but here each job writes
+# whole output files (one block of LSTs for every baseline), so we only want about one job per output file.
+# stride_length = job_stride tells hera_opm to make a job for only every job_stride-th input file, giving
+# ceil(Nfiles / job_stride) jobs. Which file a job is named after doesn't matter: every job reads its LST
+# blocks from all of the baseline files. The output files are dealt out round-robin among the jobs. The
+# helper sets job_stride = Nfiles // Noutput_files, which gives one output file per job. For example, each
+# output file uses ints_to_average * ints_per_output_file = 384 input integrations, so a full day of LSTs
+# (~8900 integrations) makes ~23 output files, and ~1065 baseline files give job_stride = 46 and 24 jobs.
+# To build with build_makeflow_from_config.py directly instead, replace "auto" with a number.
+#
+# Nothing besides the final output files is written to disk. Once all MAKE_MINI_DATASET jobs finish,
+# CHECK_MINI_DATASET verifies that every output file is present and complete (making any that are not).
+# Output files from a previous run with different settings are not removed, so start from an empty
+# out_folder when changing ints_to_average, ints_per_output_file, or lst_range.
+#
+# nsamples, integration_time, and channel_width: nsamples are averaged over each window (so they stay ~ the
+# number of nights), while integration_time and channel_width are multiplied by ints_to_average and
+# chans_to_average. The cross-correlation noise variance can then be predicted from the averaged autos with
+# the radiometer equation, |V_ii V_jj| / (integration_time * channel_width * nsamples), e.g. with
+# hera_cal.noise.predict_noise_variance_from_autos (whose default dt from the time spacing also matches).
+
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 32000
+base_cpu = 8
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/h6c-analysis/IDR3/src/hera_pipelines/pipelines/h6c/idr3/v2/mini-dataset/task_scripts"
+conda_env = "h6c_idr3"
+batch_system = "slurm"
+
+[MINI_DATASET_OPTS]
+fname_format = "zen.LST.baseline.{bl_str}.sum.FR0filt.uvh5"  # input files to average, with {bl_str} in place of the baseline
+out_folder = "mini_dataset"  # relative to the folder containing the input files, unless absolute
+ints_to_average = 4  # ~9.7 s integrations -> ~39 s (nsamples averaged; integration_time multiplied by 4)
+chans_to_average = 4  # 1536 channels -> 384 channels (nsamples averaged; channel_width multiplied by 4)
+ints_per_output_file = 96  # averaged integrations per output file (~1 hr of LST, ~2 GB for ~1000 baselines and 4 pols)
+job_stride = "auto"  # make a job for every job_stride-th input file; set by build_mini_dataset_makeflow.py (see above)
+nproc = 8  # worker processes per job, each reading and averaging one baseline file at a time
+lst_range = "None"  # "min,max" in hours (min > max wraps through 0h), or "None" for all LSTs
+freq_range = "None"  # "min,max" in MHz, or "None" for all frequencies
+pols = "None"  # comma-separated, e.g. "ee,nn", or "None" for all polarizations
+
+[WorkFlow]
+actions = ["MAKE_MINI_DATASET", "CHECK_MINI_DATASET"]
+
+[MAKE_MINI_DATASET]
+chunk_size = 1
+stride_length = "${MINI_DATASET_OPTS:job_stride}"
+time_centered = false
+mem = 32000  # holds ~3x one output file in memory while combining baselines; scale with ints_per_output_file
+ncpu = "${MINI_DATASET_OPTS:nproc}"
+args = [
+    "{basename}",
+    "${MINI_DATASET_OPTS:fname_format}",
+    "${MINI_DATASET_OPTS:out_folder}",
+    "${MINI_DATASET_OPTS:ints_to_average}",
+    "${MINI_DATASET_OPTS:chans_to_average}",
+    "${MINI_DATASET_OPTS:ints_per_output_file}",
+    "${MINI_DATASET_OPTS:job_stride}",
+    "${MINI_DATASET_OPTS:nproc}",
+    "${MINI_DATASET_OPTS:lst_range}",
+    "${MINI_DATASET_OPTS:freq_range}",
+    "${MINI_DATASET_OPTS:pols}",
+]
+
+[CHECK_MINI_DATASET]
+prereqs = "MAKE_MINI_DATASET"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 32000
+ncpu = "${MINI_DATASET_OPTS:nproc}"
+args = [
+    "{basename}",
+    "${MINI_DATASET_OPTS:fname_format}",
+    "${MINI_DATASET_OPTS:out_folder}",
+    "${MINI_DATASET_OPTS:ints_to_average}",
+    "${MINI_DATASET_OPTS:chans_to_average}",
+    "${MINI_DATASET_OPTS:ints_per_output_file}",
+    "${MINI_DATASET_OPTS:job_stride}",
+    "${MINI_DATASET_OPTS:nproc}",
+    "${MINI_DATASET_OPTS:lst_range}",
+    "${MINI_DATASET_OPTS:freq_range}",
+    "${MINI_DATASET_OPTS:pols}",
+]
