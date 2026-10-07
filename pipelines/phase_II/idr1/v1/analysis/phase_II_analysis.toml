@@ -177,7 +177,7 @@ ws_z_thresh = 4.0
 avg_z_thresh = 2.0
 time_conv_size = 3600.0  # in seconds
 
-[SINGLE_BASELINE_SCAFFOLDED_INPAINT_OPTS]  # Read directly by the single_baseline_scaffolded_inpaint notebook (H6C's scaffolded_and_feathered + 2D_informed inpainters)
+[SINGLE_BASELINE_WIENER_INPAINT_OPTS]  # Read directly by the single_baseline_wiener_inpaint notebook (H6C's scaffolded_and_feathered + 2D_informed inpainters)
 inpaint_delay = 1000.0  # in ns; the 1D DPSS inpainting model's delay half-width (and the fallback 2D fit's final delay)
 auto_inpaint_delay = 100.0  # in ns; the smooth 2D model of the autocorrelations that sets the noise weights
 nsamples_fill_delay = 100.0  # in ns; the fill of effective nsamples across inpainted gaps (nsamples structure is Tsys-shaped)
@@ -367,7 +367,7 @@ filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.smooth_cal
 note = "Whole-night, one file per redundant group, keyed by the group's canonical antpair so names agree across nights; missing integrations inserted flagged with nsamples = 0 and the data rephased onto a uniform time grid; effective nsamples carried through."
 kind = "raw"
 produced_by = "CORNER_TURN_SINGLE_JD"
-consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK", "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
 
 # ---- products of the stages after the corner turn: the RFI rounds, source filtering, and the inpaint ----
 
@@ -394,7 +394,7 @@ suffix = "sum.inpainted.uvh5"
 filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.inpainted.uvh5"  # display only
 note = "The night's final product: inpainted under its final flags, with the polarized source models subtracted, against the LST-stacked single-baseline sky model of the same redundant group where one exists (autos included) and an iterative 2D DPSS fit of the data themselves where not, feathered at flag edges; effective nsamples DPSS-filled across the same gaps so that LST stacking weights inpainted models by the depth the night would have had. Handed to LST stacking together with the final flags and the where_inpainted sidecar; nothing in this pipeline consumes it."
 kind = "raw"
-produced_by = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
+produced_by = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
 
 [DATA_PRODUCTS.WHERE_INPAINTED]
 label = "Where-Inpainted Sidecar"
@@ -402,14 +402,14 @@ suffix = "sum.where_inpainted.h5"
 filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.where_inpainted.h5"  # display only
 note = "UVFlag waterfall of the cells the inpainted data are model rather than measurement, for LST stacking's where_inpainted masks."
 kind = "metrics"
-produced_by = "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"
+produced_by = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
 
 [DATA_PRODUCTS.SOURCE_CATALOG]
 label = "Polarized Point Source Catalog"
 filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/source_catalogs/sources_to_filter.yaml"  # read by the notebook (an absolute path)
 note = "External input, versioned with this pipeline: the polarized sources whose positions and rotation measures are fit per night (copied from H6C IDR3.2); the pI SNR notebook reads it to find their models."
 kind = "external"
-consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
 
 [DATA_PRODUCTS.PRIOR_SOURCE_CATALOG]
 label = "Bright Source Catalog"
@@ -431,7 +431,7 @@ filename = "single_baseline_files/phased.{JD}.{source}.{model}.uvh5"  # read by 
 note = "Faraday-rotating DPSS models of the fitted polarized sources (phased averages over baselines), for subtraction before the pI SNRs are formed. Fit on flagged, non-inpainted data."
 kind = "raw"
 produced_by = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
-consumed_by = ["SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
 
 [DATA_PRODUCTS.PI_DLYFILT_SNR]
 label = "Delay-Filtered pI SNR"
@@ -472,7 +472,7 @@ filename = "single_baseline_files/zen.{JD}.flag_waterfall_pI_FRF.h5"  # read by 
 note = "Was H6C round 5. The night's final flag waterfall: the union of the flags on the coherently rephased and on the incoherently averaged FR-filtered pI z-scores (each also written alongside as zen.{JD}.{source}.flag_waterfall_pI_FRF.h5 and zen.{JD}.incoherent.flag_waterfall_pI_FRF.h5, as in H6C). The single-baseline data are then inpainted under it, and both go to LST stacking."
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
-consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
 
 [DATA_PRODUCTS.SOURCE_FLAGS_PI_FRF]
 label = "Per-Source Delay + FR-Filtered pI Flags"
@@ -486,7 +486,7 @@ label = "LST-Indexed Single-Baseline Sky Models (Inpainting Scaffolds)"
 filename = "/lustre/aoc/projects/hera/h6c-analysis/abscal_models/h6c_filtered_lst_stack/single_baseline_files/zen.LST.baseline.{ant1}_{ant2}.sum.sky_model.uvh5"  # read by the notebook: {ant1}_{ant2} is a redundant group's key
 note = "External input: the same filtered LST stack as SKY_MODEL (whose zen.*.sum.sky_model.uvh5 files are its corner turn), in the per-baseline layout single_baseline_sky_model_2D_filter writes: one file per redundant group, autocorrelations included. Baselines without one fall back to the iterative 2D-informed inpaint, which costs hours for long baselines."
 kind = "external"
-consumed_by = ["SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+consumed_by = ["SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
 
 [WorkFlow]
 actions = ["FILE_SKY_CAL_NOTEBOOK",
@@ -506,7 +506,7 @@ actions = ["FILE_SKY_CAL_NOTEBOOK",
            "FULL_DAY_RFI_PI_FRF_NOTEBOOK",
            # every RFI round and the source filtering work on flagged, non-inpainted data, so the one
            # inpaint comes last, under the final flags
-           "SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK"]
+           "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
 
 [FILE_SKY_CAL_NOTEBOOK]
 args = ["{basename}",
@@ -658,7 +658,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[SINGLE_BASELINE_SCAFFOLDED_INPAINT_NOTEBOOK]  # per file, the final step: inpaints the single-baseline files the corner-turn map assigns to it under the night's final flags, scaffolded by the LST-stacked sky model where one exists and by an iterative 2D DPSS fit where not (H6C single_baseline_scaffolded_and_feathered_inpainter + single_baseline_2D_informed_inpaint)
+[SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK]  # per file, the final step: inpaints the single-baseline files the corner-turn map assigns to it under the night's final flags, scaffolded by the LST-stacked sky model where one exists and by an iterative 2D DPSS fit where not (H6C single_baseline_scaffolded_and_feathered_inpainter + single_baseline_2D_informed_inpaint)
 prereqs = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
 prereq_chunk_size = "all"
 mem = 24000
