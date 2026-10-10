@@ -3,8 +3,8 @@ set -e
 
 # Runs single_baseline_wiener_inpaint.ipynb on the whole-night single-baseline files that the corner-turn map
 # assigns to one raw sum file: the final step of the per-night pipeline, inpainting them under the night's final
-# flags, scaffolded by the LST-stacked single-baseline sky model where the redundant group has one and by an
-# iterative 2D DPSS fit of the data where not (see H6C's single_baseline_scaffolded_and_feathered_inpainter,
+# flags by a 2D Wiener fill about the LST-stacked single-baseline sky model where the redundant group has one and
+# about a 2D DPSS fit of the data where not (it replaces H6C's single_baseline_scaffolded_and_feathered_inpainter
 # and single_baseline_2D_informed_inpaint).
 
 src_dir="$(dirname "$0")"
