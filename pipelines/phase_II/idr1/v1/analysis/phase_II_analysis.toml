@@ -177,25 +177,27 @@ ws_z_thresh = 4.0
 avg_z_thresh = 2.0
 time_conv_size = 3600.0  # in seconds
 
-[SINGLE_BASELINE_WIENER_INPAINT_OPTS]  # Read directly by the single_baseline_wiener_inpaint notebook (H6C's scaffolded_and_feathered + 2D_informed inpainters)
-inpaint_delay = 1000.0  # in ns; the 1D DPSS inpainting model's delay half-width (and the fallback 2D fit's final delay)
+[SINGLE_BASELINE_WIENER_INPAINT_OPTS]  # Read directly by the single_baseline_wiener_inpaint notebook (the 2D Wiener fill; replaces H6C's scaffolded_and_feathered + 2D_informed inpainters)
 auto_inpaint_delay = 100.0  # in ns; the smooth 2D model of the autocorrelations that sets the noise weights
 nsamples_fill_delay = 100.0  # in ns; the fill of effective nsamples across inpainted gaps (nsamples structure is Tsys-shaped)
-iterative_delay_delta = 25.0  # in ns; the fallback's 2D fits go from this delay up to inpaint_delay in these steps
 eigenval_cutoff = 1e-12
-cg_tol = 1e-6
-cg_iter_lim = 500
-inpaint_width_factor = 0.5  # feathering: flagged cells reach full weight this many (1 / inpaint_delay) / df channels from unflagged data...
-inpaint_zero_dist_weight = 1e-2  # ...starting from this relative weight right at a flag edge
+cg_tol = 1e-6  # tolerance of every iterative solve: the 2D DPSS fits (LSQR) and the 2D fill (conjugate gradients)...
+cg_iter_lim = 3000  # ...and their iteration cap, only a safety net: the 2D fill takes a few hundred iterations (autocorrelations up to ~1700), a cross-correlation's data-only prior up to ~1100
 auto_fr_spectrum_file = '/lustre/aoc/projects/hera/phase-II-analysis/idr1/beam_simulation_products/spectra_cache_hera_auto.h5'
 gauss_fit_buffer_cut = 1e-5
-scaffold_extrap_limit = 0.5  # in units of the sky model's LST spacing; a data time farther than this from any model LST has no scaffold
+sky_model_extrap_limit = 0.5  # in units of the sky model's LST spacing; a data time farther than this from any model LST has no sky model
+sky_model_adjust_delay = 100.0  # in ns; the sky model is fit to the night by a smooth gain correction out to this delay...
+sky_model_adjust_ridge = 1.0  # ...and an additive correction out to the horizon, together, with this ridge pulling poorly constrained modes back to no adjustment
+data_prior_delay_buffer = 200.0  # in ns; where there is no sky model, the prior is a 2D DPSS fit of the data out to the horizon plus this...
+data_prior_min_delay = 500.0  # in ns; ...and at least this far for cross-correlations, to carry the mutual coupling (as the sky model's min_filter_delay)...
+data_prior_ridge = 1e-5  # ...with this light ridge (relative to the mean weight) on a cross-correlation's modes out to the horizon plus the buffer, so a wide gap leaves no mode unconstrained...
+data_prior_extension_ridge = 0.1  # ...and this one on the modes past the horizon plus the buffer, so they do not pop up in wide gaps
+wiener_taper_hours = 1.0  # equivalent width of the 2D fill's lag taper in time: its covariance is resolved to about 1 / (this) in fringe rate...
+wiener_taper_mhz = 10.0  # ...and in frequency, i.e. about 1 / (this) in delay
+wiener_threshold_sigma = 3.0  # the covariance keeps modes above this many times its estimate's scatter
 subtract_polarized_source = true  # subtract per_night_source_filtering's models before inpainting (the output stays source-subtracted)
 subtract_fg_model = false  # ...their smooth foreground components too
-subtract_polarized_source_from_scaffold = false  # also subtract them from the sky-model scaffold (only right for a scaffold made from this night's data)
-filter_scaffold = false  # low-pass delay filter a sky-model scaffold first (unnecessary for a 2D-DPSS-filtered model)
-filter_standoff = 50.0  # in ns
-filter_min_delay = 300.0  # in ns
+subtract_polarized_source_from_sky_model = false  # also subtract them from the sky model (only right for a sky model made from this night's data)
 fr0_filter = false  # also write a copy of the inpainted cross-correlations with a fringe-rate-zero notch applied
 fr0_halfwidth = 0.01  # in mHz
 
