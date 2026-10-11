@@ -406,6 +406,14 @@ note = "UVFlag waterfall of the cells the inpainted data are model rather than m
 kind = "metrics"
 produced_by = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
 
+[DATA_PRODUCTS.INPAINT_COVARIANCE]
+label = "Inpainting Covariance"
+suffix = "sum.inpaint_covariance.h5"
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.inpaint_covariance.h5"  # display only
+note = "Per polarization and band, the covariance the 2D Wiener fill learned from the night's residual about its prior: the tapered lag function's non-negative time lags plus the scalars that regenerate the thresholded power spectrum exactly, for assessing the noise of the inpainted and LST-stacked data. Nothing in this pipeline consumes it."
+kind = "metrics"
+produced_by = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
+
 [DATA_PRODUCTS.SOURCE_CATALOG]
 label = "Polarized Point Source Catalog"
 filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/source_catalogs/sources_to_filter.yaml"  # read by the notebook (an absolute path)
