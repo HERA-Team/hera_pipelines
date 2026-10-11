@@ -2,7 +2,7 @@
 set -e
 
 # Runs single_baseline_pI_SNR.ipynb as ${ACTION} on the whole-night single-baseline files that the corner-turn
-# map assigns to one raw sum file: pseudo-Stokes I with the polarized source models subtracted, delay- and fringe-rate-filtered (under the delay-filtered round's flags too),
+# map assigns to one raw sum file: pseudo-Stokes I with the polarized source models subtracted, delay- and fringe-rate-filtered (under the delay-filtered round's flags, which contain the sky-filtered round's),
 # saved as an SNR for the matching full-day pI RFI notebook (H6C SINGLE_BASELINE_PI_SNR_NOTEBOOK_WITHFRF_FRF).
 
 src_dir="$(dirname "$0")"
