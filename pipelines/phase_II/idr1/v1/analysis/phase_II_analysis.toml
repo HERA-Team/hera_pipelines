@@ -668,7 +668,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
-[SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK]  # per file, the final step: inpaints the single-baseline files the corner-turn map assigns to it under the night's final flags, scaffolded by the LST-stacked sky model where one exists and by an iterative 2D DPSS fit where not (H6C single_baseline_scaffolded_and_feathered_inpainter + single_baseline_2D_informed_inpaint)
+[SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK]  # per file, the final step: inpaints the single-baseline files the corner-turn map assigns to it under the night's final flags by a 2D Wiener fill about the LST-stacked sky model where one exists and about a 2D DPSS fit of the data where not (replaces H6C single_baseline_scaffolded_and_feathered_inpainter + single_baseline_2D_informed_inpaint)
 prereqs = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
 prereq_chunk_size = "all"
 mem = 24000
