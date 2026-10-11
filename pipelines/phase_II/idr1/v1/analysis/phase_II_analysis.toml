@@ -139,10 +139,10 @@ gauss_fit_buffer_cut = 1e-5  # how far down the autocorrelation's fringe-rate ke
 eigenval_cutoff = 1e-12
 cg_iter_lim = 500  # conjugate gradient iterations allowed in the 2D fit
 tv_thresh = 1.0  # TV allocations averaging above this z-score in an integration get ~0 weight in the 1D post-filter
-min_samp_frac = 0.15  # baselines with fewer median nsamples than this fraction of the autocorrelations' are skipped
+min_samp_frac = 0.15  # baselines with fewer median nsamples (over unflagged cells) than this fraction of the autocorrelations' are skipped
 
 [FULL_DAY_RFI_SKY_FILTERED_OPTS]  # Read directly by the full_day_rfi_sky_filtered notebook
-min_samp_frac = 0.15  # baselines with fewer median nsamples than this fraction of the autocorrelations' are left out
+min_samp_frac = 0.15  # baselines with fewer median nsamples (over unflagged cells) than this fraction of the autocorrelations' are left out
 z_thresh = 4.0
 ws_z_thresh = 2.0
 avg_z_thresh = 1.0
@@ -157,14 +157,14 @@ xtalk_frate = 0.01  # in mHz; half-width of the FR = 0 notch (crosstalk)
 skip_fr0_overlap_baselines = false  # skip baselines whose main-beam fringe rates overlap the notch, rather than notching them
 fr_quantile_low = 0.05  # the main-beam fringe-rate range is between these quantiles of the beam's fringe-rate spectrum
 fr_quantile_high = 0.95
-min_samp_frac = 0.1  # baselines with fewer median nsamples than this fraction of the autocorrelations' are skipped
+min_samp_frac = 0.1  # baselines with fewer median nsamples (over unflagged cells) than this fraction of the autocorrelations' are skipped
 ridge_alpha = 1e-12  # ridge regularization of the filters' normal matrices, for stability across wide flag gaps
 leverage_cap = 0.999  # leverage above this is treated as degenerate (the cell is flagged)
 subtract_polarized_source = true  # subtract per_night_source_filtering's Faraday-rotating (and scintillation) models before filtering...
 subtract_fg_model = false  # ...and their smooth foreground models too
 
 [FULL_DAY_RFI_PI_DLYFILT_OPTS]  # Read directly by the full_day_rfi_pI_dlyfilt notebook (was H6C round 4)
-min_samp_frac = 0.1  # baselines with fewer median nsamples than this fraction of the autocorrelations' are left out
+min_samp_frac = 0.1  # baselines with fewer median nsamples (over unflagged cells) than this fraction of the autocorrelations' are left out
 z_thresh = 4.0
 ws_z_thresh = 2.0
 avg_z_thresh = 1.0
