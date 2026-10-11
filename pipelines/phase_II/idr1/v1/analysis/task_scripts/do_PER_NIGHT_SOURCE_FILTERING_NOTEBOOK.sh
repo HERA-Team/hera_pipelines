@@ -31,7 +31,8 @@ jupyter nbconvert --output=${nb_outfile} \
 echo Finished running per-night source filtering notebook at $(date)
 python ${src_dir}/build_notebook_index.py ${nb_dest_dir}
 
-# at least one source model must now exist (which sources get modeled depends on the night's LST coverage)
+# report the source models written: none is allowed, since which sources get modeled depends on the night's LST coverage
+# and the later stages subtract whichever models exist
 model_pattern="$(dirname ${SUM_FILE})/$(get_filename ${toml_file} SOURCE_MODELS)"
 model_pattern=${model_pattern//\{JD\}/${jd}}
 model_pattern=${model_pattern//\{source\}/*}
@@ -40,6 +41,5 @@ n_models=$(ls ${model_pattern} 2>/dev/null | wc -l)
 if [ "${n_models}" -gt 0 ]; then
     echo Found ${n_models} source models matching ${model_pattern}.
 else
-    echo No source models matching ${model_pattern} were produced.
-    exit 1
+    echo "WARNING: no source models matching ${model_pattern} were produced, so no polarized sources will be subtracted for this night."
 fi
