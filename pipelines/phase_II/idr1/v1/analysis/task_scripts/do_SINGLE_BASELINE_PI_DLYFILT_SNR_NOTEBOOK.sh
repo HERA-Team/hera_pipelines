@@ -24,16 +24,7 @@ export ACTION=SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK
 map_path="$(dirname ${SUM_FILE})/$(get_filename ${toml_file} CORNER_TURN_MAP)"
 red_avg_file=$(swap_suffix ${SUM_FILE} ${toml_file} RED_AVG)
 # a string like "0_4" for one group, or "0_4.1_5" for several
-baselines=$(python - "${map_path}" "${red_avg_file}" <<'PYEOF'
-import sys, yaml
-with open(sys.argv[1]) as f:
-    corner_turn_map = yaml.unsafe_load(f)
-ubl_key = corner_turn_map['antpairs_to_ubl_keys_map']
-keys = [tuple(ubl_key[ap]) for ap in corner_turn_map['files_to_antpairs_map'].get(sys.argv[2], [])
-        if ubl_key[ap][0] != ubl_key[ap][1]]  # skip autos
-print('.'.join('_'.join(str(ant) for ant in key) for key in keys) or 'none')
-PYEOF
-)
+baselines=$(python ${src_dir}/baselines_for_file.py "${map_path}" "${red_avg_file}")
 if [ "${baselines}" == "none" ]; then
     echo "The corner-turn map assigns no cross-correlations to ${fn}. Exiting..."
     exit 0
