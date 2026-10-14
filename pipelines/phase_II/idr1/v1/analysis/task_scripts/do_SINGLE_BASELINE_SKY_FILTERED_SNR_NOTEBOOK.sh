@@ -18,38 +18,37 @@ nb_output_repo=${4}
 export SUM_FILE="$(cd "$(dirname "$fn")" && pwd)/$(basename "$fn")"
 export TOML_FILE=${toml_file}
 
-# What the corner-turn map assigns to this file: nothing to do without cross-correlations, and the night's
-# rendered notebook is published by whichever job handles the first cross-correlation group
+# The redundant-group keys the corner-turn map assigns to this file. They name the rendered
+# notebook beside the data products it describes.
 map_path="$(dirname ${SUM_FILE})/$(get_filename ${toml_file} CORNER_TURN_MAP)"
 red_avg_file=$(swap_suffix ${SUM_FILE} ${toml_file} RED_AVG)
-assignment=$(python - "${map_path}" "${red_avg_file}" <<'PYEOF'
+# a string like "0_4" for one group, or "0_4.1_5" for several
+baselines=$(python - "${map_path}" "${red_avg_file}" <<'PYEOF'
 import sys, yaml
 with open(sys.argv[1]) as f:
     corner_turn_map = yaml.unsafe_load(f)
 ubl_key = corner_turn_map['antpairs_to_ubl_keys_map']
-crosses = lambda antpairs: sorted({tuple(ubl_key[ap]) for ap in antpairs if ubl_key[ap][0] != ubl_key[ap][1]})
-mine = crosses(corner_turn_map['files_to_antpairs_map'].get(sys.argv[2], []))
-first = min(key for antpairs in corner_turn_map['files_to_antpairs_map'].values() for key in crosses(antpairs))
-print('none' if len(mine) == 0 else ('publish' if first in mine else 'run'))
+keys = [tuple(ubl_key[ap]) for ap in corner_turn_map['files_to_antpairs_map'].get(sys.argv[2], [])
+        if ubl_key[ap][0] != ubl_key[ap][1]]  # skip autos
+print('.'.join('_'.join(str(ant) for ant in key) for key in keys) or 'none')
 PYEOF
 )
-if [ "${assignment}" == "none" ]; then
+if [ "${baselines}" == "none" ]; then
     echo "The corner-turn map assigns no cross-correlations to ${fn}. Exiting..."
     exit 0
 fi
 
 # Execute notebook
-nb_outfile=${SUM_FILE%.uvh5}.sky_filtered_SNR_notebook.html
+jd=$(get_int_jd ${fn})
+nb_outfile="$(dirname ${SUM_FILE})/single_baseline_files/zen.${jd}.baseline.${baselines}.sum.sky_filtered_SNR_notebook.html"
 jupyter nbconvert --output=${nb_outfile} \
     --to html \
     --ExecutePreprocessor.timeout=-1 \
     --execute ${nb_template_dir}/single_baseline_sky_filtered_SNR.ipynb
 echo Finished running single-baseline sky-filtered SNR notebook at $(date)
 
-# Baselines with too few samples legitimately get no SNR file, so there is no output to insist on here:
-# a failed notebook has already stopped this script
-if [ "${assignment}" == "publish" ]; then
-    jd=$(get_int_jd ${fn})
+# Publish whichever job gets baseline 0_4
+if [[ ".${baselines}." == *".0_4."* ]]; then
     nb_dest_dir=${nb_output_repo}/single_baseline_sky_filtered_SNR
     nb_dest_file=${nb_dest_dir}/single_baseline_sky_filtered_SNR_${jd}.html
     mkdir -p ${nb_dest_dir}
