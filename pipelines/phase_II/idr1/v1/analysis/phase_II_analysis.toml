@@ -26,6 +26,10 @@ tv_chan_edges = [174, 182, 190, 198, 206, 214, 222, 230, 238, 246, 254]  # in MH
 # every full-day RFI notebook flags whole channels and whole integrations (per band) by the same rules:
 max_freq_flag_frac = 0.25  # channels flagged in more than this fraction of a band's unflagged integrations are flagged throughout
 max_time_flag_frac = 0.5  # integrations flagged in more than this fraction of a band's unflagged channels are flagged across the band
+# HERA's correlator design, which sets how its noise departs from the radiometer equation. The keys are those of
+# hera_cal.noise.correlator_noise_covariance: hera_corr_f's PFB (a CASPER pfb_fir_real with TotalTaps 4, WindowType hamming,
+# fwidth 1 and PFBSize 14), paper_gpu's even/odd interleave (N_TIME_PER_PACKET 2) and the catcher's channel sum (CATCHER_CHAN_SUM_BDA 4).
+correlator = {n_taps = 4, window = "hamming", fwidth = 1.0, n_fft = 16384, spectra_per_interleave = 2, fine_channels_summed = 4}
 
 [FILE_SKY_CAL_OPTS]  # Read directly by the file_sky_calibration notebook
 # use_diff = false  # if unset, defaults to true for JD < 2460039 (diffs were only recorded through the H6C era), else false
