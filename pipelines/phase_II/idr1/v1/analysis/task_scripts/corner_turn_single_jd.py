@@ -3,6 +3,7 @@ import numpy as np
 import yaml
 import glob
 import os
+import re
 import sys
 import argparse
 
@@ -56,6 +57,10 @@ from pyuvdata import UVData
 from pyuvdata.utils import antnums_to_baseline
 
 DOWNSELECT_NOTE = '  Downselected to specific antenna pairs using pyuvdata.'
+# the parts of a red_avg file's history that differ from file to file by design: the correlator's write time and the settings
+# note's SUM_FILE line. Without them, pyuvdata has nothing to merge unless files really differ (e.g. some were rerun in another
+# environment); the corner-turn map records which files went in.
+PER_FILE_HISTORY = re.compile(r'Written by the HERA Correlator on .*?\d{4}\.|^SUM_FILE = .*\n', re.M)
 
 
 def read_block(files, antpairs):
@@ -72,6 +77,7 @@ def read_block(files, antpairs):
         here = set(uv.get_antpairs())
         for ap in antpairs:
             n_files_with[ap] += (ap in here) or (ap[::-1] in here)
+        uv.history = PER_FILE_HISTORY.sub('', uv.history)
         if not uv.history.endswith(DOWNSELECT_NOTE):
             # pyuvdata adds this note only when it drops rows; add it so every file's history reads the same
             uv.history += DOWNSELECT_NOTE
@@ -81,6 +87,8 @@ def read_block(files, antpairs):
     if len(uvs) < len(files):
         print(f'Only {len(uvs)} out of {len(files)} files have any of {antpairs}')
     uvs[0].fast_concat(uvs[1:], axis='blt', inplace=True)
+    uvs[0].history += (f' Corner-turned from {len(uvs)} files, starting with {uvs[0].filename[0]} and ending with '
+                       f'{uvs[0].filename[-1]}, but without their correlator write times or SUM_FILE lines.')
     return uvs[0], {ap: n == len(uvs) for ap, n in n_files_with.items()}
 
 
