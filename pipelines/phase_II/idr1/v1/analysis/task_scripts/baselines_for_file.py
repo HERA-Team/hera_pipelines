@@ -1,6 +1,6 @@
 # Prints the redundant-group keys the corner-turn map assigns to one redundantly averaged file,
 # as a string like "0_4" for a single group or "0_4.1_5" for several, or "none" when the map gives
-# this file nothing to do.
+# this file nothing to do. Autocorrelations are left out unless --include-autos.
 import yaml
 import argparse
 

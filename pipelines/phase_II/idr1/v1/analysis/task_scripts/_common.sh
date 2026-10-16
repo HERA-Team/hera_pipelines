@@ -79,7 +79,7 @@ function get_int_jd ()
 
 function prep_exants ()
 # take in an ex_ants file, which has one "bad antenna" per line,
-# and convert to a comma-separated list
+# and convert to a space-separated list
 # taken from https://stackoverflow.com/questions/1251999/how-can-i-replace-a-newline-n-using-sed
 {
     local csl=$(cat $1 | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ /g')

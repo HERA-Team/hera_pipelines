@@ -24,7 +24,7 @@ is_digit_cumsum = np.cumsum([part.isdigit() for part in basename_parts])  # don'
 glob_str = '.'.join(['*' if part.isdigit() and idcs >= 2 else part for part, idcs in zip(basename_parts, is_digit_cumsum)])
 all_files = [os.path.abspath(f) for f in sorted(glob.glob(os.path.join(os.path.dirname(args.this_file), glob_str)))]
 
-# create yaml mapping cross files to cross antpairs
+# create yaml mapping the night's files to their antpairs (autocorrelations included)
 out_yaml = os.path.join(args.out_folder, args.map_yaml)
 
 # create list of FastUVH5Meta objects and get antpairs in all files
