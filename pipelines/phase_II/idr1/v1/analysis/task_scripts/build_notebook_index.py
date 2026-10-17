@@ -84,17 +84,6 @@ for node in nodes:
         overall_index += f'    <li>{node["folder"]} <i>(not yet run)</i></li>\n'
 overall_index += '</ul>\n</h3>\n'
 
-# Any folder of notebooks that no action claims -- e.g. a do_ script whose nb_dest_dir was
-# renamed, or notebooks copied in by hand -- would otherwise vanish from the page silently.
-claimed = {node['folder'] for node in nodes if node['folder']}
-unmapped = sorted({os.path.dirname(f) for f in all_html_files} - claimed - {''})
-if unmapped:
-    overall_index += '<h2>Unmapped Folders:</h2>\n'
-    overall_index += '<p>These hold notebooks but match no action in the workflow.</p>\n<h3><ul>\n'
-    for folder in unmapped:
-        overall_index += f'    <li><a href="{folder}">{folder}</a></li>\n'
-    overall_index += '</ul>\n</h3>\n'
-
 overall_index += '<h2>Analysis Flowchart:</h2>\n'
 overall_index += '<p>Click a notebook to see its per-night renderings; hover for details.</p>\n'
 overall_index += flowchart + '\n'
