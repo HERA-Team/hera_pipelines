@@ -3,7 +3,7 @@ set -e
 
 # Runs full_day_rfi.ipynb once per day (on the day's first file, with every
 # FILE_SKY_CAL_NOTEBOOK job as a prereq), synthesizing the night's per-file z-scores into
-# full-day RFI flags. The notebook reads its configuration from the [FULL_DAY_RFI_OPTS] and
+# full-day RFI flags. The notebook reads its configuration from the [GLOBAL_OPTS], [FULL_DAY_RFI_OPTS], and
 # [DATA_PRODUCTS] sections of the toml directly via toml.load(TOML_FILE), so this script
 # passes only paths.
 

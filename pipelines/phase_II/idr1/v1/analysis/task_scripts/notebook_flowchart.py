@@ -9,8 +9,8 @@ OmniGraffle diagrams kept alongside the other pipelines.
 Everything is discovered from files that already describe the pipeline, so adding a task or
 a data product adds it to the chart for free:
 
-  * phase_II_analysis.toml  [WorkFlow]      -- the actions, and each action's prereqs
-                            [<ACTION>]      -- chunking keys, i.e. per-file vs per-night
+  * phase_II_analysis.toml  [WorkFlow]      -- the actions
+                            [<ACTION>]      -- each action's prereqs, and its chunking keys, i.e. per-file vs per-night
                             [DATA_PRODUCTS] -- every file read or written, with the action
                                                that produces it and the ones that consume it
   * do_<ACTION>.sh                          -- where the rendered notebook lands
@@ -135,7 +135,7 @@ def _product_unit(spec):
 def _action_unit(block, makeflow_type, reads):
     """What a single run of an action covers. The chunking keys settle the per-night case. Past
     the corner turn, a step fed single-baseline files covers one baseline: makeflow still hands
-    out a job per raw file, but the corner-turn map pairs each job with a baseline, so the unit
+    out a job per raw file, but the corner-turn map gives each job its share of the baselines, so the unit
     of work is a baseline even though makeflow_type stays 'analysis'."""
     if block.get('chunk_size') == 1 and block.get('stride_length') == 'all':
         return 'night'

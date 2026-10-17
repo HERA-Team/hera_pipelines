@@ -3,8 +3,8 @@ set -e
 
 # Runs full_day_antenna_flagging.ipynb once per day (on the day's first file, with every
 # FILE_SKY_CAL_NOTEBOOK job as a prereq), harmonizing per-antenna flags across the night.
-# The notebook reads its configuration from the [FULL_DAY_ANT_FLAG_OPTS] and
-# [ANT_CLASS_BOUNDS] sections of the toml directly via toml.load(TOML_FILE), so this
+# The notebook reads its configuration from the [FULL_DAY_ANT_FLAG_OPTS],
+# [ANT_CLASS_BOUNDS], and [DATA_PRODUCTS] sections of the toml directly via toml.load(TOML_FILE), so this
 # script passes only paths.
 
 src_dir="$(dirname "$0")"

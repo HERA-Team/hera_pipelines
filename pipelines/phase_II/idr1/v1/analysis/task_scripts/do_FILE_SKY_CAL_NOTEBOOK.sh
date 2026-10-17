@@ -2,7 +2,7 @@
 set -e
 
 # Runs file_sky_calibration.ipynb on a single raw sum file. The notebook reads its
-# configuration from the [GLOBAL_OPTS], [FILE_SKY_CAL_OPTS], and [ANT_CLASS_BOUNDS]
+# configuration from the [GLOBAL_OPTS], [FILE_SKY_CAL_OPTS], [ANT_CLASS_BOUNDS], and [DATA_PRODUCTS]
 # sections of the toml directly via toml.load(TOML_FILE), so this script passes only paths.
 
 src_dir="$(dirname "$0")"
