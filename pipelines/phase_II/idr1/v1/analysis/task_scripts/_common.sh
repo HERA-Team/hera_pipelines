@@ -148,3 +148,10 @@ if [[ "${ACTION}" == do_* ]]; then
 else
     unset ACTION  # sourced from something other than a task script; let the notebook default
 fi
+
+# Pin BLAS and OpenMP threads to the CPUs slurm gave this job (--cpus-per-task, from the action's ncpu or [Options]
+# base_cpu; 1 outside slurm). Left alone, numpy's BLAS starts a thread per core of the whole node, which oversubscribes
+# shared nodes and makes floating-point results depend on thread scheduling.
+export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-1}
+export OPENBLAS_NUM_THREADS=${OMP_NUM_THREADS}
+export MKL_NUM_THREADS=${OMP_NUM_THREADS}
