@@ -1,0 +1,23 @@
+beam: /lustre/aoc/projects/hera/Validation/HERA_beams/NF_HERA_Vivaldi_efield_beam_extrap.fits
+sources:
+    J0630-2834:
+        ra_deg: 97.70711
+        dec_deg: -28.57466
+        ref_freq_hz: 200000000
+        stokes_i_jy: 0.463
+        spectral_index: -1.2
+        pol_fraction: 0.46
+        rm: 46.53
+        pol_angle_deg: 0
+        circ_fraction: 0
+    J0742-2822:
+        ra_deg: 115.70607
+        dec_deg: -28.37458
+        ref_freq_hz: 200000000
+        stokes_i_jy: 0.387
+        spectral_index: -1.2
+        pol_fraction: 0.68
+        rm: 149.95
+        pol_angle_deg: 0
+        circ_fraction: 0
+gains:

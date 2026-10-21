@@ -49,6 +49,11 @@ parser.add_argument(
     action="store_true",
     help="Whether to include the outriggers in simulation.",
 )
+parser.add_argument(
+    "--pulsar_config",
+    default=None,
+    help="Simulation settings for adding pulsars on the fly.",
+)
 
 if __name__ == "__main__":
     # Setup
@@ -213,6 +218,28 @@ if __name__ == "__main__":
     t2 = time.time()
     dt = (t2 - t1) / 60
     print(f"Interpolating simulation to data took {dt:.2f} minutes.")
+
+    # Simplest possible interface for simulating pulsars; some changes may
+    # be needed if we want to extend this functionality.
+    if args.pulsar_config is not None:
+        import sys
+        sys.path = [Path(__file__).parent,] + sys.path
+        import simulate_pulsars as sp
+        with open(args.pulsar_config, "r") as f:
+            pulsar_config = yaml.safe_load(f.read())
+
+        pulsars = pulsar_config["sources"]
+        pulsar_gains = pulsar_config["gains"]
+        beam = sp.resample_beam(
+            UVBeam.from_file(pulsar_config["beam"]), sim_uvdata.freq_array
+        )
+        sim_uvdata.data_array += sp.simulate_pulsars(
+            ref=sim_uvdata,
+            beam=beam,
+            sources=pulsars,
+            gains=pulsar_gains,
+            beam_is_resampled=True,
+        ).data_array
 
     # Inflate the data if it's compressed
     if args.inflate:
