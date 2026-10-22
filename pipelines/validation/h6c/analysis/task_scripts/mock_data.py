@@ -7,7 +7,7 @@ from pathlib import Path
 
 import hera_sim
 from hera_sim import Simulator
-from pyuvdata import UVData
+from pyuvdata import UVBeam, UVData
 from hera_cal.utils import LST2JD
 
 parser = argparse.ArgumentParser()
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     # be needed if we want to extend this functionality.
     if args.pulsar_config is not None:
         import sys
-        sys.path = [Path(__file__).parent,] + sys.path
+        sys.path.insert(0, str(Path(__file__).parent))
         import simulate_pulsars as sp
         with open(args.pulsar_config, "r") as f:
             pulsar_config = yaml.safe_load(f.read())
