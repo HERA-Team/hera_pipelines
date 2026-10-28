@@ -60,7 +60,12 @@ STACK_GAP = 26         # between nodes sharing a column of a snake line
 # An edge whose plain curve would pass behind a node is instead routed orthogonally, through
 # the empty channels between levels and the gaps between nodes.
 ROUTE_RADIUS = 9       # corner rounding on routed edges
-LANE_STEP = 12         # spacing between parallel routed runs, so they never merge
+LANE_STEP = 12         # spacing between parallel routed runs
+# Two routed edges that run alongside each other for a long way share one lane rather than
+# being pushed apart: at that length a pair of near-identical lines is just clutter, and
+# hovering either end lights that edge and lifts it clear of the other. Briefer brushes still
+# get a lane of their own, where a merged line would be ambiguous exactly where they diverge.
+SHARE_LANE_OVER = 150  # px of shared length beyond which one lane may carry both
 GUTTER_PAD = 30        # outer lanes beside the chart, used when no inner gap is clear
 CLEARANCE = 4          # how near an edge may pass to a node it doesn't touch
 
@@ -693,15 +698,23 @@ class _Router:
         port_y = g['y'] + g['h'] / 2 - 10
         return [(port_x, port_y), (gap_x, port_y)], gap_x
 
+    @staticmethod
+    def _crowded(position, lo, hi, runs):
+        """Whether a run from lo to hi at `position` would sit just beside an earlier one without
+        merging into it. Overlapping it outright for a long way is allowed; see SHARE_LANE_OVER."""
+        for at, run_lo, run_hi in runs:
+            if abs(position - at) < LANE_STEP / 2:
+                if 0 < min(hi, run_hi) - max(lo, run_lo) <= SHARE_LANE_OVER:
+                    return True
+        return False
+
     def _channel(self, band, x0, x1):
-        """A height in `band` for a horizontal run from x0 to x1 that overlaps no earlier run."""
+        """A height in `band` for a horizontal run from x0 to x1."""
         top, bottom = band
         lo, hi = min(x0, x1), max(x0, x1)
         for step in range(12):
             y = (top + bottom) / 2 + (step + 1) // 2 * LANE_STEP * (1 if step % 2 else -1)
-            if top + 8 < y < bottom - 8 and not any(
-                    abs(y - ry) < LANE_STEP / 2 and lo < rhi and rlo < hi
-                    for ry, rlo, rhi in self.horizontal_runs):
+            if top + 8 < y < bottom - 8 and not self._crowded(y, lo, hi, self.horizontal_runs):
                 break
         else:
             y = (top + bottom) / 2
@@ -709,8 +722,8 @@ class _Router:
         return y
 
     def _lane(self, tail_x, head_x, y0, y1):
-        """An x at which a vertical run from y0 to y1 passes behind no node and overlaps no
-        earlier run: the cheapest inner gap that works, else a lane beside the chart."""
+        """An x at which a vertical run from y0 to y1 passes behind no node: the cheapest inner
+        gap that works, else a lane beside the chart."""
         options = [(x, half - 6, 0) for level in self.levels for x, half in level['gaps']]
         options += [(self.left, 20 * LANE_STEP, -1), (self.right, 20 * LANE_STEP, 1)]
         options.sort(key=lambda o: (abs(tail_x - o[0]) + abs(head_x - o[0]),
@@ -722,8 +735,7 @@ class _Router:
             for x in (base + offset for offset in offsets):
                 blocked = any(bx0 < x < bx1 and by0 < y1 and y0 < by1
                               for bx0, by0, bx1, by1 in self.boxes.values())
-                if not blocked and not any(abs(x - rx) < LANE_STEP / 2 and y0 < ry1 and ry0 < y1
-                                           for rx, ry0, ry1 in self.vertical_runs):
+                if not blocked and not self._crowded(x, y0, y1, self.vertical_runs):
                     self.vertical_runs.append((x, y0, y1))
                     return x
         return self.left
