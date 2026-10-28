@@ -38,7 +38,7 @@ skycal_min_bl_len = 1.0    # in meters
 skycal_max_bl_len = 120.0  # in meters
 sc_maxiter = 100
 sc_max_rerun = 10
-sc_max_divergent_chans = 25
+sc_max_divergent_chans = 10
 max_band_flag_frac = 0.5
 apriori_flag_freq_ranges = [[87.5, 108.0], [222.6, 235.0]]  # in MHz; default flags FM and the top X-engine block
 sc_max_chisq_flagging_dynamic_range = 1.5
@@ -52,6 +52,8 @@ cross_rfi_z_thresh = 4.0
 cross_rfi_ws_z_thresh = 2.0
 rfi_dpss_halfwidth = 300e-9  # in s
 rfi_nsig = 4.0
+broadcast_level_cut = 5.0  # broadcast screen: allocation median z of the cross-pol coherence over the sky model's
+broadcast_step_cut = 10.0  # ...and the step z at the edges of its run, both in theoretical noise units
 
 [ANT_CLASS_BOUNDS]  # Read directly by the file_sky_calibration and full_day_antenna_flagging notebooks
 am_corr_bad = 0.35
