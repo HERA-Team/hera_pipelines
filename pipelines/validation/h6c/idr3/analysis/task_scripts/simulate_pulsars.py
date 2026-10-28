@@ -32,8 +32,8 @@ polarization, Faraday-rotated by its rotation measure:
 An optional per-source gain (per time, or per time and frequency) multiplies
 all four Stokes parameters, e.g. to inject scintillation.
 
-Requires matvis (for its coordinate and coherency rotations), pyuvdata, astropy
-and pyyaml.
+Requires matvis (for its coordinate and coherency rotations), pyuvdata, astropy,
+scipy and pyyaml.
 
 Example
 -------
@@ -71,6 +71,7 @@ from matvis.coordinates import calc_coherency_rotation, enu_to_az_za
 from matvis.core.coords import CoordinateRotation
 from pyuvdata import UVBeam, UVData
 from pyuvdata import utils as uvutils
+from scipy import interpolate
 
 SPEED_OF_LIGHT = 299792458.0  # m/s
 
@@ -82,6 +83,7 @@ INTERPOLATION_FUNCTION = "az_za_map_coordinates"
 BEAM_SPLINE_OPTS = {"order": 1}
 FREQ_INTERP_KIND = "cubic"
 FREQ_BUFFER = 3.0e6  # Hz, beam channels kept on either side of each simulated channel
+FREQ_INTERP_TOL = 1.0  # Hz, UVBeam.interp's default freq_interp_tol
 CHUNK_BYTES = 256 * 1024**2  # default size of the visibilities computed per block of times
 
 # Pulsar parameters.
@@ -200,23 +202,34 @@ def resample_beam(
 
     out = beam.interp(freq_array=freqs, new_object=True, freq_interp_kind="nearest", run_check=False)
     min_chans = {"linear": 2, "quadratic": 3, "cubic": 4}.get(freq_interp_kind, 1)
+    windows = {}  # beam channels -> indices of the output channels interpolated from them
     for i, freq in enumerate(freqs):
         chans = np.nonzero(
             (beam.freq_array >= freq - freq_buffer) & (beam.freq_array <= freq + freq_buffer)
         )[0]
-        if chans.size == 0 or (
-            chans.size < min_chans and np.min(np.abs(beam.freq_array[chans] - freq)) >= 1.0
-        ):
+        on_grid = chans.size > 0 and np.min(np.abs(beam.freq_array[chans] - freq)) < FREQ_INTERP_TOL
+        if chans.size == 0 or (chans.size < min_chans and not on_grid):
             raise ValueError(
                 f"only {chans.size} beam channels within {freq_buffer / 1e6} MHz of "
                 f"{freq / 1e6:.4f} MHz; '{freq_interp_kind}' interpolation needs {min_chans}"
             )
-        window = beam.select(freq_chans=chans, inplace=False, run_check=False)
-        one = window.interp(
-            freq_array=np.array([freq]), new_object=True, freq_interp_kind=freq_interp_kind, run_check=False
-        )
-        out.data_array[:, :, i] = one.data_array[:, :, 0]
-        out.bandpass_array[i] = one.bandpass_array[0]
+        # UVBeam.interp uses the nearest beam channel when one is this close,
+        # and ``out`` already holds it.
+        if not on_grid:
+            windows.setdefault(tuple(chans), []).append(i)
+
+    # Interpolate as UVBeam.interp does for one window (interp1d on the real and
+    # imaginary parts), but on slices of the beam instead of a copy of it per channel.
+    for chans, inds in windows.items():
+        chans = list(chans)
+        window_freqs = beam.freq_array[chans]
+        window_data = beam.data_array[:, :, chans]
+        new_freqs = freqs[inds]
+        real = interpolate.interp1d(window_freqs, window_data.real, kind=freq_interp_kind, axis=2)
+        imag = interpolate.interp1d(window_freqs, window_data.imag, kind=freq_interp_kind, axis=2)
+        out.data_array[:, :, inds] = real(new_freqs) + 1j * imag(new_freqs)
+        bandpass = interpolate.interp1d(window_freqs, beam.bandpass_array[chans], kind=freq_interp_kind)
+        out.bandpass_array[inds] = bandpass(new_freqs)
     out.history += (
         f"\nPeak-normalized and interpolated to {freqs.size} channels with "
         f"'{freq_interp_kind}' interpolation over +/- {freq_buffer / 1e6} MHz windows."

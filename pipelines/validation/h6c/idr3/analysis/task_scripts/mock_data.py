@@ -256,6 +256,8 @@ if __name__ == "__main__":
             gains=pulsar_gains,
             beam_is_resampled=True,
         ).data_array
+        # Free the resampled beam (a few GB) before the systematics.
+        del beam
         t2 = time.time()
         dt = (t2 - t1) / 60
         print(f"Simulating pulsars took {dt:.2f} minutes.")
@@ -331,6 +333,9 @@ if __name__ == "__main__":
             parameters["coupling_matrix"] = (
                 coupling_info["coupling_matrix"][...,select,:][...,select]
             )
+            # Free the full matrix, for every antenna in the file, before the
+            # coupling is simulated.
+            del coupling_info
 
         sim_uvdata.add(component, component_name=component_name, **parameters)
         print("Min/Mean/Max after:")
