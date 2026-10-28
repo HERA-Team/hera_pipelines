@@ -231,6 +231,8 @@ if __name__ == "__main__":
     # Simplest possible interface for simulating pulsars; some changes may
     # be needed if we want to extend this functionality.
     if args.pulsar_config is not None:
+        print("Adding pulsars...")
+        t1 = time.time()
         import sys
         sys.path.insert(0, str(Path(__file__).parent))
         import simulate_pulsars as sp
@@ -242,6 +244,11 @@ if __name__ == "__main__":
         beam = sp.resample_beam(
             UVBeam.from_file(pulsar_config["beam"]), sim_uvdata.freq_array
         )
+        t2 = time.time()
+        dt = (t2 - t1) / 60
+        print(f"Reading and resampling the pulsar beam took {dt:.2f} minutes.")
+
+        t1 = time.time()
         sim_uvdata.data_array += sp.simulate_pulsars(
             ref=sim_uvdata,
             beam=beam,
@@ -249,6 +256,9 @@ if __name__ == "__main__":
             gains=pulsar_gains,
             beam_is_resampled=True,
         ).data_array
+        t2 = time.time()
+        dt = (t2 - t1) / 60
+        print(f"Simulating pulsars took {dt:.2f} minutes.")
 
     # Inflate the data if it's compressed
     if args.inflate:
