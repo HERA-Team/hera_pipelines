@@ -1,0 +1,322 @@
+[Options]
+makeflow_type = "analysis"
+source_script = "~/.bashrc"
+base_mem = 15500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/apriori_flags"
+conda_env = "h6c_idr3_validation"
+batch_system = "slurm"
+sim_env = "h6c_idr3_validation"
+
+[LIBRARIAN_OPTS]
+# These trigger which sets of files get added to the librarian
+upload_to_librarian = false # upload raw data to librarian, if false all below switches will be ignored.
+librarian_autos = false
+librarian_auto_metrics = false
+librarian_calibration_notebooks = false
+librarian_ant_metrics = false
+librarian_redcal = false
+librarian_full_day_rfi = false
+librarian_full_day_antenna_flagging = false
+librarian_smooth_cal = false
+librarian_downselected_data = false
+librarian_notebooks = false
+
+[NOTEBOOK_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/Validation/H6C_IDR3/notebooks'
+git_push = false
+
+[GLOBAL_OPTS]
+eigenval_cutoff = 1e-12
+
+[MOCK_DATA_OPTS]
+sky_cmp = "sum"
+
+[CALIBRATE_FILE_OPTS]
+am_corr_bad = 0.2
+am_corr_suspect = 0.4
+am_xpol_bad = -0.1
+am_xpol_suspect = 0.0
+suspect_solar_alt = 0.0
+zeros_per_spec_good = 2
+zeros_per_spec_suspect = 8
+auto_power_good_low = 1
+auto_power_good_high = 1e8
+auto_power_suspect_low = 1
+auto_power_suspect_high = 1e10
+auto_slope_good_low = -2
+auto_slope_good_high = 2
+auto_slope_suspect_low = -3
+auto_slope_suspect_high = 3
+auto_rfi_good = 1.5
+auto_rfi_suspect = 2.0
+auto_shape_good = 1
+auto_shape_suspect = 2
+oc_cspa_good = 2
+oc_cspa_suspect = 3
+oc_max_dims = 4
+oc_min_dim_size = 8
+oc_skip_outriggers = true
+oc_min_bl_len = 1
+oc_max_bl_len = 1e100
+oc_maxiter = 50
+oc_max_rerun = 4
+oc_rerun_maxiter = 50
+oc_max_chisq_flagging_dynamic_range = 1.5
+oc_use_prior_sol = false
+oc_prior_sol_flag_thresh = 0.95
+rfi_dpss_halfwidth = 300e-9
+rfi_nsig = 4
+abscal_min_bl_len = 1.0
+abscal_max_bl_len = 140.0
+save_omni_vis = false
+calibrate_cross_pols = true
+
+[FULL_DAY_RFI_OPTS]
+FM_low_freq = 87.5 # in MHz
+FM_high_freq = 108.0 # in MHz
+
+[CALIBRATION_SMOOTHING_OPTS]
+freq_smoothing_scale = 10.0 # in MHz
+time_smoothing_scale = 6e5 # in seconds
+eigenval_cutoff = 1e-12
+
+[POSTPROCESS_FILE_OPTS]
+dly_filt_horizon = 1.0
+dly_filt_standoff = 0.0 # in ns
+dly_filt_min_dly = 150.0 # in ns
+dly_filt_eigenval_cutoff = 1e-12
+save_diff_red_avg = false
+save_abs_cal_red_avg = false
+save_dly_filt_red_avg = false
+
+[2D_INFORMED_INPAINT_OPTS]
+auto_inpaint_delay = 100.0 # in ns
+inpaint_delay = 1000.0 # in ns
+iterative_delay_delta = 25.0 # in ns
+cg_tol = 1e-6
+inpaint_width_factor = 0.5
+inpaint_zero_dist_weight = 1e-2
+fr0_filter = false
+fr0_halfwidth = 0.01 # in Hz
+
+[2D_DPSS_FILTER_OPTS]
+auto_fr_spectrum_file = '/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5'
+gauss_fit_buffer_cut = 1e-5
+post_filter_delay_low_band = 200.0 # in ns
+post_filter_delay_high_band = 50.0 # in ns
+tv_chan_edges = '174,182,190,198,206,214,222,230,238,246,254'
+
+[FULL_DAY_SYSTEMATICS_INSPECT_OPTS]
+filter_dly_min = 150.0 # in ns
+inpaint_dly_min = 500.0 # in ns
+inpaint_regularization = 1e-5
+standoff = 50 # in ns
+inpaint_fr = 2.5 # in mHz
+max_contiguous_flags = 20
+spectrum_chan_buffer = 25
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["SETUP",
+           "MOCK_DATA",
+           "CALIBRATE_FILE_NOTEBOOK",
+           "CALIBRATION_SMOOTHING_NOTEBOOK",
+           "ROUND_2_RFI_TRANSFER",
+           "POSTPROCESS_FILE_NOTEBOOK",
+	       "BUILD_CORNER_TURN_MAP",
+	       "CORNER_TURN_SINGLE_JD",
+	       # "ROUND_3_RFI_TRANSFER", # will need to be new
+           "SINGLE_BASELINE_INPAINT_AND_FRF",
+           "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK",
+           # "CLEANUP",
+]
+
+[SETUP]
+args = []
+
+[MOCK_DATA]
+mem = 48000
+args = ["{basename}",
+        "${MOCK_DATA_OPTS:sky_cmp}",
+       ]
+
+
+[CALIBRATE_FILE_NOTEBOOK]
+prereqs = "MOCK_DATA"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${CALIBRATE_FILE_OPTS:am_corr_bad}",
+        "${CALIBRATE_FILE_OPTS:am_corr_suspect}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_bad}",
+        "${CALIBRATE_FILE_OPTS:am_xpol_suspect}",
+        "${CALIBRATE_FILE_OPTS:suspect_solar_alt}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_good}",
+        "${CALIBRATE_FILE_OPTS:zeros_per_spec_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_power_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_good_high}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_low}",
+        "${CALIBRATE_FILE_OPTS:auto_slope_suspect_high}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_good}",
+        "${CALIBRATE_FILE_OPTS:auto_rfi_suspect}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_good}",
+        "${CALIBRATE_FILE_OPTS:auto_shape_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_good}",
+        "${CALIBRATE_FILE_OPTS:oc_cspa_suspect}",
+        "${CALIBRATE_FILE_OPTS:oc_max_dims}",
+        "${CALIBRATE_FILE_OPTS:oc_min_dim_size}",
+        "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+        "${CALIBRATE_FILE_OPTS:oc_min_bl_len}",
+        "${CALIBRATE_FILE_OPTS:oc_max_bl_len}",
+        "${CALIBRATE_FILE_OPTS:oc_maxiter}",
+        "${CALIBRATE_FILE_OPTS:oc_max_rerun}",
+        "${CALIBRATE_FILE_OPTS:oc_rerun_maxiter}",
+        "${CALIBRATE_FILE_OPTS:oc_max_chisq_flagging_dynamic_range}",
+        "${CALIBRATE_FILE_OPTS:oc_use_prior_sol}",
+        "${CALIBRATE_FILE_OPTS:oc_prior_sol_flag_thresh}",
+        "${CALIBRATE_FILE_OPTS:rfi_dpss_halfwidth}",
+        "${CALIBRATE_FILE_OPTS:rfi_nsig}",
+        "${CALIBRATE_FILE_OPTS:abscal_min_bl_len}",
+        "${CALIBRATE_FILE_OPTS:abscal_max_bl_len}",
+        "${CALIBRATE_FILE_OPTS:save_omni_vis}",
+        "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
+        ]
+extra_batch_options = "--nice=1000"
+
+# [ANTENNA_CLASSIFICATION_SUMMARY_NOTEBOOK]
+# prereqs = "CALIBRATE_FILE_NOTEBOOK"
+# prereq_chunk_size = "all"
+# chunk_size = 1
+# stride_length = "all"
+# time_centered = false
+# args = ["{basename}",
+#         "${NOTEBOOK_OPTS:nb_template_dir}",
+#         "${NOTEBOOK_OPTS:nb_output_repo}",
+#         "${NOTEBOOK_OPTS:git_push}",
+#         "${CALIBRATE_FILE_OPTS:oc_skip_outriggers}",
+#         ]
+
+[CALIBRATION_SMOOTHING_NOTEBOOK]
+mem = 120000
+prereqs = "CALIBRATE_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${LIBRARIAN_OPTS:upload_to_librarian}",
+        "${LIBRARIAN_OPTS:librarian_smooth_cal}",
+        "${CALIBRATION_SMOOTHING_OPTS:freq_smoothing_scale}",
+        "${CALIBRATION_SMOOTHING_OPTS:time_smoothing_scale}",
+        "${CALIBRATION_SMOOTHING_OPTS:eigenval_cutoff}",
+        "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
+        ]
+
+[ROUND_2_RFI_TRANSFER]
+prereqs = "CALIBRATION_SMOOTHING_NOTEBOOK"
+prereq_chunk_size = "all"
+args = ["{basename}",
+       ]
+
+[POSTPROCESS_FILE_NOTEBOOK]
+prereqs = "ROUND_2_RFI_TRANSFER"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${NOTEBOOK_OPTS:git_push}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_horizon}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_standoff}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_min_dly}",
+        "${POSTPROCESS_FILE_OPTS:dly_filt_eigenval_cutoff}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${POSTPROCESS_FILE_OPTS:save_diff_red_avg}",
+        "${POSTPROCESS_FILE_OPTS:save_abs_cal_red_avg}",
+        "${POSTPROCESS_FILE_OPTS:save_dly_filt_red_avg}",
+        "${CALIBRATE_FILE_OPTS:calibrate_cross_pols}",
+        ]
+extra_batch_options = "--nice=1000"
+
+
+[BUILD_CORNER_TURN_MAP]
+prereqs = "POSTPROCESS_FILE_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",]
+
+[CORNER_TURN_SINGLE_JD]
+mem = 8000
+prereqs = "BUILD_CORNER_TURN_MAP"
+prereq_chunk_size = "all"
+args = ["{basename}",]
+extra_batch_options = "--nice=1000"
+
+
+
+[SINGLE_BASELINE_INPAINT_AND_FRF]
+prereqs =  "CORNER_TURN_SINGLE_JD"
+prereq_chunk_size = "all"
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${2D_INFORMED_INPAINT_OPTS:auto_inpaint_delay}",
+        "${2D_INFORMED_INPAINT_OPTS:inpaint_delay}",
+        "${2D_INFORMED_INPAINT_OPTS:iterative_delay_delta}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${2D_INFORMED_INPAINT_OPTS:cg_tol}",
+        "${2D_INFORMED_INPAINT_OPTS:inpaint_width_factor}",
+        "${2D_INFORMED_INPAINT_OPTS:inpaint_zero_dist_weight}",
+        "${2D_DPSS_FILTER_OPTS:auto_fr_spectrum_file}",
+        "${2D_DPSS_FILTER_OPTS:gauss_fit_buffer_cut}",
+        "${2D_INFORMED_INPAINT_OPTS:fr0_filter}",
+        "${2D_INFORMED_INPAINT_OPTS:fr0_halfwidth}",
+        ]
+extra_batch_options = "--nice=1000" 
+
+[FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK]
+mem = 32000
+prereqs = "SINGLE_BASELINE_INPAINT_AND_FRF"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:nb_template_dir}",
+        "${NOTEBOOK_OPTS:nb_output_repo}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:filter_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_dly_min}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_regularization}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:standoff}",
+        "${2D_INFORMED_INPAINT_OPTS:fr0_halfwidth}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:inpaint_fr}",
+        "${GLOBAL_OPTS:eigenval_cutoff}",
+        "${FULL_DAY_RFI_OPTS:FM_low_freq}",
+        "${FULL_DAY_RFI_OPTS:FM_high_freq}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:max_contiguous_flags}",
+        "${FULL_DAY_SYSTEMATICS_INSPECT_OPTS:spectrum_chan_buffer}",
+        ]
+ 
+# [CLEANUP]
+# prereqs = "FULL_DAY_SYSTEMATICS_INSPECT_NOTEBOOK"
+# prereq_chunk_size = "all"
+# chunk_size = 1
+# stride_length = "all"
+# time_centered = false
+# args = []
