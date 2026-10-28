@@ -7,7 +7,7 @@
 [Options]
 makeflow_type = "analysis"
 source_script = "~/.bashrc"
-base_mem = 23500  # TODO: tune once file_sky_calibration has run at scale
+base_mem = 15500  # as in H6C
 base_cpu = 1
 timeout = "24h"
 path_to_do_scripts = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/task_scripts"
@@ -532,7 +532,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 [FULL_DAY_RFI_NOTEBOOK]
-mem = 47000  # double the base: the whole night's z-scores are held in memory
+mem = 47000  # the whole night's z-scores are held in memory
 prereqs = "FILE_SKY_CAL_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
@@ -544,7 +544,7 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
 
 [FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK]
-mem = 47000  # double the base, for safety
+mem = 47000  # for safety
 prereqs = "FILE_SKY_CAL_NOTEBOOK"
 prereq_chunk_size = "all"
 chunk_size = 1
