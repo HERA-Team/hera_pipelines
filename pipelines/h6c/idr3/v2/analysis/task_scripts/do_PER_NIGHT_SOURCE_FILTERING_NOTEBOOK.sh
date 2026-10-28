@@ -21,6 +21,8 @@ source ${src_dir}/_common.sh
 # 9  - model_delay_half_width: source model delay half-width (seconds)
 # 10 - model_frate_half_width: source model fringe-rate half-width (mHz)
 # 11 - max_workers: number of parallel worker processes for file loading
+# 12 - source_max_foreground_fraction: keep only RM modes with at most this fraction of their power in the foreground subspace
+# 13 - physical_source_model: subtract the fit evaluated on the physical RM modes (TRUE) or on their filtered response
 fn=${1}
 nb_template_dir=${2}
 nb_output_repo=${3}
@@ -32,6 +34,8 @@ fg_delay_half_width=${8}
 model_delay_half_width=${9}
 model_frate_half_width=${10}
 max_workers=${11}
+source_max_foreground_fraction=${12}
+physical_source_model=${13}
 
 # Get JD from filename
 jd=$(get_int_jd ${fn})
@@ -51,6 +55,8 @@ export FG_DELAY_HALF_WIDTH=${fg_delay_half_width}
 export MODEL_DELAY_HALF_WIDTH=${model_delay_half_width}
 export MODEL_FRATE_HALF_WIDTH=${model_frate_half_width}
 export MAX_WORKERS=${max_workers}
+export SOURCE_MAX_FOREGROUND_FRACTION=${source_max_foreground_fraction}
+export PHYSICAL_SOURCE_MODEL=${physical_source_model}
 export SAVE_MODELS=TRUE
 
 # Execute jupyter notebook and save as HTML

@@ -173,7 +173,9 @@ filter_min_delay = 300
 source_yaml = '/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/metadata/sources.yaml'
 fg_delay_half_width = 750e-9   # in seconds, foreground delay filter half-width
 model_delay_half_width = 150e-9  # in seconds, source model spectral half-width
-model_frate_half_width = 0.25   # in mHz, source model temporal half-width
+model_frate_half_width = 0.5   # in mHz, source model temporal half-width
+source_max_foreground_fraction = 0.1  # keep only RM modes with at most this fraction of their power in the foreground subspace
+physical_source_model = true  # subtract the fit evaluated on the physical RM modes, not on their foreground-filtered response
 max_workers = 8
 
 ############################################################################################################
@@ -400,6 +402,8 @@ args = ["{basename}",
         "${PER_NIGHT_SOURCE_FILTERING_OPTS:model_delay_half_width}",
         "${PER_NIGHT_SOURCE_FILTERING_OPTS:model_frate_half_width}",
         "${PER_NIGHT_SOURCE_FILTERING_OPTS:max_workers}",
+        "${PER_NIGHT_SOURCE_FILTERING_OPTS:source_max_foreground_fraction}",
+        "${PER_NIGHT_SOURCE_FILTERING_OPTS:physical_source_model}",
         ]
 # extra_batch_options = "--nice=999"
 
