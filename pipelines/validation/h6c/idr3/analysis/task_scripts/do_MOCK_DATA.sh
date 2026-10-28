@@ -13,12 +13,12 @@ sky_cmp="${2}" # simulation type (e.g. diffuse, eor, point_src) must match name 
 
 jd=$(get_int_jd ${reffile})
 echo "jd is ${jd}"
-ref_path=/lustre/aoc/projects/hera/Validation/H6C_IDR3/mocked_data/${jd}/${reffile}
-outdir=/lustre/aoc/projects/hera/Validation/H6C_IDR3/mocked_data/${jd}/
+ref_path=/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/mocked_data/${jd}/${reffile}
+outdir=/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/mocked_data/${jd}/
 #outdir=/lustre/aoc/projects/hera/Validation/H4C/IDR2/mocked_data/${sky_cmp}/${jd}/
 mkdir -p ${outdir} # the -p only makes dir it not existing
 
-config_file=/lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_pipelines/pipelines/validation/h6c/idr3/configs/${jd}.yaml
+config_file=/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_pipelines/pipelines/validation/h6c/idr3/configs/${jd}.yaml
 
 echo "mocking up data for ${sky_cmp} sims..."
 echo "==============================================="
@@ -31,7 +31,7 @@ echo "using config file: ${config_file}"
 # reffile=$(basename ${f});
 # echo ${name};
 echo "using ${reffile}";
-echo "python /lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H6C_IDR3/sim_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber"
-python /lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H6C_IDR3/sim_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber
+echo "python /lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H6C_IDR3_2/sim_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber"
+python /lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/task_scripts/mock_data.py ${ref_path} ${sky_cmp} --config $config_file --sim_dir /lustre/aoc/projects/hera/Validation/H6C_IDR3_2/sim_data/ -o ${outdir} --lst_wrap 3.1419561 --input_is_compressed --inflate --clobber
 echo "saved file to ${outdir}"
 

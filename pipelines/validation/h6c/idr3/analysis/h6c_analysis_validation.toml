@@ -4,11 +4,11 @@ source_script = "~/.bashrc"
 base_mem = 15500
 base_cpu = 1
 timeout = "24h"
-path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/task_scripts"
-path_to_a_priori_flags = "/lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/apriori_flags"
-conda_env = "h6c_idr3_validation"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/task_scripts"
+path_to_a_priori_flags = "/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_pipelines/pipelines/validation/h6c/idr3/analysis/apriori_flags"
+conda_env = "h6c_idr3_2_validation"
 batch_system = "slurm"
-sim_env = "h6c_idr3_validation"
+sim_env = "h6c_idr3_2_validation"
 
 [LIBRARIAN_OPTS]
 # These trigger which sets of files get added to the librarian
@@ -25,8 +25,8 @@ librarian_downselected_data = false
 librarian_notebooks = false
 
 [NOTEBOOK_OPTS]
-nb_template_dir = '/lustre/aoc/projects/hera/Validation/H6C_IDR3/src/hera_notebook_templates/notebooks'
-nb_output_repo = '/lustre/aoc/projects/hera/Validation/H6C_IDR3/notebooks'
+nb_template_dir = '/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/notebooks'
 git_push = false
 
 [GLOBAL_OPTS]
