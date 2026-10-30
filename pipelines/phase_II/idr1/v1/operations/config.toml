@@ -5,12 +5,12 @@
 
 [paths]
 # Relative paths are relative to this file.
-nights_root = "FILL_ME_IN"    # {nights_root}/{JD}/ is the night's working folder: links to its raw data, and every product
-makeflow_root = "FILL_ME_IN"  # {makeflow_root}/{JD}/ holds the night's makeflow, wrappers, and job logs
-raw_root = "FILL_ME_IN"       # the librarian stages each night's raw files into {raw_root}/{JD}/ (prune deletes them)
-cold_root = "FILL_ME_IN"      # archive.sh copies the night's bundles and final products to {cold_root}/{JD}_analysis/
-state_root = "FILL_ME_IN"     # {state_root}/{JD}/ holds the markers and logs that record what has run
-src_root = ""                 # optional: every git repository in here is recorded in each night's provenance.txt
+nights_root = "/lustre/aoc/projects/hera/phase-II-analysis/idr1"  # {nights_root}/{JD}/ is the night's working folder: links to its raw data, and every product
+makeflow_root = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/analysis_makeflow"  # {makeflow_root}/{JD}/ holds the night's makeflow, wrappers, and job logs
+raw_root = "/lustre/aoc/projects/hera/Phase_II_Raw_Data"       # the librarian stages each night's raw files into {raw_root}/{JD}/ (prune deletes them)
+cold_root = "/home/herastore02-2/Phase_II_Analysis_Cold_Storage"      # archive.sh copies the night's bundles and final products to {cold_root}/{JD}_analysis/
+state_root = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/analysis_makeflow/state_trackers" # {state_root}/{JD}/ holds the markers and logs that record what has run
+src_root = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src" # optional: every git repository in here is recorded in each night's provenance.txt
 
 [workflow]
 # Each night's steps, in order. Each runs in its own screen as `bash <script> <JD> <toml>`, once the steps before
@@ -30,6 +30,7 @@ limit = "running"
 [limits]
 max_in_flight = 8             # nights between starting to stage and archived at once (they are what holds Lustre space)
 min_free_tb = 4.0             # don't stage another night while the nights_root filesystem has less than this free (0: no check)
+cold_min_free_tb = 4.0       # archive only if cold_root still has this much free after the night's copy (0: just room for it)
 staging = 1                   # librarian staging operations at once (keep at 1: they share marker files in raw_root)
 running = 4                   # makeflows at once
 
