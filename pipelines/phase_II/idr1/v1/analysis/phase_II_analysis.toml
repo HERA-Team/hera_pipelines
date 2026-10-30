@@ -253,24 +253,39 @@ max_workers = 8
 #   filename    -- the naming pattern printed under the label on the flowchart (in preference
 #                  to the suffix). For per-night products it is also the path, relative to the
 #                  night's folder, that the do scripts (get_filename) and notebooks read, with
-#                  {JD} the integer JD. Its tokens also say what the product is indexed by --
-#                  {bl} or {ant1}/{ant2} one per baseline, {source} or {object} one per sky
-#                  object, neither one per night -- which is how the flowchart knows to label
-#                  an arrow "All baselines" or "All sky objects" where a step gathers them up.
+#                  {JD} the integer JD, and (with every other token a wildcard) where a night's
+#                  files of it are found for retention. Its tokens also say what the product is
+#                  indexed by -- {bl} or {ant1}/{ant2} one per baseline, {source} or {object} one
+#                  per sky object, neither one per night -- which is how the flowchart knows to
+#                  label an arrow "All baselines" or "All sky objects" where a step gathers them up.
 #   note        -- display only: free text shown in the flowchart's hover tooltip, for what
 #                  the label and kind do not convey. Optional; injects nothing.
+#   retention   -- for every product in a night's folder (everything this workflow writes, and
+#                  the inputs linked into it): what becomes of the night's files of it once the
+#                  night has been reviewed. "keep": they stay on Lustre, and a copy goes to cold
+#                  storage. "archive" (not for inputs, which are links): the CLEANUP action
+#                  bundles them into {JD}_<NAME>.tar.gz beside them; once the night is approved
+#                  they are deleted, and the bundle is moved to cold storage. "delete": they are
+#                  deleted once the night is approved, and never archived, along with their
+#                  staged copies (for the raw data, which the librarian keeps, and for what is
+#                  large and remade from them). A night's files are found from the filename, with
+#                  every token but {JD} a wildcard, or else from the suffix as
+#                  zen.{JD}.?????.{suffix}; see task_scripts/data_products.py, which do_CLEANUP.sh
+#                  and operations/prune.sh use.
 
 [DATA_PRODUCTS.SUM]
 suffix = "sum.uvh5"
 label = "4-pol Raw Sum Data"
 kind = "raw"
 consumed_by = ["FILE_SKY_CAL_NOTEBOOK", "FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK", "FILE_RED_AVG_NOTEBOOK"]
+retention = "delete"  # the librarian keeps the raw data
 
 [DATA_PRODUCTS.DIFF]
 suffix = "diff.uvh5"
 label = "4-pol Raw Diff Data"
 kind = "raw"
 consumed_by = ["FILE_SKY_CAL_NOTEBOOK"]  # only through the H6C era; see use_diff
+retention = "delete"  # the librarian keeps the raw data
 
 [DATA_PRODUCTS.SKY_MODEL]
 label = "Externally Calibrated, Redundantly Averaged, LST-Stacked, Filtered Data"
@@ -284,12 +299,14 @@ suffix = "sum.rtp_ant_class.csv"
 label = "RTP Antenna Classifications"
 kind = "external"
 consumed_by = ["FILE_SKY_CAL_NOTEBOOK"]  # stands in for the diff-based classifiers when use_diff is false
+retention = "delete"
 
 [DATA_PRODUCTS.AM]
 suffix = "sum.ant_metrics.hdf5"
 label = "Antenna Metrics"
 kind = "metrics"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
+retention = "archive"
 
 [DATA_PRODUCTS.ANT_CLASS]
 suffix = "sum.ant_class.csv"
@@ -297,6 +314,7 @@ label = "Antenna Classifications"
 kind = "metrics"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
 consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.SKY_CAL]
 suffix = "sum.sky.calfits"
@@ -304,6 +322,7 @@ label = "Sky-Calibrated Gain Solutions"
 kind = "calibration"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
 consumed_by = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK", "CALIBRATION_SMOOTHING_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.DECOHERENCE]
 suffix = "sum.snap_decoherence.h5"
@@ -311,6 +330,7 @@ label = "SNAP Decoherence"
 kind = "metrics"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
 consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK", "FILE_RED_AVG_NOTEBOOK"]  # staircase removal/restoration around smoothing; exact inter-SNAP correction in the redundant average
+retention = "archive"
 
 [DATA_PRODUCTS.RED_AVG_ZSCORE]
 suffix = "sum.red_avg_zscore.h5"
@@ -318,6 +338,7 @@ label = "Delay-Filtered, Redundantly Averaged z-Score"
 kind = "metrics"
 produced_by = "FILE_SKY_CAL_NOTEBOOK"
 consumed_by = ["FULL_DAY_RFI_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.FLAG_WATERFALL]
 suffix = "sum.flag_waterfall.h5"
@@ -325,14 +346,16 @@ label = "Full-Day RFI Flags"
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_NOTEBOOK"
 consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.APOSTERIORI_YAML]
 label = "A Posteriori Flags"
-filename = "{JD}_aposteriori_flags.yaml"  # display only: per-day, so there is no per-sum-file suffix
+filename = "{JD}_aposteriori_flags.yaml"  # per-day, so there is no per-sum-file suffix; finds the night's file for retention
 note = "The day's entirely-flagged times, frequencies, and antennas (ex_ants) as of calibration smoothing, the last stage that writes per-antenna flags; the RFI rounds after the corner turn flag further times and frequencies in their own waterfalls (FLAGS_PI_FRF is the night's final)."
 kind = "ancillary"
 produced_by = "CALIBRATION_SMOOTHING_NOTEBOOK"
 consumed_by = ["FILE_RED_AVG_NOTEBOOK"]  # redundant groups in which every baseline involves an all-night-flagged antpol are left out of the outputs
+retention = "keep"
 
 [DATA_PRODUCTS.APRIORI_FLAGS]
 label = "A Priori Flags (Optional)"
@@ -345,6 +368,7 @@ label = "Per-File Antenna Flags"
 kind = "metrics"
 produced_by = "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"
 consumed_by = ["CALIBRATION_SMOOTHING_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.SMOOTH_CAL]
 suffix = "sum.smooth.calfits"
@@ -353,6 +377,7 @@ kind = "calibration"
 note = "Carries each file's fitted decoherence staircase (removed before smoothing, re-imposed after), so like sky.calfits it calibrates inter-SNAP cross-correlations correctly on its own; apply_cal.calibrate_and_red_avg cleans it with the sidecar for autos and intra-SNAP baselines."
 produced_by = "CALIBRATION_SMOOTHING_NOTEBOOK"
 consumed_by = ["FILE_RED_AVG_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.RED_AVG]
 suffix = "sum.smooth_calibrated.red_avg.uvh5"
@@ -361,6 +386,7 @@ kind = "raw"
 note = "One visibility per redundant group (the same baselines in every file of the night), decoherence-corrected from the sidecars. nsamples are EFFECTIVE nsamples (apply_cal.calibrate_and_red_avg), which make the standard noise prediction from the averaged autos exact; they are not counts."
 produced_by = "FILE_RED_AVG_NOTEBOOK"
 consumed_by = ["BUILD_CORNER_TURN_MAP", "CORNER_TURN_SINGLE_JD"]
+retention = "delete"
 
 [DATA_PRODUCTS.CORNER_TURN_MAP]
 label = "Corner-Turn Map"
@@ -369,26 +395,29 @@ note = "Per night: which antpairs each file is assigned (the corner turn writes 
 kind = "ancillary"
 produced_by = "BUILD_CORNER_TURN_MAP"
 consumed_by = ["CORNER_TURN_SINGLE_JD", "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK", "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
+retention = "keep"
 
 [DATA_PRODUCTS.SINGLE_BASELINE]
 label = "Corner-Turned Single-Baseline Data"
 suffix = "sum.smooth_calibrated.red_avg.uvh5"
-filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.smooth_calibrated.red_avg.uvh5"  # display only: one whole-night file per redundant group, named by the group's key
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.smooth_calibrated.red_avg.uvh5"  # one whole-night file per redundant group, named by the group's key; finds the night's files for retention
 note = "Whole-night, one file per redundant group, keyed by the group's canonical antpair so names agree across nights; missing integrations inserted flagged with nsamples = 0 and the data rephased onto a uniform time grid; effective nsamples carried through."
 kind = "raw"
 produced_by = "CORNER_TURN_SINGLE_JD"
 consumed_by = ["SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK", "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK", "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK", "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
+retention = "delete"
 
 # ---- products of the stages after the corner turn: the RFI rounds, source filtering, and the inpaint ----
 
 [DATA_PRODUCTS.SKY_FILTERED_SNR]
 label = "Sky-Filtered Single-Baseline SNR"
 suffix = "sum.sky_filtered_SNR.uvh5"
-filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.sky_filtered_SNR.uvh5"  # display only
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.sky_filtered_SNR.uvh5"  # finds the night's files for retention (the notebooks use the suffix)
 note = "Residual, in units of the thermal noise, after a 2D DPSS filter removes everything sky-like (delays inside filter_delay and the fringe rates the sky spans on that baseline) and a 1D delay filter (post_filter_delay_low_band / _high_band, with high-z TV allocations deweighted) removes the lowest delays at every fringe rate. Cross-correlations with enough samples only."
 kind = "metrics"
 produced_by = "SINGLE_BASELINE_SKY_FILTERED_SNR_NOTEBOOK"
 consumed_by = ["FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.FLAGS_SKY_FILTERED]
 label = "Sky-Filtered Flags"
@@ -397,30 +426,34 @@ note = "Was H6C round 3. One whole-night flag waterfall on what the 2D sky-like 
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK"
 consumed_by = ["PER_NIGHT_SOURCE_FILTERING_NOTEBOOK", "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"]
+retention = "keep"
 
 [DATA_PRODUCTS.INPAINTED]
 label = "Inpainted Single-Baseline Data"
 suffix = "sum.inpainted.uvh5"
-filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.inpainted.uvh5"  # display only
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.inpainted.uvh5"  # finds the night's files for retention (the notebooks use the suffix)
 note = "The night's final product: inpainted under its final flags, with the polarized source models subtracted, by a 2D Wiener fill (GPR with a covariance learned from the night) about the LST-stacked single-baseline sky model of the same redundant group, fit to the night, where it covers, and about a 2D DPSS fit of the data themselves where not and for every autocorrelation; effective nsamples DPSS-filled across the same gaps so that LST stacking weights inpainted data by the depth the night would have had. Handed to LST stacking together with the final flags and the where_inpainted sidecar; nothing in this pipeline consumes it."
 kind = "raw"
 produced_by = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
+retention = "keep"
 
 [DATA_PRODUCTS.WHERE_INPAINTED]
 label = "Where-Inpainted Sidecar"
 suffix = "sum.where_inpainted.h5"
-filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.where_inpainted.h5"  # display only
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.where_inpainted.h5"  # finds the night's files for retention (the notebooks use the suffix)
 note = "Baseline-type UVFlag of the cells the inpainted data are model rather than measurement, for LST stacking's where_inpainted masks."
 kind = "metrics"
 produced_by = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
+retention = "keep"
 
 [DATA_PRODUCTS.INPAINT_COVARIANCE]
 label = "Inpainting Covariance"
 suffix = "sum.inpaint_covariance.h5"
-filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.inpaint_covariance.h5"  # display only
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.inpaint_covariance.h5"  # finds the night's files for retention (the notebooks use the suffix)
 note = "Per polarization and band, the covariance the 2D Wiener fill learned from the night's residual about its prior: the tapered lag function's non-negative time lags plus the scalars that regenerate the thresholded power spectrum (to the single precision the lag function is stored in), for assessing the noise of the inpainted and LST-stacked data. Nothing in this pipeline consumes it."
 kind = "metrics"
 produced_by = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
+retention = "keep"
 
 [DATA_PRODUCTS.SOURCE_CATALOG]
 label = "Polarized Point Source Catalog"
@@ -450,15 +483,17 @@ note = "Faraday-rotating DPSS models of the fitted polarized sources (phased ave
 kind = "raw"
 produced_by = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
+retention = "keep"
 
 [DATA_PRODUCTS.PI_DLYFILT_SNR]
 label = "Delay-Filtered pI SNR"
 suffix = "sum.pI_dlyfilt_SNR.uvh5"
-filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.pI_dlyfilt_SNR.uvh5"  # display only
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.pI_dlyfilt_SNR.uvh5"  # finds the night's files for retention (the notebooks use the suffix)
 note = "Delay-filtered pseudo-Stokes I SNRs of the flagged, non-inpainted single-baseline data with the polarized source models subtracted (was H6C's inpainted.pI_DLYFILT_SNR)."
 kind = "metrics"
 produced_by = "SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK"
 consumed_by = ["FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.FLAGS_PI_DLYFILT]
 label = "Delay-Filtered pI Flags"
@@ -467,6 +502,7 @@ note = "Was H6C round 4. One whole-night flag waterfall: the union over the reph
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK"]
+retention = "keep"
 
 [DATA_PRODUCTS.SOURCE_FLAGS_PI_DLYFILT]
 label = "Per-Source Delay-Filtered pI Flags"
@@ -474,15 +510,17 @@ filename = "single_baseline_files/zen.{JD}.{source}.flag_waterfall_pI_dlyfilt.h5
 note = "One flag waterfall per rephasing source, before they are unioned into the night's flags. Kept for the record, as in H6C round 4; nothing downstream reads them."
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"
+retention = "keep"
 
 [DATA_PRODUCTS.PI_FRF_SNR]
 label = "Delay + FR-Filtered pI SNR"
 suffix = "sum.pI_FRF_SNR.uvh5"
-filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.pI_FRF_SNR.uvh5"  # display only
+filename = "single_baseline_files/zen.{JD}.baseline.{ant1}_{ant2}.sum.pI_FRF_SNR.uvh5"  # finds the night's files for retention (the notebooks use the suffix)
 note = "Delay + fringe-rate-filtered (main beam, with an FR = 0 notch) pseudo-Stokes I SNRs of the same non-inpainted data, under the delay-filtered round's flags, which contain the sky-filtered round's (was H6C's inpainted.pI_FRF_SNR)."
 kind = "metrics"
 produced_by = "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK"
 consumed_by = ["FULL_DAY_RFI_PI_FRF_NOTEBOOK"]
+retention = "archive"
 
 [DATA_PRODUCTS.FLAGS_PI_FRF]
 label = "Delay + FR-Filtered pI Flags"
@@ -491,6 +529,7 @@ note = "Was H6C round 5. The night's final flag waterfall: the union of the flag
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
+retention = "keep"
 
 [DATA_PRODUCTS.SOURCE_FLAGS_PI_FRF]
 label = "Per-Source Delay + FR-Filtered pI Flags"
@@ -498,6 +537,7 @@ filename = "single_baseline_files/zen.{JD}.{source}.flag_waterfall_pI_FRF.h5"
 note = "One flag waterfall per rephasing source, before they are unioned into the night's final flags. Kept for the record, as in H6C round 5; nothing downstream reads them."
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_FRF_NOTEBOOK"
+retention = "keep"
 
 [DATA_PRODUCTS.SINGLE_BASELINE_SKY_MODEL]
 label = "LST-Indexed Single-Baseline Sky Models"
