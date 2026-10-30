@@ -564,7 +564,9 @@ actions = ["FILE_SKY_CAL_NOTEBOOK",
            "FULL_DAY_RFI_PI_FRF_NOTEBOOK",
            # every RFI round and the source filtering work on flagged, non-inpainted data, so the one
            # inpaint comes last, under the final flags
-           "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
+           "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK",
+           # bookkeeping, as in H6C: bundles the night's intermediate products for cold storage
+           "CLEANUP"]
 
 [FILE_SKY_CAL_NOTEBOOK]
 args = ["{basename}",
@@ -724,3 +726,12 @@ args = ["{basename}",
         "${NOTEBOOK_OPTS:toml_file}",
         "${NOTEBOOK_OPTS:nb_template_dir}",
         "${NOTEBOOK_OPTS:nb_output_repo}"]
+
+[CLEANUP]  # once per night, after everything else: tars each product with retention = "archive" in [DATA_PRODUCTS], and the rendered notebooks, into {JD}_*.tar.gz bundles for cold storage, deleting nothing (as H6C's do_CLEANUP.sh; the files they were built from are deleted after review, by ../operations/prune.sh)
+prereqs = "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"
+prereq_chunk_size = "all"
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+args = ["{basename}",
+        "${NOTEBOOK_OPTS:toml_file}"]
