@@ -1,0 +1,48 @@
+# Phase II IDR1 v1's night operations, run by the manager in operations/ at the top of this repo (see its README.md):
+#   python operations/tui.py --config pipelines/phase_II/idr1/v1/operations/config.toml
+# Read by manager.py, and by the step scripts one value at a time (via operations/scripts/common.sh).
+# Nothing launches while a FILL_ME_IN is left.
+
+[paths]
+# Relative paths are relative to this file.
+nights_root = "FILL_ME_IN"    # {nights_root}/{JD}/ is the night's working folder: links to its raw data, and every product
+makeflow_root = "FILL_ME_IN"  # {makeflow_root}/{JD}/ holds the night's makeflow, wrappers, and job logs
+raw_root = "FILL_ME_IN"       # the librarian stages each night's raw files into {raw_root}/{JD}/ (prune deletes them)
+cold_root = "FILL_ME_IN"      # archive.sh copies the night's bundles and final products to {cold_root}/{JD}_analysis/
+state_root = "FILL_ME_IN"     # {state_root}/{JD}/ holds the markers and logs that record what has run
+src_root = ""                 # optional: every git repository in here is recorded in each night's provenance.txt
+
+[workflow]
+# Each night's steps, in order. Each runs in its own screen as `bash <script> <JD> <toml>`, once the steps before
+# it have succeeded; "review" is where each night waits for you to approve it, and the steps after it never run
+# until you have. A step's script is <step>.sh beside this file (stage, build, prune), or else the shared one in
+# operations/scripts/ (run, archive).
+steps = ["stage", "build", "run", "review", "prune", "archive"]
+toml = "../analysis/phase_II_analysis.toml"  # the pipeline, given to every step
+
+[steps.stage]
+limit = "staging"
+
+[steps.run]
+makeflow = true               # runs the toml's makeflow: the manager shows its progress, and asks for a job cap
+limit = "running"
+
+[limits]
+max_in_flight = 8             # nights between starting to stage and archived at once (they are what holds Lustre space)
+min_free_tb = 4.0             # don't stage another night while the nights_root filesystem has less than this free (0: no check)
+staging = 1                   # librarian staging operations at once (keep at 1: they share marker files in raw_root)
+running = 4                   # makeflows at once
+
+[makeflow]
+max_jobs = 100                # makeflow_nrao.sh's cap on simultaneous jobs (can be changed when rerunning a night)
+
+[staging]
+librarian = "local"           # the librarian connection that stages the raw data
+diff_before_jd = 2460039      # diff files are staged only for nights before this (they were only recorded through H6C)
+
+[manager]
+name = "Phase II IDR1 v1"     # for the TUI and mail
+poll_seconds = 30             # how often the TUI rereads every night's state and, in auto mode, launches the next steps
+session_prefix = "pII"         # each step runs in a screen named {prefix}_{step}_{JD}
+required_host = "herapost-master"  # makeflow_nrao.sh only runs here, so neither does the manager
+email = "jsdillon@berkeley.edu"     # mailed at the end of every step ("" for none)
