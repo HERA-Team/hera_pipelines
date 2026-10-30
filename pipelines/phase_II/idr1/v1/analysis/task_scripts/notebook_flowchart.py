@@ -31,7 +31,7 @@ import toml
 from astropy.time import Time
 
 # Bookkeeping actions that are not pipeline stages and would only clutter the chart.
-SKIP_ACTIONS = {'SETUP', 'TEARDOWN', 'CLEAN'}
+SKIP_ACTIONS = {'SETUP', 'TEARDOWN', 'CLEAN', 'CLEANUP'}
 
 # Geometry, in SVG user units (which are CSS px at 100% width).
 NODE_W = 232
