@@ -10,6 +10,18 @@ set -e
 source "$(dirname "$0")/common.sh" "$1"
 require_approved
 
+# make sure cold storage has room for the copy, and still [limits] cold_min_free_tb to spare once it's there (it's
+# shared, so filling it would stop everyone else's writes too)
+cold_root=$(cfg paths cold_root)
+mkdir -p "${cold_root}"
+spare_tb=$(cfg limits cold_min_free_tb 2> /dev/null || echo 0)
+free_kb=$(df -Pk "${cold_root}" | awk 'NR == 2 {print $4}')
+copy_kb=$(du -skL "${NIGHT_DIR}" "${MAKEFLOW_DIR}" 2> /dev/null | awk '{n += $1} END {print n + 0}')
+if ! python -c "import sys; free, copy, spare = map(float, sys.argv[1:]); sys.exit(free - copy < spare * 1e9)" \
+        "${free_kb}" "${copy_kb}" "${spare_tb}"; then
+    die "${cold_root} has $(( free_kb / 1000000000 )) TB free, too little for this night's $(( copy_kb / 1000000 )) GB with ${spare_tb} TB to spare ([limits] cold_min_free_tb)"
+fi
+
 mkdir -p "${COLD_DIR}/makeflow"
 echo "Copying ${NIGHT_DIR} and ${MAKEFLOW_DIR} to ${COLD_DIR} at $(date)"
 rsync -a "${NIGHT_DIR}/" "${COLD_DIR}/"

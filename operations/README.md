@@ -108,7 +108,8 @@ Make an `operations/` folder beside the pipeline's toml, holding:
     progress and asks for a job cap), and `limit` (an entry in `[limits]` capping how many nights may be in this
     step, and any other step with the same limit, at once).
   - `[limits]`: `max_in_flight` (nights started but not yet done) and `min_free_tb` (free space on `nights_root`
-    below which no new night starts), plus the limits the steps name.
+    below which no new night starts), optionally `cold_min_free_tb` (archive fails, copying nothing, unless
+    `cold_root` would still have this much free after the night's copy), plus the limits the steps name.
   - `[makeflow] max_jobs`, and `[manager]`: `name`, `poll_seconds`, `session_prefix`, `required_host`, `email`.
   - Any sections of the pipeline's own, which its scripts read with `cfg <section> <key>`.
 - **`nights.txt`**: the queue.

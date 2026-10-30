@@ -100,6 +100,7 @@ class Config:
             raise problem(f'[workflow] steps has {REVIEW} first or last, but it belongs between two steps')
         limits_section = dict(cfg['limits'])
         max_in_flight, min_free_tb = limits_section.pop('max_in_flight'), limits_section.pop('min_free_tb')
+        limits_section.pop('cold_min_free_tb', None)  # archive.sh's to check
         default_toml = cfg['workflow'].get('toml')
         steps, after_review = [], False
         for name in names:

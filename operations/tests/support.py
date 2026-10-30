@@ -27,6 +27,8 @@ def write_config(root, pipeline_config=EXAMPLE_CONFIG, **manager_settings):
         if step.toml:
             settings['toml'] = str(step.toml)
     cfg['workflow'].pop('toml', None)  # every step now names its own
+    if 'cold_min_free_tb' in cfg['limits']:
+        cfg['limits']['cold_min_free_tb'] = 0.0  # whatever this machine has free
     cfg['manager'].update({'poll_seconds': 1, 'session_prefix': 'p2test', 'required_host': '', 'email': '',
                            **manager_settings})
     path = root / 'config.toml'
