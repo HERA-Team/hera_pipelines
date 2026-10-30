@@ -8,6 +8,9 @@ Repo for saving HERA workflow pipelines and management scripts.
 All of the DO-scripts and makeflow files are in the [pipelines](pipelines/) directory.
 Each season has its own subfolder here.
 
+The [operations](operations/) directory holds a manager for running a pipeline over many
+nights (staging, makeflows, review, and cold storage), with a full-screen interface; see its README.
+
 The repo also contains an installable package, [hera_pipelines](src.hera_pipelines/),
 which contains a CLI for managing files and running pipelines in idiomatic ways.
 

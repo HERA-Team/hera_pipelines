@@ -1,0 +1,36 @@
+# A toy pipeline for the manager's own tests and demo: its steps stand in for a real pipeline's, using the fakes in
+# ../fake_bin/. See pipelines/phase_II/idr1/v1/operations/ for a real one.
+
+[paths]
+nights_root = "FILL_ME_IN"
+makeflow_root = "FILL_ME_IN"
+raw_root = "FILL_ME_IN"
+cold_root = "FILL_ME_IN"
+state_root = "FILL_ME_IN"
+
+[workflow]
+steps = ["stage", "build", "run", "review", "prune", "archive"]
+toml = "example.toml"
+
+[steps.stage]
+limit = "staging"
+
+[steps.run]
+makeflow = true
+limit = "running"
+
+[limits]
+max_in_flight = 3
+min_free_tb = 0.0
+staging = 1
+running = 2
+
+[makeflow]
+max_jobs = 200
+
+[manager]
+name = "Example"
+poll_seconds = 30
+session_prefix = "example"
+required_host = ""
+email = ""

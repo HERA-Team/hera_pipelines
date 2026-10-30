@@ -1,0 +1,6 @@
+# The toy pipeline's hera_opm toml: only what the fakes and step.sh read from it.
+[Options]
+conda_env = "example_env"
+
+[WorkFlow]
+actions = ["PROCESS", "SUMMARIZE"]
