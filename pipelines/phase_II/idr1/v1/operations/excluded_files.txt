@@ -1,0 +1,10 @@
+# Raw files to leave out of their nights: on each line, a night's JD, the decimals of its files to leave out, and
+# why (a night with files left out for different reasons can have a line for each). build.sh links none of those
+# files' raw data (sum, diff, or RTP antenna classifications) into the night's folder, so the makeflow never sees
+# them, and records what it left out in the night's provenance.txt. Leaving a file out of a night that has already
+# been built means building it again (see README.md).
+#
+# JD      decimals                          why
+2459848   36342 36364 36409 36431 36454     # the night's first 5 files, which H6C IDR3 left out by hand
+2459878   29178                             # too many times (H6C IDR3 left it out too)
+2459949   21311 21333 21355 21378           # the night's first 4 files, which H6C IDR3 left out by hand (21378 has no diff)
