@@ -138,6 +138,33 @@ function swap_suffix ()
     echo "${1%${sum_suffix}}$(get_suffix "$2" "$3")"
 }
 
+# data_products.py sits beside this file (found now, while the path this was sourced by still holds)
+DATA_PRODUCTS_PY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/data_products.py"
+
+function get_products ()
+# list the [DATA_PRODUCTS] this workflow writes with the given retention (keep, archive, or delete), after checking
+# that every product it writes has one
+# usage: get_products <toml_file> <retention>   e.g. get_products ${toml_file} archive
+{
+    python "${DATA_PRODUCTS_PY}" names "$1" "$2"
+}
+
+function get_product_files ()
+# list a night's files of one data product, one per line, relative to the night's folder (which must be the
+# working directory); see data_products.py for how they are found
+# usage: get_product_files <toml_file> <JD> <PRODUCT_NAME>   e.g. get_product_files ${toml_file} 2460100 SKY_CAL
+{
+    python "${DATA_PRODUCTS_PY}" files "$1" "$2" "$3"
+}
+
+function get_undeclared_files ()
+# list the files in a night's folder (the working directory), and in the folders its products are in, that are
+# neither a data product nor matched by one of the given globs
+# usage: get_undeclared_files <toml_file> <JD> [<glob> ...]
+{
+    python "${DATA_PRODUCTS_PY}" undeclared "$@"
+}
+
 # Every task script is named do_<ACTION>.sh, so sourcing this file tells the notebook which
 # [WorkFlow] action is running it without the name being written down in either place.
 # A template shared by two actions (as several are in h6c) therefore still identifies itself
