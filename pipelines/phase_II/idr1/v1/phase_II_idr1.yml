@@ -54,6 +54,7 @@ dependencies:
   - sphinx
   - sqlalchemy
   - tabulate
+  - textual
   - toml
   - pip:
     - /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/aipy
