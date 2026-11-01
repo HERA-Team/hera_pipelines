@@ -8,8 +8,8 @@ night's data file), so it can be added directly to that file's visibilities.
 Visibilities are computed by direct summation over the sources (see
 :func:`direct_vis_chunks`), which costs ~Nsrc x Nbls x Ntimes x Nfreqs and is much
 faster than an FFT-based simulator for a handful of sources. The coordinate
-rotation, coherency rotation, beam interpolation and feed conventions are those of
-fftvis/matvis, configured to match how the H6C validation sims were produced with
+rotation, beam interpolation and feed conventions are those of fftvis/matvis,
+configured to match how the H6C validation sims were produced with
 hera_sim + fftvis (https://github.com/HERA-Team/validation-sim,
 ``package-structure`` branch):
 
@@ -28,6 +28,9 @@ polarization, Faraday-rotated by its rotation measure:
     I(f)       = S_ref (f / f_ref)^alpha
     Q + iU     = p I(f) exp(2i [chi_0 + RM (c/f)^2])
     V          = v I(f)
+
+Q and U follow the IAU convention (polarization angle measured from North
+through East).
 
 An optional per-source gain (per time, or per time and frequency) multiplies
 all four Stokes parameters, e.g. to inject scintillation.
@@ -273,10 +276,12 @@ def direct_vis_chunks(
         V_pq(f, t) = sum_s g_s(t, f) [A_s^H C_s(f, t) A_s]_qp exp(2 pi i f (x_j - x_i) . s(t) / c),
 
     where A_s is the beam Jones matrix towards source s and C_s its coherency in the
-    local alt/az frame. The conventions are fftvis's (``fftvis.simulate_vis`` with
-    ``polarized=True``): Stokes I is split equally between the two linear feeds, the
+    local alt/az frame. Stokes I is split equally between the two linear feeds. The
     coherency is rotated from RA/Dec to alt/az with matvis' ``calc_coherency_rotation``,
-    and the Jones vector components are in the reverse of UVBeam's vector-axis order.
+    which expresses it in the (zenith angle, azimuth) basis with azimuth measured from
+    North through East. UVBeam's vector axes are (azimuth, zenith angle) with azimuth
+    measured from East through North, so the Jones vector components are reversed and
+    the azimuth component is negated to express A_s in the same basis.
     Sources below the horizon contribute nothing.
 
     Parameters
@@ -375,7 +380,8 @@ def direct_vis_chunks(
                 check_azza_domain=False,
             )
             jones[..., up_c] = resp[:, :, beam_chan]
-        jones = np.flip(jones, axis=0)
+        # UVBeam (az E->N, za) -> coherency basis (za, az N->E); the two azimuth unit vectors are opposite
+        jones = np.stack([jones[1], -jones[0]])
 
         # Coherency rotated into each time's alt/az frame, (Nsrc, ntc, Nfreqs, 2, 2)
         coh = np.zeros((nsrc, ntc, nf, 2, 2), dtype=complex)
