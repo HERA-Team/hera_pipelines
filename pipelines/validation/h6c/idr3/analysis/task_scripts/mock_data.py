@@ -152,6 +152,7 @@ if __name__ == "__main__":
     # twice: once before systematics simulation, and once after.
     sim_uvdata = UVData()
     sim_uvdata.read(sim_files[0], read_data=False)
+    sim_telescope = sim_uvdata.telescope.copy()
     sim_ants = sorted(
         set(sim_uvdata.ant_1_array).union(sim_uvdata.ant_2_array)
     )
@@ -351,6 +352,22 @@ if __name__ == "__main__":
         dt = t2 - t1
         print(f"Done in {dt:.5f} seconds.\n")
 
+    # List every antenna of the simulation's array in the metadata, as data files
+    # list antennas without data too. Corner-turned files are named after each
+    # redundant group's lowest baseline over that list (build_corner_turn_map.py),
+    # so this keeps their names the same as the data run's.
+    sim_antpos = dict(zip(sim_telescope.antenna_numbers, sim_telescope.antenna_positions))
+    for ant, pos in zip(
+        sim_uvdata.data.telescope.antenna_numbers, sim_uvdata.data.telescope.antenna_positions
+    ):
+        if ant not in sim_antpos or not np.allclose(sim_antpos[ant], pos):
+            raise ValueError(f"Antenna {ant} is not at the same position in {sim_files[0]}.")
+    sim_uvdata.data.telescope = sim_telescope
+    print(
+        f"Writing metadata for {sim_telescope.Nants} antennas, "
+        f"{len(sim_uvdata.data.get_ants())} of them with data."
+    )
+
     # NOTE: this should be updated to something more robust in the future,
     # but we're currently in a weird place where the x-orientation in the
     # simulated beam doesn't match what we use in the data, and sometimes
@@ -359,7 +376,7 @@ if __name__ == "__main__":
 
     # Now remove antennas that were fully flagged in the real data.
     if set(ants_to_load) != set(ants_to_keep):
-        sim_uvdata.data.select(antenna_nums=ants_to_keep, keep_all_metadata=False)
+        sim_uvdata.data.select(antenna_nums=ants_to_keep, keep_all_metadata=True)
 
     # We should be done. Now just write the contents to disk.
     t1 = time.time()
