@@ -336,6 +336,16 @@ def derive_state(jd, markers, live_sessions, config, host=None, at=None):
 # scheduling
 ##############################################################################################################
 
+def in_limits(states, config):
+    """The nights each limit's steps hold now, by limit (a step counts while it runs, here or elsewhere)."""
+    nights = {limit: [] for limit in config.limits}
+    for s in states:
+        limit = config.step(s.step).limit
+        if limit and s.status in ('active', 'elsewhere'):
+            nights[limit].append(s.jd)
+    return nights
+
+
 def plan_actions(states, config, auto, live_sessions=(), free_tb=None):
     """The (step, jd) launches to make now, in order. Pure.
 
@@ -346,11 +356,7 @@ def plan_actions(states, config, auto, live_sessions=(), free_tb=None):
     """
     if not auto:
         return []
-    busy = dict.fromkeys(config.limits, 0)
-    for s in states:
-        limit = config.step(s.step).limit
-        if limit and s.status in ('active', 'elsewhere'):
-            busy[limit] += 1
+    busy = {limit: len(jds) for limit, jds in in_limits(states, config).items()}
     in_flight = sum(s.in_flight for s in states)
     disk_ok = config.min_free_tb <= 0 or free_tb is None or free_tb >= config.min_free_tb
 
@@ -598,12 +604,24 @@ class Manager:
     # ----- actions -----
 
     def launch(self, step, jd, max_jobs=None, live_sessions=None):
-        """Start one step for one night in its own screen."""
+        """Start one step for one night in its own screen, by hand: like the scheduler, it keeps to the step's limit."""
         step = self.config.step(step)
         if problem := self.launch_problem():
             raise RuntimeError(problem)
-        name = self.config.session_name(step.name, jd)
         live = self.screens.live_sessions() if live_sessions is None else live_sessions
+        if step.limit:
+            states = [derive_state(other, read_markers(self.config.state_dir(other), self.config.step_names), live,
+                                   self.config, self.host) for other in self.jds() if other != str(jd)]
+            full = in_limits(states, self.config)[step.limit]
+            if len(full) >= self.config.limits[step.limit]:
+                raise RuntimeError(f"[limits] {step.limit} = {self.config.limits[step.limit]}, and it's full "
+                                   f"({', '.join(full)}): {step.name} {jd} has to wait")
+        self._start(step, jd, max_jobs, live)
+
+    def _start(self, step, jd, max_jobs, live):
+        """Start one step for one night in its own screen (whatever its limit, and without checking launch_problem:
+        see launch and tick)."""
+        name = self.config.session_name(step.name, jd)
         if name in live:
             raise RuntimeError(f'screen {name} is still open: attach to it and exit it first')
         if step.after_review and not (self.config.state_dir(jd) / 'approved').exists():
@@ -642,7 +660,7 @@ class Manager:
         if not dry_run:
             for step, jd in actions:
                 try:
-                    self.launch(step, jd, live_sessions=live)
+                    self._start(self.config.step(step), jd, None, live)  # the plan already keeps to the limits
                 except (RuntimeError, OSError, subprocess.CalledProcessError) as error:
                     self.log(f'could not launch {step} {jd}: {error}')
         return actions

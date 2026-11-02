@@ -302,6 +302,14 @@ class TestManagerActions:
         assert [name for name, _, _ in screens.launched] == ['p2test_stage_2459862']
         assert manager.tick() == []  # still staging, and only one night may stage at once
 
+    def test_launching_by_hand_keeps_to_the_limit(self, manager, screens):
+        manager.launch('stage', '2459861')
+        with pytest.raises(RuntimeError, match=r"\[limits\] staging = 1, and it's full \(2459861\)"):
+            manager.launch('stage', '2459862')
+        assert [name for name, _, _ in screens.launched] == ['p2test_stage_2459861']
+        manager.launch('run', '2459862')  # another limit's step
+        assert len(screens.launched) == 2
+
     def test_approve_only_in_review(self, manager):
         with pytest.raises(RuntimeError, match='not waiting for review'):
             manager.approve('2459861')

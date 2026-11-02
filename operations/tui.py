@@ -20,7 +20,7 @@ from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import ModalScreen
 from textual.widgets import Button, DataTable, Footer, Input, Label, RichLog, Static
 
-from manager import Config, Manager, add_to_queue, format_age, short_host
+from manager import Config, Manager, add_to_queue, format_age, in_limits, short_host
 
 STATUS_STYLES = {'waiting': '', 'active': 'cyan', 'elsewhere': 'magenta', 'failed': 'bold red',
                  'lost': 'bold red', 'review': 'bold yellow', 'done': 'green'}
@@ -126,7 +126,8 @@ class ManagerApp(App):
         if self.manager.read_only and not self.manager.config.placeholders():
             self.notify('Another manager is running, so this one only watches.', severity='warning', timeout=15)
         if os.environ.get('STY'):
-            self.manager.log('this is inside a screen: when attached to a night, detach from it with Ctrl-A a d')
+            self.manager.log('this is inside a screen, so the mouse is off; when attached to a night, detach from it '
+                             'with Ctrl-A a d')
         self.poll()
         self.set_interval(self.manager.config.poll_seconds, self.poll)
 
@@ -167,9 +168,9 @@ class ManagerApp(App):
         status = Text()
         status.append('AUTO ON' if self.manager.auto else 'AUTO OFF',
                       style='bold black on green' if self.manager.auto else 'bold black on yellow')
+        busy = in_limits(states, config)
         for limit, cap in config.limits.items():  # e.g. how many nights are staging, and how many running makeflows
-            busy = sum(config.step(s.step).limit == limit and s.status in ('active', 'elsewhere') for s in states)
-            status.append(f'   {limit} {busy}/{cap}')
+            status.append(f'   {limit} {len(busy[limit])}/{cap}')
         status.append(f'   in flight {sum(s.in_flight for s in states)}/{config.max_in_flight}'
                       f'   to review {sum(s.status == "review" for s in states)}'
                       f'   failed {sum(s.status in ("failed", "lost") for s in states)}'
@@ -404,7 +405,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.config is None:
         parser.error("say which pipeline's config to use, with --config (or $OPS_CONFIG)")
-    ManagerApp(Manager(Config.load(args.config))).run()
+    # No mouse inside screen: screen passes clicks on in the old X10 encoding, whose bytes past column 95 aren't
+    # UTF-8, and Textual's input reader dies on them.
+    ManagerApp(Manager(Config.load(args.config))).run(mouse=not os.environ.get('STY'))
 
 
 if __name__ == '__main__':

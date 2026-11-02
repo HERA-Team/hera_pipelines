@@ -32,8 +32,8 @@ cd /lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines
 python operations/tui.py --config pipelines/phase_II/idr1/v1/operations/config.toml
 ```
 
-Then detach with `Ctrl-A d`, and come back later with `screen -r p2_manager`. Auto mode starts off; press `space`
-to turn it on. The nights to process are in `nights.txt` beside the config, one JD per line, started in that order
+Then detach with `Ctrl-A d`, and come back later with `screen -r p2_manager`. Inside screen the TUI is
+keyboard-only: screen garbles mouse clicks, which would crash it. Auto mode starts off; press `space` to turn it on. The nights to process are in `nights.txt` beside the config, one JD per line, started in that order
 (or add them with `n`).
 
 ## What's recorded where
@@ -58,8 +58,8 @@ its screen stays open at a shell in the relevant folder, so you can attach and l
 | key | |
 |---|---|
 | `space` | auto mode on/off |
-| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap) |
-| `a` | attach to the night's screen (`Ctrl-A d` to come back, or `Ctrl-A a d` when the TUI is itself in a screen) |
+| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap), if its limit has room: like the scheduler, it never starts more than `[limits]` allows |
+| `a` | attach to the night's screen (`Ctrl-A d` to come back, or `Ctrl-A a d` when the TUI is itself in a screen; from another terminal, `screen -d <its name>` does it too) |
 | `l` / `e` | read the current step's log / the failed makeflow jobs' logs (`:n` for the next one in `less`) |
 | `p` | hera_opm's `pipeline_status.py` report, for the night's makeflow |
 | `y` / `h` | approve the night (its steps after review then run) / hold it, so auto mode leaves it alone (again to release) |
