@@ -60,7 +60,7 @@ its screen stays open at a shell in the relevant folder, so you can attach and l
 |---|---|
 | `space` | auto mode on/off |
 | `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap). If the step's limit is full (say another night is staging), the night is "queued to stage" instead, and starts as soon as there's room: before anything else, and whether auto mode is on or not. `s` again takes it back |
-| `a` | attach to the night's screen (`Ctrl-A d` to come back, or `Ctrl-A a d` when the TUI is itself in a screen; from another terminal, `screen -d <its name>` does it too) |
+| `a` | attach to the night's screen, and `Ctrl-T d` to come back. The TUI gives it a command key of its own, `Ctrl-T`, so this works inside the manager's screen too (whose `Ctrl-A` it leaves alone); `Ctrl-T t` types a real `Ctrl-T`. From another terminal, `screen -d <its name>` also sends you back |
 | `l` / `e` | read the current step's log / the failed makeflow jobs' logs (`:n` for the next one in `less`) |
 | `p` | hera_opm's `pipeline_status.py` report, for the night's makeflow |
 | `y` / `h` | approve the night (its steps after review then run) / hold it, so auto mode leaves it alone (again to release) |

@@ -20,7 +20,7 @@ from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import ModalScreen
 from textual.widgets import Button, DataTable, Footer, Input, Label, RichLog, Static
 
-from manager import Config, Manager, add_to_queue, format_age, in_limits, short_host
+from manager import DETACH_KEYS, Config, Manager, add_to_queue, format_age, in_limits, short_host
 
 STATUS_STYLES = {'waiting': '', 'active': 'cyan', 'elsewhere': 'magenta', 'failed': 'bold red',
                  'lost': 'bold red', 'review': 'bold yellow', 'done': 'green'}
@@ -130,8 +130,7 @@ class ManagerApp(App):
         if self.manager.read_only and not self.manager.config.placeholders():
             self.notify('Another manager is running, so this one only watches.', severity='warning', timeout=15)
         if os.environ.get('STY'):
-            self.manager.log('this is inside a screen, so the mouse is off; when attached to a night, detach from it '
-                             'with Ctrl-A a d')
+            self.manager.log('this is inside a screen, so the mouse is off')
         self.poll()
         self.set_interval(self.manager.config.poll_seconds, self.poll)
 
@@ -332,9 +331,8 @@ class ManagerApp(App):
         if not (session := self.manager.session_for(night)):
             self.notify(f'{night.jd} has no open screen.', severity='warning')
             return
-        detach = 'Ctrl-A a d' if os.environ.get('STY') else 'Ctrl-A d'
         self.run_suspended(self.manager.screens.attach_command(session),
-                           f'Attaching to {session}; detach with {detach} to come back.')
+                           f'Attaching to {session}; detach with {DETACH_KEYS} to come back.')
 
     def action_log(self):
         if not (night := self.need_night()):

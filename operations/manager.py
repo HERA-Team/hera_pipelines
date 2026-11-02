@@ -450,6 +450,9 @@ def parse_makeflowlog(path, tail_bytes=8192):
 # screens
 ##############################################################################################################
 
+DETACH_KEYS = 'Ctrl-T d'  # how to come back from a night's screen attached to from the TUI (see Screens.attach_command)
+
+
 class Screens:
     """Starts, lists, and talks to the detached screen sessions the steps run in."""
 
@@ -468,7 +471,9 @@ class Screens:
         subprocess.run(['screen', '-dmS', name] + command, env=env, check=True)
 
     def attach_command(self, name):
-        return ['screen', '-x', name]
+        # with a command key of its own, Ctrl-T, so that DETACH_KEYS come back from it even inside another screen (the
+        # manager's, which keeps Ctrl-A)
+        return ['screen', '-e', '^Tt', '-x', name]
 
     def interrupt(self, name):
         """Ctrl-C, as if typed in the screen."""
