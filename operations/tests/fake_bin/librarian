@@ -1,13 +1,29 @@
 #! /bin/bash
 # Stands in for the librarian CLI in the tests and the demo: "librarian stage-files -w <conn> <dest> <json>" makes
 # three empty raw files for the night named in the json's name-matches pattern, in <dest>/<JD>/, but any named in
-# FAKE_UNSTAGED (as if the librarian didn't have them).
+# FAKE_UNSTAGED (as if the librarian didn't have them). A pattern ending .tar.gz stages one tarball instead, as RTP
+# uploads them: named for the first of the three, and holding a file for each (but those in FAKE_UNSTAGED).
 [[ "$1" == stage-files && "$2" == -w ]] || { echo "fake librarian only does stage-files -w" >&2; exit 2; }
 dest=$4
 pattern=$(echo "$5" | sed -E 's/.*"name-matches": *"([^"]*)".*/\1/')
 jd=$(echo "${pattern}" | cut -d. -f2)
 sleep ${FAKE_STAGE_SECONDS:-0}
 mkdir -p "${dest}/${jd}"
+if [[ "${pattern}" == *.tar.gz ]]; then
+    tarball=${pattern/\%/12345}
+    if [[ " ${FAKE_UNSTAGED} " != *" ${tarball} "* ]]; then
+        members=$(mktemp -d)
+        for decimal in 12345 13456 14567; do
+            name=${pattern%.tar.gz}
+            name=${name/\%/${decimal}}
+            [[ " ${FAKE_UNSTAGED} " == *" ${name} "* ]] || echo "antenna,class" > "${members}/${name}"
+        done
+        tar -czf "${dest}/${jd}/${tarball}" -C "${members}" $(ls "${members}")
+        rm -rf "${members}"
+        echo "Staged ${tarball} into ${dest}/${jd}"
+    fi
+    exit 0
+fi
 n=0
 for decimal in 12345 13456 14567; do
     name=${pattern/\%/${decimal}}
