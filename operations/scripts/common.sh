@@ -130,9 +130,11 @@ function pack_makeflow_folder ()
 # remove slurm's status files. Rerun after that, it does nothing.
 {
     cd "${MAKEFLOW_DIR}"
-    # the status report reads the wrappers and logs, so it is written once, before they are bundled
+    # the status report reads the wrappers and logs, so it is written once, before they are bundled (via a .tmp, so
+    # that a report cut short by a failure isn't taken for a finished one on a rerun)
     if [[ ! -f pipeline_status_report_${JD}.txt ]]; then
-        pipeline_status.py --config_file "$1" --working_dir "${MAKEFLOW_DIR}" > pipeline_status_report_${JD}.txt
+        pipeline_status.py --config_file "$1" --working_dir "${MAKEFLOW_DIR}" > pipeline_status_report_${JD}.txt.tmp
+        mv pipeline_status_report_${JD}.txt.tmp pipeline_status_report_${JD}.txt
     fi
     pack makeflow_wrappers.tar.gz 'wrapper*.sh'
     pack makeflow_logs.tar.gz 'zen*.log*'
