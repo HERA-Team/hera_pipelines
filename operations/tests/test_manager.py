@@ -1,5 +1,6 @@
 """The manager's logic: the config, markers -> state, the scheduler, the makeflow log parser, the queue, and its
 actions. These use the toy pipeline in example_pipeline/ (stage, build, run, review, prune, archive)."""
+import dataclasses
 import datetime
 import os
 import re
@@ -145,6 +146,13 @@ class TestDeriveState:
         s = state(markers(stage=done(0), build=done(2), run=failed), config=config)
         assert (s.step, s.status, s.label) == ('run', 'failed', 'run failed')
 
+    def test_queued_by_hand(self, config):
+        s = state(markers(stage=m.StepRecord(requested=minutes(5))), config=config)
+        assert (s.status, s.requested, s.label, s.in_flight) == ('waiting', True, 'queued to stage', False)
+        failed = m.StepRecord(started=minutes(10), host='here', exit_code=1, ended=minutes(20), requested=minutes(30))
+        s = state(markers(stage=done(0), build=done(2), run=failed), config=config)
+        assert (s.status, s.requested, s.label) == ('failed', True, 'queued to run again')
+
     def test_relaunched_after_failure(self, config):
         # the manager removes .exit and writes a newer .launched; the old .started is still there until step.sh runs
         rerun = m.StepRecord(launched=minutes(99.9), started=minutes(10), host='here')
@@ -205,6 +213,25 @@ class TestPlanActions:
 
     def test_never_retries_or_touches_held(self, config):
         nights = states(('1', 'run', 'failed'), ('2', 'build', 'lost'), ('3', 'build', 'waiting', True))
+        assert m.plan_actions(nights, config, auto=True) == []
+
+    def test_queued_by_hand(self, config):  # staging = 1, max_in_flight = 3
+        nights = states(('1', 'stage', 'waiting'), ('2', 'stage', 'waiting'), ('3', 'run', 'failed'),
+                        ('4', 'build', 'waiting'))
+        nights[1:3] = [dataclasses.replace(s, requested=True) for s in nights[1:3]]
+        # first, and whether auto is on or not
+        assert m.plan_actions(nights, config, auto=False) == [('stage', '2'), ('run', '3')]
+        assert m.plan_actions(nights, config, auto=True) == [('stage', '2'), ('run', '3'), ('build', '4')]
+        # but only once there's room in their limit
+        nights.append(m.NightState('0', 'stage', 'active'))
+        assert m.plan_actions(nights, config, auto=False) == [('run', '3')]
+
+    def test_queued_by_hand_needs_no_room_in_flight(self, config):  # max_in_flight = 3
+        nights = states(('1', 'run', 'review'), ('2', 'run', 'review'), ('3', 'run', 'review'), ('4', 'stage', 'waiting'),
+                        ('5', 'stage', 'waiting'))
+        nights[3] = dataclasses.replace(nights[3], requested=True)
+        assert m.plan_actions(nights, config, auto=True) == [('stage', '4')]
+        nights[3] = dataclasses.replace(nights[3], held=True)
         assert m.plan_actions(nights, config, auto=True) == []
 
     def test_skips_a_step_whose_screen_is_open(self, config):
@@ -302,13 +329,43 @@ class TestManagerActions:
         assert [name for name, _, _ in screens.launched] == ['p2test_stage_2459862']
         assert manager.tick() == []  # still staging, and only one night may stage at once
 
-    def test_launching_by_hand_keeps_to_the_limit(self, manager, screens):
-        manager.launch('stage', '2459861')
-        with pytest.raises(RuntimeError, match=r"\[limits\] staging = 1, and it's full \(2459861\)"):
-            manager.launch('stage', '2459862')
+    def test_launching_by_hand_queues_while_the_limit_is_full(self, manager, screens):
+        assert manager.launch('stage', '2459861') == []
+        assert manager.launch('stage', '2459862') == ['2459861']  # staging = 1
         assert [name for name, _, _ in screens.launched] == ['p2test_stage_2459861']
-        manager.launch('run', '2459862')  # another limit's step
-        assert len(screens.launched) == 2
+        assert manager.night('2459862').state.label == 'queued to stage'
+        assert manager.tick() == []  # auto is off, and 2459861 is still staging
+        self.finish(manager, screens, '2459861', 'stage')
+        assert manager.tick() == [('stage', '2459862')]  # auto is off, but it was queued by hand
+        assert manager.night('2459862').state.label == 'staging'
+        assert not list(manager.config.state_dir('2459862').glob('*.requested'))
+
+    def test_a_queued_makeflow_keeps_its_job_cap(self, manager, screens):  # running = 2
+        for jd in ('2459861', '2459862', '2459863'):
+            manager.config.state_dir(jd).mkdir(parents=True)
+            self.finish(manager, screens, jd, 'stage')
+            self.finish(manager, screens, jd, 'build')
+        for jd in ('2459861', '2459862'):
+            manager.launch('run', jd)
+        assert manager.launch('run', '2459863', max_jobs=50) == ['2459861', '2459862']
+        self.finish(manager, screens, '2459861', 'run')
+        assert manager.tick() == [('run', '2459863')]
+        assert screens.launched[-1][0] == 'p2test_run_2459863' and screens.launched[-1][2]['MAX_JOBS'] == '50'
+
+    def test_unqueue_and_reset(self, manager):
+        manager.launch('stage', '2459861')
+        for take_back in (lambda: manager.unqueue('2459862'), lambda: manager.reset('2459862', 'stage')):
+            manager.launch('stage', '2459862')
+            assert manager.night('2459862').state.requested
+            take_back()
+            assert manager.night('2459862').state.label == 'queued'
+
+    @staticmethod
+    def finish(manager, screens, jd, step):
+        """The step's screen has gone, and step.sh recorded that it succeeded."""
+        screens.alive.discard(manager.config.session_name(step, jd))
+        (manager.config.state_dir(jd) / f'{step}.started').write_text(f'{m.now().isoformat()} {manager.host} 1\n')
+        (manager.config.state_dir(jd) / f'{step}.exit').write_text(f'0 {m.now().isoformat()}\n')
 
     def test_approve_only_in_review(self, manager):
         with pytest.raises(RuntimeError, match='not waiting for review'):

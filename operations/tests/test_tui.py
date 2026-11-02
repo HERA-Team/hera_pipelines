@@ -59,6 +59,15 @@ def test_start_launches_the_next_step(manager, screens):
     assert [name for name, _, _ in screens.launched] == [f'p2test_stage_{JD}']
 
 
+def test_start_queues_while_the_limit_is_full(manager, screens):
+    manager.launch('stage', '2459860')  # staging = 1 (and it's listed after JD, as it isn't in nights.txt)
+    drive(manager, 's')
+    assert [name for name, _, _ in screens.launched] == ['p2test_stage_2459860']
+    assert manager.night(JD).state.label == 'queued to stage'
+    drive(manager, 's')  # takes it back
+    assert manager.night(JD).state.label == 'queued'
+
+
 def test_run_asks_for_the_job_cap(manager, screens):
     finish(manager.config.state_dir(JD), 'stage', 'build')
     drive(manager, 's', ['5', '0'], 'enter')  # the default (200) is selected, so typing replaces it

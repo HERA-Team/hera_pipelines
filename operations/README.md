@@ -46,7 +46,8 @@ Every step runs through `scripts/step.sh`, which records how it went in `{state_
 
 `step.sh` refuses to run a step until every step before it has succeeded, or, for a step after review, until the
 night has been approved; a refusal is recorded as the step failing, with the reason in its log. The manager adds
-`{step}.launched` when it starts a screen, `approved` (who, when, and your note), and `hold`. `ls` a night's folder
+`{step}.launched` when it starts a screen, `{step}.requested` when you start one while its limit is full (see
+`s`), `approved` (who, when, and your note), and `hold`. `ls` a night's folder
 there to see exactly what has happened. `{state_root}/auto_mode` holds auto mode's setting, and
 `{state_root}/manager.lock` stops a second manager from launching anything as well.
 
@@ -58,7 +59,7 @@ its screen stays open at a shell in the relevant folder, so you can attach and l
 | key | |
 |---|---|
 | `space` | auto mode on/off |
-| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap), if its limit has room: like the scheduler, it never starts more than `[limits]` allows |
+| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap). If the step's limit is full (say another night is staging), the night is "queued to stage" instead, and starts as soon as there's room: before anything else, and whether auto mode is on or not. `s` again takes it back |
 | `a` | attach to the night's screen (`Ctrl-A d` to come back, or `Ctrl-A a d` when the TUI is itself in a screen; from another terminal, `screen -d <its name>` does it too) |
 | `l` / `e` | read the current step's log / the failed makeflow jobs' logs (`:n` for the next one in `less`) |
 | `p` | hera_opm's `pipeline_status.py` report, for the night's makeflow |
@@ -85,7 +86,7 @@ for `--config`):
 ```bash
 python operations/manager.py --config CONFIG status
 python operations/manager.py --config CONFIG tick --dry-run        # what auto mode would launch now
-python operations/manager.py --config CONFIG launch run 2459861 --max-jobs 100
+python operations/manager.py --config CONFIG launch run 2459861 --max-jobs 100   # or queues it (see s)
 python operations/manager.py --config CONFIG approve 2459861 --note "looks fine"
 python operations/manager.py --help                                # and the rest
 ```

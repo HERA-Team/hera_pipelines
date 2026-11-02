@@ -26,6 +26,10 @@ STATUS_STYLES = {'waiting': '', 'active': 'cyan', 'elsewhere': 'magenta', 'faile
                  'lost': 'bold red', 'review': 'bold yellow', 'done': 'green'}
 
 
+def status_style(state):
+    return 'blue' if state.requested else STATUS_STYLES[state.status]  # queued by hand: starts once there's room
+
+
 class Prompt(ModalScreen):
     """Ask for a line of text (dismisses with it, or None if cancelled)."""
     AUTO_FOCUS = 'Input'
@@ -157,7 +161,7 @@ class ManagerApp(App):
         for night in nights:
             note = night.markers.hold if night.state.held else night.markers.approved
             note = ' '.join((note or '').split()[1:])
-            table.add_row(night.jd, Text(night.state.label, style=STATUS_STYLES[night.state.status]),
+            table.add_row(night.jd, Text(night.state.label, style=status_style(night.state)),
                           str(night.progress or ''), format_age(night.since), note, key=night.jd)
         jds = [night.jd for night in nights]
         if selected in jds:
@@ -216,7 +220,7 @@ class ManagerApp(App):
         manager, state = self.manager, night.state
         text = Text()
         text.append(f'{night.jd}  ', style='bold')
-        text.append(state.label, style=STATUS_STYLES[state.status])
+        text.append(state.label, style=status_style(state))
         if night.progress:
             text.append(f'   makeflow {night.progress}')
         text.append('\n\n')
@@ -266,13 +270,15 @@ class ManagerApp(App):
         return night
 
     def attempt(self, action, *args, **kwargs):
-        """Run a manager action, turning its complaints into notifications, then refresh."""
+        """Run a manager action, turning its complaints into notifications, then refresh. Returns what it did."""
+        result = None
         try:
             with self.busy:
-                action(*args, **kwargs)
+                result = action(*args, **kwargs)
         except (RuntimeError, ValueError, OSError, subprocess.CalledProcessError) as error:
             self.notify(str(error), severity='error', timeout=10)
         self.poll()
+        return result
 
     def action_refresh(self):
         self.poll()
@@ -287,7 +293,10 @@ class ManagerApp(App):
         if not (night := self.need_night()):
             return
         step = self.manager.next_step(night)
-        if step is None:
+        if night.state.requested:  # s again takes it back
+            self.attempt(self.manager.unqueue, night.jd)
+            self.notify(f'{night.jd} is no longer queued to {step}.')
+        elif step is None:
             self.notify(f'{night.jd} is {night.state.label}: nothing to start.', severity='warning')
         elif self.manager.config.step(step).makeflow:
             def run(value):
@@ -296,12 +305,18 @@ class ManagerApp(App):
                 if not value.strip().isdigit() or int(value) < 1:
                     self.notify(f'{value!r} is not a number of jobs.', severity='error')
                     return
-                self.attempt(self.manager.launch, step, night.jd, max_jobs=int(value))
+                self.start_step(step, night.jd, max_jobs=int(value))
             which = 'makeflow' if step == 'run' else f'{step} makeflow'
             self.push_screen(Prompt(f"Run (or resume) {night.jd}'s {which}. At most how many jobs at once?",
                                     str(self.manager.config.max_jobs)), run)
         else:
-            self.attempt(self.manager.launch, step, night.jd)
+            self.start_step(step, night.jd)
+
+    def start_step(self, step, jd, max_jobs=None):
+        if full := self.attempt(self.manager.launch, step, jd, max_jobs=max_jobs):
+            limit = self.manager.config.step(step).limit
+            self.notify(f"[limits] {limit} is full ({', '.join(full)}), so {jd} is queued to {step}: it starts as soon "
+                        f"as there's room (s again takes it back).")
 
     def run_suspended(self, command, hint=''):
         """Hand the terminal over to a command (screen, less), and come back when it exits."""
@@ -405,9 +420,13 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.config is None:
         parser.error("say which pipeline's config to use, with --config (or $OPS_CONFIG)")
+    run(Manager(Config.load(args.config)))
+
+
+def run(manager):
     # No mouse inside screen: screen passes clicks on in the old X10 encoding, whose bytes past column 95 aren't
     # UTF-8, and Textual's input reader dies on them.
-    ManagerApp(Manager(Config.load(args.config))).run(mouse=not os.environ.get('STY'))
+    ManagerApp(manager).run(mouse=not os.environ.get('STY'))
 
 
 if __name__ == '__main__':

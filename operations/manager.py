@@ -223,6 +223,8 @@ class StepRecord:
     host: str | None = None
     exit_code: int | None = None               # written by step.sh when the step ends
     ended: datetime.datetime | None = None
+    requested: datetime.datetime | None = None  # started by hand while its limit was full, so to start once there's room
+    requested_max_jobs: int | None = None       # (with this job cap, for a makeflow)
 
 
 @dataclasses.dataclass
@@ -262,6 +264,10 @@ def read_markers(state_dir, step_names):
             fields = ended.split()
             record.exit_code = int(fields[0]) if fields and fields[0].lstrip('-').isdigit() else -1
             record.ended = _parse_time(fields[1]) if len(fields) > 1 else None
+        if (requested := read(f'{step}.requested')) is not None:
+            fields = requested.split()
+            record.requested = (_parse_time(fields[0]) if fields else None) or datetime.datetime.min
+            record.requested_max_jobs = int(fields[1]) if len(fields) > 1 and fields[1].isdigit() else None
         steps[step] = record
     return Markers(steps=steps, approved=read('approved'), hold=read('hold'))
 
@@ -278,6 +284,8 @@ class NightState:
       lost       the step started (or was launched) but neither finished nor has a screen any more
       review     the steps before review are done; waiting for you to approve the night (step is the last of them)
       done       every step has succeeded
+    A waiting, failed, or lost step can also be requested: started by hand while its limit was full, so the
+    scheduler starts it once there's room (labelled "queued to <step>").
     """
     jd: str
     step: str
@@ -285,6 +293,7 @@ class NightState:
     held: bool = False
     label: str = ''         # what the TUI calls it, e.g. "staged" or "run failed"
     in_flight: bool = True  # whether it holds space: anywhere from starting its first step to done
+    requested: bool = False
 
 
 def derive_state(jd, markers, live_sessions, config, host=None, at=None):
@@ -294,7 +303,10 @@ def derive_state(jd, markers, live_sessions, config, host=None, at=None):
 
     def state(index, status):
         step = config.steps[index].name
-        if status == 'waiting':
+        requested = status in ('waiting', 'failed', 'lost') and markers.steps[step].requested is not None
+        if requested:
+            label = f'queued to {step}' + (' again' if status != 'waiting' else '')
+        elif status == 'waiting':
             if index == 0:
                 label = 'queued'
             elif config.steps[index].after_review and not config.steps[index - 1].after_review:
@@ -309,7 +321,7 @@ def derive_state(jd, markers, live_sessions, config, host=None, at=None):
         else:
             label = status
         return NightState(jd, step, status, held, label=f'{label} (held)' if held else label,
-                          in_flight=not (status == 'done' or (index == 0 and status == 'waiting')))
+                          in_flight=not (status == 'done' or (index == 0 and status == 'waiting')), requested=requested)
 
     for index, step in enumerate(config.steps):
         record = markers.steps[step.name]
@@ -349,27 +361,28 @@ def in_limits(states, config):
 def plan_actions(states, config, auto, live_sessions=(), free_tb=None):
     """The (step, jd) launches to make now, in order. Pure.
 
-    A night's steps start as soon as it is ready for them, except that a step with a limit waits until fewer than
-    that many nights are in it (or in any other step sharing its limit), and a new night's first step starts only
-    while fewer than max_in_flight nights are under way and (if min_free_tb is set) the disk has room.
-    Nothing failed or lost is ever retried, and nothing held is touched.
+    First the steps queued by hand (started while their limit was full), whether auto is on or not, each as soon as
+    its limit has room. Then, with auto on, every night's steps as soon as it is ready for them, except that a step
+    with a limit waits until fewer than that many nights are in it (or in any other step sharing its limit), and a
+    new night's first step starts only while fewer than max_in_flight nights are under way and (if min_free_tb is
+    set) the disk has room. Nothing failed or lost is retried unless it was queued by hand, and nothing held is
+    touched.
     """
-    if not auto:
-        return []
     busy = {limit: len(jds) for limit, jds in in_limits(states, config).items()}
     in_flight = sum(s.in_flight for s in states)
     disk_ok = config.min_free_tb <= 0 or free_tb is None or free_tb >= config.min_free_tb
 
     actions = []
-    for s in states:
-        if s.held or s.status != 'waiting' or config.session_name(s.step, s.jd) in live_sessions:
+    for s in sorted(states, key=lambda s: not s.requested):  # the queued ones first, each lot in queue order
+        if s.held or not (s.requested or (auto and s.status == 'waiting')) \
+                or config.session_name(s.step, s.jd) in live_sessions:
             continue
         step = config.step(s.step)
         if step.limit and busy[step.limit] >= config.limits[step.limit]:
             continue
-        if step is config.steps[0]:
-            if in_flight >= config.max_in_flight or not disk_ok:
-                continue
+        if step is config.steps[0] and s.status == 'waiting':  # a new night
+            if not s.requested and (in_flight >= config.max_in_flight or not disk_ok):
+                continue  # (one started by hand needn't wait for these, as it wouldn't have with room to start)
             in_flight += 1
         if step.limit:
             busy[step.limit] += 1
@@ -604,31 +617,50 @@ class Manager:
     # ----- actions -----
 
     def launch(self, step, jd, max_jobs=None, live_sessions=None):
-        """Start one step for one night in its own screen, by hand: like the scheduler, it keeps to the step's limit."""
+        """Start one step for one night by hand, in its own screen, or, while the step's limit is full, queue it: the
+        scheduler then starts it as soon as there's room, before anything else and whether auto is on or not.
+        Returns the nights filling the limit if it was queued (and [] if it started)."""
         step = self.config.step(step)
-        if problem := self.launch_problem():
-            raise RuntimeError(problem)
         live = self.screens.live_sessions() if live_sessions is None else live_sessions
+        self._check(step, jd, live)
         if step.limit:
             states = [derive_state(other, read_markers(self.config.state_dir(other), self.config.step_names), live,
                                    self.config, self.host) for other in self.jds() if other != str(jd)]
             full = in_limits(states, self.config)[step.limit]
             if len(full) >= self.config.limits[step.limit]:
-                raise RuntimeError(f"[limits] {step.limit} = {self.config.limits[step.limit]}, and it's full "
-                                   f"({', '.join(full)}): {step.name} {jd} has to wait")
+                state_dir = self.config.state_dir(jd)
+                state_dir.mkdir(parents=True, exist_ok=True)
+                (state_dir / f'{step.name}.requested').write_text(f'{now().isoformat()} {max_jobs or ""}'.rstrip() + '\n')
+                self.log(f'queued {step.name} {jd}' + (f' (max_jobs {max_jobs})' if max_jobs else '') +
+                         f": [limits] {step.limit} = {self.config.limits[step.limit]}, and it's full ({', '.join(full)})")
+                return full
         self._start(step, jd, max_jobs, live)
+        return []
 
-    def _start(self, step, jd, max_jobs, live):
-        """Start one step for one night in its own screen (whatever its limit, and without checking launch_problem:
-        see launch and tick)."""
+    def unqueue(self, jd):
+        """Take back the night's queued step (see launch)."""
+        for request in self.config.state_dir(jd).glob('*.requested'):
+            request.unlink()
+            self.log(f'unqueued {request.stem} {jd}')
+
+    def _check(self, step, jd, live):
+        """Raise if the step can't start for the night now, whatever its limit."""
+        if problem := self.launch_problem():
+            raise RuntimeError(problem)
         name = self.config.session_name(step.name, jd)
         if name in live:
             raise RuntimeError(f'screen {name} is still open: attach to it and exit it first')
         if step.after_review and not (self.config.state_dir(jd) / 'approved').exists():
             raise RuntimeError(f'{jd} has not been approved')
+
+    def _start(self, step, jd, max_jobs, live):
+        """Start one step for one night in its own screen, now (see launch, and tick, whose plan keeps to the limits)."""
+        self._check(step, jd, live)
+        name = self.config.session_name(step.name, jd)
         state_dir = self.config.state_dir(jd)
         (state_dir / 'logs').mkdir(parents=True, exist_ok=True)
         (state_dir / f'{step.name}.exit').unlink(missing_ok=True)
+        (state_dir / f'{step.name}.requested').unlink(missing_ok=True)
         (state_dir / f'{step.name}.launched').write_text(f'{now().isoformat()} {self.host}\n')
         env = dict(os.environ, OPS_CONFIG=str(self.config.path), OPS_SHELL_ON_FAILURE='1')
         if max_jobs:
@@ -655,12 +687,13 @@ class Manager:
         if self.read_only or self.launch_problem():
             return []
         live = self.screens.live_sessions()
-        states = [night.state for night in self.nights(live)]
-        actions = plan_actions(states, self.config, self.auto, live, self.free_tb())
+        nights = {night.jd: night for night in self.nights(live)}
+        actions = plan_actions([night.state for night in nights.values()], self.config, self.auto, live, self.free_tb())
         if not dry_run:
             for step, jd in actions:
+                max_jobs = nights[jd].markers.steps[step].requested_max_jobs  # as it was queued with, if it was
                 try:
-                    self._start(self.config.step(step), jd, None, live)  # the plan already keeps to the limits
+                    self._start(self.config.step(step), jd, max_jobs, live)  # the plan already keeps to the limits
                 except (RuntimeError, OSError, subprocess.CalledProcessError) as error:
                     self.log(f'could not launch {step} {jd}: {error}')
         return actions
@@ -700,7 +733,7 @@ class Manager:
                 raise RuntimeError(f'screen {self.config.session_name(step.name, jd)} is still open: close it first')
         state_dir = self.config.state_dir(jd)
         for step in steps:
-            for suffix in ('launched', 'started', 'exit'):
+            for suffix in ('requested', 'launched', 'started', 'exit'):
                 (state_dir / f'{step.name}.{suffix}').unlink(missing_ok=True)
         if not steps[0].after_review:
             (state_dir / 'approved').unlink(missing_ok=True)
@@ -795,7 +828,8 @@ def main(argv=None):
     tick.add_argument('--dry-run', action='store_true', help='only say what would be launched')
     auto = commands.add_parser('auto', help='turn auto mode on or off (for the TUI, and tick)')
     auto.add_argument('setting', choices=['on', 'off'])
-    launch = commands.add_parser('launch', help='start one step for one night, in its own screen')
+    launch = commands.add_parser('launch', help="start one step for one night, in its own screen (or, while its limit "
+                                               "is full, queue it, to start once there's room)")
     launch.add_argument('step')
     launch.add_argument('jd')
     launch.add_argument('--max-jobs', type=int, help="for a makeflow: its cap on simultaneous jobs")
@@ -809,6 +843,8 @@ def main(argv=None):
     hold.add_argument('--note', default='')
     unhold = commands.add_parser('unhold', help='release a held night')
     unhold.add_argument('jd')
+    unqueue = commands.add_parser('unqueue', help="take back a night's queued step (see launch)")
+    unqueue.add_argument('jd')
     reset = commands.add_parser('reset', help="forget a step and the ones after it (markers only), so they run again")
     reset.add_argument('jd')
     reset.add_argument('--from', dest='from_step', required=True)
@@ -825,8 +861,8 @@ def main(argv=None):
     try:
         manager = Manager(Config.load(args.config))
         if args.command == 'tui':
-            from tui import ManagerApp
-            ManagerApp(manager).run()
+            import tui
+            tui.run(manager)
             return 0
         if args.command == 'status':
             print(status_table(manager))
@@ -836,7 +872,7 @@ def main(argv=None):
             if problem := manager.launch_problem():
                 sys.exit(f'nothing can launch: {problem}')
             if not manager.auto:
-                print('auto mode is off, so tick launches nothing (python manager.py auto on)')
+                print('auto mode is off, so tick only launches the steps queued by hand (python manager.py auto on)')
             actions = manager.tick(dry_run=args.dry_run)
             print('\n'.join(f'{"would launch" if args.dry_run else "launched"} {step} {jd}' for step, jd in actions)
                   or 'nothing to launch')
@@ -853,6 +889,8 @@ def main(argv=None):
             manager.hold(args.jd, args.note)
         elif args.command == 'unhold':
             manager.unhold(args.jd)
+        elif args.command == 'unqueue':
+            manager.unqueue(args.jd)
         elif args.command == 'reset':
             manager.reset(args.jd, args.from_step)
         elif args.command == 'abort':
