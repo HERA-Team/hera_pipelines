@@ -26,7 +26,9 @@ if (( ${#errors[@]} )); then
 fi
 
 max_jobs=${MAX_JOBS:-$(cfg makeflow max_jobs)}
-echo "Running makeflow_nrao.sh ${makeflow} ${max_jobs} in ${MAKEFLOW_DIR} at $(date)"
+activate_conda_env "${toml}"  # so that makeflow, and the jobs it submits, run in the toml's conda environment
+echo "Running makeflow_nrao.sh ${makeflow} ${max_jobs} in ${MAKEFLOW_DIR}, in conda environment" \
+     "${CONDA_DEFAULT_ENV:-<none>}, at $(date)"
 status=0
 makeflow_nrao.sh "${makeflow}" "${max_jobs}" || status=$?
 

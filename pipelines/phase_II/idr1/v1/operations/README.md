@@ -16,7 +16,7 @@ in `nights.txt`, and list any raw files to leave out in `excluded_files.txt`.
 |---|---|---|
 | stage | `stage.sh` | `librarian stage-files -w` the night's sum files into `{raw_root}/{JD}/`, with its diff files (before JD 2460039) or else RTP's antenna classifications (see below), and checks that they arrived |
 | build | `build.sh` | links the raw files into `{nights_root}/{JD}/` (but those `excluded_files.txt` leaves out), checks that each sum has its diff, builds the makeflow in `{makeflow_root}/{JD}/`, and records what it was built from and what it left out in `provenance.txt` |
-| run | `operations/scripts/run.sh` | `makeflow_nrao.sh`. Running it again resumes the makeflow. The makeflow's last job, CLEANUP (`do_CLEANUP.sh`), bundles the night's intermediates into `{JD}_*.tar.gz` files |
+| run | `operations/scripts/run.sh` | `makeflow_nrao.sh`, in the toml's conda environment (`phase_II_idr1`, after sourcing its `source_script`, as the makeflow's job wrappers do). Running it again resumes the makeflow. The makeflow's last job, CLEANUP (`do_CLEANUP.sh`), bundles the night's intermediates into `{JD}_*.tar.gz` files |
 | *review* | (you) | look at the night's notebooks (listed in the TUI), then approve it (`y`) or hold it (`h`) |
 | prune | `prune.sh` | bundles the makeflow folder's wrappers and logs, and deletes the files the CLEANUP bundles were made from and the products not worth keeping, the raw data among them |
 | archive | `operations/scripts/archive.sh` | copies the night's folder and makeflow folder to `{cold_root}/{JD}_analysis/`, checks the copy, then deletes the bundles from Lustre |

@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+import toml
 
 import manager as m
 from support import OPS_DIR, fake_env, write_config
@@ -120,9 +121,36 @@ def test_an_unknown_step(config_path):
 
 def test_the_conda_environment_is_checked(config_path):
     result = subprocess.run(['bash', str(OPS_DIR / 'scripts' / 'step.sh'), 'stage', JD],
-                            env=dict(fake_env(config_path), OPS_SKIP_CONDA_CHECK='', CONDA_DEFAULT_ENV='base'),
+                            env=dict(fake_env(config_path), OPS_SKIP_CONDA='', CONDA_DEFAULT_ENV='base'),
                             capture_output=True, text=True)
     assert result.returncode != 0 and 'conda activate example_env' in result.stdout
+
+
+def test_run_activates_the_tomls_conda_environment(config_path, tmp_path):
+    config = m.Config.load(config_path)
+    for name in ('stage', 'build'):
+        assert step(name, config_path).returncode == 0
+    # the run step's toml, with a source_script that sets up a stand-in for conda, as ~/.bashrc does at NRAO (and
+    # has a line that fails, which mustn't matter)
+    (tmp_path / 'bashrc').write_text('false\n'
+                                     'conda () { [[ $1 == activate && $2 != broken ]] && export CONDA_DEFAULT_ENV=$2; }\n')
+    cfg = toml.load(config.step('run').toml)
+    cfg['Options']['source_script'] = str(tmp_path / 'bashrc')
+    (tmp_path / 'toml').mkdir()
+    toml_path = tmp_path / 'toml' / config.step('run').toml.name  # (the makeflow is named after it)
+
+    def run():
+        toml_path.write_text(toml.dumps(cfg))
+        return subprocess.run(['bash', str(OPS_DIR / 'scripts' / 'run.sh'), JD, str(toml_path)],
+                              env=dict(fake_env(config_path), OPS_SKIP_CONDA='', CONDA_DEFAULT_ENV='base'),
+                              capture_output=True, text=True)
+
+    result = run()
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert 'in conda environment example_env' in result.stdout
+    cfg['Options']['conda_env'] = 'broken'
+    result = run()
+    assert result.returncode != 0 and 'could not conda activate broken' in result.stderr
 
 
 def test_placeholders_refused(tmp_path):

@@ -38,9 +38,9 @@ def write_config(root, pipeline_config=EXAMPLE_CONFIG, **manager_settings):
 
 
 def fake_env(config_path, **extra):
-    """The environment the step scripts need to run here: the fakes on the PATH, and no conda check."""
+    """The environment the step scripts need to run here: the fakes on the PATH, and no conda."""
     return dict(os.environ, PATH=f'{TESTS_DIR / "fake_bin"}:{os.environ["PATH"]}', OPS_CONFIG=str(config_path),
-                OPS_SKIP_CONDA_CHECK='1', **extra)
+                OPS_SKIP_CONDA='1', **extra)
 
 
 class FakeScreens:

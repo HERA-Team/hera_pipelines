@@ -13,7 +13,7 @@ There are two layers:
 
 - **Step scripts**: one bash script per step, each doing one step for one night. They hold all of the decisions
   about data (what to stage, what to delete, what goes to cold storage) and can be read, edited, and run by hand.
-  Most are the pipeline's own; `scripts/run.sh` (run a makeflow, or resume it) and `scripts/archive.sh` (copy to
+  Most are the pipeline's own; `scripts/run.sh` (run a makeflow in its toml's conda environment, or resume it) and `scripts/archive.sh` (copy to
   cold storage) are the same for every pipeline.
 - **`manager.py` / `tui.py`**: works out where each night is from the files the steps leave behind, starts the
   next step for each night in its own detached `screen`, and shows it all. It never touches data itself, and keeps

@@ -32,7 +32,7 @@ PYTHON
     mkdir -p "${demo}/state" && echo on > "${demo}/state/auto_mode"
 fi
 
-export PATH="${tests_dir}/fake_bin:${PATH}" OPS_SKIP_CONDA_CHECK=1
+export PATH="${tests_dir}/fake_bin:${PATH}" OPS_SKIP_CONDA=1
 if [[ -f "${pipeline}/tests/fake_products.sh" ]]; then
     export FAKE_MAKEFLOW_PRODUCTS="${pipeline}/tests/fake_products.sh"
 fi

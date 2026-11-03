@@ -46,14 +46,36 @@ RAW_DIR=${RAW_ROOT}/${JD}
 COLD_DIR=$(cfg paths cold_root)/${JD}_analysis
 STATE_DIR=$(cfg paths state_root)/${JD}
 
+function toml_option ()
+# toml_option <toml> <key>: an entry in a pipeline toml's [Options] (nothing if it has none)
+{
+    python -c "import toml, sys; print(toml.load(sys.argv[1])['Options'].get(sys.argv[2], ''))" "$1" "$2"
+}
+
 function require_conda_env ()
 # require_conda_env <toml>: refuse unless the toml's conda environment ([Options] conda_env) is the active one.
-# The manager's screens inherit it from the manager.
+# The manager's screens inherit it from the manager. OPS_SKIP_CONDA (for the tests) skips this, and the next.
 {
-    local conda_env=$(python -c "import toml, sys; print(toml.load(sys.argv[1])['Options']['conda_env'])" "$1")
-    if [[ -z "${OPS_SKIP_CONDA_CHECK}" && "${CONDA_DEFAULT_ENV}" != "${conda_env}" ]]; then
+    local conda_env=$(toml_option "$1" conda_env)
+    if [[ -z "${OPS_SKIP_CONDA}" && "${CONDA_DEFAULT_ENV}" != "${conda_env}" ]]; then
         die "run this in the pipeline's conda environment: conda activate ${conda_env}"
     fi
+}
+
+function activate_conda_env ()
+# activate_conda_env <toml>: activate the toml's conda environment as the makeflow's own job wrappers do: source
+# its [Options] source_script (which sets conda up, as ~/.bashrc does), then conda activate its conda_env
+{
+    [[ -z "${OPS_SKIP_CONDA}" ]] || return 0
+    local source_script=$(toml_option "$1" source_script) conda_env=$(toml_option "$1" conda_env)
+    [[ -n "${conda_env}" ]] || return 0
+    local errexit=${-//[^e]/}
+    set +e  # whatever else in them fails is no matter here, so long as the environment ends up active
+    [[ -z "${source_script}" ]] || source "${source_script/#\~/${HOME}}"
+    conda activate "${conda_env}"
+    [[ -z "${errexit}" ]] || set -e
+    [[ "${CONDA_DEFAULT_ENV}" == "${conda_env}" ]] || \
+        die "could not conda activate ${conda_env} (after sourcing [Options] source_script = '${source_script}')"
 }
 
 function mail_me ()
