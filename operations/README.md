@@ -53,7 +53,10 @@ night has been approved; a refusal is recorded as the step failing, with the rea
 `{step}.launched` when it starts a screen, `{step}.requested` when you start one while its limit is full (see
 `s`), `approved` (who, when, and your note), and `hold`. `ls` a night's folder
 there to see exactly what has happened. `{state_root}/auto_mode` holds auto mode's setting, and
-`{state_root}/manager.lock` stops a second manager from launching anything as well.
+`{state_root}/manager.lock` (the host and pid of the manager that launches things) stops a second manager from
+launching anything as well: that one only watches, and takes over once the first has quit. A lock whose process has
+gone, or is no longer a manager, doesn't count; one written on another host always does, so delete it by hand if
+that manager is gone.
 
 Each step runs in a screen named `{prefix}_{step}_{JD}`. When a step succeeds, its screen closes. When one fails,
 its screen stays open at a shell in the relevant folder, so you can attach and look around.

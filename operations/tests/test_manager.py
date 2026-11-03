@@ -4,6 +4,8 @@ import dataclasses
 import datetime
 import os
 import re
+import subprocess
+import sys
 
 import pytest
 import toml
@@ -448,12 +450,34 @@ class TestManagerActions:
         manager.take_lock()
         assert not manager.read_only
         other = m.Manager(m.Config.load(config_path), FakeScreens())
-        manager.lock_file.write_text(f'{manager.host} {os.getppid()}\n')  # a live process that isn't this one
-        other.take_lock()
-        assert other.read_only and other.tick() == []
-        manager.lock_file.write_text(f'{manager.host} 999999999\n')  # stale
-        third = m.Manager(m.Config.load(config_path), FakeScreens())
-        third.take_lock()
-        assert not third.read_only
-        third.release_lock()
+        running = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)', 'tui.py'])  # another manager
+        try:
+            manager.lock_file.write_text(f'{manager.host} {running.pid}\n')
+            other.take_lock()
+            assert other.read_only and other.other_manager == f'{manager.host} {running.pid}' and other.tick() == []
+        finally:
+            running.kill()
+            running.wait()
+        other.take_lock()  # as the TUI does every poll: the other has gone, so this one takes over
+        assert not other.read_only and manager.lock_file.read_text().split() == [manager.host, str(os.getpid())]
+        assert any('has gone' in message for message in other.messages)
+        other.release_lock()
         assert not manager.lock_file.exists()
+
+        def holder(text):
+            manager.lock_file.write_text(text)
+            return manager.lock_holder()
+        assert holder(f'{manager.host} 999999999\n') is None  # stale
+        unrelated = subprocess.Popen(['sleep', '60'])
+        try:
+            assert holder(f'{manager.host} {unrelated.pid}\n') is None  # its pid now belongs to something else
+        finally:
+            unrelated.kill()
+            unrelated.wait()
+        assert holder('elsewhere 1\n') == 'elsewhere 1'  # no telling
+
+    def test_no_lock_on_the_wrong_host(self, tmp_path):
+        manager = m.Manager(m.Config.load(write_config(tmp_path, required_host='herapost-master')), FakeScreens())
+        manager.host = 'login1'
+        manager.take_lock()
+        assert manager.read_only and manager.other_manager is None and not manager.lock_file.exists()

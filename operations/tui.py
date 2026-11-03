@@ -127,8 +127,9 @@ class ManagerApp(App):
         table.add_columns('JD', 'state', 'makeflow', 'since', 'note')
         table.focus()  # so the arrow keys move through the nights
         self.manager.take_lock()
-        if self.manager.read_only and not self.manager.config.placeholders():
-            self.notify('Another manager is running, so this one only watches.', severity='warning', timeout=15)
+        if self.manager.other_manager:
+            self.notify(f'Another manager is running ({self.manager.other_manager}), so this one only watches.',
+                        severity='warning', timeout=15)
         if os.environ.get('STY'):
             self.manager.log('this is inside a screen, so the mouse is off')
         self.poll()
@@ -144,6 +145,8 @@ class ManagerApp(App):
         """Run the scheduler (when this manager may), then reread everything. In a thread: Lustre can be slow."""
         try:
             with self.busy:
+                if self.manager.read_only:
+                    self.manager.take_lock()  # so that this one takes over once the other has gone
                 self.manager.tick()
             nights = self.manager.nights()
             free_tb = self.manager.free_tb()
@@ -184,7 +187,8 @@ class ManagerApp(App):
         if problem := self.manager.launch_problem():
             status.append(f'\nNOTHING CAN LAUNCH: {problem}', style='bold red')
         elif self.manager.read_only:
-            status.append('\nREAD-ONLY: another manager is running (see manager.lock in state_root)', style='bold red')
+            status.append(f'\nREAD-ONLY: another manager ({self.manager.other_manager}) holds '
+                          f'{self.manager.lock_file}, so this one only watches until it quits', style='bold red')
         self.query_one('#status', Static).update(status)
 
         events = self.query_one('#events', RichLog)
@@ -284,7 +288,8 @@ class ManagerApp(App):
 
     def action_toggle_auto(self):
         if self.manager.read_only and not self.manager.auto:
-            self.notify('This manager is read-only (another one holds the lock).', severity='warning')
+            self.notify(f'This manager only watches: {self.manager.launch_problem() or "another one holds the lock"}.',
+                        severity='warning')
             return
         self.attempt(setattr, self.manager, 'auto', not self.manager.auto)
 

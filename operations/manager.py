@@ -47,6 +47,13 @@ def short_host(host=None):
     return (host or socket.gethostname()).split('.')[0]
 
 
+def is_manager_process(pid):
+    """Whether a process on this host is alive and running a manager (its command line runs tui.py or manager.py)."""
+    result = subprocess.run(['ps', '-ww', '-o', 'args=', '-p', str(pid)], capture_output=True, text=True)
+    return result.returncode == 0 and any(os.path.basename(arg) in ('tui.py', 'manager.py')
+                                          for arg in result.stdout.split())
+
+
 ##############################################################################################################
 # configuration
 ##############################################################################################################
@@ -499,7 +506,8 @@ class Manager:
         self.config = config
         self.screens = screens or Screens()
         self.host = short_host()
-        self.read_only = False  # set by take_lock, if another manager is running
+        self.read_only = False     # set by take_lock, if another manager is running or nothing can launch from here
+        self.other_manager = None  # 'host pid' of the other manager, if that's why
         self.messages = []      # what the manager has done, for the TUI's log (also printed by the CLI)
 
     def log(self, message):
@@ -585,33 +593,33 @@ class Manager:
         return Path(self.config.state_root) / 'manager.lock'
 
     def lock_holder(self):
-        """'host pid' of another live manager holding the lock, or None."""
+        """'host pid' of another manager holding the lock, or None. One on this host counts only while its process
+        is alive and still a manager (pids get reused); one on another host always counts, as there's no telling."""
         try:
             host, pid = self.lock_file.read_text().split()[:2]
+            int(pid)
         except (FileNotFoundError, ValueError):
             return None
-        if host == self.host:
-            if int(pid) == os.getpid():
-                return None
-            try:
-                os.kill(int(pid), 0)
-            except ProcessLookupError:
-                return None  # stale
-            except PermissionError:
-                pass
+        if host == self.host and (pid == str(os.getpid()) or not is_manager_process(pid)):
+            return None  # this one's, or stale
         return f'{host} {pid}'
 
     def take_lock(self):
-        """Become the one manager that launches things; if another is running, stay read-only."""
-        if self.config.placeholders():  # nowhere to put the lock, and nothing can launch anyway
+        """Become the one manager that launches things, unless another one is running, or nothing can launch from
+        here anyway (so a manager on the wrong host never holds the lock): then this one only watches. The TUI tries
+        again every poll while it only watches, so it takes over once the other has gone."""
+        if self.launch_problem():
             self.read_only = True
             return
-        if holder := self.lock_holder():
-            self.read_only = True
+        holder = self.lock_holder()
+        if holder is None:
+            self.lock_file.parent.mkdir(parents=True, exist_ok=True)
+            self.lock_file.write_text(f'{self.host} {os.getpid()}\n')
+            if self.other_manager:
+                self.log(f'the other manager ({self.other_manager}) has gone, so this one launches things now')
+        elif holder != self.other_manager:
             self.log(f'another manager is running ({holder}), so this one only watches')
-            return
-        self.lock_file.parent.mkdir(parents=True, exist_ok=True)
-        self.lock_file.write_text(f'{self.host} {os.getpid()}\n')
+        self.read_only, self.other_manager = holder is not None, holder
 
     def release_lock(self):
         try:
