@@ -361,12 +361,12 @@ def in_limits(states, config):
 def plan_actions(states, config, auto, live_sessions=(), free_tb=None):
     """The (step, jd) launches to make now, in order. Pure.
 
-    First the steps queued by hand (started while their limit was full), whether auto is on or not, each as soon as
-    its limit has room. Then, with auto on, every night's steps as soon as it is ready for them, except that a step
-    with a limit waits until fewer than that many nights are in it (or in any other step sharing its limit), and a
-    new night's first step starts only while fewer than max_in_flight nights are under way and (if min_free_tb is
-    set) the disk has room. Nothing failed or lost is retried unless it was queued by hand, and nothing held is
-    touched.
+    First the steps queued by hand (started while their limit was full), each as soon as its limit has room. Then
+    every night that is under way (its first step has started) goes on to its next step as soon as it is ready for
+    it, up to review, and after approval to the end; and, with auto on, new nights start too. A step with a limit
+    waits until fewer than that many nights are in it (or in any other step sharing its limit), and a new night's
+    first step starts only while fewer than max_in_flight nights are under way and (if min_free_tb is set) the disk
+    has room. Nothing failed or lost is retried, and nothing held is started, unless it was queued by hand.
     """
     busy = {limit: len(jds) for limit, jds in in_limits(states, config).items()}
     in_flight = sum(s.in_flight for s in states)
@@ -374,13 +374,14 @@ def plan_actions(states, config, auto, live_sessions=(), free_tb=None):
 
     actions = []
     for s in sorted(states, key=lambda s: not s.requested):  # the queued ones first, each lot in queue order
-        if s.held or not (s.requested or (auto and s.status == 'waiting')) \
+        step = config.step(s.step)
+        new = step is config.steps[0] and s.status == 'waiting'  # a night that hasn't started
+        if not (s.requested or (s.status == 'waiting' and not s.held and (auto or not new))) \
                 or config.session_name(s.step, s.jd) in live_sessions:
             continue
-        step = config.step(s.step)
         if step.limit and busy[step.limit] >= config.limits[step.limit]:
             continue
-        if step is config.steps[0] and s.status == 'waiting':  # a new night
+        if new:
             if not s.requested and (in_flight >= config.max_in_flight or not disk_ok):
                 continue  # (one started by hand needn't wait for these, as it wouldn't have with room to start)
             in_flight += 1
@@ -829,9 +830,9 @@ def main(argv=None):
                         help="the pipeline's operations config.toml (default: $OPS_CONFIG)")
     commands = parser.add_subparsers(dest='command', required=True)
     commands.add_parser('status', help='list the nights and where each one is')
-    tick = commands.add_parser('tick', help='launch whatever can be launched now, once (as auto mode does)')
+    tick = commands.add_parser('tick', help='launch whatever can be launched now, once (as the TUI does every poll)')
     tick.add_argument('--dry-run', action='store_true', help='only say what would be launched')
-    auto = commands.add_parser('auto', help='turn auto mode on or off (for the TUI, and tick)')
+    auto = commands.add_parser('auto', help='turn auto mode on or off: whether new nights start by themselves')
     auto.add_argument('setting', choices=['on', 'off'])
     launch = commands.add_parser('launch', help="start one step for one night, in its own screen (or, while its limit "
                                                "is full, queue it, to start once there's room)")
@@ -843,7 +844,7 @@ def main(argv=None):
     approve = commands.add_parser('approve', help='approve a reviewed night, so its steps after review run')
     approve.add_argument('jd')
     approve.add_argument('--note', default='')
-    hold = commands.add_parser('hold', help="don't let auto mode touch a night")
+    hold = commands.add_parser('hold', help="start nothing for a night unless it's started by hand")
     hold.add_argument('jd')
     hold.add_argument('--note', default='')
     unhold = commands.add_parser('unhold', help='release a held night')
@@ -877,7 +878,7 @@ def main(argv=None):
             if problem := manager.launch_problem():
                 sys.exit(f'nothing can launch: {problem}')
             if not manager.auto:
-                print('auto mode is off, so tick only launches the steps queued by hand (python manager.py auto on)')
+                print('auto mode is off, so no new night starts (python manager.py auto on)')
             actions = manager.tick(dry_run=args.dry_run)
             print('\n'.join(f'{"would launch" if args.dry_run else "launched"} {step} {jd}' for step, jd in actions)
                   or 'nothing to launch')

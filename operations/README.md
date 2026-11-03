@@ -33,8 +33,12 @@ python operations/tui.py --config pipelines/phase_II/idr1/v1/operations/config.t
 ```
 
 Then detach with `Ctrl-A d`, and come back later with `screen -r p2_manager`. Inside screen the TUI is
-keyboard-only: screen garbles mouse clicks, which would crash it. Auto mode starts off; press `space` to turn it on. The nights to process are in `nights.txt` beside the config, one JD per line, started in that order
-(or add them with `n`).
+keyboard-only: screen garbles mouse clicks, which would crash it.
+
+The nights to process are in `nights.txt` beside the config, one JD per line (or add them with `n`). A night
+that has started goes on by itself, step after step, up to review, and once you approve it, to the end. Auto mode
+decides only whether new nights start too, in `nights.txt`'s order: it starts off, so until you turn it on with
+`space`, a night starts only when you start it (`s`).
 
 ## What's recorded where
 
@@ -58,15 +62,15 @@ its screen stays open at a shell in the relevant folder, so you can attach and l
 
 | key | |
 |---|---|
-| `space` | auto mode on/off |
-| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap). If the step's limit is full (say another night is staging), the night is "queued to stage" instead, and starts as soon as there's room: before anything else, and whether auto mode is on or not. `s` again takes it back |
+| `space` | auto mode on/off: whether new nights start by themselves (those under way carry on either way) |
+| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap). If the step's limit is full (say another night is staging), the night is "queued to stage" instead, and starts as soon as there's room: before anything else, and whether auto mode is on or not. `s` again takes it back. To take a night one step at a time, hold it (`h`) and press `s` for each step |
 | `a` | attach to the night's screen, and `Ctrl-T d` to come back. The TUI gives it a command key of its own, `Ctrl-T`, so this works inside the manager's screen too (whose `Ctrl-A` it leaves alone); `Ctrl-T t` types a real `Ctrl-T`. From another terminal, `screen -d <its name>` also sends you back |
 | `l` / `e` | read the current step's log / the failed makeflow jobs' logs (`:n` for the next one in `less`) |
 | `p` | hera_opm's `pipeline_status.py` report, for the night's makeflow |
-| `y` / `h` | approve the night (its steps after review then run) / hold it, so auto mode leaves it alone (again to release) |
+| `y` / `h` | approve the night (its steps after review then run) / hold it, so nothing starts for it unless you start it (again to release) |
 | `n` | add nights to the queue |
 | `x` | Ctrl-C the running step. For a makeflow, that aborts its jobs |
-| `R` | reset: forget a step and the ones after it, so they run again. Only markers are removed, never data |
+| `R` | reset: forget a step and the ones after it, so they run again (by themselves, unless it's the first step or the night is held). Only markers are removed, never data |
 | `q` | quit (everything running keeps running) |
 
 ## When things go wrong
@@ -76,7 +80,7 @@ its screen stays open at a shell in the relevant folder, so you can attach and l
   The last attempt's error logs are kept in `previous_errors/attempt_N/` in the makeflow folder.
 - **A step is "lost"**: it started but its screen is gone (a reboot, or a killed screen). Look at its log (`l`),
   then `s` to run it again.
-- **A night isn't worth finishing**: hold it (`h`) so auto mode leaves it alone, and clean it up by hand.
+- **A night isn't worth finishing**: hold it (`h`) so nothing more starts for it, and clean it up by hand.
 
 ## Without the TUI
 
@@ -85,7 +89,7 @@ for `--config`):
 
 ```bash
 python operations/manager.py --config CONFIG status
-python operations/manager.py --config CONFIG tick --dry-run        # what auto mode would launch now
+python operations/manager.py --config CONFIG tick --dry-run        # what the TUI would launch now
 python operations/manager.py --config CONFIG launch run 2459861 --max-jobs 100   # or queues it (see s)
 python operations/manager.py --config CONFIG approve 2459861 --note "looks fine"
 python operations/manager.py --help                                # and the rest

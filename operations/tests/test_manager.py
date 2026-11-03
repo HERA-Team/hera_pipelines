@@ -181,8 +181,10 @@ def states(*specs):
 
 
 class TestPlanActions:
-    def test_auto_off(self, config):
-        assert m.plan_actions(states(('1', 'stage', 'waiting')), config, auto=False) == []
+    def test_auto_off(self, config):  # no new night starts, but those under way carry on
+        nights = states(('1', 'stage', 'waiting'), ('2', 'build', 'waiting'), ('3', 'prune', 'waiting'),
+                        ('4', 'run', 'waiting', True))
+        assert m.plan_actions(nights, config, auto=False) == [('build', '2'), ('prune', '3')]
 
     def test_ready_steps_start(self, config):
         nights = states(('1', 'build', 'waiting'), ('2', 'prune', 'waiting'), ('3', 'archive', 'waiting'))
@@ -214,25 +216,25 @@ class TestPlanActions:
     def test_never_retries_or_touches_held(self, config):
         nights = states(('1', 'run', 'failed'), ('2', 'build', 'lost'), ('3', 'build', 'waiting', True))
         assert m.plan_actions(nights, config, auto=True) == []
+        nights[2] = dataclasses.replace(nights[2], requested=True)  # unless queued by hand
+        assert m.plan_actions(nights, config, auto=False) == [('build', '3')]
 
     def test_queued_by_hand(self, config):  # staging = 1, max_in_flight = 3
         nights = states(('1', 'stage', 'waiting'), ('2', 'stage', 'waiting'), ('3', 'run', 'failed'),
                         ('4', 'build', 'waiting'))
         nights[1:3] = [dataclasses.replace(s, requested=True) for s in nights[1:3]]
         # first, and whether auto is on or not
-        assert m.plan_actions(nights, config, auto=False) == [('stage', '2'), ('run', '3')]
+        assert m.plan_actions(nights, config, auto=False) == [('stage', '2'), ('run', '3'), ('build', '4')]
         assert m.plan_actions(nights, config, auto=True) == [('stage', '2'), ('run', '3'), ('build', '4')]
         # but only once there's room in their limit
         nights.append(m.NightState('0', 'stage', 'active'))
-        assert m.plan_actions(nights, config, auto=False) == [('run', '3')]
+        assert m.plan_actions(nights, config, auto=False) == [('run', '3'), ('build', '4')]
 
     def test_queued_by_hand_needs_no_room_in_flight(self, config):  # max_in_flight = 3
         nights = states(('1', 'run', 'review'), ('2', 'run', 'review'), ('3', 'run', 'review'), ('4', 'stage', 'waiting'),
                         ('5', 'stage', 'waiting'))
         nights[3] = dataclasses.replace(nights[3], requested=True)
         assert m.plan_actions(nights, config, auto=True) == [('stage', '4')]
-        nights[3] = dataclasses.replace(nights[3], held=True)
-        assert m.plan_actions(nights, config, auto=True) == []
 
     def test_skips_a_step_whose_screen_is_open(self, config):
         nights = states(('2459861', 'build', 'waiting'))
@@ -336,9 +338,24 @@ class TestManagerActions:
         assert manager.night('2459862').state.label == 'queued to stage'
         assert manager.tick() == []  # auto is off, and 2459861 is still staging
         self.finish(manager, screens, '2459861', 'stage')
-        assert manager.tick() == [('stage', '2459862')]  # auto is off, but it was queued by hand
+        # auto is off, but 2459862 was queued by hand, and 2459861 is under way
+        assert manager.tick() == [('stage', '2459862'), ('build', '2459861')]
         assert manager.night('2459862').state.label == 'staging'
         assert not list(manager.config.state_dir('2459862').glob('*.requested'))
+
+    def test_a_night_started_by_hand_carries_on(self, manager, screens):  # with auto off
+        manager.launch('stage', '2459861')
+        for step, then in (('stage', 'build'), ('build', 'run')):
+            self.finish(manager, screens, '2459861', step)
+            assert manager.tick() == [(then, '2459861')]
+        self.finish(manager, screens, '2459861', 'run')
+        assert manager.tick() == [] and manager.night('2459861').state.status == 'review'
+        manager.approve('2459861')
+        assert manager.tick() == [('prune', '2459861')]
+        self.finish(manager, screens, '2459861', 'prune')
+        manager.hold('2459861')  # held, it waits for you
+        assert manager.tick() == []
+        assert manager.launch('archive', '2459861') == []
 
     def test_a_queued_makeflow_keeps_its_job_cap(self, manager, screens):  # running = 2
         for jd in ('2459861', '2459862', '2459863'):

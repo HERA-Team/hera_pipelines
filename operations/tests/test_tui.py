@@ -70,6 +70,7 @@ def test_start_queues_while_the_limit_is_full(manager, screens):
 
 def test_run_asks_for_the_job_cap(manager, screens):
     finish(manager.config.state_dir(JD), 'stage', 'build')
+    manager.hold(JD)  # or the TUI would start it itself, with the config's cap
     drive(manager, 's', ['5', '0'], 'enter')  # the default (200) is selected, so typing replaces it
     (name, _, env), = screens.launched
     assert name == f'p2test_run_{JD}' and env['MAX_JOBS'] == '50'
@@ -98,6 +99,7 @@ def test_reset_removes_markers(manager):
     state_dir = manager.config.state_dir(JD)
     finish(state_dir, 'stage', 'build', 'run')
     (state_dir / 'approved').write_text('yes\n')
+    manager.hold(JD)  # or the TUI would start pruning it
 
     async def go():
         app = ManagerApp(manager)
@@ -108,7 +110,7 @@ def test_reset_removes_markers(manager):
             await pilot.click('#choice_build')
             await settle(app, pilot)
     asyncio.run(go())
-    assert sorted(p.name for p in state_dir.iterdir()) == ['stage.exit', 'stage.started']
+    assert sorted(p.name for p in state_dir.iterdir()) == ['hold', 'stage.exit', 'stage.started']
 
 
 def test_adding_nights(manager):

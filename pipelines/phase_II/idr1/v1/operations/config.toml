@@ -43,7 +43,7 @@ diff_before_jd = 2460039      # diff files are staged only for nights before thi
 
 [manager]
 name = "Phase II IDR1 v1"     # for the TUI and mail
-poll_seconds = 30             # how often the TUI rereads every night's state and, in auto mode, launches the next steps
+poll_seconds = 30             # how often the TUI rereads every night's state and launches the next steps
 session_prefix = "pII"         # each step runs in a screen named {prefix}_{step}_{JD}
 required_host = "herapost-master"  # makeflow_nrao.sh only runs here, so neither does the manager
 email = "jsdillon@berkeley.edu"     # mailed at the end of every step ("" for none)

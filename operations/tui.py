@@ -169,7 +169,7 @@ class ManagerApp(App):
         config = self.manager.config
         states = [night.state for night in nights]
         status = Text()
-        status.append('AUTO ON' if self.manager.auto else 'AUTO OFF',
+        status.append('AUTO ON' if self.manager.auto else 'AUTO OFF: no new nights',
                       style='bold black on green' if self.manager.auto else 'bold black on yellow')
         busy = in_limits(states, config)
         for limit, cap in config.limits.items():  # e.g. how many nights are staging, and how many running makeflows
@@ -377,7 +377,7 @@ class ManagerApp(App):
         if night.state.held:
             self.attempt(self.manager.unhold, night.jd)
         else:
-            self.push_screen(Prompt(f'Hold {night.jd}, so auto mode leaves it alone? Note (optional):'),
+            self.push_screen(Prompt(f'Hold {night.jd}, so nothing starts for it unless you start it? Note (optional):'),
                              lambda note: note is not None and self.attempt(self.manager.hold, night.jd, note))
 
     def action_add(self):
