@@ -359,8 +359,10 @@ retention = "keep"
 
 [DATA_PRODUCTS.APRIORI_FLAGS]
 label = "A Priori Flags (Optional)"
-kind = "ancillary"
-consumed_by = ["FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
+filename = "/lustre/aoc/projects/hera/phase-II-analysis/idr1/src/hera_pipelines/pipelines/phase_II/idr1/v1/analysis/apriori_flags/{JD}_apriori_flags.yaml"  # read by the notebooks (an absolute path)
+note = "External input, versioned with this pipeline: each night's a priori flagged times (JD_flags), copied from H6C IDR3's a priori flags, which its full-day auto checker made and some of which were edited by hand. The rest of those files (freq_flags, ex_ants, and metadata), which H6C never read, is left out. A night without a file has no times flagged a priori."
+kind = "external"
+consumed_by = ["FULL_DAY_RFI_NOTEBOOK", "FULL_DAY_ANTENNA_FLAGGING_NOTEBOOK"]
 
 [DATA_PRODUCTS.ANTENNA_FLAGS]
 suffix = "sum.antenna_flags.h5"
