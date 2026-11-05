@@ -101,15 +101,21 @@ def test_reset_removes_markers(manager):
     (state_dir / 'approved').write_text('yes\n')
     manager.hold(JD)  # or the TUI would start pruning it
 
-    async def go():
+    async def go():  # with the keys alone, as inside screen; the buttons are four to a row, and cancel last
         app = ManagerApp(manager)
+        focused = []
         async with app.run_test(size=(160, 40)) as pilot:
             await settle(app, pilot)
             await pilot.press('R')
             await settle(app, pilot)
-            await pilot.click('#choice_build')
+            focused.append(app.focused.id)
+            for key in ('left', 'up', 'left', 'right', 'down', 'down', 'up'):
+                await pilot.press(key)
+                focused.append(app.focused.id)
+            await pilot.press('enter')
             await settle(app, pilot)
-    asyncio.run(go())
+        return [name.removeprefix('choice_') for name in focused]
+    assert asyncio.run(go()) == ['cancel', 'archive', 'stage', 'cancel', 'stage', 'archive', 'cancel', 'build']
     assert sorted(p.name for p in state_dir.iterdir()) == ['hold', 'stage.exit', 'stage.started']
 
 

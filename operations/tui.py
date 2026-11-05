@@ -52,8 +52,11 @@ class Prompt(ModalScreen):
 
 
 class Choose(ModalScreen):
-    """Pick one of a few buttons (dismisses with its label, or None if cancelled)."""
+    """Pick one of a few buttons (dismisses with its label, or None if cancelled), with the arrow keys or Tab."""
     AUTO_FOCUS = '#cancel'  # so a stray Enter does nothing
+    COLUMNS = 4             # as #choices' grid-size, in ManagerApp.CSS
+    BINDINGS = [Binding('left', 'move(-1)', show=False), Binding('right', 'move(1)', show=False),
+                Binding('up', f'move({-COLUMNS})', show=False), Binding('down', f'move({COLUMNS})', show=False)]
 
     def __init__(self, question, choices):
         super().__init__()
@@ -65,7 +68,18 @@ class Choose(ModalScreen):
             with Horizontal(id='choices'):
                 for choice in self.choices:
                     yield Button(choice, id=f'choice_{choice}')
-                yield Button('cancel', id='cancel', variant='primary')
+                yield Button('cancel', id='cancel')
+            yield Label('[dim]arrow keys (or Tab) to move, Enter to choose, Escape to cancel[/]')
+
+    def action_move(self, by):
+        """Focus the button by along (a row up or down, if by is a whole row; left and right go round)."""
+        buttons = list(self.query(Button))
+        index = buttons.index(self.focused) if self.focused in buttons else len(buttons) - 1
+        if abs(by) == 1:
+            index = (index + by) % len(buttons)
+        else:
+            index = min(max(index + by, 0), len(buttons) - 1)
+        self.set_focus(buttons[index])
 
     def on_button_pressed(self, event):
         self.dismiss(None if event.button.id == 'cancel' else str(event.button.label))
@@ -85,6 +99,7 @@ class ManagerApp(App):
     #dialog Label { width: 100%; }  /* so a long question wraps instead of running off the edge */
     #choices { layout: grid; grid-size: 4; grid-gutter: 1; grid-rows: 3; height: auto; margin-top: 1; }
     #choices Button { width: 100%; min-width: 0; }  /* four to a row, so a pipeline with many steps still fits */
+    #choices Button:focus { background: $accent; text-style: bold; }  /* plain to see, as it's chosen by keys */
     Prompt, Choose { align: center middle; }
     """
     BINDINGS = [
