@@ -55,6 +55,7 @@ rfi_dpss_halfwidth = 300e-9  # in s
 rfi_nsig = 4.0
 broadcast_level_cut = 5.0  # broadcast screen: allocation median z of the cross-pol coherence over the sky model's
 broadcast_step_cut = 10.0  # ...and the step z at the edges of its run, both in theoretical noise units
+broadcast_band_ratio_cut = 1.5  # ...and the whole high band is flagged where its median coherence is this many times the prediction
 
 [ANT_CLASS_BOUNDS]  # Read directly by the file_sky_calibration and full_day_antenna_flagging notebooks
 am_corr_bad = 0.35
