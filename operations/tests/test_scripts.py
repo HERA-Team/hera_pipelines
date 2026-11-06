@@ -93,16 +93,16 @@ def test_a_failed_makeflow_is_resumed(config_path):
     for name in ('stage', 'build'):
         assert step(name, config_path).returncode == 0
     result = step('run', config_path, FAKE_FAIL_JDS=JD)
-    assert result.returncode != 0 and '1 jobs failed' in result.stdout
+    assert result.returncode != 0 and '1 jobs failed' in result.stdout  # not the one retried until it succeeded
     assert exit_code(config, 'run') != 0
-    assert len(m.Manager(config).error_logs(JD)) == 1
+    assert [log.name for log in m.Manager(config).error_logs(JD)] == [f'zen.{JD}.12345.sum.uvh5.SOME_JOB.log.error']
 
     # rerunning run resumes the makeflow, and sets the old error log aside
     result = step('run', config_path, FAKE_FAIL_JDS=JD, MAX_JOBS='50')
     assert result.returncode == 0, result.stdout + result.stderr
     assert 'makeflow_nrao.sh example.mf 50' in result.stdout
     assert m.Manager(config).error_logs(JD) == []
-    assert len(list((config.makeflow_dir(JD) / 'previous_errors' / 'attempt_1').glob('*.log.error'))) == 1
+    assert len(list((config.makeflow_dir(JD) / 'previous_errors' / 'attempt_1').glob('*.log.error'))) == 2
     log = (config.state_dir(JD) / 'logs' / 'run.log').read_text()
     assert log.count(f'===== run {JD}: started') == 2
 

@@ -781,8 +781,10 @@ class Manager:
             return []
 
     def error_logs(self, jd):
-        """The makeflows' failed jobs' logs (from their current attempts)."""
-        return sorted(self.config.makeflow_dir(jd).glob('*.log.error'))
+        """The makeflows' failed jobs' logs (from their current attempts), leaving out the jobs that makeflow retried
+        until they succeeded: those have a .out too, which hera_opm's wrappers write only when their job succeeds."""
+        return sorted(log for log in self.config.makeflow_dir(jd).glob('*.log.error')
+                      if not log.with_name(log.name[:-len('.log.error')] + '.out').exists())
 
     def notebooks(self, jd):
         """The night's notebooks in the notebook output repositories."""

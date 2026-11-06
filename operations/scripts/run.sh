@@ -38,7 +38,10 @@ if [[ ${status} -eq 0 && "${last_line}" == "# COMPLETED"* ]]; then
     echo "Makeflow ${makeflow} for ${JD} completed at $(date)"
 else
     shopt -s nullglob
-    errors=(*.log.error)
+    failed=0
+    for error in *.log.error; do  # not counting jobs that makeflow retried until they succeeded (they have a .out)
+        [[ -e "${error%.log.error}.out" ]] || failed=$(( failed + 1 ))
+    done
     shopt -u nullglob
-    die "makeflow ${makeflow} for ${JD} did not complete (exit ${status}; its log ends '${last_line:-<no log>}'; ${#errors[@]} jobs failed)"
+    die "makeflow ${makeflow} for ${JD} did not complete (exit ${status}; its log ends '${last_line:-<no log>}'; ${failed} jobs failed)"
 fi

@@ -1,7 +1,8 @@
 #! /bin/bash
 # Stands in for hera_opm's makeflow_nrao.sh: "makeflow_nrao.sh <mf> <max jobs>" writes a makeflow log as ten jobs
 # finish (FAKE_JOB_SECONDS apart), and then a job log and .out for each wrapper, as makeflow's jobs would. Nights
-# listed in FAKE_FAIL_JDS fail the first time they are run, with one failed job, and succeed when rerun.
+# listed in FAKE_FAIL_JDS fail the first time they are run, with one failed job (and another that failed once and
+# then succeeded when makeflow retried it, so it has an error log and a .out), and succeed when rerun.
 # A pipeline's tests can set FAKE_MAKEFLOW_PRODUCTS to a script that makes the products the night's real makeflow
 # would; it runs in the night's folder, with the first sum file's name, and the makeflow fails if it does.
 mf=$1
@@ -18,6 +19,9 @@ for i in $(seq 1 10); do
     if (( failing && i == 7 )); then
         echo "$(stamp) ${i} 3 ${i} $(( 10 - i )) 0 $(( i - 1 )) 1 0 10" >> "${log}"
         echo "Traceback: something went wrong" > "zen.${jd}.12345.sum.uvh5.SOME_JOB.log.error"
+        echo "Traceback: something went wrong once" > "zen.${jd}.12345.sum.uvh5.RETRIED_JOB.log.error"
+        echo "log" > "zen.${jd}.12345.sum.uvh5.RETRIED_JOB.log"
+        touch "zen.${jd}.12345.sum.uvh5.RETRIED_JOB.out"
         touch failed_once
         echo "# FAILED $(stamp)" >> "${log}"
         echo "makeflow: 1 job failed" >&2
