@@ -125,13 +125,21 @@ if __name__ == "__main__":
     ref_times, sort_inds = np.unique(ref_metadata.time_array, return_index=True)
     ref_lsts = ref_metadata.lst_array[sort_inds]
     ref_lsts[ref_lsts<args.lst_wrap] += 2 * np.pi
+    # A reference file can straddle the wrap; keep its LSTs increasing.
+    ref_lsts = np.unwrap(ref_lsts)
 
-    # Note that data LSTs will always be entirely to one side of the wrap.
+    # Repeat the simulation files over three turns of LST so that reference
+    # LSTs near the wrap can take simulation files from both sides of it.
+    tiled_lsts = np.concatenate(
+        [start_lsts - 2 * np.pi, start_lsts, start_lsts + 2 * np.pi]
+    )
+    tiled_files = sim_files * 3
     dref_lsts = np.median(np.diff(ref_lsts))
-    first_ind = np.argwhere(start_lsts <= np.round(ref_lsts.min(), 7) - 1e-6).flatten()[-1]
+    first_ind = np.argwhere(tiled_lsts <= np.round(ref_lsts.min(), 7) - 1e-6).flatten()[-1]
     last_ind = np.argwhere(
-        start_lsts <= np.round(ref_lsts.max() + dref_lsts, 7)
+        tiled_lsts <= np.round(ref_lsts.max() + dref_lsts, 7)
     ).flatten()[-1]
+    files_to_read = tiled_files[first_ind:last_ind+1]
 
     # Before loading in the files, figure out which antennas to select.
     # The code for retrieving the flags assumes the H6C format for apriori flags.
@@ -188,7 +196,7 @@ if __name__ == "__main__":
     # inflating by redundancy. Otherwise, only load in antennas that have data
     # and remove any extra antenna-based metadata.
     sim_uvdata.read(
-        sim_files[first_ind:last_ind+1],
+        files_to_read,
         antenna_nums=None if args.input_is_compressed else ants_to_load,
         keep_all_metadata=args.input_is_compressed,
     )
