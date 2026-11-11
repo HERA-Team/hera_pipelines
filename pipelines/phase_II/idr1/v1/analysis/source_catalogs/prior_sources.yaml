@@ -1,6 +1,8 @@
 # Bright sources whose sidelobes intersect the polarized sources above, modeled (phased, baseline-averaged,
-# low-pass filtered) and subtracted before the polarized sources are fit. Empty for now, as in H6C IDR3.2
-# (/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/metadata/prior_sources.yaml). Entries take the form
+# low-pass filtered) and subtracted before the polarized sources are modeled. Each is subtracted on every night a
+# polarized source that uses sidelobe models is modeled; its position is fit around its own transit when its
+# lst_half_width window has at least min_times usable integrations, and taken from here otherwise. Empty for now, as
+# in H6C IDR3.2 (/lustre/aoc/projects/hera/h6c-analysis/IDR3_2/metadata/prior_sources.yaml). Entries take the form
 #   - name: "Fornax A"
 #     right_ascension: "03h22m41.7s"
 #     declination: "-37d12m30s"

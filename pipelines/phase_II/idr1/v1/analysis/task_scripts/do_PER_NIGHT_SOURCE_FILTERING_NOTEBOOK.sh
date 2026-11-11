@@ -5,6 +5,8 @@ set -e
 # FULL_DAY_RFI_SKY_FILTERED_NOTEBOOK job as a prereq): fits polarized point sources (position + rotation
 # measure) on the flagged, non-inpainted single-baseline files and writes Faraday-rotating DPSS models
 # of them for subtraction before the pI SNRs are formed (H6C IDR3.2 per_night_source_filtering_notebook, Tyler Cox).
+# A polarized source too sparsely sampled on the night to model has its whole LST window flagged instead, in a
+# per-night flag waterfall that is written on every night.
 
 src_dir="$(dirname "$0")"
 source ${src_dir}/_common.sh
@@ -42,4 +44,15 @@ if [ "${n_models}" -gt 0 ]; then
     echo Found ${n_models} source models matching ${model_pattern}.
 else
     echo "WARNING: no source models matching ${model_pattern} were produced, so no polarized sources will be subtracted for this night."
+fi
+
+# the unmodeled sources' flag waterfall must exist: it is written on every night (unflagged when every source in range
+# was modeled)
+flag_file="$(dirname ${SUM_FILE})/$(get_filename ${toml_file} FLAGS_UNMODELED_SOURCES)"
+flag_file=${flag_file//\{JD\}/${jd}}
+if [ -f "${flag_file}" ]; then
+    echo Resulting ${flag_file} found.
+else
+    echo ${flag_file} not produced.
+    exit 1
 fi

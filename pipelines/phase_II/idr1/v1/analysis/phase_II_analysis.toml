@@ -210,7 +210,8 @@ fr0_filter = false  # also write a copy of the inpainted cross-correlations with
 fr0_halfwidth = 0.01  # in mHz
 
 [PER_NIGHT_SOURCE_FILTERING_OPTS]  # Read directly by the per_night_source_filtering notebook
-min_times = 50  # minimum integrations in a source's LST window to model it (and the window size for fitting positions and RMs)
+min_times = 20  # minimum usable integrations (any channel in fit_freq_range unflagged) in a source's LST window to model it, or to fit a prior source's position; with fewer, a polarized source's whole window is flagged and a prior source keeps its catalog position
+fit_window_times = 50  # integrations in each source's position and rotation-measure fit window
 fit_freq_range = [107.0, 230.0]  # in MHz; used to fit source positions and rotation measures
 max_rm_diff = 2.0  # in rad / m^2; fits farther than these from the catalog fall back to the catalog values
 max_ra_diff = 1.0  # in degrees
@@ -498,6 +499,15 @@ produced_by = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_PI_DLYFILT_SNR_NOTEBOOK", "SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "SINGLE_BASELINE_WIENER_INPAINT_NOTEBOOK"]
 retention = "keep"
 
+[DATA_PRODUCTS.FLAGS_UNMODELED_SOURCES]
+label = "Unmodeled-Source Flags"
+filename = "single_baseline_files/zen.{JD}.flag_waterfall_unmodeled_sources.h5"  # read by the notebooks: per-day
+note = "One whole-night flag waterfall: the LST windows of the polarized sources with fewer than min_times usable integrations in them on this night, which are therefore neither modeled nor subtracted, flagged at every frequency. Always written (unflagged when every source in range was modeled). The delay-filtered pI round folds it into its seed flags, so every later stage inherits it."
+kind = "metrics"
+produced_by = "PER_NIGHT_SOURCE_FILTERING_NOTEBOOK"
+consumed_by = ["FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"]
+retention = "keep"
+
 [DATA_PRODUCTS.PI_DLYFILT_SNR]
 label = "Delay-Filtered pI SNR"
 suffix = "sum.pI_dlyfilt_SNR.uvh5"
@@ -511,7 +521,7 @@ retention = "archive"
 [DATA_PRODUCTS.FLAGS_PI_DLYFILT]
 label = "Delay-Filtered pI Flags"
 filename = "single_baseline_files/zen.{JD}.flag_waterfall_pI_dlyfilt.h5"  # read by the notebooks: per-day
-note = "Was H6C round 4. One whole-night flag waterfall: the union over the rephasing sources of the flags on their coherently averaged, delay-filtered pI z-scores. It contains the sky-filtered round's flags, which seed it, so later stages read only this file. Each source's own flags are also written alongside (zen.{JD}.{source}.flag_waterfall_pI_dlyfilt.h5, as in H6C), for provenance only."
+note = "Was H6C round 4. One whole-night flag waterfall: the union over the rephasing sources of the flags on their coherently averaged, delay-filtered pI z-scores. It contains the sky-filtered round's flags and the unmodeled polarized sources' LST windows, which seed it, so later stages read only this file. Each source's own flags are also written alongside (zen.{JD}.{source}.flag_waterfall_pI_dlyfilt.h5, as in H6C), for provenance only."
 kind = "metrics"
 produced_by = "FULL_DAY_RFI_PI_DLYFILT_NOTEBOOK"
 consumed_by = ["SINGLE_BASELINE_PI_FRF_SNR_NOTEBOOK", "FULL_DAY_RFI_PI_FRF_NOTEBOOK"]
