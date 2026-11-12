@@ -22,6 +22,9 @@ from textual.widgets import Button, DataTable, Footer, Input, Label, RichLog, St
 
 from manager import DETACH_KEYS, Config, Manager, add_to_queue, format_age, in_limits, short_host
 
+# less, whatever $LESS says: -+F and -+X turn off its -F (quit at once if it all fits on the screen, so it would flash
+# past) and -X (leave the screen as it is, so it would draw over the TUI)
+LESS = ['less', '-+F', '-+X']
 STATUS_STYLES = {'waiting': '', 'active': 'cyan', 'elsewhere': 'magenta', 'failed': 'bold red',
                  'lost': 'bold red', 'review': 'bold yellow', 'done': 'green'}
 
@@ -347,6 +350,7 @@ class ManagerApp(App):
     def run_suspended(self, command, hint=''):
         """Hand the terminal over to a command (screen, less), and come back when it exits."""
         with self.suspend():
+            print('\x1b[H\x1b[2J', end='', flush=True)  # clear the screen, which (in a screen) may still show the TUI
             if hint:
                 print(hint)
             subprocess.run(command)
@@ -368,7 +372,7 @@ class ManagerApp(App):
         if not path.exists():
             self.notify(f'No {night.state.step} log for {night.jd} yet.', severity='warning')
             return
-        self.run_suspended(['less', '+G', str(path)])
+        self.run_suspended(LESS + ['+G', str(path)])
 
     def action_errors(self):
         if not (night := self.need_night()):
@@ -377,7 +381,7 @@ class ManagerApp(App):
         if not logs:
             self.notify(f'No failed jobs in {self.manager.config.makeflow_dir(night.jd)}.')
             return
-        self.run_suspended(['less'] + [str(log) for log in logs],
+        self.run_suspended(LESS + [str(log) for log in logs],
                            f'{len(logs)} failed jobs: :n and :p in less step through them.')
 
     def action_pipeline_status(self):
@@ -386,7 +390,7 @@ class ManagerApp(App):
         if not (command := self.manager.pipeline_status_command(night)):
             self.notify(f'{night.jd} has not begun a makeflow yet.', severity='warning')
             return
-        self.run_suspended(['bash', '-c', f'{shlex.join(command)} 2>&1 | less'])
+        self.run_suspended(['bash', '-c', f'{shlex.join(command)} 2>&1 | {shlex.join(LESS)}'])
 
     def action_approve(self):
         if not (night := self.need_night()):
