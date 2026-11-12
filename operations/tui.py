@@ -244,7 +244,10 @@ class ManagerApp(App):
         text.append('\n\n')
         for step in manager.config.step_names:
             record = night.markers.steps[step]
+            cap = f'  (at most {record.max_jobs} jobs at once)' if record.max_jobs else ''
             if not (record.started or record.launched):
+                if cap:  # given when the step before it was started
+                    text.append(f'{step:8s} not begun{cap}\n', style='dim')
                 continue
             began = record.started or record.launched
             line = f'{step:8s} {began:%m-%d %H:%M}'
@@ -253,7 +256,7 @@ class ManagerApp(App):
                 line += '' if record.exit_code == 0 else f'  exit {record.exit_code}'
             if record.host and short_host(record.host) != manager.host:
                 line += f'  on {record.host}'
-            text.append(line + '\n', style='red' if record.exit_code not in (None, 0) else '')
+            text.append(line + cap + '\n', style='red' if record.exit_code not in (None, 0) else '')
         if night.markers.approved:
             text.append(f'approved {night.markers.approved}\n', style='green')
         if night.markers.hold:
@@ -317,17 +320,21 @@ class ManagerApp(App):
             self.notify(f'{night.jd} is no longer queued to {step}.')
         elif step is None:
             self.notify(f'{night.jd} is {night.state.label}: nothing to start.', severity='warning')
-        elif self.manager.config.step(step).makeflow:
-            def run(value):
+        elif cap_step := self.manager.config.job_cap_step(step):  # a makeflow, or a step that goes right on to one
+            def start(value):
                 if value is None:
                     return
                 if not value.strip().isdigit() or int(value) < 1:
                     self.notify(f'{value!r} is not a number of jobs.', severity='error')
                     return
                 self.start_step(step, night.jd, max_jobs=int(value))
-            which = 'makeflow' if step == 'run' else f'{step} makeflow'
-            self.push_screen(Prompt(f"Run (or resume) {night.jd}'s {which}. At most how many jobs at once?",
-                                    str(self.manager.config.max_jobs)), run)
+            which = 'makeflow' if cap_step == 'run' else f'{cap_step} makeflow'
+            if cap_step == step:
+                question = f"Run (or resume) {night.jd}'s {which}. At most how many jobs at once?"
+            else:
+                question = (f"Start {night.jd}'s {step}, which goes on to its {which}. "
+                            "At most how many jobs at once in it?")
+            self.push_screen(Prompt(question, str(self.manager.job_cap(night.jd, cap_step))), start)
         else:
             self.start_step(step, night.jd)
 

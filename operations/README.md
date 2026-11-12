@@ -51,8 +51,8 @@ Every step runs through `scripts/step.sh`, which records how it went in `{state_
 `step.sh` refuses to run a step until every step before it has succeeded, or, for a step after review, until the
 night has been approved; a refusal is recorded as the step failing, with the reason in its log. The manager adds
 `{step}.launched` when it starts a screen, `{step}.requested` when you start one while its limit is full (see
-`s`), `approved` (who, when, and your note), and `hold`. `ls` a night's folder
-there to see exactly what has happened. `{state_root}/auto_mode` holds auto mode's setting, and
+`s`), `{step}.max_jobs` when you give a makeflow's job cap, `approved` (who, when, and your note), and `hold`.
+`ls` a night's folder there to see exactly what has happened. `{state_root}/auto_mode` holds auto mode's setting, and
 `{state_root}/manager.lock` (the host and pid of the manager that launches things) stops a second manager from
 launching anything as well: that one only watches, and takes over once the first has quit. A lock whose process has
 gone, or is no longer a manager, doesn't count; one written on another host always does, so delete it by hand if
@@ -66,7 +66,7 @@ its screen stays open at a shell in the relevant folder, so you can attach and l
 | key | |
 |---|---|
 | `space` | auto mode on/off: whether new nights start by themselves (those under way carry on either way) |
-| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, it asks for the job cap). If the step's limit is full (say another night is staging), the night is "queued to stage" instead, and starts as soon as there's room: before anything else, and whether auto mode is on or not. `s` again takes it back. To take a night one step at a time, hold it (`h`) and press `s` for each step |
+| `s` | start the selected night's next step, or retry the one that failed (for a makeflow, or a step that goes right on to one, as build to run, it asks for that makeflow's job cap, which the night keeps). If the step's limit is full (say another night is staging), the night is "queued to stage" instead, and starts as soon as there's room: before anything else, and whether auto mode is on or not. `s` again takes it back. To take a night one step at a time, hold it (`h`) and press `s` for each step |
 | `a` | attach to the night's screen, and `Ctrl-T d` to come back. The TUI gives it a command key of its own, `Ctrl-T`, so this works inside the manager's screen too (whose `Ctrl-A` it leaves alone); `Ctrl-T t` types a real `Ctrl-T`. From another terminal, `screen -d <its name>` also sends you back |
 | `l` / `e` | read the current step's log / the failed makeflow jobs' logs (`:n` for the next one in `less`; not those of jobs makeflow retried until they succeeded, which have a `.out`) |
 | `p` | hera_opm's `pipeline_status.py` report, for the night's makeflow |

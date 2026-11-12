@@ -76,6 +76,15 @@ def test_run_asks_for_the_job_cap(manager, screens):
     assert name == f'p2test_run_{JD}' and env['MAX_JOBS'] == '50'
 
 
+def test_build_asks_for_the_runs_job_cap(manager, screens):
+    finish(manager.config.state_dir(JD), 'stage')
+    manager.hold(JD)  # or the TUI would start it itself
+    drive(manager, 's', ['5', '0'], 'enter')
+    (name, _, env), = screens.launched
+    assert name == f'p2test_build_{JD}' and 'MAX_JOBS' not in env
+    assert manager.job_cap(JD, 'run') == 50
+
+
 def test_approve_writes_the_marker_with_a_note(manager):
     finish(manager.config.state_dir(JD), 'stage', 'build', 'run')
     drive(manager, 'y', list('looks good'), 'enter')

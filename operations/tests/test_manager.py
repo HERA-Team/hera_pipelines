@@ -47,6 +47,7 @@ class TestConfig:
         assert config.step('run').makeflow and config.step('run').limit == 'running'
         assert config.step('build').toml == EXAMPLE_CONFIG.parent / 'example.toml'
         assert [step.after_review for step in config.steps] == [False, False, False, True, True]
+        assert [config.job_cap_step(name) for name in config.step_names] == [None, 'run', 'run', None, None]
         assert config.limits == {'staging': 1, 'running': 2} and config.max_in_flight == 3
         assert config.nights_file == config.path.parent / 'nights.txt'
 
@@ -94,6 +95,10 @@ class TestTwoMakeflows:
         marks.steps['run_post'] = done(3)
         s = m.derive_state('2459861', marks, set(), two_makeflows, host='here', at=minutes(100))
         assert (s.step, s.status) == ('run_post', 'review')
+
+    def test_job_caps(self, two_makeflows):  # given when starting a makeflow, or the step that goes right on to it
+        assert [two_makeflows.job_cap_step(name) for name in two_makeflows.step_names] == \
+            [None, 'run', 'run', 'run_post', 'run_post', None, None]
 
     def test_they_share_a_limit(self, two_makeflows):  # running = 2
         nights = [m.NightState('1', 'run', 'active'), m.NightState('2', 'run_post', 'active'),
@@ -325,6 +330,24 @@ class TestManagerActions:
     def test_launch_run_with_a_job_cap(self, manager, screens):
         manager.launch('run', '2459861', max_jobs=50)
         assert screens.launched[0][2]['MAX_JOBS'] == '50'
+        self.finish(manager, screens, '2459861', 'run')
+        manager.launch('run', '2459861')  # it's kept for the night
+        assert screens.launched[1][2]['MAX_JOBS'] == '50'
+
+    def test_a_job_cap_given_with_build_is_for_the_run_after_it(self, manager, screens):  # with auto off
+        manager.config.state_dir('2459861').mkdir(parents=True)
+        self.finish(manager, screens, '2459861', 'stage')
+        manager.launch('build', '2459861', max_jobs=50)
+        assert 'MAX_JOBS' not in screens.launched[-1][2] and manager.job_cap('2459861', 'run') == 50
+        self.finish(manager, screens, '2459861', 'build')
+        assert manager.tick() == [('run', '2459861')]
+        assert screens.launched[-1][2]['MAX_JOBS'] == '50'
+        self.finish(manager, screens, '2459861', 'run')
+        manager.reset('2459861', 'run')  # forgets it
+        assert manager.job_cap('2459861', 'run') == manager.config.max_jobs
+        with pytest.raises(ValueError, match='takes no job cap'):
+            manager.launch('stage', '2459862', max_jobs=50)
+        assert not manager.config.state_dir('2459862').exists()
 
     def test_tick_launches_in_queue_order(self, manager, screens):
         m.add_to_queue(manager.config.nights_file, ['2459862', '2459861'])

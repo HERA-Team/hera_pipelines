@@ -154,6 +154,16 @@ class Config:
                 return step
         raise ValueError(f'unknown step {name!r} (the steps are {", ".join(self.step_names)})')
 
+    def job_cap_step(self, name):
+        """The makeflow step that a job cap given when starting this step is for: the step itself, if it's a
+        makeflow, or else the next one, if that's a makeflow the night goes right on to (as from build to run).
+        None if neither."""
+        index = self.step_names.index(self.step(name).name)
+        for step in self.steps[index:index + 2]:
+            if step.makeflow and step.after_review == self.steps[index].after_review:
+                return step.name
+        return None
+
     @property
     def nights_file(self):
         return self.path.parent / 'nights.txt'
@@ -231,7 +241,7 @@ class StepRecord:
     exit_code: int | None = None               # written by step.sh when the step ends
     ended: datetime.datetime | None = None
     requested: datetime.datetime | None = None  # started by hand while its limit was full, so to start once there's room
-    requested_max_jobs: int | None = None       # (with this job cap, for a makeflow)
+    max_jobs: int | None = None                 # for a makeflow: the job cap given by hand, used whenever it starts
 
 
 @dataclasses.dataclass
@@ -274,7 +284,8 @@ def read_markers(state_dir, step_names):
         if (requested := read(f'{step}.requested')) is not None:
             fields = requested.split()
             record.requested = (_parse_time(fields[0]) if fields else None) or datetime.datetime.min
-            record.requested_max_jobs = int(fields[1]) if len(fields) > 1 and fields[1].isdigit() else None
+        if (max_jobs := read(f'{step}.max_jobs')) is not None:
+            record.max_jobs = int(max_jobs) if max_jobs.isdigit() else None
         steps[step] = record
     return Markers(steps=steps, approved=read('approved'), hold=read('hold'))
 
@@ -633,10 +644,20 @@ class Manager:
     def launch(self, step, jd, max_jobs=None, live_sessions=None):
         """Start one step for one night by hand, in its own screen, or, while the step's limit is full, queue it: the
         scheduler then starts it as soon as there's room, before anything else and whether auto is on or not.
-        Returns the nights filling the limit if it was queued (and [] if it started)."""
+        Returns the nights filling the limit if it was queued (and [] if it started).
+
+        max_jobs is a job cap for the step's makeflow, or for the one it goes right on to (see Config.job_cap_step).
+        It's kept for the night, and that makeflow uses it whenever it starts (rather than [makeflow] max_jobs)."""
         step = self.config.step(step)
         live = self.screens.live_sessions() if live_sessions is None else live_sessions
         self._check(step, jd, live)
+        if max_jobs:
+            if not (cap_step := self.config.job_cap_step(step.name)):
+                raise ValueError(f"{step.name} doesn't run a makeflow or go right on to one, so it takes no job cap")
+            self.config.state_dir(jd).mkdir(parents=True, exist_ok=True)
+            (self.config.state_dir(jd) / f'{cap_step}.max_jobs').write_text(f'{max_jobs}\n')
+            if cap_step != step.name:
+                self.log(f'{cap_step} {jd} will run at most {max_jobs} jobs at once')
         if step.limit:
             states = [derive_state(other, read_markers(self.config.state_dir(other), self.config.step_names), live,
                                    self.config, self.host) for other in self.jds() if other != str(jd)]
@@ -644,12 +665,16 @@ class Manager:
             if len(full) >= self.config.limits[step.limit]:
                 state_dir = self.config.state_dir(jd)
                 state_dir.mkdir(parents=True, exist_ok=True)
-                (state_dir / f'{step.name}.requested').write_text(f'{now().isoformat()} {max_jobs or ""}'.rstrip() + '\n')
-                self.log(f'queued {step.name} {jd}' + (f' (max_jobs {max_jobs})' if max_jobs else '') +
+                (state_dir / f'{step.name}.requested').write_text(f'{now().isoformat()}\n')
+                self.log(f'queued {step.name} {jd}' +
                          f": [limits] {step.limit} = {self.config.limits[step.limit]}, and it's full ({', '.join(full)})")
                 return full
-        self._start(step, jd, max_jobs, live)
+        self._start(step, jd, live)
         return []
+
+    def job_cap(self, jd, step):
+        """The job cap the night's makeflow step would run with: the one given by hand, or else [makeflow] max_jobs."""
+        return read_markers(self.config.state_dir(jd), [step]).steps[step].max_jobs or self.config.max_jobs
 
     def unqueue(self, jd):
         """Take back the night's queued step (see launch)."""
@@ -667,11 +692,12 @@ class Manager:
         if step.after_review and not (self.config.state_dir(jd) / 'approved').exists():
             raise RuntimeError(f'{jd} has not been approved')
 
-    def _start(self, step, jd, max_jobs, live):
+    def _start(self, step, jd, live):
         """Start one step for one night in its own screen, now (see launch, and tick, whose plan keeps to the limits)."""
         self._check(step, jd, live)
         name = self.config.session_name(step.name, jd)
         state_dir = self.config.state_dir(jd)
+        max_jobs = read_markers(state_dir, [step.name]).steps[step.name].max_jobs if step.makeflow else None
         (state_dir / 'logs').mkdir(parents=True, exist_ok=True)
         (state_dir / f'{step.name}.exit').unlink(missing_ok=True)
         (state_dir / f'{step.name}.requested').unlink(missing_ok=True)
@@ -705,9 +731,8 @@ class Manager:
         actions = plan_actions([night.state for night in nights.values()], self.config, self.auto, live, self.free_tb())
         if not dry_run:
             for step, jd in actions:
-                max_jobs = nights[jd].markers.steps[step].requested_max_jobs  # as it was queued with, if it was
                 try:
-                    self._start(self.config.step(step), jd, max_jobs, live)  # the plan already keeps to the limits
+                    self._start(self.config.step(step), jd, live)  # the plan already keeps to the limits
                 except (RuntimeError, OSError, subprocess.CalledProcessError) as error:
                     self.log(f'could not launch {step} {jd}: {error}')
         return actions
@@ -747,7 +772,7 @@ class Manager:
                 raise RuntimeError(f'screen {self.config.session_name(step.name, jd)} is still open: close it first')
         state_dir = self.config.state_dir(jd)
         for step in steps:
-            for suffix in ('requested', 'launched', 'started', 'exit'):
+            for suffix in ('requested', 'max_jobs', 'launched', 'started', 'exit'):
                 (state_dir / f'{step.name}.{suffix}').unlink(missing_ok=True)
         if not steps[0].after_review:
             (state_dir / 'approved').unlink(missing_ok=True)
@@ -848,7 +873,9 @@ def main(argv=None):
                                                "is full, queue it, to start once there's room)")
     launch.add_argument('step')
     launch.add_argument('jd')
-    launch.add_argument('--max-jobs', type=int, help="for a makeflow: its cap on simultaneous jobs")
+    launch.add_argument('--max-jobs', type=int, help="for a makeflow, or a step that goes right on to one (as "
+                                                     "build to run): that makeflow's cap on simultaneous jobs, kept "
+                                                     "for this night")
     add = commands.add_parser('add', help='add nights to the queue (nights.txt)')
     add.add_argument('jds', nargs='+')
     approve = commands.add_parser('approve', help='approve a reviewed night, so its steps after review run')
