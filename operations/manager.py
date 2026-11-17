@@ -13,6 +13,7 @@ All its state is on disk, so it can be stopped and restarted at any time without
 Run with --help for the rest (launch, approve, hold, reset, abort, ...). $OPS_CONFIG can stand in for --config.
 """
 import argparse
+import collections
 import dataclasses
 import datetime
 import os
@@ -422,10 +423,16 @@ class MakeflowProgress:
     aborted: int = 0
     total: int = 0
     outcome: str | None = None  # STARTED, COMPLETED, FAILED, or ABORTED: the last such line of the log
+    # what slurm says of the jobs makeflow counts as running: how many are running there, and how many are queued
+    # (None when that isn't known; see Manager.add_slurm_counts)
+    slurm_running: int | None = None
+    slurm_queued: int | None = None
 
     def __str__(self):
         text = f'{self.complete}/{self.total}'
-        if self.running:
+        if self.slurm_running is not None:
+            text += f', {self.slurm_running} running, {self.slurm_queued} queued'
+        elif self.running:
             text += f', {self.running} running'
         if self.failed:
             text += f', {self.failed} failed'
@@ -463,6 +470,31 @@ def parse_makeflowlog(path, tail_bytes=8192):
         if counts_found and progress.outcome:
             break
     return progress
+
+
+##############################################################################################################
+# slurm
+##############################################################################################################
+
+def squeue_jobs():
+    """How many of this user's slurm jobs are in each state (R, PD, ...), by the job's working directory (with
+    symlinks resolved), from one squeue. None if squeue isn't here, or fails."""
+    try:
+        result = subprocess.run(['squeue', '--noheader', '--user', str(os.getuid()), '--format', '%t %Z'],
+                                capture_output=True, text=True, timeout=20)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if result.returncode != 0:
+        return None
+    by_dir = collections.defaultdict(collections.Counter)
+    for line in result.stdout.splitlines():
+        state, _, work_dir = line.strip().partition(' ')
+        if work_dir:
+            by_dir[work_dir][state] += 1
+    jobs = collections.defaultdict(collections.Counter)
+    for work_dir, states in by_dir.items():
+        jobs[os.path.realpath(work_dir)].update(states)
+    return jobs
 
 
 ##############################################################################################################
@@ -513,9 +545,10 @@ class Night:
 
 
 class Manager:
-    def __init__(self, config, screens=None):
+    def __init__(self, config, screens=None, slurm_jobs=squeue_jobs):
         self.config = config
         self.screens = screens or Screens()
+        self.slurm_jobs = slurm_jobs  # squeue_jobs, or a stand-in for the tests
         self.host = short_host()
         self.read_only = False     # set by take_lock, if another manager is running or nothing can launch from here
         self.other_manager = None  # 'host pid' of the other manager, if that's why
@@ -544,9 +577,26 @@ class Manager:
         progress = parse_makeflowlog(self.config.makeflow_log(jd, makeflow)) if makeflow else None
         return Night(jd, markers, state, progress, self._since(markers, state))
 
-    def nights(self, live_sessions=None):
+    def nights(self, live_sessions=None, slurm=True):
         live = self.screens.live_sessions() if live_sessions is None else live_sessions
-        return [self.night(jd, live) for jd in self.jds()]
+        nights = [self.night(jd, live) for jd in self.jds()]
+        if slurm:
+            self.add_slurm_counts(nights)
+        return nights
+
+    def add_slurm_counts(self, nights):
+        """Split each running makeflow's running jobs into those running in slurm and those queued there, with one
+        squeue. A makeflow's jobs are the slurm jobs working in its folder (makeflow runs them there). Where slurm
+        has none of them (or there's no squeue), the progress keeps makeflow's own count."""
+        busy = [night for night in nights if night.state.status == 'active' and night.progress
+                and night.progress.running]
+        if not busy or (jobs := self.slurm_jobs()) is None:
+            return
+        for night in busy:
+            states = jobs.get(os.path.realpath(self.config.makeflow_dir(night.jd)))
+            if states:
+                night.progress.slurm_queued = states['PD']
+                night.progress.slurm_running = sum(states.values()) - states['PD']
 
     def makeflow_step(self, markers, state):
         """The makeflow step the night is in, or last ran (None if it hasn't begun one)."""
@@ -727,7 +777,7 @@ class Manager:
         if self.read_only or self.launch_problem():
             return []
         live = self.screens.live_sessions()
-        nights = {night.jd: night for night in self.nights(live)}
+        nights = {night.jd: night for night in self.nights(live, slurm=False)}
         actions = plan_actions([night.state for night in nights.values()], self.config, self.auto, live, self.free_tb())
         if not dry_run:
             for step, jd in actions:

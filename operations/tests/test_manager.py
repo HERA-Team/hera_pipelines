@@ -1,5 +1,6 @@
 """The manager's logic: the config, markers -> state, the scheduler, the makeflow log parser, the queue, and its
 actions. These use the toy pipeline in example_pipeline/ (stage, build, run, review, prune, archive)."""
+import collections
 import dataclasses
 import datetime
 import os
@@ -281,6 +282,44 @@ class TestParseMakeflowlog:
 
     def test_no_log(self, tmp_path):
         assert m.parse_makeflowlog(tmp_path / 'missing') is None
+
+
+def test_slurm_splits_the_running_jobs(config_path, screens):
+    jobs, asked = {}, []
+
+    def slurm_jobs():  # stands in for squeue_jobs
+        asked.append(True)
+        return jobs
+
+    manager = m.Manager(m.Config.load(config_path), screens, slurm_jobs)
+    state_dir, makeflow_dir = manager.config.state_dir('2459861'), manager.config.makeflow_dir('2459861')
+    state_dir.mkdir(parents=True)
+    makeflow_dir.mkdir(parents=True)
+    for name in ('stage', 'build'):
+        (state_dir / f'{name}.started').write_text(f'{T0.isoformat()} {manager.host} 1\n')
+        (state_dir / f'{name}.exit').write_text(f'0 {T0.isoformat()}\n')
+    (state_dir / 'run.started').write_text(f'{T0.isoformat()} {manager.host} 1\n')
+    screens.alive.add(manager.config.session_name('run', '2459861'))
+    (makeflow_dir / 'example.mf.makeflowlog').write_text(LOG + '1761670004000000 2 1 102 5 100 5 0 0 110\n')
+
+    def progress():
+        night, = manager.nights()
+        return str(night.progress)
+
+    jobs[os.path.realpath(makeflow_dir)] = collections.Counter(R=37, CG=1, PD=60)
+    jobs['/somewhere/else'] = collections.Counter(R=5)
+    assert progress() == '5/110, 38 running, 60 queued'
+    del jobs[os.path.realpath(makeflow_dir)]  # slurm has none of its jobs: makeflow's own count
+    assert progress() == '5/110, 100 running'
+    manager.slurm_jobs = lambda: None  # no squeue
+    assert progress() == '5/110, 100 running'
+
+    manager.slurm_jobs = slurm_jobs
+    asked.clear()
+    manager.tick()  # the scheduler doesn't need it
+    screens.alive.clear()  # nor does a night whose makeflow isn't running
+    progress()
+    assert not asked
 
 
 def test_queue(tmp_path):

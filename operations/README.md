@@ -61,6 +61,11 @@ that manager is gone.
 Each step runs in a screen named `{prefix}_{step}_{JD}`. When a step succeeds, its screen closes. When one fails,
 its screen stays open at a shell in the relevant folder, so you can attach and look around.
 
+A night's makeflow column reads like `7453/13044, 37 running, 63 queued`: jobs done out of all of them, then, of
+the jobs makeflow has submitted, how many slurm is running and how many are still queued. Those two come from one
+`squeue` each refresh, counting the jobs working in the night's makeflow folder. Without `squeue`, or if slurm lists
+none of them, it shows makeflow's own count, `100 running`, which includes the queued ones.
+
 ## Keys
 
 | key | |
