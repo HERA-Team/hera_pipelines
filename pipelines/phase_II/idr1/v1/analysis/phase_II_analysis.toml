@@ -213,10 +213,10 @@ fr0_halfwidth = 0.01  # in mHz
 min_times = 20  # minimum usable integrations (any channel in fit_freq_range unflagged) in a prior source's own LST window to fit its position; with fewer, it keeps its catalog position
 fit_window_times = 50  # integrations in each source's position and rotation-measure fit window
 fit_freq_range = [107.0, 230.0]  # in MHz; used to fit source positions and rotation measures
-max_rm_diff = 2.0  # in rad / m^2; fits farther than these from the catalog fall back to the catalog values
-max_ra_diff = 1.0  # in degrees
-max_dec_diff = 1.0  # in degrees
-min_snr = 5.0  # of the fit source in its image, likewise
+max_position_offset = 1.0  # in degrees on the sky, from the catalog position; a polarized source whose fit fails this or any check below is not subtracted that night, nor flagged (a prior source keeps its catalog position)
+max_rm_diff = 5.0  # in rad / m^2, from the catalog RM
+min_snr = 10.0  # the peak of the fit's Faraday depth spectrum over its predicted thermal noise
+min_rm_peak_prominence = 2.0  # the peak of the fit's Faraday depth spectrum over the largest residual left after RM-CLEANing that peak
 fg_delay_half_width = 750.0  # in ns; the foreground DPSS filter applied before modeling each source
 sidelobe_delay_half_width = 100.0  # in ns; the low-pass filter that turns a phased average into a prior source's model
 model_delay_half_width = 150.0  # in ns; the source model's spectral DPSS half-width
@@ -226,7 +226,7 @@ residualized_source_basis = true  # fit physical RM modes residualized by each i
 physical_source_model = true  # subtract the fit evaluated on the physical RM modes, not on their foreground-filtered response
 source_max_foreground_fraction = 0.1  # keep only RM modes with at most this fraction of their power in the foreground subspace
 source_basis_rcond = 1e-12
-fit_maxiter = 10
+fit_maxiter = 30
 max_workers = 8
 
 [FULL_DAY_SYSTEMATICS_INSPECT_OPTS]  # Read directly by the full_day_systematics_inspect notebook (H6C post_corner_turn_systematics_inspect)
