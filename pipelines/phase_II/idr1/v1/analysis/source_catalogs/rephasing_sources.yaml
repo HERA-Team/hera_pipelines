@@ -1,6 +1,7 @@
 # Bright sources the pseudo-Stokes I SNRs are coherently rephased to (and averaged over baselines) in the two pI
 # rounds of full-day RFI flagging, with how far from each source's transit (in hours, full width) the rephased
-# z-scores are used in each round. Copied from the tables hardcoded in H6C IDR3's full_day_rfi_round_4 and _5.
+# z-scores are used in each round. Copied from the tables hardcoded in H6C IDR3's full_day_rfi_round_4 and _5, plus
+# PSR J2124-3358.
 sources:
     - name: "PSR J0628-28"
       right_ascension: "06h30m49.3s"
@@ -11,6 +12,12 @@ sources:
     - name: "PSR J0742-2822"
       right_ascension: "07h42m49.058s"
       declination: "-28d22m43.76s"
+      pI_dlyfilt_window_hours: 1.0
+      pI_FRF_window_hours: 2.0
+
+    - name: "PSR J2124-3358"
+      right_ascension: "21h24m43.835s"
+      declination: "-33d58m45.50s"
       pI_dlyfilt_window_hours: 1.0
       pI_FRF_window_hours: 2.0
 
