@@ -28,7 +28,7 @@ makeflow = true               # runs the toml's makeflow: the manager shows its 
 limit = "running"
 
 [limits]
-max_in_flight = 8             # nights between starting to stage and archived at once (they are what holds Lustre space)
+max_in_flight = 10            # nights between starting to stage and archived at once (they are what holds Lustre space)
 min_free_tb = 4.0             # don't stage another night while the nights_root filesystem has less than this free (0: no check)
 cold_min_free_tb = 4.0       # archive only if cold_root still has this much free after the night's copy (0: just room for it)
 staging = 1                   # librarian staging operations at once (keep at 1: they share marker files in raw_root)
