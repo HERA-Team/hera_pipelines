@@ -13,10 +13,16 @@
 #
 # Baseline names: within the validation, each redundant group has one name on every night,
 # so no group is split. About 100 groups per night are named differently from the data run:
-# ~75 have the antenna pair reversed (e.g. 10_11 here vs 11_10 in the data), and ~25 are
-# keyed on an outrigger (326, 331, 334) in the data but on a core pair here, because the
-# IDR2 sim's array stops at antenna 319. Match validation and data stacks by redundant
-# group, conjugating reversed pairs, not by file name.
+#   - ~75 have the antenna pair reversed (e.g. 10_11 here vs 11_10 in the data). The data's
+#     corner turn ran (Feb 2026) before bc60a87b made build_corner_turn_map.py put each
+#     antpair in (low, high) order, so its names kept the orientation of the antpair in the
+#     correlator files; the validation runs the later script. The same thing made 4 groups
+#     flip orientation between nights in the data (e.g. 15_331 / 331_15), which the stack
+#     merges (LSTBinConfiguratorSingleBaseline accepts reversed names).
+#   - ~25 are keyed on an outrigger (326, 331, 334) in the data but on a core pair here,
+#     because the IDR2 sim's array stops at antenna 319.
+# Match validation and data stacks by redundant group, conjugating reversed pairs, not by
+# file name.
 
 [Options]
 makeflow_type = "lstbin_single_baseline" # this creates {basename} that look like "0_1"
