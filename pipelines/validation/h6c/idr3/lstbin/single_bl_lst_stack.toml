@@ -1,0 +1,147 @@
+# Single-baseline LST stack for the H6C IDR3.2 validation.
+#
+# Copied from the data run's h6c/idr3/v2/lstbin/lststack_131_nights/single_bl_lst_stack.toml.
+# Every analysis setting (FILE_CFG rules, LSTCAL_OPTS, LST_STACK_OPTS, WorkFlow, mem/ncpu)
+# is unchanged. Only these differ:
+#   - datadir, nights: the 18 validation nights in /lustre/aoc/projects/hera/Validation/H6C_IDR3_2/mocked_data/
+#     (all 18 are also in the data run's 131-night stack);
+#   - OUTDIR, nb_output_repo, nb_template_dir, toml_file: validation paths;
+#   - conda_env: h6c_idr3_2_validation, the env the rest of the validation runs in
+#     (same hera_cal as h6c_idr3_2; pyuvdata 3.2.8 vs 3.2.5);
+#   - path_to_do_scripts: the data run's own v2 task scripts, read from the validation's
+#     checkout, so the stack runs the same scripts as the data run.
+#
+# Baseline names: within the validation, each redundant group has one name on every night,
+# so no group is split. About 100 groups per night are named differently from the data run:
+# ~75 have the antenna pair reversed (e.g. 10_11 here vs 11_10 in the data), and ~25 are
+# keyed on an outrigger (326, 331, 334) in the data but on a core pair here, because the
+# IDR2 sim's array stops at antenna 319. Match validation and data stacks by redundant
+# group, conjugating reversed pairs, not by file name.
+
+[Options]
+makeflow_type = "lstbin_single_baseline" # this creates {basename} that look like "0_1"
+source_script = "~/.bashrc"
+base_mem = 15500
+base_cpu = 1
+timeout = "24h"
+path_to_do_scripts = "/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_pipelines/pipelines/h6c/idr3/v2/lstbin/task_scripts"
+toml_file = "/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_pipelines/pipelines/validation/h6c/idr3/lstbin/single_bl_lst_stack.toml"  # this file
+conda_env = "h6c_idr3_2_validation"
+batch_system = "slurm"
+
+
+[NOTEBOOK_OPTS]
+nb_template_dir = '/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/src/hera_notebook_templates/notebooks'
+nb_output_repo = '/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/notebooks'
+
+
+[FILE_CFG] # this key is required
+lst_branch_cut = 5.2 # in radians
+where_inpainted_file_rules = [[".reinpainted.uvh5", ".where_reinpainted.h5"]]
+
+[FILE_CFG.datafiles] # this key is required
+datadir="/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/mocked_data/"
+nights=[
+  "2459902",
+  "2459903",
+  "2459904",
+  "2459905",
+  "2459906",
+  "2459907",
+  "2459969",
+  "2459970",
+  "2459971",
+  "2459972",
+  "2459973",
+  "2459974",
+  "2460030",
+  "2460031",
+  "2460032",
+  "2460033",
+  "2460034",
+  "2460035",
+]
+fileglob = "{night}/single_baseline_files/zen.{night}.baseline.{baseline}.sum.smooth_calibrated.red_avg.reinpainted.uvh5"
+
+
+[LSTCAL_OPTS]
+NBLS_FOR_LSTCAL=30
+RUN_AMPLITUDE_CAL=true
+RUN_TIP_TILT_PHASE_CAL=true
+RUN_CROSS_POL_PHASE_CAL=true
+INCLUDE_AUTOS=false # Include autos in calibration
+FREQ_SMOOTHING_SCALE=30.0 # in MHz
+TIME_SMOOTHING_SCALE=2500 # in seconds
+BLACKLIST_TIMESCALE_FACTOR=10
+BLACKLIST_RELATIVE_ERROR_THRESH=0.1
+BLACKLIST_NITER=5
+WHERE_INPAINTED_WGTS=1e-4
+LSTCAL_FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.{night}.lstcal.hdf5"
+
+[LST_STACK_OPTS] # this precise key is used by single_bl_lststack.ipynb, variables are case-sensitive
+MAX_BL_LENGTH = 1e100 # in meters; set to e.g. 60.0 to run only short baselines first. Baselines longer than this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
+MIN_AVG_REDUNDANCY = 0.0 # average number of baselines per night in the redundant group; baselines below this will be skipped at the SINGLE_BASELINE_LSTSTACK step.
+OUTDIR = "/lustre/aoc/projects/hera/Validation/H6C_IDR3_2/lststack-outputs"
+FNAME_FORMAT = "single_bl_reinpaint_1000ns/zen.LST.baseline.{bl_str}.sum.uvh5"
+USE_LSTCAL_GAINS = true # this will be ignored if the PRELIMINARY flag is true
+FM_LOW_FREQ=87.5 # in MHz
+FM_HIGH_FREQ=108.0 # in MHz
+EIGENVAL_CUTOFF=1e-12
+INPAINT_DELAY=1000 # in ns
+AUTO_INPAINT_DELAY=100 # in ns
+REINPAINT_AUTOS=false
+INPAINT_WIDTH_FACTOR=0.5
+INPAINT_ZERO_DIST_WEIGHT=1e-2
+MIN_NIGHTS_PER_BIN=3
+MAX_CHANNEL_NIGHTLY_FLAG_FRAC=0.25
+MOD_Z_TO_REINPAINT=5 # TODO: revisit
+AUTO_FR_SPECTRUM_FILE="/lustre/aoc/projects/hera/zmartino/hera_frf/spectra_cache/spectra_cache_hera_auto.h5"
+GAUSS_FIT_BUFFER_CUT=1e-5
+CG_TOL=1e-6
+CG_ITER_LIM=500
+FR0_FILTER=true
+FR0_HALFWIDTH=0.01 # in mHz
+FR0_FILT_AUTOS=false
+
+############################################################################################################
+
+[WorkFlow]
+actions = ["BUILD_BASELINE_MAP",
+           "PRELIMINARY_SINGLE_BASELINE_LSTSTACK",
+           "SINGLE_NIGHT_LSTCAL",
+           "SINGLE_BASELINE_LSTSTACK"]
+
+[BUILD_BASELINE_MAP]
+chunk_size = 1
+stride_length = "all"
+time_centered = false
+mem = 16000
+ncpu = 1
+args = ["${Options:toml_file}"]
+
+[PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
+prereqs = "BUILD_BASELINE_MAP"
+prereq_chunk_size = "all"
+mem = 250000
+ncpu = 16 # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+args = ["{basename}",
+        "${Options:toml_file}",
+       ]
+
+[SINGLE_NIGHT_LSTCAL]
+prereqs = "PRELIMINARY_SINGLE_BASELINE_LSTSTACK"
+prereq_chunk_size = "all"
+mem = 120000
+ncpu = 5
+args = ["{basename}",
+        "${Options:toml_file}",
+       ]
+
+[SINGLE_BASELINE_LSTSTACK]
+prereqs = "SINGLE_NIGHT_LSTCAL"
+prereq_chunk_size = "all"
+mem = 250000
+ncpu = 16  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+args = ["{basename}",
+        "${Options:toml_file}",
+       ]
