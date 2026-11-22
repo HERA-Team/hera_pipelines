@@ -39,6 +39,7 @@ skycal_max_bl_len = 120.0  # in meters
 sc_maxiter = 100
 sc_max_rerun = 10
 sc_max_divergent_chans = 25
+sc_min_model_unflagged_frac = 0.25  # sky cal is skipped if fewer than this fraction of a polarization's modeled baselines share one model flag pattern that leaves anything unflagged
 max_band_flag_frac = 0.5
 max_block_error_inflation = 5.0  # X-engine blocks the flags cut off from their band, inflating their decoherence error more than this, are flagged
 apriori_flag_freq_ranges = [[87.5, 108.0], [222.6, 235.0]]  # in MHz; default flags FM and the top X-engine block
