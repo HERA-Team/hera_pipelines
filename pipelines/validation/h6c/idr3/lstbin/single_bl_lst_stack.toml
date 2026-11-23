@@ -1,7 +1,7 @@
 # Single-baseline LST stack for the H6C IDR3.2 validation.
 #
 # Copied from the data run's h6c/idr3/v2/lstbin/lststack_131_nights/single_bl_lst_stack.toml.
-# Every analysis setting (FILE_CFG rules, LSTCAL_OPTS, LST_STACK_OPTS, WorkFlow, mem/ncpu)
+# Every analysis setting (FILE_CFG rules, LSTCAL_OPTS, LST_STACK_OPTS, WorkFlow, ncpu)
 # is unchanged. Only these differ:
 #   - datadir, nights: the 18 validation nights in /lustre/aoc/projects/hera/Validation/H6C_IDR3_2/mocked_data/
 #     (all 18 are also in the data run's 131-night stack);
@@ -9,7 +9,16 @@
 #   - conda_env: h6c_idr3_2_validation, the env the rest of the validation runs in
 #     (same hera_cal as h6c_idr3_2; pyuvdata 3.2.8 vs 3.2.5);
 #   - path_to_do_scripts: the data run's own v2 task scripts, read from the validation's
-#     checkout, so the stack runs the same scripts as the data run.
+#     checkout, so the stack runs the same scripts as the data run;
+#   - mem of PRELIMINARY_SINGLE_BASELINE_LSTSTACK and SINGLE_BASELINE_LSTSTACK: 40 GB
+#     instead of 250 GB (scheduling only). A stack job holds every night of one baseline,
+#     so its memory grows with the number of nights. In the 131-night data run these jobs
+#     peaked at 124 GB at most (sacct MaxRSS; median 119-121 GB), of which ~1.6 GB is there
+#     before any data is read. Single-baseline files are the same size per night in both
+#     runs (0_1: 367 MB), so 18 nights hold 0.14 of the data volume, a peak of ~19 GB;
+#     40 GB keeps the data run's ~2x headroom. SINGLE_NIGHT_LSTCAL keeps the data run's
+#     120 GB: it reads one night of the 30 preliminary baselines (INCLUDE_AUTOS = false),
+#     so its memory doesn't depend on the number of nights (data run: 32-83 GB).
 #
 # Baseline names: within the validation, each redundant group has one name on every night,
 # so no group is split. About 100 groups per night are named differently from the data run:
@@ -128,7 +137,7 @@ args = ["${Options:toml_file}"]
 [PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
 prereqs = "BUILD_BASELINE_MAP"
 prereq_chunk_size = "all"
-mem = 250000
+mem = 40000  # data run: 250000; see header
 ncpu = 16 # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
 args = ["{basename}",
         "${Options:toml_file}",
@@ -146,7 +155,7 @@ args = ["{basename}",
 [SINGLE_BASELINE_LSTSTACK]
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
-mem = 250000
+mem = 40000  # data run: 250000; see header
 ncpu = 16  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
 args = ["{basename}",
         "${Options:toml_file}",
