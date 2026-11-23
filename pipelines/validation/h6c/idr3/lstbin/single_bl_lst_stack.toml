@@ -19,11 +19,13 @@
 #     40 GB keeps the data run's ~2x headroom. SINGLE_NIGHT_LSTCAL keeps the data run's
 #     120 GB: it reads one night of the 30 preliminary baselines (INCLUDE_AUTOS = false),
 #     so its memory doesn't depend on the number of nights (data run: 32-83 GB);
-#   - ncpu of the same two stack steps: 5 instead of 16 (scheduling only), so that more
+#   - ncpu of the same two stack steps: 4 instead of 16 (scheduling only), so that more
 #     stack jobs fit on a node: with 16, one job filled a 16-CPU hera node whatever its
-#     memory. 5 is what the data run's TOML had for these steps until f97c8883; its jobs
-#     at 5 CPUs took a median 59 min vs 51 min at 16. The notebook's thread count comes from
-#     os.cpu_count() (the node's CPUs), not from ncpu, so ncpu doesn't change what it runs.
+#     memory. At 4 CPUs and 40 GB, four jobs fit on a 16-CPU node and six on a 24-CPU node
+#     (257 GB each). The data run's TOML had 5 for these steps until f97c8883; its jobs at
+#     5 CPUs took a median 59 min vs 51 min at 16 (4 CPUs was never timed). The notebook's
+#     thread count comes from os.cpu_count() (the node's CPUs), not from ncpu, so ncpu
+#     doesn't change what it runs.
 #
 # Baseline names: within the validation, each redundant group has one name on every night,
 # so no group is split. About 100 groups per night are named differently from the data run:
@@ -143,7 +145,7 @@ args = ["${Options:toml_file}"]
 prereqs = "BUILD_BASELINE_MAP"
 prereq_chunk_size = "all"
 mem = 40000  # data run: 250000; see header
-ncpu = 5  # data run: 16; see header
+ncpu = 4  # data run: 16; see header
 args = ["{basename}",
         "${Options:toml_file}",
        ]
@@ -161,7 +163,7 @@ args = ["{basename}",
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
 mem = 40000  # data run: 250000; see header
-ncpu = 5  # data run: 16; see header
+ncpu = 4  # data run: 16; see header
 args = ["{basename}",
         "${Options:toml_file}",
        ]
