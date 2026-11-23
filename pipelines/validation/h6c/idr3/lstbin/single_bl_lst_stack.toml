@@ -10,22 +10,27 @@
 #     (same hera_cal as h6c_idr3_2; pyuvdata 3.2.8 vs 3.2.5);
 #   - path_to_do_scripts: the data run's own v2 task scripts, read from the validation's
 #     checkout, so the stack runs the same scripts as the data run;
-#   - mem of PRELIMINARY_SINGLE_BASELINE_LSTSTACK and SINGLE_BASELINE_LSTSTACK: 40 GB
-#     instead of 250 GB (scheduling only). A stack job holds every night of one baseline,
-#     so its memory grows with the number of nights. In the 131-night data run these jobs
-#     peaked at 124 GB at most (sacct MaxRSS; median 119-121 GB), of which ~1.6 GB is there
-#     before any data is read. Single-baseline files are the same size per night in both
-#     runs (0_1: 367 MB), so 18 nights hold 0.14 of the data volume, a peak of ~19 GB;
-#     40 GB keeps the data run's ~2x headroom. SINGLE_NIGHT_LSTCAL keeps the data run's
-#     120 GB: it reads one night of the 30 preliminary baselines (INCLUDE_AUTOS = false),
-#     so its memory doesn't depend on the number of nights (data run: 32-83 GB);
-#   - ncpu of the same two stack steps: 4 instead of 16 (scheduling only), so that more
-#     stack jobs fit on a node: with 16, one job filled a 16-CPU hera node whatever its
-#     memory. At 4 CPUs and 40 GB, four jobs fit on a 16-CPU node and six on a 24-CPU node
-#     (257 GB each). The data run's TOML had 5 for these steps until f97c8883; its jobs at
-#     5 CPUs took a median 59 min vs 51 min at 16 (4 CPUs was never timed). The notebook's
-#     thread count comes from os.cpu_count() (the node's CPUs), not from ncpu, so ncpu
-#     doesn't change what it runs.
+#   - mem of PRELIMINARY_SINGLE_BASELINE_LSTSTACK and SINGLE_BASELINE_LSTSTACK: 80 GB
+#     instead of 250 GB (scheduling only). Only part of a stack job's memory grows with
+#     the number of nights. The data (one baseline, every night) does: 18 nights hold 0.14
+#     of the 131-night run's volume (per-night files are the same size, 0_1: 367 MB), about
+#     20 GB resident here. The FR=0 filter doesn't: it runs NUM_THREADS = 16 nights at once
+#     (16 = min(os.cpu_count(), 16), whatever ncpu is), each building arrays over the whole
+#     LST grid, and the validation's grid is 0.84 of the data run's (autos cache 1013 vs
+#     1200 MB). In the data run (0_1) the notebook was at 75.6 GB going into FR=0 and never
+#     passed its earlier 122.7 GB peak, so FR=0 adds at most 47 GB there, at most ~40 GB
+#     here: a peak of at most ~60 GB. 40 GB (fa959b73) was killed for memory on every
+#     preliminary job after 15-21 min, while sacct (sampled every 30 s) showed ~20 GB.
+#     80 GB is the most that still fits 3 jobs on a 257 GB node. SINGLE_NIGHT_LSTCAL keeps
+#     the data run's 120 GB: it reads one night of the 30 preliminary baselines
+#     (INCLUDE_AUTOS = false), so its memory doesn't depend on the number of nights
+#     (data run: 32-83 GB);
+#   - ncpu of the same two stack steps: 5 instead of 16 (scheduling only). With 16, one job
+#     filled a 16-CPU hera node whatever its memory; at 80 GB, memory allows 3 per node,
+#     which 5 CPUs still fits on the 16-CPU nodes. The data run's TOML had 5 for these steps
+#     until f97c8883; its jobs at 5 CPUs took a median 59 min vs 51 min at 16. The
+#     notebook's thread count comes from os.cpu_count() (the node's CPUs), not from ncpu, so
+#     ncpu doesn't change what it runs or its memory.
 #
 # Baseline names: within the validation, each redundant group has one name on every night,
 # so no group is split. About 100 groups per night are named differently from the data run:
@@ -144,8 +149,8 @@ args = ["${Options:toml_file}"]
 [PRELIMINARY_SINGLE_BASELINE_LSTSTACK]
 prereqs = "BUILD_BASELINE_MAP"
 prereq_chunk_size = "all"
-mem = 40000  # data run: 250000; see header
-ncpu = 4  # data run: 16; see header
+mem = 80000  # data run: 250000; see header
+ncpu = 5  # data run: 16; see header
 args = ["{basename}",
         "${Options:toml_file}",
        ]
@@ -162,8 +167,8 @@ args = ["{basename}",
 [SINGLE_BASELINE_LSTSTACK]
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
-mem = 40000  # data run: 250000; see header
-ncpu = 4  # data run: 16; see header
+mem = 80000  # data run: 250000; see header
+ncpu = 5  # data run: 16; see header
 args = ["{basename}",
         "${Options:toml_file}",
        ]
