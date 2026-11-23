@@ -1,8 +1,8 @@
 # Single-baseline LST stack for the H6C IDR3.2 validation.
 #
 # Copied from the data run's h6c/idr3/v2/lstbin/lststack_131_nights/single_bl_lst_stack.toml.
-# Every analysis setting (FILE_CFG rules, LSTCAL_OPTS, LST_STACK_OPTS, WorkFlow, ncpu)
-# is unchanged. Only these differ:
+# Every analysis setting (FILE_CFG rules, LSTCAL_OPTS, LST_STACK_OPTS, WorkFlow) is
+# unchanged. Only these differ:
 #   - datadir, nights: the 18 validation nights in /lustre/aoc/projects/hera/Validation/H6C_IDR3_2/mocked_data/
 #     (all 18 are also in the data run's 131-night stack);
 #   - OUTDIR, nb_output_repo, nb_template_dir, toml_file: validation paths;
@@ -18,7 +18,12 @@
 #     runs (0_1: 367 MB), so 18 nights hold 0.14 of the data volume, a peak of ~19 GB;
 #     40 GB keeps the data run's ~2x headroom. SINGLE_NIGHT_LSTCAL keeps the data run's
 #     120 GB: it reads one night of the 30 preliminary baselines (INCLUDE_AUTOS = false),
-#     so its memory doesn't depend on the number of nights (data run: 32-83 GB).
+#     so its memory doesn't depend on the number of nights (data run: 32-83 GB);
+#   - ncpu of the same two stack steps: 5 instead of 16 (scheduling only), so that more
+#     stack jobs fit on a node: with 16, one job filled a 16-CPU hera node whatever its
+#     memory. 5 is what the data run's TOML had for these steps until f97c8883; its jobs
+#     at 5 CPUs took a median 59 min vs 51 min at 16. The notebook's thread count comes from
+#     os.cpu_count() (the node's CPUs), not from ncpu, so ncpu doesn't change what it runs.
 #
 # Baseline names: within the validation, each redundant group has one name on every night,
 # so no group is split. About 100 groups per night are named differently from the data run:
@@ -138,7 +143,7 @@ args = ["${Options:toml_file}"]
 prereqs = "BUILD_BASELINE_MAP"
 prereq_chunk_size = "all"
 mem = 40000  # data run: 250000; see header
-ncpu = 16 # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+ncpu = 5  # data run: 16; see header
 args = ["{basename}",
         "${Options:toml_file}",
        ]
@@ -156,7 +161,7 @@ args = ["{basename}",
 prereqs = "SINGLE_NIGHT_LSTCAL"
 prereq_chunk_size = "all"
 mem = 40000  # data run: 250000; see header
-ncpu = 16  # this can go up 16, depending on what fraction of the node one uses (at NRAO, nodes have 257 GBs and 16 cores available)
+ncpu = 5  # data run: 16; see header
 args = ["{basename}",
         "${Options:toml_file}",
        ]
