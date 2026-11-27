@@ -1,6 +1,9 @@
 # H6C IDR3.2 validation post-LST power-spectrum workflow.
-# Adapted from pipelines/h6c/idr3/v2/post-lstbin/h6c_pspec_11band.toml.
-# Pass the validation LST-stack baseline files as positional inputs when building the makeflow.
+# Copy of pipelines/h6c/idr3/v2/post-lstbin/h6c_pspec_11band.toml; only paths and the conda env differ.
+# Inputs: the validation's FR0-filtered LST-stack files (zen.LST.baseline.*.sum.FR0filt.uvh5), symlinked
+# into their own output directory, as in the data run's FR0filt pspec run, and passed as positional
+# arguments to build_makeflow_from_config.py. Every job writes to its input file's directory.
+# See RUNNING_VALIDATION.md, "Power spectra".
 
 [Options]
 makeflow_type = "analysis"
